@@ -1,0 +1,149 @@
+<?php
+
+namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Validator;
+use App\Models\unit;
+use App\Http\Requests\StoreunitRequest;
+use App\Http\Requests\UpdateunitRequest;
+use Illuminate\Http\Request;
+class UnitController extends CustomBaseController
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $record=unit::orderBy('primary_unit_name', 'asc')->get();
+        return view('master.unit',['data'=>$record]); 
+ 
+    }
+    public function fetchUnits()
+{
+    $records = unit::orderBy('primary_unit_name', 'asc')->get();
+    return response()->json($records);
+}
+
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+
+
+    public function unit_store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'primary_unit_name' => 'required|unique:units',
+            'alternate_unit_name'=>'required',
+             'conversion' => 'numeric|regex:/^\d+(\.\d{1,2})?$/',
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json([
+                'status'=>400,
+                'errors'=>$validator->messages()
+            ]);
+        }
+        else
+        {
+            $unit = new unit;
+            $unit->primary_unit_name = $request->input('primary_unit_name');
+            $unit->conversion = $request->input('conversion');
+            $unit->alternate_unit_name = $request->input('alternate_unit_name');
+
+            $unit->save();
+            return response()->json([
+                'status'=>200,
+                'message'=>'Student Added Successfully.'
+            ]);
+        }
+
+    }
+
+
+
+
+    public function store(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'primary_unit_name' => 'required|unique:units',
+            'conversion' => 'numeric|regex:/^\d+(\.\d{1,2})?$/',
+        ]);
+
+
+                    if ($validator->passes()) {
+                $unit = new unit;
+                $unit->primary_unit_name = $request->primary_unit_name;
+                $unit->conversion=$request->conversion;
+                $unit->alternate_unit_name=$request->alternate_unit_name;
+
+                $unit->save();
+        
+                return redirect('/units')->with('message', 'Unit created successfully!');
+            } else {
+                return redirect('/units')->withInput()->withErrors($validator);
+            }
+
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(unit $unit)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $unit = unit::findOrFail($id);
+  
+        return view('master.unit_edit', compact('unit'));
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
+            'primary_unit_name' => 'required|unique:units',
+            'conversion' => 'numeric|regex:/^\d+(\.\d{1,2})?$/',
+        ]);
+
+        $unit =unit::findOrFail($id);
+        $unit->update($request->all());
+
+        return redirect()->route('units.index')->with('message', 'unit updated successfully.');
+    }
+   
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        $unit = unit::find($id);
+
+        // Check if the unit exists
+        if ($unit) {
+            // Delete the unit
+            $unit->delete();
+            return redirect('/units')->with('message', 'Unit Delete successfully!');
+        } else {
+            // unit not found
+            return redirect('/units')->with('message', 'unit Not Found');
+
+        }
+    }
+    
+}

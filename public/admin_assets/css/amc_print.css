@@ -1,0 +1,14 @@
+@media print {
+    body {
+        margin-top: 0;
+    }
+
+    .navbar-brand,
+    .form-control,
+    #btnNavbarSearch,
+    .sb-topnav,
+    #layoutSidenav_nav,
+    .sb-sidenav-menu-heading {
+        display: none !important;
+    }
+}

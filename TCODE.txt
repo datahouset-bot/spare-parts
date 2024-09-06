@@ -1,0 +1,41 @@
+**************Account Code***** 
+    [_token] => jozmtB1AJW4Ri2MK4qyFo8IEGnvhMoy7P4Js9Tk3
+    [_method] => PUT
+    [id] => 3
+    [account_name] => S.V System
+    [account_group] => Customer
+    [op_balnce] => 0
+    [balnce_type] => debit
+    [address] => 
+    [city] => Kanapur
+    [phone] => 65465465
+    [mobile] => 54654645
+    [emial] => 
+    [person_name] => 7999663696
+    [gst_no] => 23KJHGDGSJD
+***********pic*****
+    [logo] => logo
+    [qrcode] => qrcode
+    [seal] => seal
+    [signature] => signature
+    [brand] => brand
+    [comp_logo] => Array
+
+
+    [bank_name] => bank name
+    [bank_ac_no] => a/c
+    [bank_ifsc] => ifsc
+    [upiid] => upid
+    [pay_no] => phone pay
+    [bank_branch] => bank branch
+    [voucher_prefix] => prefix
+    [voucher_suffix] => suffix
+    [voucher_note] => note
+    [ct1] => jurisdictioin
+    [ct2] => Business Name 
+    [ct3] => Voucher head 
+
+    [country] => India
+    [currency] => INR
+    [terms] => terms hgfhgfh hfj hgjhggfhj\
+    {{ $compinfofooter->terms }}
