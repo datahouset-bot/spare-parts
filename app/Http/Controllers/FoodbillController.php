@@ -37,29 +37,38 @@ class FoodbillController extends CustomBaseController
      
     
     }
-    public function item_wise_sale_report()
-{   //Request $request
-    // $date_variable=$request->from_date;
-    // $parsed_date = Carbon::createFromFormat('d-m-Y', $date_variable);
-    // $formatted_from_date = $parsed_date->format('Y-m-d');
+    public function item_wise_sale_report_view()
+   {  
+
+    // Passing the data to the view
+    return view('entery.roomservice.foodbill.item_wise_sale_report_view'); 
+}
+    public function item_wise_sale_report(Request $request)
+   {  
+    $date_variable1=$request->from_date;
+    $parsed_date = Carbon::createFromFormat('d-m-Y', $date_variable1);
+    $formatted_from_date = $parsed_date->format('Y-m-d');
    
-    // $date_variable=$request->to_date;
-    // $parsed_date = Carbon::createFromFormat('d-m-Y', $date_variable);
-    // $formatted_to_date = $parsed_date->format('Y-m-d');
-  
+    $date_variable=$request->to_date;
+    $parsed_date = Carbon::createFromFormat('d-m-Y', $date_variable);
+    $formatted_to_date = $parsed_date->format('Y-m-d');
+   $from_date=$request->from_date;
+   $to_date=$request->to_date;
     // Query to get the total quantity sold for each item
     $item_wise_sales = $item_wise_sales = Foodbill::select(
         'item_id',
         'item_name',
         'rate',
+
         DB::raw('SUM(qty) as total_qty_sold'),
         DB::raw('SUM(qty * rate) as total_amount')
     )
     ->groupBy('item_id', 'item_name','rate')
-    // ->whereBetween('entry_date', [$formatted_from_date, $formatted_to_date])
+    ->whereBetween('voucher_date', [$formatted_from_date, $formatted_to_date])
     ->get();
+
     // Passing the data to the view
-    return view('entery.roomservice.foodbill.item_wise_sale_report', compact('item_wise_sales')); 
+    return view('entery.roomservice.foodbill.item_wise_sale_report', compact('item_wise_sales','from_date','to_date')); 
 }
 
 

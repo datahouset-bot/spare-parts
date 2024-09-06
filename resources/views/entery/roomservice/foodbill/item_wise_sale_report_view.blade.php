@@ -25,15 +25,14 @@
                   <div class="col-md-2 my-4">
                     <button type="submit" class="btn btn-primary btn-block">OK</button>
                 </div>
-                
+
               </div>
 
           </form>
       </div> 
         <div class="card-body">
             <table class="table table-striped" id="remindtable">
-              <span class="mx-1">Item Wise Sales Report From {{$from_date}} to {{$to_date}}</span> 
-              <thead>
+                <thead>
                   <tr>
                     <th scope="col">S.No</th>
                     <th scope="col">Item Name</th>
@@ -50,7 +49,7 @@
                     $totalitem=0;
                     $totalamount=0;
                   @endphp
-                  @foreach ($item_wise_sales as $record)
+                  {{-- @foreach ($item_wise_sales as $record)
                   <tr>
                     @php
                         $totalitem+=$record->total_qty_sold;
@@ -66,7 +65,7 @@
                   </tr>
                     
                   @endforeach
-                  
+                   --}}
                   
                 </tbody>
                 <tfoot>

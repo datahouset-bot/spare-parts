@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
-                        <a href="{{url('item_wise_sale_report')}}" class="btn btn-dark"> Item Wise Sale Report </a>
+                        <a href="{{url('item_wise_sale_report_view')}}" class="btn btn-dark"> Item Wise Sale Report </a>
 
                     </div>
                 </div>
