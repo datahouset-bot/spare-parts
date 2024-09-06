@@ -81,7 +81,7 @@
                 font-style:bold;
                 font-weight: 500;
                 text-align: left;
-                background-color: rgb(228, 237, 240);
+                background-color: rgb(209, 228, 235);
             }
             .occupied{
               background-color:green; 
@@ -93,26 +93,51 @@
               color: white;
 
             }
+            button{
+                border: 0px;
+                margin: 1px;
+                margin-right: 1px;
+                color:black;
+                font-size: large;
+                font-weight: 400;
+                border:1px solid white;
+            }
+
     </style>
 
     <div class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-md-6 mt-1">
                <div class="colour_code">
+                Color Code->>
                 <button style="background-color: mintcream">Vacant</button>
-                <button style="background-color:orange">Booking</button>
-                <button style="background-color: green">Check In</button>
-                <button style="background-color: red">Check Out</button>
-               </div>
-               <div class="colour_code my-2">Show
-                <button style="background-color: mintcream"> Vacant Only </button>
-                <button style="background-color:orange">Booked Only </button>
-                <button style="background-color: green">Check In Only</button>
-                <button style="background-color: red">Dirty Only</button>
-                <a href="{{ url('/vacant_all_room') }}" style="background-color: blue;" class="btn btn-primary">Vacant All</a>
-                <a href="{{ url('/mark_room_dirty') }}" style="background-color: red;" class="btn btn-danger">Mark Room Dirty</a>
+                <button style="background-color:orange">Booked</button>
+                <button style="background-color: green">Check</button>
+                <button style="background-color: red">Dirty</button>&nbsp;&nbsp;
+                <button style="background-color: mintcream" onclick="window.location.href='{{ url('/mark_room_dirty') }}'">Vacant All</button>
+                <button style="background-color: red" onclick="window.location.href='{{ url('/mark_room_dirty') }}'">Mark Room Dirty</button>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Room CheckIn  </th>
+                            <th>Vacant </th>
+                            <th>Occupied</th>
+                            <th>Dirty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{$roomcheckin}}</td>
+                            <td>{{$vacantroom}}</td>
+                            <td>{{$occupiedroom}}</td>
+                            <td>{{$dirtyroom}}</td>
 
+                        </tr>
+                    </tbody>
+
+                </table>
                </div>
+
                @if(isset($message))
                <div class="alert alert-info">{{ $message }}</div>
            @endif
@@ -134,6 +159,7 @@
                             </button>
                         </div>
                    </div>
+                   
 
                  </form>
   

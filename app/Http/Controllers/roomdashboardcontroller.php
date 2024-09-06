@@ -9,7 +9,7 @@ use App\Models\package;
 use App\Models\gstmaster;
 use App\Models\roombooking;
 use Carbon\Carbon;
-
+use App\Models\roomcheckin;
 
 class roomdashboardcontroller extends CustomBaseController
 {
@@ -29,9 +29,20 @@ class roomdashboardcontroller extends CustomBaseController
                              
     
         // Fetch all rooms with their room types
-        $rooms = Room::with('roomtype')->get();
+        $data = Room::with('roomtype')->get();
+        $currentDate = now()->toDateString();
+        $roomcheckin= roomcheckin::where('checkout_voucher_no', '0')
+        ->count();
+         $vacantroom=room::where("room_status" , 'vacant') 
+         ->count();
+         $occupiedroom=room::where("room_status" , 'occupied') 
+         ->count();
+         $dirtyroom=room::where("room_status" , 'dirty') 
+         ->count();
+ 
     
-        return view('entery.room.room_dashboard', ['data' => $rooms, 'bookedRoomIds' => $bookedRoomIds]);
+
+        return view('entery.room.room_dashboard', compact('roomcheckin','currentDate','vacantroom','occupiedroom' ,'dirtyroom','data','bookedRoomIds'));
     }
 
     public function room_dashboard_datewise(Request $request)

@@ -237,7 +237,7 @@
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label for="">Anniversary</label>
-                                                        <input type="text" name="account_anniversary" class="form-control date" value="{{ $data['account_anniversary'] }}">
+                                                        <input type="text" name="account_anniversary" class="form-control dat" value="{{ $data['account_anniversary'] }}">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label for="">Gst Code</label>
