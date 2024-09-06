@@ -221,11 +221,11 @@
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label for=""> Account Id Pic </label>
-                                                        <input type="text" name="account_id_pic" class="form-control" value="{{ $data['account_id_pic'] }}">
+                                                        <input type="file" name="account_id_pic" class="form-control">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label for="">Account Pic</label>
-                                                        <input type="text" name="account_pic1" class="form-control" value="{{ $data['account_pic1'] }}">
+                                                        <input type="file" name="account_pic1" class="form-control">
                                                     </div>
                                     
                                                 </div>
@@ -233,11 +233,11 @@
                                                 <div id="detail_c" class="row">
                                                     <div class="col-md-4">
                                                         <label for="">Birthday</label>
-                                                        <input type="text" name="account_birthday" class="form-control" value="{{ $data['account_birthday'] }}">
+                                                        <input type="text" name="account_birthday" class="form-control date" value="{{ $data['account_birthday'] }}">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label for="">Anniversary</label>
-                                                        <input type="text" name="account_anniversary" class="form-control" value="{{ $data['account_anniversary'] }}">
+                                                        <input type="text" name="account_anniversary" class="form-control date" value="{{ $data['account_anniversary'] }}">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label for="">Gst Code</label>

@@ -216,6 +216,26 @@ class AccountController  extends CustomBaseController
             'balnce_type' => 'required',
             'account_group_id'=>'required',
          ]);
+         $uploadPath = 'uploads/account_image';
+         if ($request->hasFile('account_id_pic')) {
+             $image1 = $request->account_id_pic;
+             $account_id_pic = $image1->getClientOriginalName();
+             $image1->storeAS('public\account_image', $account_id_pic);
+
+
+         } else {
+             $account_id_pic = NULL;
+         }
+         if ($request->hasFile('account_pic1')) {
+ 
+             $image2 = $request->account_pic1;
+             $account_pic1 = $image2->getClientOriginalName();
+             $image2->storeAS('public\account_image', $account_pic1);
+
+          
+         } else {
+             $account_pic1 = NULL;
+         }
     //    echo "account updation form request ";
     //     echo"<pre>";
     //     print_r($request->all());
@@ -242,8 +262,8 @@ class AccountController  extends CustomBaseController
               $account->pen_card=$request->pen_card;
               $account->account_idproof_name=$request->account_idproof_name;
               $account->account_idproof_no=$request->account_idproof_no;
-              $account->account_id_pic=$request->account_id_pic;
-              $account->account_pic1=$request->account_pic1;
+              $account->account_id_pic=$account_id_pic;
+              $account->account_pic1=$account_pic1;
               $account->account_birthday=$request->account_birthday;   
               $account->account_anniversary=$request->account_anniversary;   
               $account->gst_code=$request->gst_code;   
