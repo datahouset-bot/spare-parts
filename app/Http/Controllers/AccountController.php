@@ -86,7 +86,7 @@ class AccountController  extends CustomBaseController
 
 
 
-    public function accountform()
+    public function create()
     {
         //show the list of account landing page 
        $accountgroups=accountgroup::all(); 
@@ -96,12 +96,10 @@ class AccountController  extends CustomBaseController
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function store(Request $request)
     {
         
-        // echo"<pre>";
-        // print_r($request->all());
-
+    //  dd($request);
         
         
         $validator= validator::make($request->all(),[
@@ -109,13 +107,31 @@ class AccountController  extends CustomBaseController
             'account_group_id' => 'required',
             'balnce_type' => 'required'
             ]);
-        // echo"<pre>";
-        // print_r($request->all());
+
+            $uploadPath = 'uploads/account_image';
+            if ($request->hasFile('account_id_pic')) {
+                $image1 = $request->account_id_pic;
+                $account_id_pic = $image1->getClientOriginalName();
+                $image1->storeAS('public\account_image', $account_id_pic);
+  
+
+            } else {
+                $account_id_pic = NULL;
+            }
+            if ($request->hasFile('account_pic1')) {
+    
+                $image2 = $request->account_pic1;
+                $account_pic1 = $image2->getClientOriginalName();
+                $image2->storeAS('public\account_image', $account_pic1);
+ 
+             
+            } else {
+                $account_pic1 = NULL;
+            }
+
+
         if($validator->passes())
            {
-        //     echo"<pre>";
-        // print_r($request->all());
-
                   $account=new account;
                   $account->account_name=$request->account_name;
                   $account->account_group_id=$request->account_group_id;
@@ -129,7 +145,24 @@ class AccountController  extends CustomBaseController
                   $account->gst_no=$request->gst_no;
                   $account->address=$request->address;
                   $account->email=$request->email;
-                 
+                  $account->account_af1=$request->account_af1;  //guest firm name 
+                  $account->account_af2=$request->account_af2; // guest firm address
+                  $account->account_af3=$request->account_af3; //for root account 
+                  $account->nationality=$request->nationality;
+                  $account->address2=$request->address2;
+                  $account->pen_card=$request->pen_card;
+                  $account->account_idproof_name=$request->account_idproof_name;
+                  $account->account_idproof_no=$request->account_idproof_no;
+                  $account->account_id_pic=$account_id_pic;
+                  $account->account_pic1=$account_pic1;
+                  $account->account_birthday=$request->account_birthday;   
+                  $account->account_anniversary=$request->account_anniversary;   
+                  $account->gst_code=$request->gst_code;   
+                  $account->account_code=$request->account_code;   
+                  $account->account_cr_days=$request->account_cr_days;   
+                  $account->account_salsman=$request->account_salsman;     
+                  $account->account_route=$request->account_route;     
+                  $account->account_attachment1=$request->account_attachment1;              
                  $account->save();
                 return redirect('account');
            }
@@ -149,19 +182,25 @@ class AccountController  extends CustomBaseController
     
     public function destroy(account $account,$id)
     {
-      $ledgerrecord=  ledger::where('account_id',$id)->get();
-        if($ledgerrecord->isEmpty()){
-                account::destroy(['id',$id]);         
-        return redirect('account')->with('message', 'Account is Delete Successfully .');
-        }else{
-
-        return redirect('account')->with('error', 'Account Use In transection So We Can Not Delete .');
-
-        } 
+        // Get the ledger records for the account
+    $ledgerrecord = Ledger::where('account_id', $id)->get();
+    
+    // Check if the account is not marked as 'yes' in 'account_af1' and matches the ID
+    $accountToDelete = Account::where('account_af3', '!=', 'yes')
+        ->where('id', $id)
+        ->first(); // Use first() instead of get() for a single record
+    
+    if ($ledgerrecord->isEmpty() && $accountToDelete) {
+        // Delete the account
+        $accountToDelete->delete();
         
+        return redirect('account')->with('message', 'Account is deleted successfully.');
+    } else {
+        return redirect('account')->with('error', 'Account is used in a transaction Or Account Type IS root account, so it cannot be deleted.');
+    }   
 
     }
-    public function show_account_form_edit($id)
+    public function edit($id)
     {      
         $record= account::find($id);
        
@@ -169,7 +208,7 @@ class AccountController  extends CustomBaseController
 
         return view('master.accountformedit',['data'=>$record,'accountgroups'=>$accountgroups]);
     }
-    public function edit_account(Request $request)
+    public function update(Request $request)
     {
         // this is use for save the record of edited item 
          $validator= validator::make($request->all(),[
@@ -195,12 +234,31 @@ class AccountController  extends CustomBaseController
               $account->gst_no=$request->gst_no;
               $account->address=$request->address;
               $account->email=$request->email;
+              $account->account_af1=$request->account_af1;  //guest firm name 
+              $account->account_af2=$request->account_af2; // guest firm address
+              $account->account_af3=$request->account_af3; //for root account 
+              $account->nationality=$request->nationality;
+              $account->address2=$request->address2;
+              $account->pen_card=$request->pen_card;
+              $account->account_idproof_name=$request->account_idproof_name;
+              $account->account_idproof_no=$request->account_idproof_no;
+              $account->account_id_pic=$request->account_id_pic;
+              $account->account_pic1=$request->account_pic1;
+              $account->account_birthday=$request->account_birthday;   
+              $account->account_anniversary=$request->account_anniversary;   
+              $account->gst_code=$request->gst_code;   
+              $account->account_code=$request->account_code;   
+              $account->account_cr_days=$request->account_cr_days;   
+              $account->account_salsman=$request->account_salsman;     
+              $account->account_route=$request->account_route;     
+              $account->account_attachment1=$request->account_attachment1;              
               $account->update();
                return redirect('account');
            }
 
           else{
-            return redirect('/account')->withInput()->withErrors($validator);
+            return redirect()->back()->withInput()->withErrors($validator);
+
               } 
     }               
 

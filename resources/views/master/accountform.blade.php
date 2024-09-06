@@ -1,7 +1,13 @@
 @extends('layouts.blank')
 {{-- @include('layouts.blank') --}}
 @section('pagecontent')
-
+<style>
+.requierdfield{
+  color: red;
+  font-size:x-large;
+  text-align: left;
+}
+</style>    
 
 
 <div class="container">
@@ -10,7 +16,7 @@
             Add Account
         </div>
         <div class="card-body form-group">
-            <form action="{{ url('/create') }}" method="POST">
+            <form action="{{ url('/create_account') }}" method="POST"enctype="multipart/form-data">
                 @csrf
 
             <div id="detail_a" class="row">
@@ -62,7 +68,7 @@
                                 {{ $message }}
                             @enderror
                         </span>
-                        <label for="op_balnce">Opning Balance </label>
+                        <label for="op_balnce">Opening Balance </label>
 
                     </div>
 
@@ -84,7 +90,7 @@
                             <option value="Cr">Cr</option>
 
                         </select>
-                        <label for="balnce_type">Balance_type </label>
+                        <label for="balnce_type">Balance Type </label>
 
                         <span class="text-danger">
                             @error('balnce_type')
@@ -205,31 +211,84 @@
             <span id="part_b" class="btn btn-dark btn-sm">Show Part B</span>            
             <div id="detail_b" class="row">
                 <div class="col-md-4">
-                    <label for="">Input</label>
-                    <input type="text" class="form-control">
+                    <label for="">Root A/c</label>
+                    <input type="text"  name ="account_af3"class="form-control" >
                 </div>
                 <div class="col-md-4">
-                    <label for="">Input</label>
-                    <input type="text" class="form-control">
+                    <label for="">Firm / Company</label>
+                    <input type="text"  name ="account_af1"class="form-control" >
                 </div>
                 <div class="col-md-4">
-                    <label for="">Input</label>
-                    <input type="text" class="form-control">
+                    <label for="">Firm / Company Address </label>
+                    <input type="text"  name ="account_af2"class="form-control" >
                 </div>
+                <div class="col-md-4">
+                    <label for="">Pincode</label>
+                    <input type="text" name="pincode" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label for="">Nationality</label>
+                    <input type="text" name="nationality" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label for="">Address 2</label>
+                    <input type="text" name="address2" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label for="">PAN Card</label>
+                    <input type="text" name="pen_card" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label for="">ID Proof Name</label>
+                    <input type="text" name="account_idproof_name" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label for="">Id Proof No </label>
+                    <input type="text" name="account_idproof_no" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label for=""> Account Id Pic </label>
+                    <input type="file" name="account_id_pic" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label for="">Account Pic</label>
+                    <input type="file" name="account_pic1" class="form-control">
+                </div>
+
             </div>
             <span id="part_c" class="btn btn-dark btn-sm">Show Part C </span>
             <div id="detail_c" class="row">
                 <div class="col-md-4">
-                    <label for="">Input</label>
-                    <input type="text" class="form-control">
+                    <label for="">Birthday</label>
+                    <input type="text" name="account_birthday" class="form-control date">
                 </div>
                 <div class="col-md-4">
-                    <label for="">Input</label>
-                    <input type="text" class="form-control">
+                    <label for="">Anniversary</label>
+                    <input type="text" name="account_anniversary" class="form-control date">
                 </div>
                 <div class="col-md-4">
-                    <label for="">Input</label>
-                    <input type="text" class="form-control">
+                    <label for="">Gst Code</label>
+                    <input type="text" name="gst_code" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label for="">Account Code</label>
+                    <input type="text" name ="account_code"class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label for="">Credit Days</label>
+                    <input type="text" name ="account_cr_days"class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label for="">Salesman</label>
+                    <input type="text" name ="account_salsman"class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label for="">Account Route</label>
+                    <input type="text" name ="account_route"class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label for="">Attachment</label>
+                    <input type="text"  name ="account_attachment1"class="form-control">
                 </div>
             </div>
 

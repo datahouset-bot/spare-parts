@@ -130,11 +130,11 @@ Route::post('downloadExcel_todo',[App\Http\Controllers\AccountController::class,
 Route::get('/searchcustomer/{contactNumber}', [AccountController::class, 'searchCustomer']);
 
 
-Route::get('/accountform', [App\Http\Controllers\AccountController::class, 'accountform']);
-Route::post('/create', [App\Http\Controllers\AccountController::class, 'create']);
+Route::get('/accountform', [App\Http\Controllers\AccountController::class, 'create']);
+Route::post('/create_account', [App\Http\Controllers\AccountController::class, 'store']);
 Route::get('/deleteaccount/{id}', [App\Http\Controllers\AccountController::class, 'destroy']);
-Route::get('/showeditaccount/{id}', [App\Http\Controllers\AccountController::class, 'show_account_form_edit']);
-Route::put('/editaccount', [App\Http\Controllers\AccountController::class, 'edit_account']);
+Route::get('/showeditaccount/{id}', [App\Http\Controllers\AccountController::class, 'edit']);
+Route::put('/editaccount', [App\Http\Controllers\AccountController::class, 'update']);
 Route::get('/accountformview/{id}', [App\Http\Controllers\AccountController::class, 'accountformview']);
 //Amc Entery--------------------------------------------------------------------------------------------
 

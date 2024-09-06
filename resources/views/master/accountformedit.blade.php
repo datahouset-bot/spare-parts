@@ -14,7 +14,7 @@
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header"><h3 class="text-center font-weight-light my-4">Edit Account</h3></div>
                                     <div class="card-body">
-                                        <form action="{{url('/editaccount')}}" method="POST">
+                                        <form action="{{url('/editaccount')}}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             @method('PUT')
 
@@ -181,7 +181,88 @@
                                                        
                                                     </div>
                                                 </div>
-                                                 
+                                                <span id="part_b" class="btn btn-dark btn-sm">Show Part B</span>            
+                                                <div id="detail_b" class="row">
+                                                    <div class="col-md-4">
+                                                        <label for="">Root A/c</label>
+                                                        <input type="text"  name ="account_af3"class="form-control"  value="{{ $data['account_af3'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="">Firm / Company</label>
+                                                        <input type="text"  name ="account_af1"class="form-control" value="{{ $data['account_af1'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="">Firm / Company Address </label>
+                                                        <input type="text"  name ="account_af2"class="form-control" value="{{ $data['account_af2'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="">Pincode</label>
+                                                        <input type="text" name="pincode" class="form-control"value="{{ $data['pincode'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="">Nationality</label>
+                                                        <input type="text" name="nationality" class="form-control" value="{{ $data['nationality'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="">Address 2</label>
+                                                        <input type="text" name="address2" class="form-control" value="{{ $data['address2'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="">PAN Card</label>
+                                                        <input type="text" name="pen_card" class="form-control" value="{{ $data['pen_card'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="">ID Proof Name</label>
+                                                        <input type="text" name="account_idproof_name" class="form-control" value="{{ $data['account_idproof_name'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="">Id Proof No </label>
+                                                        <input type="text" name="account_idproof_no" class="form-control" value="{{ $data['account_idproof_no'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for=""> Account Id Pic </label>
+                                                        <input type="text" name="account_id_pic" class="form-control" value="{{ $data['account_id_pic'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="">Account Pic</label>
+                                                        <input type="text" name="account_pic1" class="form-control" value="{{ $data['account_pic1'] }}">
+                                                    </div>
+                                    
+                                                </div>
+                                                <span id="part_c" class="btn btn-dark btn-sm">Show Part C </span>
+                                                <div id="detail_c" class="row">
+                                                    <div class="col-md-4">
+                                                        <label for="">Birthday</label>
+                                                        <input type="text" name="account_birthday" class="form-control" value="{{ $data['account_birthday'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="">Anniversary</label>
+                                                        <input type="text" name="account_anniversary" class="form-control" value="{{ $data['account_anniversary'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="">Gst Code</label>
+                                                        <input type="text" name="gst_code" class="form-control" value="{{ $data['gst_code'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="">Account Code</label>
+                                                        <input type="text" name ="account_code"class="form-control" value="{{ $data['account_code'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="">Credit Days</label>
+                                                        <input type="text" name ="account_cr_days"class="form-control" value="{{ $data['account_cr_days'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="">Salesman</label>
+                                                        <input type="text" name ="account_salsman"class="form-control" value="{{ $data['account_salsman'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="">Account Route</label>
+                                                        <input type="text" name ="account_route"class="form-control" value="{{ $data['account_route'] }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="">Attachment</label>
+                                                        <input type="text"  name ="account_attachment1"class="form-control" value="{{ $data['account_attachment1'] }}">
+                                                    </div>      
 
                                                 
                                                 
@@ -209,38 +290,33 @@
                     </div>
                 </main>
             </div>
-            <div id="layoutAuthentication_footer">
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            </div>
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
-   
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+        
+        <script src="{{ global_asset('/general_assets/js/form.js') }}"></script>
+        <script>
+            $(document).ready(function() {
+        
+                $('#detail_b,#detail_c').hide();
+                $('#part_b').click(function() {
+                    $('#detail_c').hide();
+                });
+                $('#part_b').click(function() {
+                  $('#detail_b').show();  // Always show #detail_c
+                });
+                $('#part_c').click(function() {
+                  $('#detail_c').show();  // Always show #detail_c
+                });
+        
+        
+            });
+        </script>
 
 
 
-
-    <div class="card my-3">
-        <div class="card-header">
-         Item List 
-        </div>
-       <div class="row ">
-         
-        <div class="card-body">
-           
-    </div>
-</div>
 
 @endsection
