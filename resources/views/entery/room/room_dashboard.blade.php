@@ -109,7 +109,6 @@
         <div class="row justify-content-center">
             <div class="col-md-6 mt-1">
                <div class="colour_code">
-                Color Code->>
                 <button style="background-color: mintcream">Vacant</button>
                 <button style="background-color:orange">Booked</button>
                 <button style="background-color: green">Check</button>

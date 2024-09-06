@@ -59,7 +59,7 @@
                             <div class="collapse" id="gst" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="{{url('/tables')}}">Table</a>
-                                    <a class="nav-link" href="{{url('/account')}}">BED</a>
+                                    <a class="nav-link" href="{{url('/godowns')}}">Godown (Store)</a>
                                     <a class="nav-link" href="{{url('/account')}}">Locker</a>
                                     <a class="nav-link" href="{{url('/gstmasters')}}">GST,TAX,VAT</a>
                                     <a class="nav-link" href="{{url('/businesssources')}}">Business Source</a>

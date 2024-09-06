@@ -13,6 +13,7 @@ use App\Http\Controllers\TableController;
 use App\Http\Controllers\BackupController;
 
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\GodownController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\TenantController;
 use App\Http\Controllers\AccountController;
@@ -373,3 +374,5 @@ Route::get('/hotel_blog', function () {
 Route::get('/hotel_contact', function () {
     return view('hotelfront.hotel_front_contact');
 });
+//----------------------------------godown---------------------
+Route::resource('godowns', GodownController::class);
