@@ -18,7 +18,7 @@ class LedgerController extends CustomBaseController
      */
     public function reciepts()
     { 
-        $ledger_record = ledger::count();
+        $ledger_record = ledger::where('transaction_type','Receipts')->count();
          if ($ledger_record > 0) {
             $lastRecord = ledger::orderBy('voucher_no', 'desc')
             ->where('transaction_type','Receipts')

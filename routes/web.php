@@ -25,6 +25,7 @@ use App\Http\Controllers\FoodbillController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RoomtypeController;
 use App\Http\Controllers\GstmasterController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemgroupController;
 use App\Http\Controllers\OptionlistController;
 use App\Http\Controllers\ComponyinfoController;
@@ -297,6 +298,7 @@ Route::get('kichen_dashboard',[App\Http\Controllers\RoomserviceController::class
 Route::POST('readytoserve',[App\Http\Controllers\RoomserviceController::class,'readytoserve']);
 Route::resource('kots',KotController::class);
 Route::get('store_toKot/{id}',[App\Http\Controllers\KotController::class,'store_toKot']);
+
 Route::get('store_and_print/{id}/{voucher_no}',[App\Http\Controllers\KotController::class,'store_and_print']);
 Route::get('kots_cleared',[App\Http\Controllers\KotController::class,'kots_cleared']);
 //---------------------foodbill-----------------
@@ -342,6 +344,10 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
 });
 //----------------------------purchase--------------------------
 Route::resource('purchases', PurchaseController::class);
+Route::resource('inventories', InventoryController::class);
+Route::get('store_to_purchase/{id}',[App\Http\Controllers\PurchaseController::class,'store_to_purchase']);
+Route::get('store_wise_stock',[App\Http\Controllers\InventoryController::class,'show']);
+// Route::get('store_to_voucher/{id}',[App\Http\Controllers\PurchaseController::class,'store_to_voucher']);
 Route::get('fetchItemRecords_inventory/{id}',[App\Http\Controllers\PurchaseController::class,'fetchItemRecords_inventory']);
 
 Route::resource('banquets', BanquetController::class);

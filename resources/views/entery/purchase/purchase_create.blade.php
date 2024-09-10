@@ -10,6 +10,27 @@
     <script src="jquery/master.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
     <style>
+    .no-gutter ,.form-control{
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .footer_input{
+        width: 100px;
+        padding: 0px;
+        margin: 0px;
+
+    }
+    td,th{
+        margin: 0px !important;
+        padding: 0px !important;
+ border: 1px solid blue;
+ text-align: left;
+ padding-left: 10px !important;
+    }
+    .left-margin{
+        margin-left: 30px;
+    }
+
         #display_rate {
             color: black;
 
@@ -52,7 +73,7 @@
             <div class="card-header">
                 New Purchase
                 <a href="{{ url('temp_item_delete/' . Auth::user()->id) }}" class="btn btn-success">Add New</a>
-                <a href="{{ url('store_toKot/' . Auth::user()->id) }}" class="btn btn-primary">Save</a>
+                <a href="{{ url('store_to_purchase/' . Auth::user()->id) }}" class="btn btn-primary">Save</a>
             </div>
             {{-- <div class="row my-2">
                 <div class="col-md-12 text-center">
@@ -64,7 +85,7 @@
             </div> --}}
             <ul id="save_form_errorlist"></ul>
             <form id="item_entry">
-                <div class="row my-2 mx-1" name="kot_header">
+                <div class="row no-gutter" name="kot_header">
                     {{-- hidden input --}}
                     <input type="hidden" class="form-control" name="user_id" id="user_id" readonly
                         value =  "{{ Auth::user()->id }}">
@@ -83,29 +104,37 @@
                     </div>
 
 
-                    <div class="col-md-2 col-4  text-center">
+                    <div class="col-md-1 col-4  text-center">
                         <label for="entery_no">Entry No </label>
                         <input type="text" class="form-control" id ="entery_no"name="entery_no"
                             value="{{ $new_bill_no }}">
                     </div>
-                    <div class="col-md-1 col-4  text-center">
+                    <div class="col-md-2 col-4  text-center">
                         <label for="godown_id">Godown</label>
-                        <input type="text" class="form-control" id ="godown_id"name="godown_id">
+
+                        <select id ="godown_id"name="godown_id" class="form-select">
+                            @foreach ($godowns as $godown)
+                            <option value="{{$godown->id}}" selected>{{$godown->godown_name}}</option>
+                            @endforeach
+
+
+                        </select>
+
                     </div>
 
-                    <div class="col-md-1 col-4  text-center">
+                    <div class="col-md-2 col-4  text-center">
                         <label for="terms">Terms</label>
                         <select name="terms" id="terms" class="form-select">
 
                             <option value="Cash" selected>Cash</option>
-                            <option value="credit" selected>Credit</option>
+                            <option value="credit" >Credit</option>
 
 
 
                         </select>
 
                     </div>
-                    <div class="col-md-2 col-4  text-center">
+                    <div class="col-md-2 col-4   text-center">
                         <label for="kot_on">Account Name </label>
                         <select name="account_id" id="account_id" class="form-select">
                             <option selected disabled>Select Party</option>
@@ -118,16 +147,16 @@
                         </select>
 
                     </div>
-                    <div class="col-md-2 col-4  text-center">
+                    <div class="col-md-1 col-4  text-center left-margin">
                         <label for="purchase_bill_date">Bill Date</label>
                         <input type="text" id="purchase_bill_date" class="form-control date" name="purchase_bill_date">
                     </div>
                     <div class="col-md-1 col-4  text-center">
-                        <label for="purchase_bill_no">Bill No</label>
-                        <input type="text" id="purchase_bill_no" class="form-control" name="purchase_bill_no">
+                        <label for="voucher_bill_no">Bill No</label>
+                        <input type="text" id="voucher_bill_no" class="form-control" name="voucher_bill_no">
                     </div>
                 </div>
-                <div class="row my-2" name="itementery">
+                <div class="row no-gutter" name="itementery">
                     <div class="col-md-3 mt-4 mx-1 ">
                         <div class="input-group">
 
@@ -175,6 +204,8 @@
                         <label for="gst_p">GST % </label>
                         <input type="text" class ="form-control " id="gst_p" name="gst_p" required readonly>
                     </div>
+                        <input type="hidden" class ="form-control " id="gstmaster_id" name="gstmaster_id" required readonly>
+                    
                     <div class="col-md-2 col-3  text-center">
                         <label for="gst_amt">GST Amt </label>
                         <input type="text" class ="form-control " id="gst_amt" name="gst_amt" required readonly>
@@ -186,7 +217,7 @@
                     </div>
                     <div class="col-md-2  col-3  text-center">
 
-                        <button type="submit" name="additem" id ="additem"class="btn btn-success mt-4">+</button>
+                        <button type="submit" name="additem" id ="additem"class="btn btn-success ">+</button>
 
                     </div>
                 </div>
@@ -199,7 +230,7 @@
                     <thead class="table-dark">
                         <tr>
                             <td>S.No</td>
-                            <td>Item Name</td>
+                            <td width="20%">Item Name</td>
                             <td>Qty</td>
                             <td>Rate</td>
                             <td>Amount</td>
@@ -222,12 +253,19 @@
                     <tfoot class="table-dark">
                         <tr>
                             <td>Total </td>
-                            <td id="total_records"></td>
-                            <td id="total_qty"></td>
+                            <td ><input type="text" class="footer_input" name="total_records" id="total_records"></td>
+                            <td ><input type="text" class="footer_input" name="total_qty"id="total_qty"></td>
                             <td></td>
-                            <td id="total_amount"></td>
+                            <td ><input type="text" class="footer_input" name="total_amount"id="total_amount"></td>
                             <td></td>
-                            {{-- <td id="bill_total_discount">11</td> --}}
+                            <td></td>
+                            <td ><input type="text" class="footer_input" name="total_bill_discount"id="total_bill_discount"></td>
+                            <td><input type="text" class="footer_input"id="total_bill_taxable"name="total_bill_taxable" id="total_bill_taxable"></td>
+                            <td id=""></td>
+                            <td><input type="text" class="footer_input"name ="total_bill_gst"id ="total_bill_gst"></td>
+                            <td><input type="text" class="footer_input"name ="total_bill_net"id ="total_bill_net"></td>
+                            <td></td>
+                            <td></td>
                         </tr>
 
                     </tfoot>
@@ -302,6 +340,7 @@
                             $('#rate').val(response.item_info.sale_rate);
                             $('#display_rate').text(response.item_info.sale_rate);
                             $('#gst_p').val(response.item_info.gstmaster.igst);
+                            $('#gstmaster_id').val(response.item_info.gstmaster.id);
                         } else {
                             $('#rate').val('');
                         }
@@ -375,7 +414,7 @@
                     'voucher_type': $('#voucher_type').val(),
                     'entery_no': $('#entery_no').val(),
                     'terms': $('#terms').val(),
-                    'purchase_bill_no': $('#purchase_bill_no').val(),
+                    'voucher_bill_no': $('#voucher_bill_no').val(),
                     'account_id': $('#account_id').val(),
                     'purchase_bill_date': $('#purchase_bill_date').val(),
                     'dis_p': $('#dis_p').val(),
@@ -383,7 +422,9 @@
                     'gst_p': $('#gst_p').val(),
                     'gst_amt': $('#gst_amt').val(),
                     'net_item_amt': $('#net_item_amt').val(),
-                    'total_item_dis_amt': $('#total_item_dis_amt').val()
+                    'total_item_dis_amt': $('#total_item_dis_amt').val(),
+                    'godown_id':$('#godown_id').val(),
+                    'gstmaster_id':$('#gstmaster_id').val()
 
 
                 };
@@ -404,6 +445,13 @@
                             $('#qty').val('');
                             $('#rate').val('');
                             $('#amount').val('');
+                            $('#dis_p').val('');
+                            $('#dis_amt').val('');
+                            $('#gst_p').val('');
+                            $('#gst_amt').val('');
+                            $('#net_item_amt').val('');
+                            $('#total_item_dis_amt').val('');
+                            $('#gstmaster_id').val('');
                             $('#item_id').focus();
                             $("#additem").prop("disabled", false);
                         }
@@ -442,23 +490,24 @@
                             var itemRecords = response.itemrecords;
                             var totalQty = 0;
                             var totalAmount = 0;
-                            var bill_total_disc=0;
-                            var bill_gst_total=0;
-                            var bill_net_total=0;
-                            var bill_total_taxable=0;
+                            var total_bill_discount=0;
+                            var total_bill_taxable=0;
+                            var total_bill_gst=0;
+                            var total_bill_net=0;
+
 
 
                             $('#sold_item_record tbody').empty(); // Clear previous records
 
                             itemRecords.forEach(function(record, index) {
                                 var amount = record.qty * record.rate;
-                                totalQty += record.qty;
-                                totalAmount += amount;
-                                // bill_total_disc +=total_discount;
-                                // bill_total_taxable +=total_amount;
-                                // bill_gst_total +=total_gst;
-                                // bill_net_total +=item_net_value;
-                                
+                                totalQty += parseFloat(record.qty);
+                                totalAmount += parseFloat(amount);
+                                total_bill_discount+=parseFloat(record.total_discount);
+                                total_bill_taxable+=parseFloat(record.total_amount);
+                                total_bill_gst += parseFloat(record.total_gst);
+                                total_bill_net += parseFloat(record.item_net_value);
+
 
                                 $('#sold_item_record tbody').append(`
                                 <tr>
@@ -467,8 +516,9 @@
                                     <td>${record.qty}</td>
                                     <td>${record.rate}</td>
                                     <td>${record.amount}</td>
-                                    <td>${record.dis_percent}</td>
-                                    <td>${record.dis_amt}</td>
+                                    <td>${ record.dis_percent ?? 0 }</td>
+
+                                    <td>${record.dis_amt??0}</td>
                                     <td>${record.total_discount}</td>
                                     <td>${record.total_amount}</td>
                                     <td>${record.item_gst_id}</td>
@@ -480,9 +530,14 @@
                             `);
                             });
 
-                            $('#total_records').text(itemRecords.length);
-                            $('#total_qty').text(totalQty);
-                            $('#total_amount').text(totalAmount);
+                            $('#total_records').val(itemRecords.length);
+                            $('#total_qty').val(totalQty);
+                            $('#total_amount').val(totalAmount);
+                            $('#total_bill_discount').val(total_bill_discount);
+                            $('#total_bill_taxable').val(total_bill_taxable);
+                            $('#total_bill_gst').val(total_bill_gst);
+                            $('#total_bill_net').val(total_bill_net);
+
                         } else {
                             alert('Failed to fetch records');
                         }

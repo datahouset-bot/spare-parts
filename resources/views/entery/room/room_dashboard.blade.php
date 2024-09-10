@@ -125,13 +125,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        {{-- <tr>
                             <td>{{$roomcheckin}}</td>
                             <td>{{$vacantroom}}</td>
                             <td>{{$occupiedroom}}</td>
                             <td>{{$dirtyroom}}</td>
 
-                        </tr>
+                        </tr> --}}
                     </tbody>
 
                 </table>

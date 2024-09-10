@@ -141,7 +141,7 @@
                             </a>
                             <div class="collapse" id="inventory" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{url('/purchases/create')}}">Purchase</a>
+                                    <a class="nav-link" href="{{url('/purchases')}}">Purchase</a>
                                     <a class="nav-link" href="404.html">Stock  Transfer</a>
                                     <a class="nav-link" href="500.html">Stock Consumed </a>
                                 </nav>
@@ -225,8 +225,8 @@
                             </a>
                             <div class="collapse" id="stock_report" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{url('/account')}}">Stock In Report</a>
-                                    <a class="nav-link" href="404.html">Stock  Transfer Report</a>
+                                    <a class="nav-link" href="{{url('/inventories')}}">Stock Status </a>
+                                    <a class="nav-link" href="{{url('/store_wise_stock')}}">Store Wise Stock </a>
                                     <a class="nav-link" href="500.html">Stock Consumed  Report</a>
                                 </nav>
                             </div>

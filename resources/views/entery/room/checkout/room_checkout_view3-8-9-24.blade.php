@@ -244,7 +244,7 @@ text-align: center;
             .voucher_footer {
                 background-color: yellow;
                 display: grid;
-                grid-template-columns:  1fr ;
+                grid-template-columns: 2fr 1fr ;
                 border-top: 1px solid black;
                 margin-bottom: 0px;
             }
@@ -256,20 +256,6 @@ text-align: center;
                 border-right: 1px solid;
                 margin-bottom: 0px;
   
-            }
-            .sign_footerline{
-
-                display: grid;
-                grid-template-columns: 1fr 1fr ;
-                border-bottom: 1px solid;
-                border-right: 1px solid;
-                margin-bottom: 0px;
-                justify-content: center;
-                text-align: center;
-            }
-            .thanks_line{
-                justify-content: center;
-                text-align: center;
             }
             .tax_summery td{
                 padding: 5px !important;
@@ -315,8 +301,6 @@ text-align: center;
     bottom: 0; /* Align the text to the bottom */
     right: 20; /* Align the text to the right */
     margin: 0; /* Remove default margin */
-    font-size: small;
-    font-style:bold;
 }
 
 
@@ -360,7 +344,6 @@ text-align: center;
                     align-items: center;
 
                 }
- 
 
 
                 .page {
@@ -398,9 +381,7 @@ text-align: center;
                         <div class= "voucher_head">
                 <div class= "gst_no"> GST NO:{{ $componyinfo->cominfo_gst_no }}</div>
                 <div class="bill_head"> TAX INVOICE</div>
-                <div class="bill_head">
-                    ORIGINAL&nbsp;<i class='far fa-square'></i>&nbsp;&nbsp;DUPLICATE&nbsp;<i class='far fa-square'></i> 
-</div>
+                <div class="bill_head">Invoice Date:{{ \Carbon\Carbon::parse($roomcheckouts->checkout_date)->format('d-m-Y') }}</div>
 
 
             </div>
@@ -682,9 +663,9 @@ text-align: center;
                     </table>
 
                 </div>
-                {{-- <div class="for_companyname"style="background-color:white"><span>For
+                <div class="for_companyname"style="background-color:white"><span>For
                         {{ $componyinfo->cominfo_firm_name }}</span><br>
-                </div> --}}
+                </div>
 
 
 
@@ -696,9 +677,7 @@ text-align: center;
                     {{ $compinfofooter->terms }}             
                 </div>
                 <div class="qr_code"style="background-color:white">
-                    <br>
-                    <i class="fa fa-key" style="font-size:48px;color:gray"></i>
-                    <p>PLEASE REMEMBER TO DROP YOUR KEYS AT FRONT DESK </p>
+                    <p>Receiver's Signature</p>
 
 
 
@@ -710,13 +689,6 @@ text-align: center;
 
 
             </div>
-            <div class="sign_footerline">
-
-                <div>Guest Signature</div>
-                <div>Authorized Signatory</div>
-
-            </div>
-
 
 
 
@@ -734,7 +706,6 @@ text-align: center;
 
 
         </div>
-        <div class ="thanks_line"><i class='fas fa-male' style='font-size:36px'></i> Thank You For Staying With Us <i class='fas fa-male' style='font-size:36px'></i></div>
 
         <script>
             function printInvoice() {

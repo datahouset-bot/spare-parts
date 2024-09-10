@@ -48,4 +48,8 @@ class account extends Model
     {
         return $this->belongsTo(accountgroup::class, 'account_group_id','id' );
     }
+    public function voucher()
+    {
+        return $this->hasMany(voucher::class, 'account_id', 'id');
+    }
 }
