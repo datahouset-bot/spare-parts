@@ -5,13 +5,14 @@ use App\Http\Controllers\PicController;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\RestaController;
 use App\Http\Controllers\TableController;
-use App\Http\Controllers\BackupController;
 
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\GodownController;
 use App\Http\Controllers\LedgerController;
@@ -342,14 +343,14 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('/deleteitem/{id}', [App\Http\Controllers\ItemController::class, 'destroy']);
 
 });
-//----------------------------purchase--------------------------
+//----------------------------purchase- sales invetory  stock managment -------------------------
 Route::resource('purchases', PurchaseController::class);
 Route::resource('inventories', InventoryController::class);
 Route::get('store_to_purchase/{id}',[App\Http\Controllers\PurchaseController::class,'store_to_purchase']);
+Route::get('store_to_sale/{id}',[App\Http\Controllers\SaleController::class,'store_to_sale']);
 Route::get('store_wise_stock',[App\Http\Controllers\InventoryController::class,'show']);
-// Route::get('store_to_voucher/{id}',[App\Http\Controllers\PurchaseController::class,'store_to_voucher']);
 Route::get('fetchItemRecords_inventory/{id}',[App\Http\Controllers\PurchaseController::class,'fetchItemRecords_inventory']);
-
+Route::resource('sales', SaleController::class);
 Route::resource('banquets', BanquetController::class);
 Route::get('/backup', [BackupController::class, 'runBackup']);
 Route::get('backupdata', function () {

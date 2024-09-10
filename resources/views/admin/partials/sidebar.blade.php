@@ -143,7 +143,7 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="{{url('/purchases')}}">Purchase</a>
                                     <a class="nav-link" href="404.html">Stock  Transfer</a>
-                                    <a class="nav-link" href="500.html">Stock Consumed </a>
+                                    <a class="nav-link" href="{{url('/sales')}}">Stock Issue</a>
                                 </nav>
                             </div>
 
@@ -227,7 +227,7 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="{{url('/inventories')}}">Stock Status </a>
                                     <a class="nav-link" href="{{url('/store_wise_stock')}}">Store Wise Stock </a>
-                                    <a class="nav-link" href="500.html">Stock Consumed  Report</a>
+                                    <a class="nav-link" href="{{url('/sales')}}">Stock Issue</a>
                                 </nav>
                             </div>
 

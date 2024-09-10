@@ -36,7 +36,7 @@ class PurchaseController extends CustomBaseController
      */
     public function create()
     {
-        $voucher_record=voucher::count();
+        $voucher_record=voucher::where('voucher_type','Purchase')->count();
         if ($voucher_record > 0) {
            $lastRecord = voucher::orderBy('voucher_no', 'desc')->first();
            $voucher_no = $lastRecord->voucher_no;
@@ -72,7 +72,7 @@ class PurchaseController extends CustomBaseController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request)// store temp item record use on sale controller also 
     {
                 $validator= validator::make($request->all(),[
                 'item_id' => 'required',
@@ -212,7 +212,7 @@ class PurchaseController extends CustomBaseController
          $purchase->gst_item_percent=$record->item_gst_id;  
          $purchase->gst_item_amount=$record->total_gst;  
          $purchase->item_net_amount=$net_voucher_amount;  
-         $purchase->simpal_qty=-($record->qty);  
+         $purchase->simpal_qty=($record->qty);  
          $purchase->stock_in=$record->qty;
         $purchase->save();
 
@@ -257,8 +257,8 @@ class PurchaseController extends CustomBaseController
     {
         // Find all room check-in records with the given voucher_no $id is voucehr no 
       
-        $voucher = voucher::where('voucher_no', $id);
-        $inventory=inventory::where('voucher_no', $id);
+        $voucher = voucher::where('voucher_no', $id)->where('voucher_type','Purchase');
+        $inventory=inventory::where('voucher_no', $id)->where('voucher_type','Purchase');
 
       
 

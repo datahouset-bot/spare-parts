@@ -8,11 +8,13 @@ use App\Models\item;
 use App\Models\ledger;
 use App\Models\account;
 use App\Models\foodbill;
+use App\Models\inventory;
+use App\Models\tempentry;
 use App\Models\roomcheckin;
 use App\Models\voucher_type;
+use App\Models\godown;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StorefoodbillRequest;
 use App\Http\Requests\UpdatefoodbillRequest;
@@ -174,11 +176,62 @@ class FoodbillController extends CustomBaseController
             return back()->with('message','No Pending Kot Records Found ');
         }
 
+     
+    }
+    public function store_to_inventory(Request $request)
+    {
+    
+        $date_variable=$request->voucher_date;
+        $parsed_date = Carbon::createFromFormat('d-m-Y', $date_variable);
+         $formatted_voucher_date = $parsed_date->format('Y-m-d');
+        $service_id =$request->service_id ;
+        $records = Kot::with('item')
+        ->select('item_id', DB::raw('SUM(qty) as qty'), 'rate', DB::raw('GROUP_CONCAT(voucher_no) as voucher_nos'))
         
+        ->where('service_id', $service_id)
+        ->where('status', '0')
+        ->groupBy('item_id', 'rate')
+        ->get();
+   $account=account::where('account_name','FoodBill Sales')->first();
+   $account_id=$account->id;
+   $godown=godown::where('godown_name','Kitchen')->first();
+   $godown_id=$godown->id;
 
-
+    
+    foreach($records as $record){
+         $itemrecord=new inventory;
+         $itemrecord->entry_date=now();  //y
+         $itemrecord->voucher_no=$request->voucher_no;   //y
+         $itemrecord->voucher_date=$formatted_voucher_date;//y
+         $itemrecord->voucher_type=$request->voucher_type;   //y
+         $itemrecord->voucher_bill_no=$request->food_bill_no; //y
+         $itemrecord->user_id=$request->user_id;          //y
+         $itemrecord->user_name=$request->user_name;      //y
+         $itemrecord->item_id=$record->item_id;       //y
+         $itemrecord->item_name=$record->item->item_name;  //y
+         $itemrecord->qty=$record->qty; //y
+         $itemrecord->rate=$record->rate;  //y
+         $itemrecord->item_basic_amount=$request->total_base_amount;  //y
+         $itemrecord->godown_id=$godown->id;//y
+         $itemrecord->account_id=$account_id;  //y
+         $itemrecord->net_voucher_amount=$request->net_food_bill_amount;   //y
+         $itemrecord->gst_id=$record->item->gstmaster->id; //gst id from gst master  
+         $itemrecord->gst_item_percent="1"; //value sahi karna hai  
+         $itemrecord->gst_item_amount=$request->total_gst_amount;  //y
+         $itemrecord->item_net_amount=$request->net_food_bill_amount;   //galt value hai y;  
+         $itemrecord->simpal_qty=-($record->qty);  //y  
+         $itemrecord->stock_out=$record->qty;  //y
+         $itemrecord->save();
 
     }
+
+    
+}
+
+
+     
+
+
 
     public function store_foodbill(Request $request)
     {
@@ -245,12 +298,17 @@ class FoodbillController extends CustomBaseController
     }
 
     
-    
+  
+
+
+
+
     public function store(Request $request)
     {
+
  
         $this->store_foodbill($request);
-        
+        $this->store_to_inventory($request);
         $posting_acc_id=$request->posting_acc_id;
         if($posting_acc_id>0){
 
