@@ -212,6 +212,12 @@ text-align: center;
                 text-align: center;
                 font-weight: 800;
             }
+            .billtype {
+                margin-left: 0%;
+                font-size: large;
+                text-align: center;
+                font-weight: 600;
+            }
             .bill_mobile{
                 align-content: right;
             }
@@ -254,6 +260,8 @@ text-align: center;
                 grid-template-columns: 2fr 1fr 1fr;
                 border-bottom: 1px solid;
                 border-right: 1px solid;
+                border-right: 1px solid;
+  
                 margin-bottom: 0px;
   
             }
@@ -261,8 +269,7 @@ text-align: center;
 
                 display: grid;
                 grid-template-columns: 1fr 1fr ;
-                border-bottom: 1px solid;
-                border-right: 1px solid;
+   
                 margin-bottom: 0px;
                 justify-content: center;
                 text-align: center;
@@ -288,6 +295,7 @@ text-align: center;
                 text-align: left;
                 height: 120px;
                 border-top: 1px solid;
+                border-left: 1px solid;
                 padding: 1px;
                 font-size: 15px;
             }
@@ -398,7 +406,7 @@ text-align: center;
                         <div class= "voucher_head">
                 <div class= "gst_no"> GST NO:{{ $componyinfo->cominfo_gst_no }}</div>
                 <div class="bill_head"> TAX INVOICE</div>
-                <div class="bill_head">
+                <div class="billtype">
                     ORIGINAL&nbsp;<i class='far fa-square'></i>&nbsp;&nbsp;DUPLICATE&nbsp;<i class='far fa-square'></i> 
 </div>
 
@@ -479,7 +487,7 @@ text-align: center;
                                 <tr>
                                     <td>Mobile</td>
                                     <td>:</td>
-                                    <td>{{ $guest_detail->Mobile }}</td>
+                                    <td>{{ $guest_detail->mobile }}</td>
                                 </tr>
 
                                 <tr>
@@ -696,7 +704,7 @@ text-align: center;
                     {{ $compinfofooter->terms }}             
                 </div>
                 <div class="qr_code"style="background-color:white">
-                    <br>
+                   
                     <i class="fa fa-key" style="font-size:48px;color:gray"></i>
                     <p>PLEASE REMEMBER TO DROP YOUR KEYS AT FRONT DESK </p>
 
@@ -710,9 +718,12 @@ text-align: center;
 
 
             </div>
-            <div class="sign_footerline">
 
+            <br><br>
+            <div class="sign_footerline">
+                
                 <div>Guest Signature</div>
+                
                 <div>Authorized Signatory</div>
 
             </div>
@@ -734,7 +745,7 @@ text-align: center;
 
 
         </div>
-        <div class ="thanks_line"><i class='fas fa-male' style='font-size:36px'></i> Thank You For Staying With Us <i class='fas fa-male' style='font-size:36px'></i></div>
+        <div class ="thanks_line"> Thank You For Staying With Us </div>
 
         <script>
             function printInvoice() {

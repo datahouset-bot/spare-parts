@@ -27,9 +27,12 @@ class SaleController extends Controller
     {
         // $sales = voucher::with('account')->where('voucher_type','sale')->orderBy('voucher_no','desc')->get();
         $sales = voucher::with('account')->where('voucher_type','Sale')->orderBy('voucher_no','desc')->get();
+        
  
         return view('entery.sale.sale_index',compact('sales'));
 
+        
+        
 
     }
 
@@ -164,11 +167,7 @@ class SaleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(sale $sale)
-    {
-        //
-    }
-
+  
     /**
      * Show the form for editing the specified resource.
      */

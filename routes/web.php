@@ -39,6 +39,7 @@ use App\Http\Controllers\VoucherTypeController;
 use App\Http\Controllers\AccountgroupController;
 use App\Http\Controllers\PrimarygroupController;
 use App\Http\Controllers\RoomcheckoutController;
+use App\Http\Controllers\StocktransferController;
 use App\Http\Controllers\BusinesssourceController;
 use App\Http\Controllers\CompinfofooterController;
 use App\Http\Controllers\BusinesssettingController;
@@ -346,7 +347,11 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
 //----------------------------purchase- sales invetory  stock managment -------------------------
 Route::resource('purchases', PurchaseController::class);
 Route::resource('inventories', InventoryController::class);
+Route::resource('stocktransfers', StocktransferController::class);
+
+Route::get('store_to_stocktransfer/{id}',[App\Http\Controllers\StocktransferController::class,'store_to_stocktransfer']);
 Route::get('store_to_purchase/{id}',[App\Http\Controllers\PurchaseController::class,'store_to_purchase']);
+
 Route::get('store_to_sale/{id}',[App\Http\Controllers\SaleController::class,'store_to_sale']);
 Route::get('store_wise_stock',[App\Http\Controllers\InventoryController::class,'show']);
 Route::get('fetchItemRecords_inventory/{id}',[App\Http\Controllers\PurchaseController::class,'fetchItemRecords_inventory']);

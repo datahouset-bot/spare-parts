@@ -26,11 +26,11 @@
 
     <div class="card my-3">
         <div class="card-header">
-        <h4>Purchase <h4>       </div>
+        <h4>Stock Transfer  <h4>       </div>
        <div class="row my-2">
           <div class="col-md-12 text-center">
-            <a href="{{url('sales/create')}}" class="btn btn-primary">New Stock Issue  </a>
-            <a href="{{url('sale_register')}}" class="btn btn-dark"> Issue Register  </a>
+            <a href="{{url('stocktransfers/create')}}" class="btn btn-primary">New Stock Transfer </a>
+            <a href="{{url('purchase_register')}}" class="btn btn-dark"> Stock Transfer  Register </a>
           </div>
        </div>
         
@@ -70,47 +70,49 @@
                   @php
                     $r1=0;
                   @endphp
-            @foreach ($sales as $record)
+                  @foreach ($stocktransfers as $record)
                     
-            <tr>
+                  <tr>
            
-              <td scope="row">{{$r1=$r1+1}}</td>
-              <td>{{$record->voucher_bill_no}}</td>
-              <td scope="col">{{ \Carbon\Carbon::parse($record['voucher_date'])->format('d-m-y') }}</td>
+                    <td scope="row">{{$r1=$r1+1}}</td>
+                    <td>{{$record->voucher_bill_no}}</td>
+                    <td scope="col">{{ \Carbon\Carbon::parse($record['voucher_date'])->format('d-m-y') }}</td>
+                    <td></td>
+
+                     {{-- <td>{{$record->account->account_name}}</td> --}}
+                     <td>{{$record['total_qty']}}</td>
+                     <td>{{$record['total_item_basic_amount']}}</td>
+                     <td>{{$record['total_disc_item_amount']}}</td>
+                     <td>{{$record['total_gst_amount']}}</td>
+                     <td>{{$record['total_net_amount']}}</td>
+
                     
-               <td>name dalna hai </td>
-
-               <td>{{$record['total_qty']}}</td>
-               <td>{{$record['total_item_basic_amount']}}</td>
-               <td>{{$record['total_disc_item_amount']}}</td>
-               <td>{{$record['total_gst_amount']}}</td>
-               <td>{{$record['total_net_amount']}}</td>      
-               <td>
-                <button class="btn btn-sm" onclick="printRoomBooking({{url('room_checkout_view', $record['voucher_no'])  }})">
-                    <i class="fa fa-print" style="font-size:20px;color:SlateBlue"></i>
-                </button>
-            </td>
+                     <td>
+                      <button class="btn btn-sm" onclick="printRoomBooking({{url('room_checkout_view', $record['voucher_no'])  }})">
+                          <i class="fa fa-print" style="font-size:20px;color:SlateBlue"></i>
+                      </button>
+                  </td>
                   
 
-               <td>
-                <a href="{{ url('purchase_view', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
-            </td> 
-            <td>
-                <a href="{{ route('sales.edit', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
-            </td>
-            <td><a href="http://wa.me/91{{$record}}" ><i class="fa fa-bullhorn"style="font-size:20px;color:green"></i> </a></td>
+                     <td>
+                      <a href="{{ url('purchase_view', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
+                  </td> 
+                  <td>
+                      <a href="{{ route('stocktransfers.edit', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
+                  </td>
+                  {{-- <td><a href="http://wa.me/91{{$record->account->mobile}}" ><i class="fa fa-bullhorn"style="font-size:20px;color:green"></i> </a></td> --}}
 
-
-              <td>
-                <form action="{{ route('sales.destroy', $record['voucher_no']) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn  btn-sm" onclick="return confirm('Are you sure you want to delete this  Record ?{{$record['voucher_no']}}')"><i class="fa fa-trash" style="font-size:20px;color:OrangeRed"></i></button>
-                </form>
-            </td>
+<td></td>
+                    <td>
+                      <form action="{{ route('stocktransfers.destroy', $record['voucher_no']) }}" method="POST" style="display:inline;">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="btn  btn-sm" onclick="return confirm('Are you sure you want to delete this  Record ?{{$record['voucher_no']}}')"><i class="fa fa-trash" style="font-size:20px;color:OrangeRed"></i></button>
+                      </form>
+                  </td>
                   
-            </tr>
-            @endforeach
+                  </tr>
+                  @endforeach
                   
                   
                 </tbody>

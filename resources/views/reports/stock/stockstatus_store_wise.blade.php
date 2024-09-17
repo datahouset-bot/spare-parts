@@ -19,12 +19,6 @@
         <div class="card-header">
             <h4>Purchase</h4>
         </div>
-        <div class="row my-2">
-            <div class="col-md-12 text-center">
-                <a href="{{url('purchases/create')}}" class="btn btn-primary">New Purchase</a>
-                <a href="{{url('purchases')}}" class="btn btn-dark">Purchase Register</a>
-            </div>
-        </div>
 
         <div class="card-body table-scrollable">
             @foreach ($closing_stock as $godown_id => $stocks) 

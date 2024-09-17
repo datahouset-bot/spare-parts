@@ -142,7 +142,7 @@
                             <div class="collapse" id="inventory" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="{{url('/purchases')}}">Purchase</a>
-                                    <a class="nav-link" href="404.html">Stock  Transfer</a>
+                                    <a class="nav-link" href="{{url('/stocktransfers')}}">Stock  Transfer</a>
                                     <a class="nav-link" href="{{url('/sales')}}">Stock Issue</a>
                                 </nav>
                             </div>
