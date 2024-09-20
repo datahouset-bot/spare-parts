@@ -97,7 +97,7 @@
                                     <a class="nav-link" href={{url('roomcheckouts')}}>Check Out </a>
                                 </nav>
                             </div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#bed" aria-expanded="false" aria-controls="bed">
+                            {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#bed" aria-expanded="false" aria-controls="bed">
                                 Dormitory
                                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                              </a>
@@ -109,7 +109,7 @@
                                      <a class="nav-link" href={{url('itemgroups')}}>Advance Reciept </a>
                                      <a class="nav-link" href={{url('itemgroups')}}>Bed Check Out  </a>
                                  </nav>
-                             </div>
+                             </div> --}}
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
                                 Restaurant
@@ -119,11 +119,11 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="{{url('/table_dashboard')}}">Restaurant </a>
                                     <a class="nav-link" href="{{url('/table_foodbills')}}">Restaurant Food Bill </a>
-                                    <a class="nav-link" href="500.html">Token</a>
+                                   
                                 </nav>
                             </div>
 
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#Banquet" aria-expanded="false" aria-controls="Banquet">
+                            {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#Banquet" aria-expanded="false" aria-controls="Banquet">
                                 Banquet Hall 
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
@@ -133,7 +133,7 @@
                                     <a class="nav-link" href="404.html">Booking</a>
                                     <a class="nav-link" href="500.html">Invoice</a>
                                 </nav>
-                            </div>
+                            </div> --}}
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#inventory" aria-expanded="false" aria-controls="inventory">
                                 Stock
@@ -189,10 +189,11 @@
                             <div class="collapse" id="room_reprt" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href={{url('booking_calendar')}}>Booking Calendar</a>
-                                    <a class="nav-link" href={{url('kichen_dashboard')}}>Kichen Dashoard </a>
-                                    <a class="nav-link" href={{url('itemgroups')}}>Room Service  Report</a>
-                                    <a class="nav-link" href={{url('itemgroups')}}>Advance Reciept  Report</a>
-                                    <a class="nav-link" href={{url('itemgroups')}}>Check Out  Report</a>
+                                    <a class="nav-link" href={{url('roombooking_home')}}>Booking Register</a>
+                                    <a class="nav-link" href={{url('roomcheckins')}}>Check In Register</a> 
+                                    <a class="nav-link" href={{url('foodbills')}}>Room Food Bill</a>
+                                    <a class="nav-link" href={{url('advace_receipt')}}>Advance Reciept Register</a>
+                                    <a class="nav-link" href={{url('roomcheckout_register')}}>Check Out  Register</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#reta_report" aria-expanded="false" aria-controls="reta_report">
@@ -201,13 +202,13 @@
                             </a>
                             <div class="collapse" id="reta_report" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{url('/account')}}">Restaurant Bill Report</a>
-                                    <a class="nav-link" href="404.html">Parcel Report</a>
-                                    <a class="nav-link" href="500.html">Token Report</a>
+                                    <a class="nav-link" href="{{url('/table_foodbills')}}">Restaurant  Register</a>
+                                    <a class="nav-link" href={{url('kichen_dashboard')}}>Kichen Dashoard </a>
+                                    
                                 </nav>
                             </div>
 
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#Banquet_report" aria-expanded="false" aria-controls="Banquet_report">
+                            {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#Banquet_report" aria-expanded="false" aria-controls="Banquet_report">
                                 Banquet Hall  Report
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
@@ -217,7 +218,7 @@
                                     <a class="nav-link" href="404.html">Booking Report</a>
                                     <a class="nav-link" href="500.html">Invoice Report</a>
                                 </nav>
-                            </div>
+                            </div> --}}
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#stock_report" aria-expanded="false" aria-controls="stock_report">
                                 Stock Report
@@ -227,7 +228,10 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="{{url('/inventories')}}">Stock Status </a>
                                     <a class="nav-link" href="{{url('/store_wise_stock')}}">Store Wise Stock </a>
-                                    <a class="nav-link" href="{{url('/sales')}}">Stock Issue</a>
+                                    <a class="nav-link" href="{{url('/purchases')}}">Stock In Register</a>
+                                    <a class="nav-link" href="{{url('/sales')}}">Stock Out Register</a>
+                                    <a class="nav-link" href="{{url('/stocktransfers')}}">Stock Transfer Register</a>
+
                                 </nav>
                             </div>
 
@@ -238,10 +242,24 @@
                             </a>
                             <div class="collapse" id="gst" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                 <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{url('/ledgers')}}">Ledger Report</a>
                                     <a class="nav-link" href="{{url('/outstanding_receivable')}}">Outstanding Receivable</a>
                                     <a class="nav-link" href="{{url('/outstanding_payable')}}">Oustanding Payable</a>
-                                    <a class="nav-link" href="{{url('/ledgers')}}">Ledger Report</a>
+                                    <a class="nav-link" href="{{url('/dayend_report')}}">Day End Report</a>
 
+                                    
+                                    
+                                </nav>
+                            </div>
+
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#otherreport" aria-expanded="false" aria-controls="otherreport">
+                                Other Report  
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="otherreport" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{url('/item_wise_sale_report_view')}}">Item Wise Sale </a>
+                                   
                                     
                                     
                                 </nav>
@@ -282,7 +300,6 @@
                                     <a class="nav-link" href={{url('/amc_month_inactive')}}>Month Wise Inactive </a>
 
 
-                                    <a class="nav-link" href={{url('/amclisttest')}}>amc list test   </a>
                                 </nav>
                             </div>
                             {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">

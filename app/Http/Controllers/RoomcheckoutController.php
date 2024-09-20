@@ -354,7 +354,7 @@ class RoomcheckoutController extends CustomBaseController
     //show checkin when select checkin no 
     public function show_checkin(Request $request ,$id)
     {
-
+  
 
 
         $roomcheckins = roomcheckin::with('room')
@@ -409,9 +409,10 @@ class RoomcheckoutController extends CustomBaseController
 
              $foodbills = foodbill::where('service_id', $id)
            ->where('status','0')
-           ->select('total_bill_value','kot_no', 'total_qty', 'voucher_no','food_bill_no','service_id','voucher_date','status','user_id', DB::raw('GROUP_CONCAT(voucher_no ORDER BY voucher_date SEPARATOR ",") as room_nos'))
-           ->groupBy('voucher_no','kot_no', 'total_bill_value', 'total_qty','food_bill_no','service_id','status','user_id','voucher_date')  // Ensure groupBy includes all non-aggregated selected columns
+           ->select('net_food_bill_amount','total_bill_value','kot_no', 'total_qty', 'voucher_no','food_bill_no','service_id','voucher_date','status','user_id', DB::raw('GROUP_CONCAT(voucher_no ORDER BY voucher_date SEPARATOR ",") as room_nos'))
+           ->groupBy('net_food_bill_amount','voucher_no','kot_no', 'total_bill_value', 'total_qty','food_bill_no','service_id','status','user_id','voucher_date')  // Ensure groupBy includes all non-aggregated selected columns
            ->get();
+
            $paymentmodes=account::where('account_group_id','4')
            ->orWhere('account_group_id','5')
            ->get();

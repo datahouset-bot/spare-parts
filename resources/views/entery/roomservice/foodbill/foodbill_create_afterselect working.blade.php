@@ -72,20 +72,20 @@
             <form id="item_entry">
                 <div class="row my-2" name="kot_header">
 
-                    <input type="hidden" class="form-control" name="user_id" id="user_id" readonly
-                        value =  "{{ Auth::user()->id }}">
+                        <input type="hidden" class="form-control" name="user_id" id="user_id" readonly
+                            value =  "{{ Auth::user()->id }}">
 
-                    <input type="hidden" class="form-control" name="user_name" id="user_name" readonly
-                        value =  "{{ Auth::user()->name }}">
+                        <input type="hidden" class="form-control" name="user_name" id="user_name" readonly
+                            value =  "{{ Auth::user()->name }}">
                     <div class="col-md-2 col-4  text-center">
                         <label for="voucher_date">Date</label>
                         <input type="text" class="form-control date" id ="voucher_date" name="voucher_date">
                     </div>
 
-                    <input type="hidden" class="form-control" id="voucher_no" name="voucher_no"
-                        value={{ $new_voucher_no }}>
+                        <input type="hidden" class="form-control" id="voucher_no" name="voucher_no"
+                            value={{ $new_voucher_no }}>
 
-                    <input type="hidden" class="form-control" id="voucher_type" name="voucher_type" value="Foodbill">
+                        <input type="hidden" class="form-control" id="voucher_type" name="voucher_type" value="Foodbill">
                     <div class="col-md-2 col-4  text-center">
                         <label for="food_bill_no">Bill No </label>
                         <input type="text" class="form-control" id ="food_bill_no"name="food_bill_no"
@@ -123,7 +123,7 @@
                     </div>
                     <div class="col-md-1 col-4  text-center">
                         <label for="dis_percant">Dis %</label>
-                        <input type="text" class="form-control" id ="dis_percant"name="dis_percant">
+                        <input type="text" class="form-control" id ="dis_percant"name="dis_percant" >
                     </div>
 
                 </div>
@@ -135,52 +135,8 @@
 
 
 
-                <div class="row my-2 mx-2 table-scrollable">
-                    <div class="row my-2 mx-2">
-                        <table id ="sold_item_record"class="table table-striped  table-responsive">
-                            <thead class="table-dark">
-                                <tr>
-                                    <td>S.No</td>
-                                    <td>Item Name</td>
-                                    <td>Qty</td>
-                                    <td>Rate</td>
-                                    <td>Amount</td>
-                                    <td>Dis%</td>
-                                    <td>Dis Amt</td>
-                                    <td>Taxable</td>
-                                    <td>GST%</td>
-                                    <td>Value</td>
-
-
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                            <tfoot class="table-dark">
-                                <tr>
-                                    <td>Total </td>
-                                    <td id="total_records"></td>
-                                    <td id="total_qty1"></td>
-                                    <td></td>
-                                    <td id="total_amount"></td>
-                                    <td></td>
-                                    <td id="total_discount"></td>
-                                    <td id="total_taxable"></td>
-                                    <td id="total_gstamt"></td>
-                                    <td id="total_netvalue"></td>
-                                </tr>
-
-                            </tfoot>
-
-                        </table>
-
-                    </div>
-
-                    {{-- <table id ="sold_item_record"class="table table-striped  table-responsive">
+            <div class="row my-2 mx-2 table-scrollable">
+                <table id ="sold_item_record"class="table table-striped  table-responsive">
                     <thead class="table-dark">
                         <tr>
                             <td>S.No</td>
@@ -195,7 +151,7 @@
 
 
                     </thead>
-                    {{-- <tbody>
+                    <tbody>
                         @php
                             $r1 = 0;
                             $grandtotal_tax = 0;
@@ -251,27 +207,27 @@
 
                     </tfoot>
 
-                </table> --}}
+                </table>
 
-                </div>
-                <div class="row">
-
-                    <div class="row my-2" name="kot_header">
+            </div>
+            <div class="row">
+              
+            <div class="row my-2" name="kot_header">
                  <div class="col-md-2 col-4  text-center">
                     <label for="net_bill_amount">Amount </label>
                     <input type="text" class="form-control" id ="net_bill_amount"name="net_bill_amount"
-                        value="">
+                        value="{{ $amount_toatl_before_roundoff }}">
                 </div>
                 <div class="col-md-2 col-4  text-center">
                     <label for="round_off">Round Off</label>
                     <input type="text" class="form-control" id ="round_off"name="round_off"
-                        value="">
+                        value="{{ $round_off_amount }}">
                 </div>
 
                 <div class="col-md-2 col-4  text-center">
-                    <label for="total_bill_value">Net Bill Amount </label>
-                    <input type="text" class="form-control" id ="total_bill_value"name="total_bill_value"
-                        value="">
+                    <label for="net_bill_amount">Net Bill Amount </label>
+                    <input type="text" class="form-control" id ="net_bill_amount"name="net_bill_amount"
+                        value="{{ $net_amount }}">
                 </div>
                 <div class="col-md-2 col-4  text-center">
                     <label for="amt_in_words">Amount In Words </label>
@@ -292,7 +248,7 @@
                 <div class="col-md-2 col-4  text-center">
                     <label for="net_food_bill_amount">Amount To Post      </label>
                     <input type="text" class="form-control" id ="net_food_bill_amount"name="net_food_bill_amount"
-                        value=" " readonly>
+                        value="{{ $net_amount }} " readonly>
                 </div>
                 <div class="col-md-2 col-4  text-center">
                     <label for="payment_remark">Payment Remark </label>
@@ -306,21 +262,8 @@
                 </div>
 
 
-
-
-
-
-                </div>
-                <div class="col-3">
-                    <input type="hidden" name="total_item" id="total_item" value ="">
-                    <input type="hidden" name="total_qty" id="total_qty" value="">
-                   
-                    <input type="hidden" name="total_base_amount" id="total_base_amount" value="">
-                    <input type="hidden" name="total_discount_amount"  id="total_discount_amount" value="">
-                    <input type="hidden" name="total_gst_amount"  id="total_gst_amount" value="">
-
-                </div>
-
+            </div>
+           
 
 
             </form>
@@ -359,11 +302,130 @@
     <script src="{{ global_asset('/general_assets\js\form.js') }}"></script>
 
 
+    {{-- Ajex for getting item rate  --}}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#item_id').change(function() {
+                var item_id = $(this).val();
+
+                console.log(item_id);
+
+
+                $.ajax({
+                    url: '/searchitem/' + item_id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log(response);
+
+
+
+                        if (response.item_info) {
+                            $('#rate').val(response.item_info.sale_rate);
+                            $('#display_rate').text(response.item_info.sale_rate);
+                        } else {
+                            $('#rate').val('');
+                        }
+
+
+
+                    }
+
+
+                });
+
+            });
+        });
+    </script>
+    {{-- script for amount calculation --}}
     <script>
         $(document).ready(function() {
-            function fetchAndDisplayRecords(service_id) {
+            
+            $('#rate').on('blur', function() {
+                var qty = $('#qty').val();
+                var rate = $('#rate').val();
+                var amount = qty * rate;
+                $('#amount').val(amount);
+            });
+            let dis_per=0;
+            $('#dis_percant').val(dis_per);
+
+
+
+
+        });
+    </script>
+    {{-- script for saving record  --}}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#item_entry').submit(function(e) {
+                e.preventDefault();
+
+                var data = {
+                    'item_id': $('#item_id').val(),
+                    'user_name': $('#user_name').val(),
+                    'item_qty': $('#qty').val(),
+                    'item_rate': $('#rate').val(),
+                    'item_amount': $('#amount').val(),
+                    'user_id': $('#user_id').val(),
+                    'voucher_date': $('#voucher_date').val(),
+                    'voucher_no': $('#voucher_no').val(),
+                    'voucher_type': $('#voucher_type').val(),
+                    'food_bill_no': $('#food_bill_no').val(),
+                    'waiter_name': $('#waiter_name').val(),
+                    'service_type': $('#service_type').val(),
+                    'service_id': $('#service_id').val()
+                };
+                console.log(data);
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
                 $.ajax({
-                    url: '/fetchkot/' + service_id,
+                    url: '/kots/', // Adjust the URL as per your Laravel routes
+                    type: 'POST',
+                    data: data,
+                    dataType: "json",
+                    success: function(response) {
+                        // $('#item_entry')[0].reset(); // rest the whole form  
+                        if (response.status === 200) {
+                            $('#item_id').val('');
+                            $('#qty').val('');
+                            $('#qty').val('');
+                            $('#rate').val('');
+                            $('#amount').val('');
+                            $('#item_id').focus();
+
+                        } else {
+                            $('#save_form_errorlist').html("");
+                            $.each(response.errors, function(key, err_values) {
+                                $('#save_form_errorlist').addClass(
+                                    "alert alert-danger ");
+                                $('#save_form_errorlist').append('<li>' + err_values +
+                                    '</li>')
+                            });
+
+                        }
+
+
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText);
+                        alert('Error adding customer. Please try again.');
+                        // Handle error response here if needed
+                    }
+                });
+            });
+        });
+    </script>
+ 
+    <script>
+        $(document).ready(function() {
+            function fetchAndDisplayRecords(user_id) {
+                $.ajax({
+                    url: '/facthitem_records/' + user_id,
                     type: 'GET',
                     dataType: 'json',
                     success: function(response) {
@@ -373,78 +435,30 @@
                             var itemRecords = response.itemrecords;
                             var totalQty = 0;
                             var totalAmount = 0;
-                            var itemdiscountamt = 0;
-                            var itemvalue=0;
-                            var itemtaxable=0;
-                            var gstpercent=0;
-                            var itemgstamt=0;
-                             var itemnetvalue=0;
-                             var totalgstamt=0;
-                            var totalitemtaxable=0;
-                             var totalnetvalue=0;
-                             var totalitemdiscount=0;
-                            
 
-
-                            $('#sold_item_record tbody').empty(); // Clear previous records
+                            // $('#sold_item_record tbody').empty(); // Clear previous records
 
                             itemRecords.forEach(function(record, index) {
                                 var amount = record.qty * record.rate;
-                                totalQty += parseFloat(record.qty);
-
-                                gstpercent=record.item.gstmaster.igst;
+                                totalQty += record.qty;
                                 totalAmount += amount;
-                                dis_percant = $('#dis_percant').val();
-                                itemdiscountamt=((record.qty * record.rate)*dis_percant)/100;
-                                totalitemdiscount+=itemdiscountamt;
-                                itemtaxable=amount-itemdiscountamt;
-                                totalitemtaxable+=itemtaxable;
-                                itemgstamt=((amount-itemdiscountamt)*gstpercent)/100;
-                                totalgstamt+=itemgstamt;
-                                itemnetvalue =itemtaxable+itemgstamt; 
-                                totalnetvalue +=itemnetvalue;
-
 
                                 $('#sold_item_record tbody').append(`
-                                    <tr>
-                                        <td>${index + 1}</td>
-                                        <td>${record.item.item_name}</td>
-                                        <td>${record.qty}</td>
-                                        <td>${record.rate}</td>
-                                        <td>${amount}</td>
-                                        <td>${dis_percant}</td>
-                                        <td>${itemdiscountamt}</td>
-                                        <td>${itemtaxable}</td>
-                                        <td>${record.item.gstmaster.igst}</td>
-                                        <td>${itemnetvalue}</td>
-                                             
-
-                                       
-                                    </tr>
-                                `);
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${record.item_name}</td>
+                                <td>${record.qty}</td>
+                                <td>${record.rate}</td>
+                                <td>${amount}</td>
+                                <td><button class="btn btn-primary btn-sm">Edit</button></td>
+                                <td><button class="btn btn-danger btn-sm">Delete</button></td>
+                            </tr>
+                        `);
                             });
 
-                            $('#total_item').val(itemRecords.length);
-                            $('#total_qty').val(totalQty);
                             $('#total_records').text(itemRecords.length);
-                            $('#total_qty1').text(totalQty);
+                            $('#total_qty').text(totalQty);
                             $('#total_amount').text(totalAmount);
-                            $('#total_base_amount').val(totalAmount);
-                            $('#total_discount').text(totalitemdiscount);
-                            $('#total_taxable').text(totalitemtaxable);
-                            $('#total_gstamt').text(totalgstamt);
-                            $('#total_gst_amount').val(totalgstamt);
-
-                            $('#total_netvalue').text(totalnetvalue);
-                            $('#net_bill_amount').val(totalnetvalue);
-                            var roundoff = totalnetvalue - Math.round(totalnetvalue);
-                           $('#round_off').val(roundoff.toFixed(2)); // Set the rounded value with 2 decimal places
-
-                           $('#net_food_bill_amount').val(Math.round(totalnetvalue));
-                           $('#total_bill_value').val(Math.round(totalnetvalue));
-                           $('#total_discount_amount').val(totalitemdiscount);
-
-
                         } else {
                             alert('Failed to fetch records');
                         }
@@ -456,23 +470,89 @@
             }
 
             // Fetch records on page load
-            var serviceId = $("#service_id").val();
-            if (serviceId) {
-                fetchAndDisplayRecords(serviceId);
+            var initialUserId = $("#user_id").val();
+            if (initialUserId) {
+                fetchAndDisplayRecords(initialUserId);
             }
 
-            $('#dis_percant').keyup(function(event) {
-                var serviceId = $("#service_id").val();
-                console.log(serviceId);
+            // Fetch records on button click
+            $('#additem').click(function() {
+                var user_id = $("#user_id").val();
+                console.log(user_id);
 
-                if (serviceId) {
-                    fetchAndDisplayRecords(serviceId);
+                if (user_id) {
+                    fetchAndDisplayRecords(user_id);
                 } else {
-                    alert('Service ID is required');
+                    alert('User ID is required');
                 }
             });
 
+            $('#additem').keypress(function() {
+                var user_id = $("#user_id").val();
+                console.log(user_id);
 
+                if (user_id) {
+                    fetchAndDisplayRecords(user_id);
+                } else {
+                    alert('User ID is required');
+                }
+            });
+            $('#additem').click(function() {
+                handleFetchRecords();
+            });
+
+            // Fetch records on Enter key press
+            $('#user_id').keyUp(function(event) {
+                // if (event.which === 13) { // Enter key pressed
+                handleFetchRecords();
+                // }
+            });
         });
     </script>
+    <script>
+        document.getElementById('service_id').addEventListener('change', function() {
+            var service_id = this.value;
+            if (service_id) {
+                window.location.href = '/facthkot_records/' + service_id;
+            }
+        });
+    </script>
+
+
+
+<script>
+    $(document).ready(function(){
+        $('#dis_percant').on('keyup', function() {
+            let dis_percant = $(this).val();
+            $.ajax({
+                url: "{{ route('get.discount') }}",
+                method: 'POST',
+                data: {
+                    dis_percant: dis_percant,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    console.log(response.dis_percant);
+                    // You can update the UI here with the returned value
+                },
+                error: function(xhr) {
+                    console.error('Error:', xhr);
+                }
+            });
+        });
+    });
+</script>
+
+{{-- discount amount calculation --}}
+<script>
+    $(document).ready(function(){
+        $('#dis_percant').on('keyup', function() {
+            let dis_percant = $(this).val();
+            let taxable_value=
+    });
+
+</script>
+
+     
+
 @endsection

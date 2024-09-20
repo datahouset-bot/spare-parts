@@ -250,6 +250,14 @@ class FoodbillController extends CustomBaseController
 
         foreach ($itemrecords as $record) {
             // return($record);
+            $itembaseamount=$record->qty * $record->rate;
+            $itemdiscountamt=(($record->qty * $record->rate)*$request->dis_percant)/100;
+            $itemgst=$record->item->gstmaster->igst;
+
+            $itemtaxableamt=($itembaseamount-$itemdiscountamt);
+            $itemnetamt=$itemtaxableamt+(($itemtaxableamt*$itemgst)/100);
+
+
             $newfoodbill = new foodbill;
             $newfoodbill->user_id = $request->user_id;
             $newfoodbill->user_name = $request->user_name;
@@ -267,18 +275,18 @@ class FoodbillController extends CustomBaseController
             $newfoodbill->item_name = $record->item->item_name;
             $newfoodbill->qty = $record->qty;
             $newfoodbill->rate = $record->rate;
-            $newfoodbill->item_base_amount = $record->qty * $record->rate;
-            $newfoodbill->disc_percent = '0';
-            $newfoodbill->disc_item_amount = '0';
+            $newfoodbill->item_base_amount = $itembaseamount;
+            $newfoodbill->disc_percent = $request->dis_percant;
+            $newfoodbill->disc_item_amount = $itemdiscountamt;
             $newfoodbill->gst_id = $record->item->gstmaster->id;
-            $newfoodbill->gst_item_percent = $record->item->gstmaster->igst;
+            $newfoodbill->gst_item_percent = $itemgst;
             // $newfoodbill->gst_item_amount=$record->item->gstmaster->igst;
             $newfoodbill->gst_item_amount = (($record->qty * $record->rate) * ($record->item->gstmaster->igst)) / 100;
-            $newfoodbill->net_item_amount = ((($record->qty * $record->rate) * ($record->item->gstmaster->igst)) / 100) + ($record->qty * $record->rate);
+            $newfoodbill->net_item_amount = $itemnetamt;
             $newfoodbill->total_item = $request->total_item;
             $newfoodbill->total_qty = $request->total_qty;
             $newfoodbill->total_base_amount = $request->total_base_amount;
-            $newfoodbill->cash_discount = '0';
+            $newfoodbill->cash_discount = $request->total_discount_amount;
             $newfoodbill->total_taxable_amount = $request->total_base_amount;
             $newfoodbill->total_gst_amount = $request->total_gst_amount;
             $newfoodbill->total_sgst = ($request->total_gst_amount) / 2;
@@ -513,4 +521,27 @@ class FoodbillController extends CustomBaseController
         }
 
     }
+
+
+    //get discount from foodbill and return value 
+    public function fetchkot(string $id)
+    {           $service_id = $id;
+
+        $itemrecords = Kot::with(['item.gstmaster']) // Include gstmaster through the item relationship
+        ->select('item_id', DB::raw('SUM(qty) as qty'), 'rate', DB::raw('GROUP_CONCAT(voucher_no) as voucher_nos'))
+        ->where('service_id', $service_id)
+        ->where('status', '0')
+        ->groupBy('item_id', 'rate')
+        ->get();
+    
+        // $user_id = $id;
+        // $itemrecords = tempentry::where('user_id', $user_id)->get();
+        
+        return response()->json([
+            'message' => 'Records fetched successfully for checkin ' . $service_id,
+            'status' => 200,
+            'itemrecords' => $itemrecords->toArray(),
+        ]);
+    }
+   
 }

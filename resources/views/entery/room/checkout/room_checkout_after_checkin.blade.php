@@ -612,10 +612,10 @@
                                                                         <td>{{ $record['food_bill_no'] }}</td>
             
                                                                         <td>{{ $record['total_qty'] }}</td>
-                                                                        <td>{{ $record['total_bill_value'] }}</td>
+                                                                        <td>{{ $record['net_food_bill_amount'] }}</td>
             
                                                                         <span
-                                                                            style="display: none">{{ $total_food_bill_amount += $record['total_bill_value'] }}</span>
+                                                                            style="display: none">{{ $total_food_bill_amount += $record['net_food_bill_amount'] }}</span>
             
             
                                                                             <td>
@@ -801,6 +801,7 @@
                                                             <tr>
                                                                 <td>Pay <select name="posting_acc_id" id="posting_acc_id">
                                                                         <option selected disabled>Select Mode </option>
+                                                                        
                                                                         @foreach ($paymentmodes as $records)
                                                                             <option value="{{ $records->id }}">
                                                                                 {{ $records->account_name }}</option>
@@ -816,7 +817,7 @@
                                                                         id="voucher_posting_amt" placeholder="0"
                                                                         autocomplete="off"></td>
                                                             </tr>
-                                                            <td>Credit to {{ $data['guest_name'] }} <input type="text"
+                                                            <td>Credit to {{ $data['guest_name'] }} <input type="hidden"
                                                                     name="amt_post_credit_id" class="input_id"
                                                                     id="amt_post_credit_id"
                                                                     value="{{ $data['account_id'] }}"autocomplete="off"
@@ -1537,5 +1538,31 @@
                     }
                 });
             });
+        </script>
+
+        <script>
+            // validation for check if customer select posting account then amount is mendetory 
+            $(document).ready(function () {
+         $('#save_button').on('click', function(e) {
+        var postingAccId = $("#posting_acc_id").val();
+        var voucherPostingAmt = $("#voucher_posting_amt").val();
+
+        // Remove any previous error messages
+        $(".error").remove();
+
+        if (postingAccId !== "") { // If an account is selected
+            if (voucherPostingAmt === "") { // Check if the amount field is empty
+                e.preventDefault(); // Prevent form submission
+                $("#voucher_posting_amt").after('<span class="error" style="color:red;">Voucher Posting Amount is required </span>');
+            }
+        }
+    });
+
+    // Optionally, you can also clear the error message once the user starts typing in the field
+    $("#voucher_posting_amt").on('input', function () {
+        $(".error").remove();
+    });
+});
+
         </script>
     @endsection

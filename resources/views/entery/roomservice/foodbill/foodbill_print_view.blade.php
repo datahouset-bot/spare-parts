@@ -351,6 +351,7 @@ background-color:white;
                             <th class="th_detail">Item Name</th>
                             <th class="th_detail">Qty</th>
                             <th class="th_detail">Rate</th>
+
                             <th class="th_detail">Gst%</th>
                             <th class="th_detail">Amount</th>
                         </tr>
@@ -367,7 +368,7 @@ background-color:white;
                           <td>{{ number_format($records->rate,1)}}</td>
                           <td>{{ number_format($records->gst_item_percent,1)}}</td>
 
-                          <td>{{ number_format($records->net_item_amount,1)}}</td>  
+                          <td>{{ number_format($records->item_base_amount,1)}}</td>  
                         </tr>
                             
                         @endforeach
@@ -393,6 +394,10 @@ background-color:white;
                                 <td>Basic Amt:</td>
                                 <td>{{ $foodbill_header->total_base_amount }}</td>
                             </tr>
+                            <tr>
+                                <td>Dis {{ $foodbill_header->disc_percent}}% :</td>
+                                <td>{{ $foodbill_header->cash_discount }}</td>
+                            </tr>
 
                             <tr>
                                 <td>SGST Amt:</td>
@@ -408,7 +413,7 @@ background-color:white;
                             </tr>
                             <tr>
                                 <td>Grand Total :</td>
-                                <td>{{ $foodbill_header->total_bill_value }}</td>
+                                <td><h3>{{ $foodbill_header->net_food_bill_amount }}</h3></td>
                             </tr>
                         </table>
 

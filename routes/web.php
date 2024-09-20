@@ -312,7 +312,7 @@ Route::resource('foodbills',FoodbillController::class);
 Route::get('facthkot_records/{id}',[App\Http\Controllers\FoodbillController::class,'fetchkotRecords']);
 Route::get('item_wise_sale_report_view',[App\Http\Controllers\FoodbillController::class,'item_wise_sale_report_view']);
 Route::POST('item_wise_sale_report',[App\Http\Controllers\FoodbillController::class,'item_wise_sale_report']);
-
+Route::get('fetchkot/{id}',[App\Http\Controllers\FoodbillController::class,'fetchkot']);
 Route::get('foodbill_print_view/{voucher_no}',[App\Http\Controllers\FoodbillController::class,'foodbill_print_view']);
 //-----------------------------option list --------------
 Route::resource('optionlists',OptionlistController::class);

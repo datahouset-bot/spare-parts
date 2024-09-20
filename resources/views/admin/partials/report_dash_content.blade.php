@@ -52,38 +52,105 @@
                 </div>
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
-                        <a href="{{url('#')}}" class="btn btn-primary">Business Source Wise Report </a>
+                        <a href="{{url('dayend_report')}}" class="btn btn-danger"> Day End Report  </a>
 
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
-                        <a href="{{url('#')}}" class="btn btn-warning"> Month Wise Sale   </a>
+                        <a href="{{url('roombooking_home')}}" class="btn btn-success"> Booking Register  </a>
 
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
-                        <a href="{{url('dayend_report')}}" class="btn btn-info"> Day End Report  </a>
+                        <a href="{{url('roomcheckins')}}" class="btn btn-dark"> Check in Register  </a>
 
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
-                        <a href="{{url('#')}}" class="btn btn-danger">Bank Book  </a>
+                        <a href="{{url('foodbills')}}" class="btn btn-warning">Room Food Bills  </a>
 
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
-                        <a href="{{url('/report_dashboard')}}" class="btn btn-dark">Report </a>
+                        <a href="{{url('advace_receipt')}}" class="btn btn-info"> Advance Reciept Register   </a>
 
                     </div>
                 </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{url('roomcheckout_register')}}" class="btn btn-primary"> Checkout Register  </a>
+
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{url('table_foodbills')}}" class="btn btn-success"> Restaurent Food Bills  </a>
+
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{url('kots')}}" class="btn btn-danger"> Kot Register  </a>
+
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{url('inventories')}}" class="btn btn-warning"> Stock Status  </a>
+
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{url('store_wise_stock')}}" class="btn btn-info"> Store Wise Stock</a>
+
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{url('purchases')}}" class="btn btn-dark">Stock In Register  </a>
+
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{url('sales')}}" class="btn btn-primary"> Stock Out Register  </a>
+
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{url('stocktransfers')}}" class="btn btn-success"> Stock Transfer Register   </a>
+
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{url('item')}}" class="btn btn-warning"> Item List  </a>
+
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{url('rooms')}}" class="btn btn-dark"> Room List  </a>
+
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{url('account')}}" class="btn btn-danger"> Account List  </a>
+
+                    </div>
+                </div>
+                
             </div>
               
             <div class="row">
-                <div class="col-xl-6">
+                {{-- <div class="col-xl-6">
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-chart-area me-1"></i>
@@ -91,8 +158,8 @@
                         </div>
                         <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
                     </div>
-                </div>
-                <div class="col-xl-6">
+                </div> --}}
+                {{-- <div class="col-xl-6">
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-chart-bar me-1"></i>
@@ -100,7 +167,7 @@
                         </div>
                         <div class="card-body"><canvas id="myBarChart1" width="100%" height="40"></canvas></div>
                     </div>
-                </div>
+                </div> --}}
             </div>
 
         </div>

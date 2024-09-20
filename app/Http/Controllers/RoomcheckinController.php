@@ -11,6 +11,7 @@ use App\Models\package;
 use App\Models\foodbill;
 use App\Models\roomtype;
 use App\Models\gstmaster;
+use App\Models\inventory;
 use App\Models\optionlist;
 use App\Models\othercharge;
 use App\Models\roombooking;
@@ -518,9 +519,14 @@ class RoomcheckinController extends CustomBaseController
 
     public function destroy(string $id)
     {
+
         // Find all room check-in records with the given voucher_no $id is voucehr no 
         roombooking::where('checkin_voucher_no', $id)->update(['checkin_voucher_no' => '0']);
         $roomcheckins = roomcheckin::where('voucher_no', $id)->get();
+        //   $invntory=$foodbill = foodbill::where('service_id', $id)->first();
+            // $foodbill_voucher_no=$invntory->voucer_no;
+            // $inventory=inventory::where('voucher_type', 'Foodbill')->where('voucher_no',$foodbill_voucher_no);
+            // dd($inventory);
 
 
         if ($roomcheckins->isEmpty()) {
@@ -543,6 +549,7 @@ class RoomcheckinController extends CustomBaseController
             // Delete the room check-in record
             $roomcheckin->delete();
             $foodbill = foodbill::where('service_id', $id);
+            
             if ($foodbill) {
                 // Update the room status to "vacant"
 
@@ -554,6 +561,7 @@ class RoomcheckinController extends CustomBaseController
 
                 $kot->delete();
             }
+          
             $ledger=ledger::where('transaction_type','Check_In')
             ->where('voucher_no',$id);
             if ($ledger) {
