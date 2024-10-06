@@ -40,8 +40,8 @@ class CompinfofooterController extends CustomBaseController
             $compinfofooter->ct1 = "ct1";
             $compinfofooter->ct2 = "ct2";
             $compinfofooter->ct3 = "ct3";
-            $compinfofooter->ct4 = "ct4";
-            $compinfofooter->ct5 = "ct5";
+            $compinfofooter->ct4 = "ct4"; //user for hotel link 
+            $compinfofooter->ct5 = "ct5";  // use for hotel bank a/c name 
             $compinfofooter->ct6 = "ct6";
             $compinfofooter->ct7 = "ct7";
             $compinfofooter->ct8 = "ct8";
@@ -77,8 +77,8 @@ class CompinfofooterController extends CustomBaseController
         $compinfofooter->ct1 = $request->ct1;
         $compinfofooter->ct2 = $request->ct2;
         $compinfofooter->ct3 = $request->ct3;
-        $compinfofooter->ct4 = $request->ct4;
-        $compinfofooter->ct5 = $request->ct5;
+        $compinfofooter->ct4 = $request->ct4; //use for hotel link 
+        $compinfofooter->ct5 = $request->ct5; //use for bank/ac name
         $compinfofooter->ct6 = $request->ct6;
         $compinfofooter->ct7 = $request->ct7;
         $compinfofooter->ct8 = $request->ct8;

@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('ct1',30)->nullable();
             $table->string('ct2',30)->nullable();
             $table->string('ct3',30)->nullable();
-            $table->string('ct4',30)->nullable();
+            $table->string('ct4',200)->nullable();
             $table->string('ct5',30)->nullable();
             $table->string('ct6',30)->nullable();
             $table->string('ct7',30)->nullable();

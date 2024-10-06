@@ -40,7 +40,11 @@ background-color: white;
  color: #048af8;
 }
 
+.requierdfield{
+  color: red;
 
+  text-align: left;
+}
 .container_chekbox {
   display: block;
   position: relative;
@@ -244,13 +248,13 @@ font-weight:800;
                                         <div class="col-md-8">
                                           <div class="row form-group">
                                             <div class="col-md-3">
-                                              <label for="label1">Check In No </label>
+                                              <label for="label1">Check In No<span class="requierdfield">*</span> </label>
                                               <input type="text" name="check_in_no"class=" form-control"id=""   class="" value="{{$new_bill_no}}" readonly>
                                               <input type="hidden"  name="voucher_no"class=" form-control"id=""  name="voucher_no" class="" value="{{$new_voucher_no}}" readonly>
                                               
                                             </div>
                                             <div class="col-md-3">
-                                              <label for="checkin_date">Check In Date</label>
+                                              <label for="checkin_date">Check In Date<span class="requierdfield">*</span></label>
                                               <input class="form-control date" id="checkin_date" type="text" name="checkin_date" value="{{ date('Y-m-d') }}" />
                                               <span class="text-danger"> 
                                                 @error('checkin_date')
@@ -260,7 +264,7 @@ font-weight:800;
                                               </span>
                                             </div>
                                             <div class="col-md-3">
-                                              <label for="checkin_time">Check In Time</label>
+                                              <label for="checkin_time">Check In Time<span class="requierdfield">*</span></label>
                                               <input class="form-control" id="checkin_time" type="time" name="checkin_time" value="{{ date('Y-m-d') }}" />
                                               <span class="text-danger"> 
                                                 @error('checkin_time')
@@ -270,7 +274,7 @@ font-weight:800;
                                               </span>
                                             </div>
                                             <div class="col-md-3">
-                                              <label for="commited_days">No Of Days</label>
+                                              <label for="commited_days">No Of Days <span class="requierdfield">*</span></label>
                                               <input class="form-control" id="commited_days" type="text" name="commited_days" value="" />
                                               <span class="text-danger"> 
                                                 @error('commited_days')
@@ -281,7 +285,7 @@ font-weight:800;
 
                                             </div>
                                             <div class="col-md-3">
-                                              <label for="no_of_guest">No Of Guest</label>
+                                              <label for="no_of_guest">No Of Guest <span class="requierdfield">*</span></label>
                                               <input class="form-control" id="no_of_guest" type="text" name="no_of_guest" value="" />
                                               <span class="text-danger"> 
                                                 @error('no_of_guest')
@@ -291,7 +295,7 @@ font-weight:800;
                                               </span>
                                             </div>
                                             <div class="col-md-3">
-                                              <label for="business_source_id">Business Source</label>
+                                              <label for="business_source_id">Business Source <span class="requierdfield">*</span></label>
                                               <select name="business_source_id" Id ="business_source_id "class="form-select" aria-label="Default select example">
                                                 <option selected disabled>Select Buiness Source </option>
                                                 @foreach ($businesssource as $businesssource)
@@ -310,7 +314,7 @@ font-weight:800;
                                               </span>
                                             </div>
                                             <div class="col-md-6">
-                                              <label for="package">Package</label>
+                                              <label for="package">Package <span class="requierdfield">*</span></label>
                                               <select name="package_id" Id ="package_id"class="form-select" aria-label="Default select example">
                                                 <option selected disabled>Select Package </option>
                                                 @foreach ($package as $package)
@@ -409,7 +413,7 @@ font-weight:800;
                                         <div class="col-md-8">
                                           <div class="row form-group">
                                             <div class="col-md-6">
-                                              <label for="guest_name">Guest Name </label>
+                                              <label for="guest_name">Guest Name </label><span class="requierdfield">*</span>
                                               <input class="form-control" id="guest_name" type="text" name="guest_name" value="{{ old('guest_name') }}" />
                                               <span class="text-danger"> 
                                                 @error('guest_name')
@@ -491,7 +495,7 @@ font-weight:800;
                                               </span>
                                             </div>
                                             <div class="col-md-3">
-                                              <label for="guest_mobile">Mobile</label>
+                                              <label for="guest_mobile">Mobile</label><span class="requierdfield">*</span>
                                               <input class="form-control" id="guest_mobile" type="text" name="guest_mobile" value="{{ old('guest_mobile') }}" />
                                               <span class="text-danger"> 
                                                 @error('guest_mobile')

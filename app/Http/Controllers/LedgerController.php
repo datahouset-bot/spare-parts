@@ -47,14 +47,15 @@ class LedgerController extends CustomBaseController
         ->orWhere('account_group_id','5')
         ->get();
         $account_names=account::orderBy('account_name','asc')->get();
-        $ledgers = Ledger::whereIn('id', function($query) {
-            $query->select(DB::raw('MIN(id)'))
-                ->from('ledgers')
-                ->groupBy('voucher_no');
-        })
-        ->where('transaction_type','Receipts')
-        ->orderBy('voucher_no','desc')
+        $subquery = Ledger::select(DB::raw('MIN(id)'))
+        ->where('transaction_type', 'Receipts') // Apply this filter before grouping
+        ->groupBy('voucher_no');
+    
+    $ledgers = Ledger::whereIn('id', $subquery)
+        ->orderBy('voucher_no', 'desc')
         ->get();
+    
+    
 
 
 
@@ -459,9 +460,25 @@ class LedgerController extends CustomBaseController
         $account_name = Account::find($account_id);
         $opening_balance_account=$account_name->op_balnce;
         $opning_balance_type=$account_name->balnce_type;
+        if($formatted_to_date>$formatted_from_date){
         $ledgers_before_fromdate = Ledger::where('account_id', $account_id)
         ->where('entry_date', '<=', $formatted_from_date)
         ->get();
+        }
+        else if($formatted_to_date=$formatted_from_date){
+            $date_variable = $request->from_date;
+            $parsed_date = \Carbon\Carbon::createFromFormat('d-m-Y', $date_variable);
+            $one_day_before = $parsed_date->subDay(); // Subtract one day
+            $formatted_from_date_onedaybefore = $one_day_before->format('Y-m-d');
+                       
+
+            $ledgers_before_fromdate = Ledger::where('account_id', $account_id)
+        ->where('entry_date', '<=', $formatted_from_date_onedaybefore)
+        ->get();
+        }
+        else {
+            return("Your Date Selection Is Wrong Please Try Again With proper Date ");
+        }
         $debit_total=0;
         $credit_total=0;
 
@@ -610,13 +627,18 @@ class LedgerController extends CustomBaseController
     }
     public function dayend_report(Request $request)
 {
+    
     $listofaccount = Account::where('account_group_id', '5')
         ->orWhere('account_group_id', '4')
         ->get();
 
     $current_date = \Carbon\Carbon::now();
     $formatted_current_date = $current_date->format('Y-m-d');
+     $one_day_before=\Carbon\Carbon::now();
+     $one_day_before = now()->subDay(); // Get current date and subtract one day
+    $formated_one_day_before = $one_day_before->format('Y-m-d');
    
+
     $from_date = $request->from_date;
     $to_date = $request->to_date;
 
@@ -633,7 +655,7 @@ class LedgerController extends CustomBaseController
             ->get();
 
         $ledgers_before_fromdate = Ledger::where('account_id', $account_id)
-            ->where('entry_date', '<=', $formatted_current_date)
+            ->where('entry_date', '<=', $formated_one_day_before)
             ->get();
 
         $debit_total = 0;
@@ -658,7 +680,7 @@ class LedgerController extends CustomBaseController
 
     $accounts = Account::orderBy('account_name', 'asc')->get();
 
-    return view('reports.ledger.dayend_report', compact('accounts', 'all_reports'));
+    return view('reports.ledger.dayend_report', compact('accounts', 'all_reports','formatted_current_date'));
 }
 
 

@@ -137,7 +137,8 @@
             </div>
 
             @foreach ($all_reports as $report)
-                <h5>Ledger for Account: {{ $report['account_name'] }} &nbsp; From Date-&nbsp;{{ $report['from_date'] }} To Date-&nbsp;{{ $report['to_date'] }}</h5>
+                <h5>Ledger for Account: {{ $report['account_name'] }} &nbsp;  Date-&nbsp;{{ \Carbon\Carbon::parse($formatted_current_date)->format('d-m-Y') }}
+                </h5>
 
                 <div class="table-scrollable">
                     <table class="table table-striped" id="remindtable">
@@ -162,7 +163,7 @@
                             <tr>
                                 <td></td>
                                 <td></td>
-                                <td>Opening Balance</td>
+                                <td>Closing Balance</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>

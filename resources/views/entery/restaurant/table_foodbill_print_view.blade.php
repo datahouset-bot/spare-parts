@@ -281,12 +281,12 @@ background-color:white;
         <div class="page">
 
             <div class="company_info">
-                <div class="logo1">&nbsp;<img src="{{ asset('storage/image/' . $pic->logo) }}" alt="qr_code" width="80px">
+                <div class="logo1">&nbsp;<img src="{{ asset('torage\app\public\image\\' . $pic->logo) }}" alt="qr_code" width="80px">
                 </div>
                 <div class="firm_detail">
                     <h4>{{ $componyinfo->cominfo_firm_name }}</h4>
                 </div>
-                <div class="logo2"><img src="{{ asset('storage/image/' . $pic->brand) }}" alt="qr_code" width="80px">
+                <div class="logo2"><img src="{{ asset('storage\app\public\image\\' . $pic->brand) }}" alt="qr_code" width="80px">
                 </div>
             </div>
             <div class="header_info">
@@ -332,7 +332,8 @@ background-color:white;
 
                         <span>Invoice No : {{ $foodbill_header->food_bill_no }}</span><br>
                         <span>Date : {{ $foodbill_header->voucher_date }}</span><br>
-                        <span>Time : {{ $foodbill_header->created_at->format('H:i') }}</span><br>
+                        {{-- <span>Time : {{ $foodbill_header->created_at->format('H:i') }}</span><br> --}}
+                         Time:<span id="current-time"></span> 
                     </div>
                 </div>
 
@@ -473,6 +474,31 @@ background-color:white;
             function printInvoice() {
                 window.print();
             }
+        </script>
+           <script>
+            // script for getting current time from browser pc 
+            $(document).ready(function() {
+                function getCurrentTime() {
+                    var currentDate = new Date();
+                    var hours = currentDate.getHours();
+                    var minutes = currentDate.getMinutes();
+                    var seconds = currentDate.getSeconds();
+                    
+                    // Add leading zeros to hours, minutes, and seconds
+                    hours = (hours < 10) ? "0" + hours : hours;
+                    minutes = (minutes < 10) ? "0" + minutes : minutes;
+
+                    
+                    var timeString = hours + ":" + minutes + "" ;
+                    $('#current-time').text(timeString);
+                }
+        
+                // Call the function once to display the time initially
+                getCurrentTime();
+        
+                // Update the time every second
+                setInterval(getCurrentTime, 1000);
+            });
         </script>
 
 

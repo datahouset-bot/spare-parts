@@ -570,11 +570,17 @@ public function destroy(string $id)
 {
     $roomcheckout = roomcheckout::where('voucher_no',$id);
     // $roomcheckin=roomcheckin::whare('checkout_voucher_no',$id)->get();
+    $roomsdetails = RoomCheckin::where('checkout_voucher_no', $id)->get();
+
 
 
     // Check if the roomcheckout exists
     if ($roomcheckout) {
 
+     foreach ($roomsdetails as $roomdetail) {
+        $room_id = $roomdetail->room_id;
+        Room::where('id', $room_id)->update(['room_status' => 'occupied']);
+                }
 
 
         // Delete the roomcheckout
