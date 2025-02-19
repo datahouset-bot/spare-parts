@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('stocktransfers', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->timestamps();
         });
     }

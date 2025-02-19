@@ -65,7 +65,7 @@ include(public_path('cdn/cdn.blade.php'));
 
         .voucher_info {
             width: 50%;
-            background-color: gold;
+            background-color: lightblue;
             text-align: left;
             padding: 5px;
         }
@@ -125,7 +125,7 @@ include(public_path('cdn/cdn.blade.php'));
             font-size: x-large;
         }
         .company_info{
-            background-color: yellow;
+            background-color:#FFD700;
             display: grid;
             grid-template-columns: 1fr 4fr 1fr;
             border: 1px solid black;
@@ -265,10 +265,10 @@ align-content: :flex-end;
                     <span>Booking No : {{ $roombooking->booking_no }}</span><br>
                     <span>Booking Date:{{ $roombooking->booking_date }}</span><br>
                     <span>Booking Time:{{ $roombooking->booking_time }}</span><br>
-                    <span>Aspected Check In Date: {{ \Carbon\Carbon::parse($roombooking->checkin_date)->format('d-m-y') }}   
+                    <span>Expected Check In Date: {{ \Carbon\Carbon::parse($roombooking->checkin_date)->format('d-m-y') }}   
                          </span><br>
                     <span>Check In Time:{{ $roombooking->checkin_time }}</span><br>
-                    <span>Aspected Check Out Date:{{ \Carbon\Carbon::parse($roombooking->checkout_date)->format('d-m-y') }}</span><br>
+                    <span>Expected Check Out Date:{{ \Carbon\Carbon::parse($roombooking->checkout_date)->format('d-m-y') }}</span><br>
                     <span>Check Out Time :{{ $roombooking->checkout_time }}</span><br>
                     <span>Total Day  :{{$totaldays }}</span><br>
                 </div>
@@ -284,7 +284,8 @@ align-content: :flex-end;
                     
                     <tr>
                         <th class="th_detail">Room No </th>
-                        <th class="th_detail">Total Rooms </th>
+                        <th class="th_detail"> Total Room</th>
+                        <th class="th_detail">Room Type </th>
                         <th class="th_detail"> No of Guest </th>
                         <th class="th_detail">Commited Days</th>
                         <th class="th_detail">Tariff</th>
@@ -294,8 +295,28 @@ align-content: :flex-end;
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="td_detail">{{ $roombooking->room_no }}</td>
-                        <td class="td_detail">total rooms</td>
+                        <td class="td_detail">
+                            @php
+                                $total_room=0;
+                            @endphp
+   
+                                @foreach ($roomnos as $roomrecords )
+                                        {{$roomrecords->room_nos}}                            
+                                @endforeach
+
+                        </td>
+                        <td class="td_detail">{{$totalroom}}</td>
+                        <td class="td_detail">
+                            @php
+                            $uniqueRoomTypes = $roombookingdata->pluck('room.roomtype.roomtype_name')->unique();
+                        @endphp
+                        
+                        @foreach ($uniqueRoomTypes as $roomType)
+                            {{ $roomType }} &nbsp;,
+                        @endforeach
+                        
+
+                        </td>
                         <td class="td_detail">{{ $roombooking->no_of_guest }}</td>
                         <td class="td_detail">{{ $roombooking->commited_days }}</td>
                         <td class="td_detail">{{ $roombooking->room_tariff_perday }}</td>
@@ -312,6 +333,7 @@ align-content: :flex-end;
                 <thead>
                     
                     <tr>
+                        <th class="th_detail">Total Amount</th>
                         <th class="th_detail">Booking Amount</th>
                         <th class="th_detail">Payment Refrance No</th>
                         <th class="th_detail">Refrance No </th>
@@ -320,7 +342,7 @@ align-content: :flex-end;
                 </thead>
                 <tbody>
                     <tr>
-
+                        <td class="td_detail">{{ $roombooking->commited_days*$roombooking->room_tariff_perday }}</td>
                         <td class="td_detail">{{ $roombooking->booking_amount }}</td>
                         <td class="td_detail">{{ $roombooking->voucher_payment_remark}}</td>
                         <td class="td_detail">{{ $roombooking->refrance_no}}</td>
@@ -374,6 +396,7 @@ align-content: :flex-end;
 
         <div class="button-container my-2">
             <button class="btn btn-primary btn-lg" onclick="printInvoice()">Print</button>
+            
         </div>
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\componyinfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StorecomponyinfoRequest;
@@ -31,10 +32,10 @@ class ComponyinfoController extends CustomBaseController
 
     public function show_form()
     {
-        $companyInfo = componyinfo::find(1);
+        $companyInfo = componyinfo::where('firm_id',Auth::user()->firm_id)->first();
         if (!$companyInfo) {
             $companyInfo = new componyinfo();
-            $companyInfo->id = 1;
+            $companyInfo->firm_id=Auth::user()->firm_id;
             $companyInfo->cominfo_firm_name= 0;
             $companyInfo->cominfo_address1=null;
                 $companyInfo->cominfo_address2=null;
@@ -79,8 +80,10 @@ class ComponyinfoController extends CustomBaseController
     if($validator->passes())
        {
   
-        $companyInfo = componyinfo::find(1);
+        $companyInfo = componyinfo::where('firm_id',Auth::user()->firm_id)->first();
+        
             //    $companyInfo=new componyinfo;
+               $companyInfo->firm_id=Auth::user()->firm_id;
                $companyInfo->cominfo_firm_name=$request->cominfo_firm_name;
                $companyInfo->cominfo_address1=$request->cominfo_address1;
                $companyInfo->cominfo_address2=$request->cominfo_address2;
@@ -107,32 +110,5 @@ class ComponyinfoController extends CustomBaseController
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(componyinfo $componyinfo)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(componyinfo $componyinfo)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatecomponyinfoRequest $request, componyinfo $componyinfo)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-   
+    
 }

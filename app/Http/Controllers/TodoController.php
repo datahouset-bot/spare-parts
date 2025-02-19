@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Models\todo;
 use App\Imports\todoImport;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Spatie\FlareClient\Http\Response;
+use Illuminate\Support\Facades\Validator;
 
 
 
@@ -23,7 +25,8 @@ class TodoController extends CustomBaseController
     public function index()
     {
 
-        $record = Todo::query()->where('reminder_af1', '=', '0')->get();
+        $record = Todo::query()->where('firm_id',Auth::user()->firm_id)
+        ->where('reminder_af1', '=', '0')->get();
         // $record = Todo::query()->where('reminder_af1', '=', '1')->get();
           // $record=todo::all();
         return view('callmanagement.todolist',['data'=>$record]);
@@ -34,7 +37,8 @@ class TodoController extends CustomBaseController
     public function index_dt()
     {
 
-        $record = Todo::query()->where('reminder_af1', '=', '0')->get();
+        $record = Todo::query()->where('firm_id',Auth::user()->firm_id)
+        ->where('reminder_af1', '=', '0')->get();
         // $record = Todo::query()->where('reminder_af1', '=', '1')->get();
           // $record=todo::all();
         return view('callmanagement.todolist_dt',['data'=>$record]);
@@ -46,7 +50,8 @@ class TodoController extends CustomBaseController
     public function index_done()
     {
 
-        $record = Todo::query()->where('reminder_af1', '=', '1')->get();
+        $record = Todo::query()->where('firm_id',Auth::user()->firm_id)
+        ->where('reminder_af1', '=', '1')->get();
         // $record = Todo::query()->where('reminder_af1', '=', '1')->get();
           // $record=todo::all();
         return view('callmanagement.todolist',['data'=>$record]);
@@ -89,6 +94,7 @@ class TodoController extends CustomBaseController
 
 
                  $todo = new todo;
+                 $todo->firm_id=Auth::user()->firm_id;
                 $todo->reminder_date = $formatted_date;
                 $todo->reminder_title = $request->reminder_title;
                 $todo->reminder_name = $request->reminder_name;

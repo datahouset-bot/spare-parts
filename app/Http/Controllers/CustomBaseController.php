@@ -17,6 +17,7 @@ class CustomBaseController extends BaseController
         $this->middleware('permission:create role', ['only' => ['create', 'store', 'addPermissionToRole', 'givePermissionToRole']]);
         $this->middleware('permission:update role', ['only' => ['update', 'edit']]);
         $this->middleware('permission:delete role', ['only' => ['destroy']]);
-        $this->middleware(['auth', 'verified']);
+
+        $this->middleware(['auth', 'verified','check.subscription']);
     }
 }

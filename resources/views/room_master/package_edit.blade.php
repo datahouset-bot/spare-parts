@@ -43,7 +43,7 @@
   </div>  
   <div>
 
-    Other  <input type="text"  value="{{ old('other_name', $package->other_name) }}" name ="other_name"class="form-control" placeholder="Other">
+    Amount  <input type="text"  value="{{ old('other_name', $package->other_name) }}" name ="other_name"class="form-control" placeholder="Other">
     <span class="text-danger"> 
       @error('other_name')
       {{$message}}

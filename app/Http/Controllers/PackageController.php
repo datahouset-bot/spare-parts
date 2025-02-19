@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\package;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+
 class PackageController extends CustomBaseController
 {
     /**
@@ -12,7 +14,7 @@ class PackageController extends CustomBaseController
      */
     public function index()
     {
-        $record=package::all();
+        $record=package::where('firm_id',Auth::user()->firm_id)->get();
         return view('room_master.package',['data'=>$record]); 
  
 
@@ -33,11 +35,12 @@ class PackageController extends CustomBaseController
     {
         $validator= validator::make($request->all(),[
             'package_name' => 'required',
-            'plan_name'=>'required'
-             
+            'plan_name'=>'required',
+            'other_name' => 'required|numeric|min:0|max:25000',
             ]);
             if ($validator->passes()) {
                 $package = new package;
+                $package->firm_id=Auth::user()->firm_id;
                 $package->package_name = $request->package_name;
                 $package->plan_name=$request->plan_name;
                 $package->other_name=$request->other_name;
@@ -63,7 +66,7 @@ class PackageController extends CustomBaseController
      */
     public function edit(string $id)
     {
-        $package = Package::findOrFail($id);
+        $package = Package::where('firm_id',Auth::user()->firm_id)->findOrFail($id);
         return view('room_master.package_edit', compact('package'));
  
     }
@@ -76,7 +79,7 @@ class PackageController extends CustomBaseController
         $request->validate([
             'package_name' => 'required',
             'plan_name' => 'required',
-            'other_name' => 'required',
+            'other_name' => 'required|numeric|min:0|max:25000',
         ]);
 
         $package = Package::findOrFail($id);
@@ -91,7 +94,7 @@ class PackageController extends CustomBaseController
      */
     public function destroy(string $id)
     {
-        $package = Package::find($id);
+        $package = Package::where('firm_id',Auth::user()->firm_id)->find($id);
 
         // Check if the package exists
         if ($package) {

@@ -26,7 +26,7 @@
 
     <div class="card my-3">
         <div class="card-header">
-        <h4>Purchase <h4>       </div>
+        <h4>Stock Issue  <h4>       </div>
        <div class="row my-2">
           <div class="col-md-12 text-center">
             <a href="{{url('sales/create')}}" class="btn btn-primary">New Stock Issue  </a>
@@ -47,6 +47,8 @@
                 <thead>
                   <tr>
                     <th scope="col">S.No</th>
+                    <th scope="col">Terms</th>
+
                     <th scope="col"> Bill No    </th>
                     <th scope="col"> Bill Date</th>
                     <th scope="col"> Party</th>
@@ -75,10 +77,13 @@
             <tr>
            
               <td scope="row">{{$r1=$r1+1}}</td>
+              <td>{{$record->voucher_terms}}</td>
               <td>{{$record->voucher_bill_no}}</td>
+
               <td scope="col">{{ \Carbon\Carbon::parse($record['voucher_date'])->format('d-m-y') }}</td>
                     
-               <td>name dalna hai </td>
+              <td>{{ $record->account->account_name ?? 'N/A' }}</td>
+
 
                <td>{{$record['total_qty']}}</td>
                <td>{{$record['total_item_basic_amount']}}</td>
@@ -93,7 +98,7 @@
                   
 
                <td>
-                <a href="{{ url('purchase_view', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
+                <a href="{{ url('print_sale_invoice', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
             </td> 
             <td>
                 <a href="{{ route('sales.edit', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>

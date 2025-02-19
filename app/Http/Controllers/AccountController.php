@@ -7,6 +7,7 @@ use App\Models\account;
 use App\Models\accountgroup;
 use Illuminate\Http\Request;
 use App\Imports\accountImport;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
@@ -27,19 +28,20 @@ class AccountController  extends CustomBaseController
     public function index()
     {
         // return ("helow account page ");
-        $record=account::with('accountgroup')->get();
+        $record=account::where('firm_id',Auth::user()->firm_id)
+        ->with('accountgroup')->get();
         return view('master.account',['data'=>$record]);
     }
     public function index_dt()
     {
         // return ("helow account page ");
-        $record=account::all();
+        $record=account::where('firm_id',Auth::user()->firm_id)->get();
         return view('master.account_dt',['data'=>$record]);
     }
     public function account_import()
     {
         // return ("helow account page ");
-        $record=account::all();
+        $record=account::where('firm_id',Auth::user()->firm_id)->all();
         return view('master.account_import');
     }
     public function import(Request $request)
@@ -89,7 +91,7 @@ class AccountController  extends CustomBaseController
     public function create()
     {
         //show the list of account landing page 
-       $accountgroups=accountgroup::all(); 
+       $accountgroups=accountgroup::where('firm_id',Auth::user()->firm_id)->get(); 
         return view('master.accountform',compact('accountgroups'));
     }
 
@@ -103,7 +105,11 @@ class AccountController  extends CustomBaseController
         
         
         $validator= validator::make($request->all(),[
-            'account_name' => 'required|unique:accounts',
+            
+            'account_name' => [
+                'required',
+                'unique:accounts,account_name,NULL,id,firm_id,' . auth()->user()->firm_id,
+            ],
             'account_group_id' => 'required',
             'balnce_type' => 'required'
             ]);
@@ -133,6 +139,7 @@ class AccountController  extends CustomBaseController
         if($validator->passes())
            {
                   $account=new account;
+                  $account->firm_id=Auth::user()->firm_id;
                   $account->account_name=$request->account_name;
                   $account->account_group_id=$request->account_group_id;
                   $account->op_balnce=$request->op_balnce;
@@ -180,29 +187,42 @@ class AccountController  extends CustomBaseController
     
 
     
-    public function destroy(account $account,$id)
+    public function destroy(Account $account, $id)
     {
-        // Get the ledger records for the account
-    $ledgerrecord = Ledger::where('account_id', $id)->get();
+        // Check if the account is used in a ledger
+        $ledgerRecord = ledger::where('firm_id', Auth::user()->firm_id)
+            ->where('account_id', $id)
+            ->exists(); // Check only existence for better performance
     
-    // Check if the account is not marked as 'yes' in 'account_af1' and matches the ID
-    $accountToDelete = Account::where('account_af3', '!=', 'yes')
-        ->where('id', $id)
-        ->first(); // Use first() instead of get() for a single record
+        // Fetch the account to delete if it exists, belongs to the same firm, and is not marked as 'root'
+        $accountToDelete = account::where('id', $id)
+            ->where('firm_id', Auth::user()->firm_id)
+            ->where(function ($query) {
+                $query->where('account_af3', '=', '0')
+                      ->orWhereNull('account_af3'); // Allow NULL or '0' values for account_af3
+            })
+            ->first();
     
-    if ($ledgerrecord->isEmpty() && $accountToDelete) {
-        // Delete the account
-        $accountToDelete->delete();
-        
-        return redirect('account')->with('message', 'Account is deleted successfully.');
-    } else {
-        return redirect('account')->with('error', 'Account is used in a transaction Or Account Type IS root account, so it cannot be deleted.');
-    }   
-
+        // If there are no ledger records and the account is deletable
+        if (!$ledgerRecord && $accountToDelete) {
+            // Delete the account
+            $accountToDelete->delete();
+    
+            return redirect('account')->with('message', 'Account is deleted successfully.');
+        }
+    
+        // Check if the account is a root account
+        if ($accountToDelete && $accountToDelete->account_af3 !== NULL && $accountToDelete->account_af3 !== '0') {
+            return redirect('account')->with('error', 'Account is a root account and cannot be deleted.');
+        }
+    
+        return redirect('account')->with('error', 'Account is used in a transaction or cannot be deleted.');
     }
+    
+
     public function edit($id)
     {      
-        $record= account::find($id);
+        $record= account::where('firm_id',Auth::user()->firm_id)->find($id);
        
         $accountgroups=accountgroup::all();
 
@@ -241,7 +261,7 @@ class AccountController  extends CustomBaseController
     //     print_r($request->all());
          if($validator->passes())
             {
-              $account=account::find($request->id);
+              $account=account::where('firm_id',Auth::user()->firm_id)->find($request->id);
               $account->account_name=$request->account_name;
               $account->account_group_id=$request->account_group_id;
               $account->op_balnce=$request->op_balnce;
@@ -284,9 +304,10 @@ class AccountController  extends CustomBaseController
 
     public function accountformview($id)
     {      
-        $record= account::find($id);
+        $record= account::where('firm_id',Auth::user()->firm_id)->find($id);
+        $accountgroups=accountgroup::all();
 
-        return view('master.accountformview',['data'=>$record]);
+        return view('master.accountformview',['data'=>$record,'accountgroups'=>$accountgroups]);
       
     }
 
@@ -306,9 +327,30 @@ class AccountController  extends CustomBaseController
     public function searchCustomer($contactNumber)
     {
         // Search for the customer by contact number
-        $customer = account::where('phone', $contactNumber)
+        $customer = account::where('firm_id',Auth::user()->firm_id)
+        ->where('phone', $contactNumber)
                             ->orWhere('mobile', $contactNumber)
                             ->first();
+
+        if ($customer) {
+            return response()->json([
+                'message' => '<p class="alart alart-success">Record Found Sucessfully <p>',
+                'customer_info' => $customer->toArray()
+            ]);
+        } 
+        else {
+            return response()->json([
+                'message' => ' <p class="alart alart-danger">No Record Found<p>',
+                'customer_info' => null
+            ]);
+        }
+    }
+    public function searchCustomer_by_id($id)
+    {
+        // Search for the customer by contact number
+ 
+        $customer = account::where('id', $id)->where('firm_id',Auth::user()->firm_id)
+        ->first();
 
         if ($customer) {
             return response()->json([

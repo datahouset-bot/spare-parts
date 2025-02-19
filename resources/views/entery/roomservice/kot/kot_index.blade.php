@@ -80,7 +80,7 @@
                     <th scope="row">{{$r1=$r1+1}}</th>
                     <td scope="col">{{ \Carbon\Carbon::parse($record['voucher_date'])->format('d-m-y') }}</td>
                      <td>{{$record['bill_no']}}</td>
-                     <td>{{$record['service_id']}}</td>
+                     <td>{{$record->room_nos}}</td>
                      <td>{{$record['total_qty']}}</td>
                      <td>{{$record['total_amount']}}</td> 
                      <td>{{$record['ready_to_serve']}}</td> 

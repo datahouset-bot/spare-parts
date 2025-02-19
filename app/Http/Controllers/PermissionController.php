@@ -13,6 +13,7 @@ class PermissionController extends Controller
         $this->middleware('permission:create permission', ['only' => ['create','store']]);
         $this->middleware('permission:update permission', ['only' => ['update','edit']]);
         $this->middleware('permission:delete permission', ['only' => ['destroy']]);
+        
     }
 
     public function index()

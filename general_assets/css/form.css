@@ -1,0 +1,15 @@
+h5{
+    color: black;
+    background-color: greenyellow;
+    font-size: large;
+    font-weight: 300;
+}
+.form-floating label {
+
+    color: #00008B; /* Couleur noire */
+    font-weight: bold;
+    font-size: 17px;
+}
+.body{
+    background-color:green;
+}

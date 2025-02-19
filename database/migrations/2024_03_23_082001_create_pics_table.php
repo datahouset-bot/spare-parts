@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('pics', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->string('logo')->nullable();
             $table->string('qrcode')->nullable();
             $table->string('seal')->nullable();

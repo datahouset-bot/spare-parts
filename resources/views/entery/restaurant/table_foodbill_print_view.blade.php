@@ -281,12 +281,15 @@ background-color:white;
         <div class="page">
 
             <div class="company_info">
-                <div class="logo1">&nbsp;<img src="{{ asset('torage\app\public\image\\' . $pic->logo) }}" alt="qr_code" width="80px">
+                <div class="logo1">&nbsp;<img src="{{ asset('storage\app\public\image\\' . $pic->logo) }}" alt="qr_code"
+                        width="80px">
                 </div>
                 <div class="firm_detail">
                     <h4>{{ $componyinfo->cominfo_firm_name }}</h4>
                 </div>
-                <div class="logo2"><img src="{{ asset('storage\app\public\image\\' . $pic->brand) }}" alt="qr_code" width="80px">
+                <div class="logo2"><img src="{{ asset('storage\app\public\image\\' . $pic->qrcode) }}" alt="qr_code"
+                        width="80px">
+               
                 </div>
             </div>
             <div class="header_info">
@@ -333,7 +336,9 @@ background-color:white;
                         <span>Invoice No : {{ $foodbill_header->food_bill_no }}</span><br>
                         <span>Date : {{ $foodbill_header->voucher_date }}</span><br>
                         {{-- <span>Time : {{ $foodbill_header->created_at->format('H:i') }}</span><br> --}}
-                         Time:<span id="current-time"></span> 
+                         Time:<span id="current-time"></span> <br>
+                         <span>Table No : {{ $foodbill_header->table_name }}</span>
+
                     </div>
                 </div>
 
@@ -387,6 +392,7 @@ background-color:white;
                        
                         <span>Total Item ={{$foodbill_header->total_item}}</span><br>
                         <span>Total Qty ={{$foodbill_header->total_qty}}</span><br>
+                        <span> Kot Nos ={{$foodbill_header->kot_no}}</span><br>
                        
                     </div>
                     <div class="voucher_info">
@@ -394,6 +400,10 @@ background-color:white;
                             <tr>
                                 <td>Basic Amt:</td>
                                 <td>{{ $foodbill_header->total_base_amount }}</td>
+                            </tr>
+                            <tr>
+                                <td>Dis {{ $foodbill_header->disc_percent}}% :</td>
+                                <td>{{ $foodbill_header->cash_discount }}</td>
                             </tr>
 
                             <tr>
@@ -410,7 +420,7 @@ background-color:white;
                             </tr>
                             <tr>
                                 <td>Grand Total :</td>
-                                <td>{{ $foodbill_header->total_bill_value }}</td>
+                                <td><h3>{{ $foodbill_header->net_food_bill_amount }}</h3></td>
                             </tr>
                         </table>
 

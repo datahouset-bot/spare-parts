@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Models\primarygroup;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use App\Http\Requests\StoreprimarygroupRequest;
 use App\Http\Requests\UpdateprimarygroupRequest;
 
@@ -14,7 +16,7 @@ class PrimarygroupController extends CustomBaseController
      */
     public function index()
     {
-         $record=primarygroup::all();
+         $record=primarygroup::where('firm_id',Auth::user()->firm_id)->get();
         return view('master.primary_group.primary_group',['data'=>$record]); 
 
     }
@@ -33,13 +35,18 @@ class PrimarygroupController extends CustomBaseController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'primary_group_name' => 'required|unique:primarygroups'
-   
+            'primary_group_name' => [
+                'required',
+                Rule::unique('primarygroups')->where(function ($query) {
+                    return $query->where('firm_id', Auth::user()->firm_id);
+                }),
+            ],
         ]);
 
-
                     if ($validator->passes()) {
+                        
                 $primarygroup = new primarygroup;
+                $primarygroup->firm_id=Auth::user()->firm_id;
                 $primarygroup->primary_group_name= $request->primary_group_name;
                 $primarygroup->save();
         
@@ -63,7 +70,7 @@ class PrimarygroupController extends CustomBaseController
      */
     public function edit(string $id)
     {
-        $primarygroup = primarygroup::findOrFail($id);
+        $primarygroup = primarygroup::where('firm_id',Auth::user()->firm_id)->where('id',$id)->first();
   
         return view('master.primary_group.primary_group_edit', compact('primarygroup'));
 
@@ -74,11 +81,18 @@ class PrimarygroupController extends CustomBaseController
     public function update(Request $request, string $id)
     {
         $request->validate([
-         'primary_group_name' => 'required|unique:primarygroups'
+            'primary_group_name' => [
+                'required',
+                Rule::unique('primarygroups')->where(function ($query) {
+                    return $query->where('firm_id', Auth::user()->firm_id);
+                }),
+            ],
         ]);
 
-        $primarygroup =primarygroup::findOrFail($id);
-        $primarygroup->update($request->all());
+        $primarygroup =primarygroup::where('firm_id',Auth::user()->firm_id)
+        ->where('id',$id)->first();
+        $primarygroup->primary_group_name= $request->primary_group_name;
+        $primarygroup->update();
 
         return redirect()->route('primarygroups.index')->with('message', 'Primary Group Name  Updated successfully.');
     }

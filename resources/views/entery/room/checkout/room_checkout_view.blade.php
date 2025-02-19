@@ -451,9 +451,10 @@
 
 
             <div class="button-container my-2">
-                <button class="btn btn-primary btn-lg mx-2" onclick="printInvoice()">Print</button>
-                <a href="{{ url('room_checkout_view', $roomcheckouts->voucher_no) }}" class="btn  btn-primary btn-lg" >Format 2</a>
-                <a href="{{ url('room_checkout_view3', $roomcheckouts->voucher_no) }}" class="btn  btn-primary btn-lg mx-2" >Format 3</a>
+                <button class="btn btn-dark btn-lg mx-2" onclick="printInvoice()">Print</button>
+                <a href="{{ url('room_checkout_view2', $roomcheckouts->voucher_no) }}" class="btn  btn-primary btn-lg" >Format 2</a>
+                <a href="{{ url('room_checkout_view3', $roomcheckouts->voucher_no) }}" class="btn  btn-success btn-lg mx-2" >Format 3</a>
+                <a href="{{ url('room_checkout_view4', $roomcheckouts->voucher_no) }}" class="btn  btn-warning btn-lg mx-2" >Format 4(A5)</a>
 
             </div>
 

@@ -15,11 +15,14 @@ class RoleController extends Controller
         $this->middleware('permission:create role', ['only' => ['create','store','addPermissionToRole','givePermissionToRole']]);
         $this-> middleware('permission:update role', ['only' => ['update','edit']]);
         $this-> middleware('permission:delete role', ['only' => ['destroy']]);
+
+        
     }
 
     public function index()
     {
         $roles = Role::get();
+
         return view('role-permission.role.index', ['roles' => $roles]);
     }
 

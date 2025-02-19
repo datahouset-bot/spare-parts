@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('voucher_types', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->string('voucher_type_name');
             $table->integer('numbring_start_from')->nullable()->default('0');
             $table->string('voucher_prefix')->nullable();

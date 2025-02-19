@@ -233,7 +233,7 @@
                                         </form>
                                     </div>
                                     <div class="card-footer text-center py-3">
-                                        <div class="small"><a  class= "btn btn-dark  "href={{ url()->previous() }}>Back</a></div>
+                                        <div class="small"><a  class= "btn btn-dark  "href={{ url('home') }}>Dash Board </a></div>
                                     </div>
                                 </div>
                             </div>

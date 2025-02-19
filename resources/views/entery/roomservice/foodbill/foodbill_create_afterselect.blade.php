@@ -10,6 +10,47 @@
     <script src="jquery/master.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
     <style>
+        #payment_table {
+            width: 100%;
+            border: 2px solid #ddd;
+            font-size: 15px;
+            padding: 0 !important;
+            margin: 0 !important;
+
+        }
+
+        #room_selection td {
+            padding: 3px;
+            text-align: left;
+            font-style: bold;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 20px;
+            border: 1px solid #ddd;
+            background-color: white;
+            color: #048af8;
+        }
+
+        #room_selection tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        #room_selection {
+            width: 100%;
+            border: 2px solid #ddd;
+
+        }
+
+        #room_selection_box {
+            background-color: rgb(242, 247, 247);
+
+            border: 5px solid #2196F3;
+            max-height: 170px;
+            min-height: 170px;
+            overflow: auto;
+            margin-left: 30PX;
+
+        }
+
         #display_rate {
             color: black;
 
@@ -26,6 +67,8 @@
             padding-right: 1px;
             padding-left: 1px;
         }
+
+
     </style>
 
     <script>
@@ -50,18 +93,14 @@
 
         <div class="card my-3">
             <div class="card-header">
-                Food Bill
+                Food Bill 
             </div>
             <div class="row my-2">
                 <div class="col-md-12 text-center">
-                    {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#myModal">
-                    Add New KOT
-                </button> --}}
                     <a href="{{ url('temp_item_delete/' . Auth::user()->id) }}" class="btn btn-success">Add New</a>
-                    <form action="{{ route('foodbills.store') }}" method="POST" style="display:inline;">
+                    <form id="saveForm" action="{{ route('foodbills.store') }}" method="POST" style="display:inline;">
                         @csrf
-                        <button type="submit" class="btn btn-primary">Save & Print</button>
+                        <button id="saveButton" type="submit" class="btn btn-primary">Save & Print</button>
 
 
 
@@ -70,7 +109,7 @@
             </div>
             <ul id="save_form_errorlist"></ul>
             <form id="item_entry">
-                <div class="row my-2" name="kot_header">
+                <div class="row g-1 my-2  d-flex align-items-center " name="kot_header">
 
                     <input type="hidden" class="form-control" name="user_id" id="user_id" readonly
                         value =  "{{ Auth::user()->id }}">
@@ -82,6 +121,11 @@
                         <input type="text" class="form-control date" id ="voucher_date" name="voucher_date">
                     </div>
 
+                    <div class="col-md-1 col-4 text-center" >
+                        <label for="checkin_time">Time</label>
+                        <input class="form-control" id="checkin_time" type="time"
+                        name="checkin_time" value="{{ date('Y-m-d') }}" />
+                    </div>
                     <input type="hidden" class="form-control" id="voucher_no" name="voucher_no"
                         value={{ $new_voucher_no }}>
 
@@ -92,18 +136,6 @@
                             value="{{ $new_bill_no }}">
                     </div>
 
-                    <div class="col-md-2 col-4  text-center">
-                        <label for="service_type">Service Type</label>
-                        <select name="service_type" id="service_type" class="form-select">
-                            <option selected disabled>Select Service Type</option>
-                            <option value="room_service">Room Servic</option>
-                            <option value="table_service">Table Service</option>
-                            <option value="loundery">Loundery Service</option>
-
-
-                        </select>
-
-                    </div>
                     <div class="col-md-3 col-4  text-center">
                         <label for="kot_on">Select Room</label>
                         <select name="service_id" id="service_id" class="form-select">
@@ -123,7 +155,12 @@
                     </div>
                     <div class="col-md-1 col-4  text-center">
                         <label for="dis_percant">Dis %</label>
-                        <input type="text" class="form-control" id ="dis_percant"name="dis_percant">
+                        <input type="text" class="form-control" id ="dis_percant"name="dis_percant" autocomplete="off">
+                    </div>
+                    <div class="col-md-1 col-4  text-center">
+                        <label for="dis_amt_roundoff">Dis Amt</label>
+                        <input type="text" class="form-control" id ="dis_amt_roundoff"name="dis_amt_roundoff"
+                            autocomplete="off">
                     </div>
 
                 </div>
@@ -180,121 +217,87 @@
 
                     </div>
 
-                    {{-- <table id ="sold_item_record"class="table table-striped  table-responsive">
-                    <thead class="table-dark">
-                        <tr>
-                            <td>S.No</td>
-                            <td>Item Name</td>
-                            <td>Qty</td>
-                            <td>Rate</td>
-                            <td>Basic AMT</td>
-                            <td>GST %</td>
-                            <td>Total AMT</td>
-
-                        </tr>
-
-
-                    </thead>
-                    {{-- <tbody>
-                        @php
-                            $r1 = 0;
-                            $grandtotal_tax = 0;
-                            $amount_toatl_before_roundoff = 0;
-                            $qty_total = 0;
-                            $basic_total = 0;
-                            $amount = 0;
-
-                            $round_off_amount=0;
-                        @endphp
-                        @foreach ($itemrecords as $record)
-                            <tr>
-                                <td>{{ $r1 = $r1 + 1 }}</td>
-                                <td>{{ $record->item->item_name }}</td>
-                                <td>{{ $record->qty }}</td>
-                                <td>{{ $record->rate }}</td>
-
-                                @php
-                                        
-                                     
-                                    $amount = $record->qty * $record->rate;
-                                    $item_gst = $record->item->gstmaster->igst;
-                                    $item_amount = $amount;
-                                    $item_taxamount = ($item_amount * $item_gst) / 100;
-                                    $total_item_amount = $item_taxamount + $item_amount;
-                                    $grandtotal_tax += $item_taxamount;
-                                    $amount_toatl_before_roundoff += $total_item_amount;
-                                    $qty_total += $record->qty;
-                                    $basic_total += $item_amount;
-                                    $net_amount = round($amount_toatl_before_roundoff, 0);
-                                    $round_off_amount = round($net_amount - $amount_toatl_before_roundoff, 2);
-  
-
-                                @endphp
-                                <td>{{ $amount }}</td>
-
-                                <td>{{ $record->item->gstmaster->igst }}</td>
-                                <td>{{ $total_item_amount }}</td>
-                            </tr>
-                        @endforeach
-
-                    </tbody>
-                    <tfoot class="table-dark">
-                        <tr>
-                            <td>Total </td>
-                            <td>Total item={{ $r1 }} <input type="hidden" name="total_item" value ="{{ $r1 }}"></td>
-                            <td>{{ $qty_total }} <input type="hidden" name="total_qty" value="{{$qty_total }}"></td>
-                            <td></td>
-                            <td>{{ $basic_total }} <input type="hidden" name="total_base_amount" value="{{ $basic_total }}"></td>
-                            <td>{{ $grandtotal_tax }} <input type="hidden" name="total_gst_amount" value="{{ $grandtotal_tax }}"></td>
-                            <td>{{ $amount_toatl_before_roundoff }}</td>
-                        </tr>
-
-                    </tfoot>
-
-                </table> --}}
 
                 </div>
                 <div class="row">
 
                     <div class="row my-2" name="kot_header">
-                 <div class="col-md-2 col-4  text-center">
-                    <label for="net_bill_amount">Amount </label>
-                    <input type="text" class="form-control" id ="net_bill_amount"name="net_bill_amount"
-                        value="">
-                </div>
-                <div class="col-md-2 col-4  text-center">
-                    <label for="round_off">Round Off</label>
-                    <input type="text" class="form-control" id ="round_off"name="round_off"
-                        value="">
-                </div>
+                        <div class="col-md-2 col-4  text-center">
+                            <label for="net_bill_amount">Amount </label>
+                            <input type="text" class="form-control" id ="net_bill_amount"name="net_bill_amount"
+                                value="">
+                        </div>
+                        <div class="col-md-2 col-4  text-center">
+                            <label for="round_off">Round Off</label>
+                            <input type="text" class="form-control" id ="round_off"name="round_off" value="">
+                        </div>
 
-                <div class="col-md-2 col-4  text-center">
-                    <label for="total_bill_value">Net Bill Amount </label>
-                    <input type="text" class="form-control" id ="total_bill_value"name="total_bill_value"
-                        value="">
-                </div>
-                <div class="col-md-2 col-4  text-center">
-                    <label for="amt_in_words">Amount In Words </label>
-                    <input type="text" class="form-control" id ="amt_in_words"name="amt_in_words" value="">
-                </div>
-                <div class="col-md-2 col-4 text-center ">
-                    <label for="posting_acc_id">Select Mode </label>
-                    <select name="posting_acc_id" id="posting_acc_id" class="form-select">
-                        <option value="" selected >Settel To Room </option>
-                        @foreach ($paymentmodes as $paymentmode)
-                            <option value="{{ $paymentmode->id }}">{{ $paymentmode->account_name }}
-                            </option>
-                        @endforeach
+                        <div class="col-md-2 col-4  text-center">
+                            <label for="total_bill_value">Net Bill Amount </label>
+                            <input type="text" class="form-control" id ="total_bill_value"name="total_bill_value"
+                                value="">
+                        </div>
+                        <div class="col-md-2 col-4  text-center">
+                            <label for="amt_in_words">Amount In Words </label>
+                            <input type="text" class="form-control" id ="amt_in_words"name="amt_in_words"
+                                value="">
+                        </div>
+                        <div class="col-md-2 col-4  text-center">
+                            <label for="net_food_bill_amount">Net Bill Amount </label>
+                            <input type="text" class="form-control"
+                                id ="net_food_bill_amount"name="net_food_bill_amount" value=" " readonly>
+                        </div>
 
 
-                    </select>
-                </div>
-                <div class="col-md-2 col-4  text-center">
-                    <label for="net_food_bill_amount">Amount To Post      </label>
-                    <input type="text" class="form-control" id ="net_food_bill_amount"name="net_food_bill_amount"
-                        value=" " readonly>
-                </div>
-                <div class="col-md-2 col-4  text-center">
+
+
+<div class="col-md-2">
+    <label for="settle_payment">Settle to Payment</label>
+    <select id="settle_payment" name="settle_payment" class="form-select">
+        <option value="no">Settle To Room</option>
+        <option value="yes">Settle To Payment</option>
+    </select>
+</div>
+
+<div class="col-md-4" id="room_selection_box" style="display: none;">
+    <table id="room_selection" class="table table-striped table-responsive room_selection">
+        <thead>
+            <tr>
+                <th>Mode</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($paymentmodes as $index => $paymentmode)
+                <tr>
+                    <td>
+                        <input type="text" class="form-control"
+                            name="payment_data[{{ $index }}][name]"
+                            value="{{ $paymentmode->account_name }}" readonly>
+                        <input type="hidden" 
+                            name="payment_data[{{ $index }}][id]" 
+                            value="{{ $paymentmode->id }}">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control payment-amount"
+                            name="payment_data[{{ $index }}][amount]"
+                            placeholder="Enter amount" min="0" autocomplete="off">
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+
+
+
+                        {{-- <div class="col-md-2 col-4  text-center">
                     <label for="payment_remark">Payment Remark </label>
                     <input type="text" class="form-control" id ="payment_remark"name="payment_remark"
                         value="">
@@ -303,23 +306,23 @@
                     <label for="food_bill_remark">Remark </label>
                     <input type="text" class="form-control" id ="food_bill_remark"name="food_bill_remark"
                         value="">
-                </div>
+                </div> --}}
 
 
 
 
 
 
-                </div>
-                <div class="col-3">
-                    <input type="hidden" name="total_item" id="total_item" value ="">
-                    <input type="hidden" name="total_qty" id="total_qty" value="">
-                   
-                    <input type="hidden" name="total_base_amount" id="total_base_amount" value="">
-                    <input type="hidden" name="total_discount_amount"  id="total_discount_amount" value="">
-                    <input type="hidden" name="total_gst_amount"  id="total_gst_amount" value="">
+                    </div>
+                    <div class="col-3">
+                        <input type="hidden" name="total_item" id="total_item" value ="">
+                        <input type="hidden" name="total_qty" id="total_qty" value="">
 
-                </div>
+                        <input type="hidden" name="total_base_amount" id="total_base_amount" value="">
+                        <input type="hidden" name="total_discount_amount" id="total_discount_amount" value="">
+                        <input type="hidden" name="total_gst_amount" id="total_gst_amount" value="">
+
+                    </div>
 
 
 
@@ -340,6 +343,7 @@
 
         </div>
     </div>
+
 
 
 
@@ -374,16 +378,16 @@
                             var totalQty = 0;
                             var totalAmount = 0;
                             var itemdiscountamt = 0;
-                            var itemvalue=0;
-                            var itemtaxable=0;
-                            var gstpercent=0;
-                            var itemgstamt=0;
-                             var itemnetvalue=0;
-                             var totalgstamt=0;
-                            var totalitemtaxable=0;
-                             var totalnetvalue=0;
-                             var totalitemdiscount=0;
-                            
+                            var itemvalue = 0;
+                            var itemtaxable = 0;
+                            var gstpercent = 0;
+                            var itemgstamt = 0;
+                            var itemnetvalue = 0;
+                            var totalgstamt = 0;
+                            var totalitemtaxable = 0;
+                            var totalnetvalue = 0;
+                            var totalitemdiscount = 0;
+
 
 
                             $('#sold_item_record tbody').empty(); // Clear previous records
@@ -392,17 +396,19 @@
                                 var amount = record.qty * record.rate;
                                 totalQty += parseFloat(record.qty);
 
-                                gstpercent=record.item.gstmaster.igst;
+                                gstpercent = record.item.gstmaster.igst;
                                 totalAmount += amount;
                                 dis_percant = $('#dis_percant').val();
-                                itemdiscountamt=((record.qty * record.rate)*dis_percant)/100;
-                                totalitemdiscount+=itemdiscountamt;
-                                itemtaxable=amount-itemdiscountamt;
-                                totalitemtaxable+=itemtaxable;
-                                itemgstamt=((amount-itemdiscountamt)*gstpercent)/100;
-                                totalgstamt+=itemgstamt;
-                                itemnetvalue =itemtaxable+itemgstamt; 
-                                totalnetvalue +=itemnetvalue;
+                                dis_amt_roundoff = $('#dis_amt_roundoff').val();
+                                itemdiscountamt = ((record.qty * record.rate) * dis_percant) /
+                                    100;
+                                totalitemdiscount += itemdiscountamt;
+                                itemtaxable = amount - itemdiscountamt;
+                                totalitemtaxable += itemtaxable;
+                                itemgstamt = (((amount - itemdiscountamt) * gstpercent) / 100);
+                                totalgstamt += itemgstamt;
+                                itemnetvalue = itemtaxable + itemgstamt;
+                                totalnetvalue += itemnetvalue;
 
 
                                 $('#sold_item_record tbody').append(`
@@ -411,12 +417,14 @@
                                         <td>${record.item.item_name}</td>
                                         <td>${record.qty}</td>
                                         <td>${record.rate}</td>
-                                        <td>${amount}</td>
+                                        <td>${amount.toFixed(2)}</td>
                                         <td>${dis_percant}</td>
-                                        <td>${itemdiscountamt}</td>
-                                        <td>${itemtaxable}</td>
+                                        
+
+                                        <td>${itemdiscountamt.toFixed(2)}</td>
+                                        <td>${itemtaxable.toFixed(2)}</td>
                                         <td>${record.item.gstmaster.igst}</td>
-                                        <td>${itemnetvalue}</td>
+                                        <td>${itemnetvalue.toFixed(2)}</td>
                                              
 
                                        
@@ -424,25 +432,31 @@
                                 `);
                             });
 
+                            // $('#total_item').val(dis_amt_roundoff);
                             $('#total_item').val(itemRecords.length);
                             $('#total_qty').val(totalQty);
                             $('#total_records').text(itemRecords.length);
                             $('#total_qty1').text(totalQty);
-                            $('#total_amount').text(totalAmount);
+                            $('#total_amount').text(totalAmount.toFixed(2));
                             $('#total_base_amount').val(totalAmount);
-                            $('#total_discount').text(totalitemdiscount);
-                            $('#total_taxable').text(totalitemtaxable);
-                            $('#total_gstamt').text(totalgstamt);
-                            $('#total_gst_amount').val(totalgstamt);
 
-                            $('#total_netvalue').text(totalnetvalue);
-                            $('#net_bill_amount').val(totalnetvalue);
-                            var roundoff = totalnetvalue - Math.round(totalnetvalue);
-                           $('#round_off').val(roundoff.toFixed(2)); // Set the rounded value with 2 decimal places
+                            // $('#total_discount').text(dis_amt_roundoff.toFixed(2));
+                            $('#total_discount').text(totalitemdiscount.toFixed(2));
+                            $('#total_taxable').text(totalitemtaxable.toFixed(2));
+                            $('#total_gstamt').text(totalgstamt.toFixed(2));
+                            $('#total_gst_amount').val(totalgstamt.toFixed(2));
 
-                           $('#net_food_bill_amount').val(Math.round(totalnetvalue));
-                           $('#total_bill_value').val(Math.round(totalnetvalue));
-                           $('#total_discount_amount').val(totalitemdiscount);
+                            $('#total_netvalue').text(totalnetvalue.toFixed(2));
+                            $('#net_bill_amount').val(totalnetvalue.toFixed(2));
+                            var roundoff = totalnetvalue - Math.round(totalnetvalue) - dis_amt_roundoff;
+                            $('#round_off').val(roundoff.toFixed(
+                            2)); // Set the rounded value with 2 decimal places
+
+                            $('#net_food_bill_amount').val(Math.round(totalnetvalue -
+                            dis_amt_roundoff));
+                            $('#total_bill_value').val(Math.round(totalnetvalue - dis_amt_roundoff));
+                            $('#total_discount_amount').val(parseFloat(totalitemdiscount));
+
 
 
                         } else {
@@ -473,6 +487,176 @@
             });
 
 
+            $('#dis_amt_roundoff').keyup(function(event) {
+                var serviceId = $("#service_id").val();
+                console.log(serviceId);
+
+                if (serviceId) {
+                    fetchAndDisplayRecords(serviceId);
+                } else {
+                    alert('Service ID is required');
+                }
+            });
+
+
         });
     </script>
+{{-- 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const settlePaymentSelect = document.getElementById('settle_payment');
+        const roomSelectionBox = document.getElementById('room_selection_box');
+        const submitButton = document.getElementById('saveButton');
+        const netFoodBillAmountInput = document.getElementById('net_food_bill_amount');
+
+        // Show or hide the room selection box based on dropdown selection
+        settlePaymentSelect.addEventListener('change', function () {
+            if (this.value === 'yes') {
+                roomSelectionBox.style.display = 'block'; // Show the section
+            } else {
+                roomSelectionBox.style.display = 'none'; // Hide the section
+            }
+        });
+
+        // Validate form before submission
+        submitButton.addEventListener('click', function (event) {
+            // Prevent form submission
+            event.preventDefault();
+
+            // Check if settle_payment is set to "yes"
+            if (settlePaymentSelect.value === 'yes') {
+                // Calculate total amount from payment data
+                const paymentAmounts = document.querySelectorAll('.payment-amount');
+                let totalAmount = 0;
+                let hasEntry = false;
+
+                paymentAmounts.forEach(input => {
+                    const value = parseFloat(input.value) || 0;
+                    if (value > 0) {
+                        hasEntry = true; // Ensure at least one payment is entered
+                    }
+                    totalAmount += value;
+                });
+
+                // Get the net food bill amount
+                const netFoodBillAmount = parseFloat(netFoodBillAmountInput.value) || 0;
+
+                // Check if total amount equals net food bill amount
+                if (!hasEntry) {
+                    alert('Please enter at least one payment amount.');
+                    return; // Stop submission
+                }
+
+                if (totalAmount !== netFoodBillAmount) {
+                    alert('Posting amount should equal to net amount.');
+                    return; // Stop submission
+                }
+            }
+
+            // Submit the form
+            alert('Form submitted successfully!'); // Replace this with actual form submission logic
+            document.querySelector('form').submit(); // Replace with the correct form selector if needed
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const submitButton = document.getElementById('saveButton');
+    const saveForm = document.getElementById('saveForm');
+
+    submitButton.addEventListener('click', function (event) {
+        // Perform validations here
+        const isValid = true; // Replace with your validation logic
+
+        if (!isValid) {
+            event.preventDefault();
+            alert('Please fix validation errors.');
+        } else {
+            saveForm.submit(); // Ensure the form submits after validation
+        }
+    });
+});
+
+$(document).ready(function() {
+            $('#saveForm').on('submit', function() {
+                // Disable the submit button and show loading spinner
+                $('#saveButton').prop('disabled', true).html(
+                    '<i class="fa fa-spinner fa-spin"></i> Please wait...');
+            });
+        });
+
+
+</script> --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const settlePaymentSelect = document.getElementById('settle_payment');
+        const roomSelectionBox = document.getElementById('room_selection_box');
+        const submitButton = document.getElementById('saveButton');
+        const netFoodBillAmountInput = document.getElementById('net_food_bill_amount');
+        const saveForm = document.getElementById('saveForm');
+
+        // Track submission state to prevent double submission
+        let isSubmitting = false;
+
+        // Show or hide the room selection box based on dropdown selection
+        settlePaymentSelect.addEventListener('change', function () {
+            if (this.value === 'yes') {
+                roomSelectionBox.style.display = 'block'; // Show the section
+            } else {
+                roomSelectionBox.style.display = 'none'; // Hide the section
+            }
+        });
+
+        // Validate and submit the form
+        submitButton.addEventListener('click', function (event) {
+            // Prevent form submission by default
+            event.preventDefault();
+
+            // Check if the form is already being submitted
+            if (isSubmitting) {
+                alert('Form is already being submitted. Please wait.');
+                return;
+            }
+
+            // Check if settle_payment is set to "yes"
+            if (settlePaymentSelect.value === 'yes') {
+                // Calculate total amount from payment data
+                const paymentAmounts = document.querySelectorAll('.payment-amount');
+                let totalAmount = 0;
+                let hasEntry = false;
+
+                paymentAmounts.forEach(input => {
+                    const value = parseFloat(input.value) || 0;
+                    if (value > 0) {
+                        hasEntry = true; // Ensure at least one payment is entered
+                    }
+                    totalAmount += value;
+                });
+
+                // Get the net food bill amount
+                const netFoodBillAmount = parseFloat(netFoodBillAmountInput.value) || 0;
+
+                // Validate the payment amounts
+                if (!hasEntry) {
+                    alert('Please enter at least one payment amount.');
+                    return; // Stop submission
+                }
+
+                if (totalAmount !== netFoodBillAmount) {
+                    alert('Posting amount should equal to net amount.');
+                    return; // Stop submission
+                }
+            }
+
+            // Set submission flag to true and disable the submit button
+            isSubmitting = true;
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Please wait...';
+
+            // Submit the form
+            saveForm.submit();
+        });
+    });
+</script>
+
+
 @endsection

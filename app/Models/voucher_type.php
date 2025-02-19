@@ -9,6 +9,7 @@ class voucher_type extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'firm_id',
         'voucher_type_name',
         'numbring_start_from',
         'voucher_prefix',

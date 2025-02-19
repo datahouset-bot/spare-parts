@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('followups', function (Blueprint $table) {
             $table->id();
-
+            $table->string('firm_id',100);
             $table->date('followup_date');
             $table->string('followup_remark')->nullable();
             $table->unsignedBigInteger('lead_id');

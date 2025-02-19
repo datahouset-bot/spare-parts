@@ -299,19 +299,19 @@
                         @if(isset($guest_detail->guest_name))
     <span>Guest Name: {{ $guest_detail->guest_name }}</span><br>
 @else
-    <span>Guest Name: </span><br>
+    <span></span><br>
 @endif
 
 @if(isset($guest_detail->room_nos))
     <span>Guest Room No: {{ $guest_detail->room_nos }}</span><br>
 @else
-    <span>Guest Room No: </span><br>
+    <span>Table No :&nbsp;{{$table_name}} </span><br>
 @endif
 
 @if(isset($guest_detail->voucher_no))
     <span>Check In No: {{ $guest_detail->voucher_no }}</span><br>
 @else
-    <span>Check In No: </span><br>
+    <span> </span><br>
 @endif
                     </div>
                     <div class="voucher_info">

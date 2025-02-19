@@ -17,25 +17,95 @@ class UserRolePermissionSeeder extends Seeder
     public function run(): void
     {
         // Create Permissions
-        Permission::create(['name' => 'view role']);
-        Permission::create(['name' => 'create role']);
-        Permission::create(['name' => 'update role']);
-        Permission::create(['name' => 'delete role']);
 
-        Permission::create(['name' => 'view permission']);
-        Permission::create(['name' => 'create permission']);
-        Permission::create(['name' => 'update permission']);
-        Permission::create(['name' => 'delete permission']);
+        $permissions = [
+            'view role',
+            'create role',
+            'update role',
+            'delete role',
+            'view permission',
+            'create permission',
+            'update permission',
+            'delete permission',
+            'view user',
+            'create user',
+            'update user',
+            'delete user',
+            'view product',
+            'create product',
+            'update product',
+            'delete product',
+            'roombooking',
+            'roomcheckin',
+            'roomcheckout',
+            'payment',
+            'receipt',
+            'advance_reciept',
+            'foodbills',
+            'kot',
+            'ledger',
+            'Restaurant',
+            'purchase',
+            'Stock_Transfer',
+            'sale',
+            'Report',
+            'Room_Dashboard',
+            'Master',
+            'Entry',
+            'ReportList',
+            'Membership',
+            'Activity',
+            'Setting',
+            'sql_query',
+            'Booking Calendar',
+            'Unconfirmed Bookings',
+            'Kitchen Dash Board',
+            'Outstanding Receivable',
+            'Outstanding Payable',
+            'Police Station Report',
+            'Item Wise Sale Report',
+            'Day End Report',
+            'Booking Register',
+            'Check-in Register',
+            'Room Food Bills',
+            'Advance Receipt Reg',
+            'Checkout Register',
+            'Restaurant Food Bills',
+            'Kot Register',
+            'Stock Status',
+            'Store Wise Stock',
+            'Stock In Register',
+            'Stock Out Register',
+            'Stock Transfer Register',
+            'Item List',
+            'Room List',
+            'Account List',
+            'Add',
+            'Print',
+            'View',
+            'Delete',
+            'Edit',
+            'Save',
+            'Handover',
+            'Mycheckout',
+            'GST Report',
+            'Checkout_Reg',
+            'Month Wise Sale',
+            'B2B Sale',
+            'B2C Sale',
+        ];
 
-        Permission::create(['name' => 'view user']);
-        Permission::create(['name' => 'create user']);
-        Permission::create(['name' => 'update user']);
-        Permission::create(['name' => 'delete user']);
+        foreach ($permissions as $permission) {
+            if (!Permission::where('name', $permission)->exists()) {
+                Permission::create(['name' => $permission]);
+            }
+        }
+        // Permission::create(['name' => 'view role']);
+        // Permission::create(['name' => 'create role']);
+        // Permission::create(['name' => 'update role']);
+        // Permission::create(['name' => 'delete role']);
 
-        Permission::create(['name' => 'view product']);
-        Permission::create(['name' => 'create product']);
-        Permission::create(['name' => 'update product']);
-        Permission::create(['name' => 'delete product']);
+
 
 
         // Create Roles
@@ -62,18 +132,34 @@ class UserRolePermissionSeeder extends Seeder
                     'email' => 'superadmin@gmail.com',
                 ], [
                     'name' => 'Super Admin',
+                    'firm_id'=>'DATA0001',
                     'email' => 'superadmin@gmail.com',
+                    'email_verified_at'=>now(),
                     'password' => Hash::make ('12345678'),
                 ]);
 
         $superAdminUser->assignRole($superAdminRole);
+
+        $superAdminUser2 = User::firstOrCreate([
+            'email' => 'datahouset@gmail.com',
+        ], [
+            'name' => 'Data House',
+            'firm_id'=>'DATA0001',
+            'email' => 'datahouset@gmail.com',
+            'email_verified_at'=>now(),
+            'password' => Hash::make ('India@77'),
+        ]);
+
+$superAdminUser2->assignRole($superAdminRole);
 
 
         $adminUser = User::firstOrCreate([
                             'email' => 'admin@gmail.com'
                         ], [
                             'name' => 'Admin',
+                            'firm_id'=>'DATA0001',
                             'email' => 'admin@gmail.com',
+                            'email_verified_at'=>now(),
                             'password' => Hash::make ('12345678'),
                         ]);
 
@@ -84,7 +170,9 @@ class UserRolePermissionSeeder extends Seeder
                             'email' => 'staff@gmail.com',
                         ], [
                             'name' => 'Staff',
+                            'firm_id'=>'DATA0001',
                             'email' => 'staff@gmail.com',
+                            'email_verified_at'=>now(),
                             'password' => Hash::make('12345678'),
                         ]);
 

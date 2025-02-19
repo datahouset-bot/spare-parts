@@ -16,210 +16,231 @@
 
         });
     </script>
-  
-  <div class="container ">
-    @if (session('message'))
-        <div class="alert alert-primary">
-            {{ session('message') }}
-        </div>
-    @endif
-    @if (session('error'))
-    <div class="alert alert-danger ">
-    {{ session('error') }}
-    </div>
-    @endif
 
-
-    <div class="card my-3">
-        <div class="card-header">
-            ADD Reciept
-        </div>
-        <div class="row my-2">
-            <div class="col-md-12 text-center"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#myModal">
-                    Add New Reciept
-                </button>
+    <div class="container ">
+        @if (session('message'))
+            <div class="alert alert-primary">
+                {{ session('message') }}
             </div>
-        </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger ">
+                {{ session('error') }}
+            </div>
+        @endif
+
+
+        <div class="card my-3">
+            <div class="card-header">
+                ADD Reciept
+            </div>
+            <div class="row my-2">
+                <div class="col-md-12 text-center"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#myModal">
+                        Add New Reciept
+                    </button>
+                </div>
+            </div>
 
 
 
-        <div class="container mt-5">
+            <div class="container mt-5">
 
 
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Add Reciept</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="{{url('/reciept_store')}}" method="POST">
-                                @csrf
-                                <div class="col-md-12">
-                                    <label for="transaction_type">Voucher Name </label>
-                                    <input type="text" value={{$voucher_type->voucher_type_name}} class ="form-control" name="transaction_type" readonly>
-                                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Add Reciept</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="saveForm" action="{{ url('/reciept_store') }}" method="POST">
+                                    @csrf
+                                    <div class="col-md-12">
+                                        <label for="transaction_type">Voucher Name </label>
+                                        <input type="text" value={{ $voucher_type->voucher_type_name }}
+                                            class ="form-control" name="transaction_type" readonly>
+                                    </div>
 
-                                <div class="col-md-12">
-                                    <label for="reciept_no">Reciept  No  </label>
-                                    <input type="text" value={{$new_bill_no}} class ="form-control" name="reciept_no" >
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="voucher_number">Voucher No  </label>
-                                    <input type="text" value={{$new_voucher_no}} class ="form-control" name="voucher_no" >
-                                </div>
+                                    <div class="col-md-12">
+                                        <label for="reciept_no">Reciept No </label>
+                                        <input type="text" value={{ $new_bill_no }} class ="form-control"
+                                            name="reciept_no">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="voucher_number">Voucher No </label>
+                                        <input type="text" value={{ $new_voucher_no }} class ="form-control"
+                                            name="voucher_no">
+                                    </div>
 
-                                <div class="col-md-12">
-                                    <label for="entry_date">Date </label>
-                                    <input type="text"  class ="form-control date" name="entry_date">
+                                    <div class="col-md-12">
+                                        <label for="entry_date">Date </label>
+                                        <input type="text" class ="form-control date" name="entry_date" @cannot('Change_Date&Time')readonly data-restrict="true"  @endcannot>
 
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="payment_mode_id">Payment Mode </label>
-                                    <select  id="" name="payment_mode_id"
-                                        class="form-control myitemgroup form-select">
-                                        <option value="" disabled selected>Select Paymnt Mode</option>
-                                        @foreach ($paymentmodes as $paymentmode)
-                                            <option value="{{ $paymentmode->id }}">{{ $paymentmode->account_name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="text-danger"> 
-                                        @error('payment_mode_id')
-                                        {{$message}}
-                                         @enderror
-                                    </span>
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="account_id">Account</label>
-                                    <select  id="" name="account_id"
-                                        class="form-control myitemgroup form-select">
-                                        <option value="" disabled selected>Select Account</option>
-                                        @foreach ($account_names as $record)
-                                            <option value="{{ $record->id }}">{{ $record->account_name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="text-danger"> 
-                                        @error('account_id')
-                                        {{$message}}
-                                         @enderror
-                                    </span>
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="reciept_amount">Amount </label>
-                                    <input type="text" class ="form-control " placeholder=" Amount"
-                                        name="receipt_amount">
-                                        <span class="text-danger"> 
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="payment_mode_id">Payment Mode </label>
+                                        <select id="" name="payment_mode_id"
+                                            class="form-control myitemgroup form-select">
+                                            <option value="" disabled selected>Select Paymnt Mode</option>
+                                            @foreach ($paymentmodes as $paymentmode)
+                                                <option value="{{ $paymentmode->id }}">{{ $paymentmode->account_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <span class="text-danger">
+                                            @error('payment_mode_id')
+                                                {{ $message }}
+                                            @enderror
+                                        </span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="account_id">Account</label>
+                                        <select id="" name="account_id"
+                                            class="form-control myitemgroup form-select">
+                                            <option value="" disabled selected>Select Account</option>
+                                            @foreach ($account_names as $record)
+                                                <option value="{{ $record->id }}">{{ $record->account_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="text-danger">
+                                            @error('account_id')
+                                                {{ $message }}
+                                            @enderror
+                                        </span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="reciept_amount">Amount </label>
+                                        <input type="text" class ="form-control " placeholder=" Amount"
+                                            name="receipt_amount">
+                                        <span class="text-danger">
                                             @error('receipt_amount')
-                                            {{$message}}
-                                             @enderror
+                                                {{ $message }}
+                                            @enderror
                                         </span>
 
-                                </div>
+                                    </div>
 
-                                <div class="col-md-12">
-                                    <label for="receipt_remark">Remark </label>
-                                    <input type="text" class ="form-control " placeholder=" Remark"                                       name="receipt_remark">
-                                    <span class="text-danger"> 
-                                        @error('receipt_remark')
-                                        {{$message}}
-                                         @enderror
-                                    </span>
+                                    <div class="col-md-12">
+                                        <label for="receipt_remark">Remark </label>
+                                        <input type="text" class ="form-control " placeholder=" Remark"
+                                            name="receipt_remark">
+                                        <span class="text-danger">
+                                            @error('receipt_remark')
+                                                {{ $message }}
+                                            @enderror
+                                        </span>
 
-                                </div>
+                                    </div>
 
 
 
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save </button>
-                            </form>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button id="saveButton" type="submit" class="btn btn-primary">Save </button>
+                                </form>
 
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
 
-        <script>
-            $('#myModal').on('shown.bs.modal', function() {
-                $('#myModal').trigger('focus');
+            <script>
+                $('#myModal').on('shown.bs.modal', function() {
+                    $('#myModal').trigger('focus');
+                });
+                $(document).ready(function() {
+            $('#saveForm').on('submit', function() {
+                $('#saveButton').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Please wait...');
             });
-        </script>
+        });
+            </script>
 
 
 
 
-        {{-- data table start  --}}
-        <div class="card-body table-scrollable">
-            <table class="table table-striped" id="remindtable">
-                <thead>
-                    <tr>
-                        <th scope="col">S.No</th>
-                        <th scope="col"> Date  </th>
-                        <th scope="col"> Reciept No  </th>
-                        <th scope="col"> Payment Mode </th>
-                        <th scope="col"> Account Name </th>
-                        <th scope="col"> Amount</th>
-                        <th scope="col"> Remark</th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
+            {{-- data table start  --}}
+            <div class="card-body table-scrollable">
+                <table class="table table-striped" id="remindtable">
+                    <thead>
+                        <tr>
+                            <th scope="col">S.No</th>
+                            <th scope="col"> Date </th>
+                            <th scope="col"> Reciept No </th>
+                            <th scope="col"> Payment Mode </th>
+                            <th scope="col"> Account Name </th>
+                            <th scope="col"> Amount</th>
+                            <th scope="col"> Remark</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                    @php
-                        $r1 = 0;
-                    @endphp
-                    @foreach ($ledgers as $ledger)
-                
-              <tr>
-       
-                <th scope="row">{{$r1=$r1+1}}</th>
-                <td>{{$ledger->entry_date}}</td>
-                <td>{{$ledger->reciept_no}}</td>
-                <td>{{$ledger->payment_mode_name}}</td>
-                <td>{{$ledger->account_name}}</td>
-                <td>{{$ledger->amount}}</td>
-                <td>{{$ledger->remark}}</td>
+                        @php
+                            $r1 = 0;
+                        @endphp
+                        @foreach ($ledgers as $ledger)
+                            <tr>
 
+                                <th scope="row">{{ $r1 = $r1 + 1 }}</th>
+                                <td>{{ $ledger->entry_date }}</td>
+                                <td>{{ $ledger->reciept_no }}</td>
+                                <td>{{ $ledger->payment_mode_name }}</td>
+                                <td>{{ $ledger->account_name }}</td>
+                                <td>{{ $ledger->amount }}</td>
+                                <td>{{ $ledger->remark }}</td>
 
 
-                
-              <td>
-                {{-- {{ route('roomtypes.edit', $ledger['id']) }} --}}
-                  <a href="" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
-              </td>
 
 
-                <td>
-                  <form action="{{ route('ledgers.destroy', $ledger->voucher_no) }}" method="POST" style="display:inline;">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="btn  btn-sm" onclick="return confirm('Are you sure you want to delete this Reciept?')"><i class="fa fa-trash" style="font-size:20px;color:OrangeRed"></i></button>
-                  </form>
-              </td>
-              
-              </tr>
-              @endforeach
-             
-              
-            </tbody>
-          </table> 
+                                <td>
+                                    {{-- {{ route('roomtypes.edit', $ledger['id']) }} --}}
+                                    <a href="" class="btn  btn-sm"><i class="fa fa-edit"
+                                            style="font-size:20px;color:SlateBlue"></i></a>
+                                </td>
 
+
+                                <td>
+                                    <form action="{{ route('ledgers.destroy', $ledger->voucher_no) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn  btn-sm"
+                                            onclick="return confirm('Are you sure you want to delete this Reciept?')"><i
+                                                class="fa fa-trash" style="font-size:20px;color:OrangeRed"></i></button>
+                                    </form>
+                                </td>
+
+                            </tr>
+                        @endforeach
+
+
+                    </tbody>
+                </table>
+
+            </div>
         </div>
     </div>
-</div>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 
     <script src="{{ global_asset('/general_assets\js\form.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+             
+            // Disable datepicker interaction if permission is restricted
+            $('[data-restrict="true"]').datepicker('destroy'); // Prevent calendar from appearing
+        });
+    </script>
 @endsection
+

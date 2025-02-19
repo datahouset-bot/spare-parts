@@ -56,7 +56,7 @@
                                 aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{url('/advace_receipt_store')}}" method="POST">
+                            <form id="saveForm" action="{{url('/advace_receipt_store')}}" method="POST">
                                 @csrf
                                 <div class="col-md-12">
                                     <label for="transaction_type">Voucher Name </label>
@@ -74,7 +74,7 @@
 
                                 <div class="col-md-12">
                                     <label for="entry_date">Date </label>
-                                    <input type="text"  class ="form-control date" name="entry_date">
+                                    <input type="text"  class ="form-control date" name="entry_date" @cannot('Change_Date&Time')readonly data-restrict="true"  @endcannot>
 
                                 </div>
                                 <div class="col-md-12">
@@ -135,7 +135,7 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save </button>
+                                    <button id="saveButton" type="submit" class="btn btn-primary">Save </button>
                             </form>
 
                         </div>
@@ -149,6 +149,14 @@
             $('#myModal').on('shown.bs.modal', function() {
                 $('#myModal').trigger('focus');
             });
+            $(document).ready(function () {
+        $('#saveForm').on('submit', function () {
+            // Disable the submit button and show loading spinner
+            $('#saveButton')
+                .prop('disabled', true)
+                .html('<i class="fa fa-spinner fa-spin"></i> Please wait...');
+        });
+    });
         </script>
 
 
@@ -218,4 +226,12 @@
     <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 
     <script src="{{ global_asset('/general_assets\js\form.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+             
+            // Disable datepicker interaction if permission is restricted
+            $('[data-restrict="true"]').datepicker('destroy'); // Prevent calendar from appearing
+        });
+    </script>
 @endsection

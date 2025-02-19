@@ -127,7 +127,7 @@
                         <select name="terms" id="terms" class="form-select">
 
                             <option value="Cash" selected>Cash</option>
-                            <option value="credit" >Credit</option>
+                            <option value="Credit" >Credit</option>
 
 
 
@@ -136,7 +136,7 @@
                     </div>
                     <div class="col-md-2 col-4   text-center">
                         <label for="kot_on">Account Name </label>
-                        <select name="account_id" id="account_id" class="form-select">
+                        <select name="account_id" id="account_id" class="form-select" required>
                             <option selected disabled>Select Party</option>
                             @foreach ($accountdata as $record)
                                 <option value="{{ $record->id }}">{{ $record->account_name }} </option>
@@ -400,6 +400,10 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+             var account_id = $('#account_id').val();
+  
+
+            
             // Function to handle form submission and AJAX request
             function itementry() {
                 var data = {
@@ -524,8 +528,11 @@
                                     <td>${record.item_gst_id}</td>
                                      <td>${record.total_gst}</td>
                                     <td>${record.item_net_value}</td>
-                                    <td><button class="btn btn-primary btn-sm">Edit</button></td>
-                                    <td><button class="btn btn-danger btn-sm" id="item_delete">Delete</button></td>
+                                     <td>
+                                        <span class="btn btn-danger btn-sm delete-record" data-id="${record.id}">
+                                                X
+                                            </span>
+                                        </td>
                                 </tr>
                             `);
                             });
@@ -548,6 +555,27 @@
                 });
             }
 
+            // Delete Record Handler
+            $(document).on('click', '.delete-record', function () {
+                var recordId = $(this).data('id');
+                console.log("Deleting record:", recordId);
+    
+                $.ajax({
+                    url: '/delete_kot_temprecord/' + recordId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log(response);
+                        var user_id = $("#user_id").val();
+                        if (user_id) {
+                            fetchAndDisplayRecords(user_id);
+                        }
+                    },
+                    error: function () {
+                        alert('Error deleting record');
+                    }
+                });
+            });
             var initialUserId = $("#user_id").val();
 
             if (initialUserId) {
@@ -611,14 +639,7 @@
             console.log("fetching record function");
         });
     </script>
-    {{-- <script>
-        $(document).ready(function() {
-            $('#item_delete').submit(function(e) {
-                e.preventDefault();
-                console.log("ready to delete ");
-            });
-
-           
-        });
-    </script> --}}
+    <script>
+            
+    </script>
 @endsection

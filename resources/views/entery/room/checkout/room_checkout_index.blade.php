@@ -87,14 +87,14 @@
 
                     
                      <td>
-                      <button class="btn btn-sm" onclick="printRoomBooking({{url('room_checkout_view', $record['voucher_no'])  }})">
+                      <button class="btn btn-sm" onclick="printRoomBooking({{url('checkout_print_view', $record['voucher_no'])  }})">
                           <i class="fa fa-print" style="font-size:20px;color:SlateBlue"></i>
                       </button>
                   </td>
                   
 
                      <td>
-                      <a href="{{ url('room_checkout_view', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
+                      <a href="{{ url('checkout_print_view', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
                   </td> 
                   <td>
                       <a href="{{ route('roomcheckouts.edit', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>

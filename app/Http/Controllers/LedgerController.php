@@ -8,6 +8,7 @@ use App\Models\accountgroup;
 use App\Models\voucher_type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -18,21 +19,25 @@ class LedgerController extends CustomBaseController
      */
     public function reciepts()
     { 
-        $ledger_record = ledger::where('transaction_type','Receipts')->count();
+        $ledger_record = ledger::where('firm_id',Auth::user()->firm_id)
+        ->where('transaction_type','Receipts')->count();
          if ($ledger_record > 0) {
-            $lastRecord = ledger::orderBy('voucher_no', 'desc')
+            $lastRecord = ledger::where('firm_id',Auth::user()->firm_id)
+            ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
             ->where('transaction_type','Receipts')
             ->first();
             $voucher_no = $lastRecord->voucher_no;
             $new_voucher_no=$voucher_no+1;
-            $voucher_type = voucher_type::where('voucher_type_name', 'Receipts')->first();
+            $voucher_type = voucher_type::where('firm_id',Auth::user()->firm_id)
+            ->where('voucher_type_name', 'Receipts')->first();
             $voucher_prefix=$voucher_type->voucher_prefix;
             $voucher_suffix=$voucher_type->voucher_suffix;
             $new_bill_no=$voucher_prefix."".$new_voucher_no."".$voucher_suffix;
         
          }
          else {
-            $voucher_type = voucher_type::where('voucher_type_name', 'Receipts')->first();
+            $voucher_type = voucher_type::where('firm_id',Auth::user()->firm_id)
+            ->where('voucher_type_name', 'Receipts')->first();
  
             $voucher_no=$voucher_type->numbring_start_from;
             $new_voucher_no=$voucher_no+1;
@@ -43,16 +48,21 @@ class LedgerController extends CustomBaseController
         }
 
       
-        $paymentmodes=account::where('account_group_id','4')
-        ->orWhere('account_group_id','5')
+        $paymentmodes = account::where('firm_id', Auth::user()->firm_id)
+        ->whereHas('accountGroup', function ($query) {
+            $query->whereIn('account_group_name', ['BANK ACCOUNT', 'Cash In Hand']);
+        })
         ->get();
-        $account_names=account::orderBy('account_name','asc')->get();
+        $account_names=account::where('firm_id',Auth::user()->firm_id)
+        ->orderBy('account_name','asc')->get();
         $subquery = Ledger::select(DB::raw('MIN(id)'))
         ->where('transaction_type', 'Receipts') // Apply this filter before grouping
+        ->where('firm_id',Auth::user()->firm_id)
         ->groupBy('voucher_no');
     
-    $ledgers = Ledger::whereIn('id', $subquery)
-        ->orderBy('voucher_no', 'desc')
+    $ledgers = Ledger::where('firm_id',Auth::user()->firm_id)
+         ->whereIn('id', $subquery)
+        ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
         ->get();
     
     
@@ -69,21 +79,25 @@ class LedgerController extends CustomBaseController
 
     public function payments()
     { 
-        $ledger_record = ledger::where('transaction_type','Payments')->count();
+        $ledger_record = ledger::where('firm_id',Auth::user()->firm_id)
+        ->where('transaction_type','Payments')->count();
          if ($ledger_record > 0) {
-            $lastRecord = ledger::orderBy('voucher_no', 'desc')
+            $lastRecord = ledger::where('firm_id',Auth::user()->firm_id)
+            ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
             ->where('transaction_type','Payments')
             ->first();
             $voucher_no = $lastRecord->voucher_no;
             $new_voucher_no=$voucher_no+1;
-            $voucher_type = voucher_type::where('voucher_type_name', 'Payments')->first();
+            $voucher_type = voucher_type::where('firm_id',Auth::user()->firm_id)
+            ->where('voucher_type_name', 'Payments')->first();
             $voucher_prefix=$voucher_type->voucher_prefix;
             $voucher_suffix=$voucher_type->voucher_suffix;
             $new_bill_no=$voucher_prefix."".$new_voucher_no."".$voucher_suffix;
         
          }
          else {
-            $voucher_type = voucher_type::where('voucher_type_name', 'Payments')->first();
+            $voucher_type = voucher_type::where('firm_id',Auth::user()->firm_id)
+            ->where('voucher_type_name', 'Payments')->first();
  
             $voucher_no=$voucher_type->numbring_start_from;
             $new_voucher_no=$voucher_no+1;
@@ -94,19 +108,23 @@ class LedgerController extends CustomBaseController
         }
 
       
-        $paymentmodes=account::where('account_group_id','4')
-        ->orWhere('account_group_id','5')
+        $paymentmodes = account::where('firm_id', Auth::user()->firm_id)
+        ->whereHas('accountGroup', function ($query) {
+            $query->whereIn('account_group_name', ['BANK ACCOUNT', 'Cash In Hand']);
+        })
         ->get();
-        $account_names=account::orderBy('account_name','asc')->get();
+        $account_names=account::where('firm_id',Auth::user()->firm_id)
+        ->orderBy('account_name','asc')->get();
 
-        $ledgers = Ledger::whereIn('id', function($query) {
-                $query->select(DB::raw('MIN(id)'))
-                    ->from('ledgers')
-                    ->where('transaction_type','Payments')
-                    ->groupBy('voucher_no');
-            })
-            ->orderBy('voucher_no', 'desc')
-            ->get();
+        $ledgers = Ledger::whereIn('id', function ($query) {
+            $query->select(DB::raw('MIN(id)'))
+                  ->from('ledgers')
+                  ->where('transaction_type', 'Payments')
+                  ->where('firm_id', Auth::user()->firm_id) // Filter by firm_id in the subquery
+                  ->groupBy('voucher_no');
+        })
+        ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
+        ->get();
 
 
 
@@ -133,13 +151,17 @@ class LedgerController extends CustomBaseController
             $date_variable=$request->entry_date;
             $parsed_date = \Carbon\Carbon::createFromFormat('d-m-Y', $date_variable);
              $formatted_entry_date = $parsed_date->format('Y-m-d');
-             $accountname = account::with('accountgroup')
+             $accountname = account::where('firm_id',Auth::user()->firm_id)
+             ->with('accountgroup')
              ->where('id', $request->account_id)->first();
-             $paymentmode=account::with('accountgroup')
+             $paymentmode=account::where('firm_id',Auth::user()->firm_id)
+             ->with('accountgroup')
              ->where('id', $request->payment_mode_id)->first();
 
             if ($validator->passes()) {
                 $ledger = new ledger;
+                $ledger->firm_id=Auth::user()->firm_id;
+                
                 $ledger->voucher_no = $request->voucher_no;
                 $ledger->reciept_no = $request->reciept_no;
                 $ledger->entry_date =  $formatted_entry_date;
@@ -157,10 +179,14 @@ class LedgerController extends CustomBaseController
                 $ledger->amount = $request->receipt_amount;
                 $ledger->remark = $request->receipt_remark;  
                 $ledger->simpal_amount = "-" . $request->receipt_amount;
+                $ledger->userid = Auth::user()->id; // Assign the authenticated user's ID
+                $ledger->username = Auth::user()->name;
                 $ledger->save();
 
 
                 $ledger = new ledger;
+                $ledger->firm_id=Auth::user()->firm_id;
+                
                 $ledger->voucher_no = $request->voucher_no;
                 $ledger->reciept_no = $request->reciept_no;
                 $ledger->entry_date =  $formatted_entry_date;
@@ -177,6 +203,8 @@ class LedgerController extends CustomBaseController
                 $ledger->amount = $request->receipt_amount;
                 $ledger->remark = $request->receipt_remark;  
                 $ledger->simpal_amount = "+" . $request->receipt_amount;
+                $ledger->userid = Auth::user()->id; 
+                $ledger->username = Auth::user()->name;
                 $ledger->save();
         
                 return redirect('/reciepts')->with('message', 'entery saved created successfully!');
@@ -202,13 +230,16 @@ class LedgerController extends CustomBaseController
                     $date_variable=$request->entry_date;
                     $parsed_date = \Carbon\Carbon::createFromFormat('d-m-Y', $date_variable);
                      $formatted_entry_date = $parsed_date->format('Y-m-d');
-                     $accountname = account::with('accountgroup')
+                     $accountname = account::where('firm_id',Auth::user()->firm_id)->with('accountgroup')
                      ->where('id', $request->account_id)->first();
-                     $paymentmode=account::with('accountgroup')
+                     $paymentmode=account::where('firm_id',Auth::user()->firm_id)->with('accountgroup')
                      ->where('id', $request->payment_mode_id)->first();
         
                     if ($validator->passes()) {
                         $ledger = new ledger;
+                        $ledger->firm_id=Auth::user()->firm_id;
+
+                    
                         $ledger->voucher_no = $request->voucher_no;
                         $ledger->reciept_no = $request->reciept_no;
                         $ledger->entry_date =  $formatted_entry_date;
@@ -227,10 +258,13 @@ class LedgerController extends CustomBaseController
                         $ledger->amount = $request->receipt_amount;
                         $ledger->remark = $request->receipt_remark;  
                         $ledger->simpal_amount = "-" . $request->receipt_amount;
+                        $ledger->userid = Auth::user()->id; 
+                        $ledger->username = Auth::user()->name;
                         $ledger->save();
         
         
                         $ledger = new ledger;
+                        $ledger->firm_id=Auth::user()->firm_id;
                         $ledger->voucher_no = $request->voucher_no;
                         $ledger->reciept_no = $request->reciept_no;
                         $ledger->entry_date =  $formatted_entry_date;
@@ -248,6 +282,8 @@ class LedgerController extends CustomBaseController
                         $ledger->amount = $request->receipt_amount;
                         $ledger->remark = $request->receipt_remark;  
                         $ledger->simpal_amount = "+" . $request->receipt_amount;
+                        $ledger->userid = Auth::user()->id; 
+                        $ledger->username = Auth::user()->name;
                         $ledger->save();
                 
                         return redirect('/payments')->with('message', 'Entery saved  successfully!');
@@ -262,7 +298,7 @@ class LedgerController extends CustomBaseController
 
 
      public function index()    {
-        $accounts = Account::orderBy('account_name', 'asc')->get();
+        $accounts = Account::where('firm_id',Auth::user()->firm_id)->orderBy('account_name', 'asc')->get();
         $final_opning_balance=0;
         return view('reports.ledger.ledger',compact('accounts','final_opning_balance'));
 
@@ -288,21 +324,25 @@ class LedgerController extends CustomBaseController
      */
     public function advace_receipt()
     { 
-        $ledger_record = ledger::where('transaction_type','Advance_Receipt')->count();
+        $ledger_record = ledger::where('firm_id',Auth::user()->firm_id)->where('transaction_type','Advance_Receipt')->count();
          if ($ledger_record > 0) {
-            $lastRecord = ledger::orderBy('voucher_no', 'desc')
+            $lastRecord = ledger::where('firm_id',Auth::user()->firm_id)
+            ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
             ->where('transaction_type','Advance_Receipt')
             ->first();
             $voucher_no = $lastRecord->voucher_no;
             $new_voucher_no=$voucher_no+1;
-            $voucher_type = voucher_type::where('voucher_type_name', 'Advance_Receipt')->first();
+            $voucher_type = voucher_type::where('voucher_type_name', 'Advance_Receipt')
+            ->where('firm_id',Auth::user()->firm_id)
+            ->first();
             $voucher_prefix=$voucher_type->voucher_prefix;
             $voucher_suffix=$voucher_type->voucher_suffix;
             $new_bill_no=$voucher_prefix."".$new_voucher_no."".$voucher_suffix;
         
          }
          else {
-            $voucher_type = voucher_type::where('voucher_type_name', 'Advance_Receipt')->first();
+            $voucher_type = voucher_type::where('firm_id',Auth::user()->firm_id)
+            ->where('voucher_type_name', 'Advance_Receipt')->first();
  
             $voucher_no=$voucher_type->numbring_start_from;
             $new_voucher_no=$voucher_no+1;
@@ -313,10 +353,12 @@ class LedgerController extends CustomBaseController
         }
 
       
-        $paymentmodes=account::where('account_group_id','4')
-        ->orWhere('account_group_id','5')
+        $paymentmodes = account::where('firm_id', Auth::user()->firm_id)
+        ->whereHas('accountGroup', function ($query) {
+            $query->whereIn('account_group_name', ['BANK ACCOUNT', 'Cash In Hand']);
+        })
         ->get();
-        $account_names = roomcheckin::with('account')
+        $account_names = roomcheckin::where('firm_id',Auth::user()->firm_id)->with('account')
         ->where('checkout_voucher_no', '0')
         ->get()
         ->groupBy('guest_name')
@@ -332,9 +374,9 @@ class LedgerController extends CustomBaseController
         // ->where('transaction_type','Advance_Receipt')
         // ->orderBy('voucher_no','desc')
         // ->get();
-        $ledgers = Ledger::
-        where('transaction_type', 'Advance_Receipt')
-        ->orderBy('voucher_no', 'desc')
+        $ledgers = Ledger::where('firm_id',Auth::user()->firm_id)
+        ->where('transaction_type', 'Advance_Receipt')
+        ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
         ->get()
         ->groupBy('voucher_no')
         ->map(function ($voucher_no) {
@@ -368,13 +410,14 @@ class LedgerController extends CustomBaseController
             $date_variable=$request->entry_date;
             $parsed_date = \Carbon\Carbon::createFromFormat('d-m-Y', $date_variable);
              $formatted_entry_date = $parsed_date->format('Y-m-d');
-             $accountname = account::with('accountgroup')
+             $accountname = account::where('firm_id',Auth::user()->firm_id)->with('accountgroup')
              ->where('id', $request->account_id)->first();
-             $paymentmode=account::with('accountgroup')
+             $paymentmode=account::where('firm_id',Auth::user()->firm_id)->with('accountgroup')
              ->where('id', $request->payment_mode_id)->first();
 
             if ($validator->passes()) {
                 $ledger = new ledger;
+                $ledger->firm_id=Auth::user()->firm_id;
                 $ledger->voucher_no = $request->voucher_no;
                 $ledger->reciept_no = $request->reciept_no;
                 $ledger->entry_date =  $formatted_entry_date;
@@ -392,10 +435,13 @@ class LedgerController extends CustomBaseController
                 $ledger->amount = $request->receipt_amount;
                 $ledger->remark = $request->receipt_remark;  
                 $ledger->simpal_amount = "-" . $request->receipt_amount;
+                $ledger->userid = Auth::user()->id; 
+                $ledger->username = Auth::user()->name;
                 $ledger->save();
 
 
                 $ledger = new ledger;
+                $ledger->firm_id=Auth::user()->firm_id;
                 $ledger->voucher_no = $request->voucher_no;
                 $ledger->reciept_no = $request->reciept_no;
                 $ledger->entry_date =  $formatted_entry_date;
@@ -412,6 +458,8 @@ class LedgerController extends CustomBaseController
                 $ledger->amount = $request->receipt_amount;
                 $ledger->remark = $request->receipt_remark;  
                 $ledger->simpal_amount = "+" . $request->receipt_amount;
+                $ledger->userid = Auth::user()->id; 
+                $ledger->username = Auth::user()->name;
                 $ledger->save();
         
                 return redirect('/advace_receipt')->with('message', 'entery saved created successfully!');
@@ -421,7 +469,8 @@ class LedgerController extends CustomBaseController
     }    
     public function advace_receipt_print($id)
     { 
-        $advancereceipts = ledger::where('transaction_type','Advance_Receipt')
+        $advancereceipts = ledger::where('firm_id',Auth::user()->firm_id)
+        ->where('transaction_type','Advance_Receipt')
         ->where('voucher_no',$id)
         ->first();
 
@@ -453,18 +502,30 @@ class LedgerController extends CustomBaseController
        
         $from_date = $request->from_date;
         $to_date = $request->to_date;
-        $ledgers = Ledger::where('account_id', $account_id)
+        $ledgers = Ledger::where('firm_id',Auth::user()->firm_id)
+        ->where('account_id', $account_id)
         ->whereBetween('entry_date', [$formatted_from_date, $formatted_to_date])
         ->get();
-        $accounts = Account::orderBy('account_name', 'asc')->get();
-        $account_name = Account::find($account_id);
+
+        $accounts = Account::where('firm_id',Auth::user()->firm_id)
+        ->orderBy('account_name', 'asc')->get();
+        $account_name = Account::where('firm_id',Auth::user()->firm_id)->find($account_id);
         $opening_balance_account=$account_name->op_balnce;
         $opning_balance_type=$account_name->balnce_type;
         if($formatted_to_date>$formatted_from_date){
-        $ledgers_before_fromdate = Ledger::where('account_id', $account_id)
-        ->where('entry_date', '<=', $formatted_from_date)
+            $date_variable = $request->from_date;
+            $parsed_date = \Carbon\Carbon::createFromFormat('d-m-Y', $date_variable);
+            $one_day_before = $parsed_date->subDay(); // Subtract one day
+            $formatted_from_date_onedaybefore = $one_day_before->format('Y-m-d');
+
+            $ledgers_before_fromdate = Ledger::where('firm_id',Auth::user()->firm_id)->first()
+        ->where('account_id', $account_id)
+        ->where('entry_date', '<=', $formatted_from_date_onedaybefore)
         ->get();
+ 
+
         }
+
         else if($formatted_to_date=$formatted_from_date){
             $date_variable = $request->from_date;
             $parsed_date = \Carbon\Carbon::createFromFormat('d-m-Y', $date_variable);
@@ -472,7 +533,8 @@ class LedgerController extends CustomBaseController
             $formatted_from_date_onedaybefore = $one_day_before->format('Y-m-d');
                        
 
-            $ledgers_before_fromdate = Ledger::where('account_id', $account_id)
+            $ledgers_before_fromdate = Ledger::where('firm_id',Auth::user()->firm_id)
+            ->where('account_id', $account_id)
         ->where('entry_date', '<=', $formatted_from_date_onedaybefore)
         ->get();
         }
@@ -494,6 +556,8 @@ class LedgerController extends CustomBaseController
         $final_opning_balance=$total_balance-$opening_balance_account;
        }
 
+    //    dd($final_opning_balance);
+
 
 
  
@@ -508,7 +572,8 @@ class LedgerController extends CustomBaseController
     public function destroy($id)
     {
         
-        $ledger = ledger::where('transaction_type','Receipts')
+        $ledger = ledger::where('firm_id',Auth::user()->firm_id)
+        ->where('transaction_type','Receipts')
         ->where('voucher_no',$id);
 
         // Check if the package exists
@@ -526,24 +591,26 @@ class LedgerController extends CustomBaseController
     public function payment_delete($id)
     {
         
-        $ledger = ledger::where('transaction_type','Payments')
+        $ledger = ledger::where('firm_id',Auth::user()->firm_id)
+        ->where('transaction_type','Payments')
         ->where('voucher_no',$id);
 
         // Check if the package exists
         if ($ledger) {
             // Delete the package
             $ledger->delete();
-            return redirect('/reciepts')->with('message', 'Reciepts Delete successfully!');
+            return redirect('/payments')->with('message', 'Payments Delete successfully!');
         } else {
             // Package not found
-            return redirect('/reciepts')->with('message', 'Reciepts Not Found');
+            return redirect('/payments')->with('message', 'Payments Not Found');
 
         }
     }
     public function advace_receipt_delete($id)
     {
         
-        $ledger = ledger::where('transaction_type','Advance_Receipt')
+        $ledger = ledger::where('firm_id',Auth::user()->firm_id)
+        ->where('transaction_type','Advance_Receipt')
         ->where('voucher_no',$id);
 
         // Check if the package exists
@@ -565,12 +632,29 @@ class LedgerController extends CustomBaseController
         $formatted_to_date = $parsed_date->format('Y-m-d');
        
 
-        $accounts = account::select('accounts.id', 'accounts.account_name', 'accounts.op_balnce','balnce_type','accounts.mobile',
-        DB::raw('SUM(ledgers.debit) as total_debit'),
-        DB::raw('SUM(ledgers.credit) as total_credit'))
-        ->leftJoin('ledgers', 'accounts.id', '=', 'ledgers.account_id')
-        ->groupBy('accounts.id', 'accounts.account_name', 'accounts.op_balnce','accounts.balnce_type','accounts.mobile')
-        ->get();
+        
+        $accounts = Account::select(
+                'accounts.id',
+                'accounts.firm_id',
+                'accounts.account_name',
+                'accounts.op_balnce',
+                'accounts.balnce_type',
+                'accounts.mobile',
+                DB::raw('SUM(ledgers.debit) as total_debit'),
+                DB::raw('SUM(ledgers.credit) as total_credit')
+            )
+            ->leftJoin('ledgers', 'accounts.id', '=', 'ledgers.account_id')
+            ->where('accounts.firm_id', Auth::user()->firm_id)
+            ->groupBy(
+                'accounts.id',
+                'accounts.firm_id',
+                'accounts.account_name',
+                'accounts.op_balnce',
+                'accounts.balnce_type',
+                'accounts.mobile'
+            )
+            ->get();
+        
         // dd($accounts);
     
     $outstandingReceivables = $accounts->filter(function ($account) {
@@ -597,13 +681,27 @@ class LedgerController extends CustomBaseController
         $parsed_date = \Carbon\Carbon::createFromFormat('d-m-Y', $date_variable);
         $formatted_to_date = $parsed_date->format('Y-m-d');
        
-
-        $accounts = account::select('accounts.id', 'accounts.account_name', 'accounts.op_balnce','balnce_type','accounts.mobile',
-        DB::raw('SUM(ledgers.debit) as total_debit'),
-        DB::raw('SUM(ledgers.credit) as total_credit'))
-        ->leftJoin('ledgers', 'accounts.id', '=', 'ledgers.account_id')
-        ->groupBy('accounts.id', 'accounts.account_name', 'accounts.op_balnce','accounts.balnce_type','accounts.mobile')
-        ->get();
+        
+        $accounts = Account::select(
+                'accounts.id',
+                'accounts.account_name',
+                'accounts.op_balnce',
+                'accounts.balnce_type',
+                'accounts.mobile',
+                DB::raw('SUM(ledgers.debit) as total_debit'),
+                DB::raw('SUM(ledgers.credit) as total_credit')
+            )
+            ->leftJoin('ledgers', 'accounts.id', '=', 'ledgers.account_id')
+            ->where('accounts.firm_id', Auth::user()->firm_id)
+            ->groupBy(
+                'accounts.id',
+                'accounts.account_name',
+                'accounts.op_balnce',
+                'accounts.balnce_type',
+                'accounts.mobile'
+            )
+            ->get();
+        
         // dd($accounts);
     
     $outstandingPayables = $accounts->filter(function ($account) {
@@ -628,9 +726,11 @@ class LedgerController extends CustomBaseController
     public function dayend_report(Request $request)
 {
     
-    $listofaccount = Account::where('account_group_id', '5')
-        ->orWhere('account_group_id', '4')
-        ->get();
+    $listofaccount = account::where('firm_id', Auth::user()->firm_id)
+    ->whereHas('accountGroup', function ($query) {
+        $query->whereIn('account_group_name', ['BANK ACCOUNT', 'Cash In Hand']);
+    })
+    ->get();
 
     $current_date = \Carbon\Carbon::now();
     $formatted_current_date = $current_date->format('Y-m-d');
@@ -650,11 +750,14 @@ class LedgerController extends CustomBaseController
         $opening_balance_account = $account->op_balnce;
         $opning_balance_type = $account->balnce_type;
 
-        $ledgers = Ledger::where('account_id', $account_id)
+        $ledgers = Ledger::where('firm_id',Auth::user()->firm_id)
+        
+        ->where('account_id', $account_id)
             ->whereBetween('entry_date', [$formatted_current_date, $formatted_current_date])
             ->get();
 
-        $ledgers_before_fromdate = Ledger::where('account_id', $account_id)
+        $ledgers_before_fromdate = Ledger::where('firm_id',Auth::user()->firm_id)
+            ->where('account_id', $account_id)
             ->where('entry_date', '<=', $formated_one_day_before)
             ->get();
 
@@ -678,7 +781,7 @@ class LedgerController extends CustomBaseController
         ];
     }
 
-    $accounts = Account::orderBy('account_name', 'asc')->get();
+    $accounts = Account::where('firm_id',Auth::user()->firm_id)->orderBy('account_name', 'asc')->get();
 
     return view('reports.ledger.dayend_report', compact('accounts', 'all_reports','formatted_current_date'));
 }

@@ -33,18 +33,26 @@
                                                 </div>
 
                                                 <div class="col-md-6 mt-2">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="account_group" type="text" name="account_group" value="{{ $data['account_group'] }}" />
-                                                      <span class="text-danger"> 
-                                                        @error('account_group')
-                                                        {{$message}}
-                                                            
-                                                        @enderror
+                                                  <div class="form-floating mb-3 mb-md-0">
+                                                      <select name="account_group_id" id="account_group_id" class="form-select" aria-label="Default select example">
+                                                          <option selected disabled>Select Account Group</option>
+                                                          @foreach ($accountgroups as $accountgroup)
+                                                              <option value="{{ $accountgroup->id }}" 
+                                                                  {{ isset($data->account_group_id) && $data->account_group_id == $accountgroup->id ? 'selected' : '' }}>
+                                                                  {{ $accountgroup->account_group_name }}
+                                                              </option>
+                                                          @endforeach
+                                                      </select>
+                                                      <label for="account_group_id">Account Group</label>
+                                              
+                                                      <span class="text-danger">
+                                                          @error('account_group_id')
+                                                              {{ $message }}
+                                                          @enderror
                                                       </span>
-                                                        <label for="account_group">Account Group</label>
-                                                       
-                                                    </div>
-                                                </div>
+                                                  </div>
+                                              </div>
+                                              
                                                 <div class="col-md-6 mt-2">
                                                     <div class="form-floating mb-3 mb-md-0">
                                                         <input class="form-control" id="op_balnce" type="text" name="op_balnce" value="{{ $data['op_balnce'] }}" />

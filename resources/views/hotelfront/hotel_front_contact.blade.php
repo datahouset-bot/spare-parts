@@ -60,22 +60,22 @@
                         <div class="collapse navbar-collapse" id="navbarsExample04">
                            <ul class="navbar-nav mr-auto">
                               <li class="nav-item active">
-                                 <a class="nav-link" href="{{url('/hotel_index')}}">Home</a>
+                                 <a class="nav-link" href="{{url($firm_id)}}">Home</a>
                               </li>
                               <li class="nav-item">
-                                 <a class="nav-link" href="{{url('/hotel_about')}}">About</a>
+                                 <a class="nav-link" href="{{url('/hotel_about',$firm_id)}}">About</a>
                               </li>
                               <li class="nav-item">
-                                 <a class="nav-link" href="{{url('/hotel_room')}}">Our room</a>
+                                 <a class="nav-link" href="{{url('/hotel_room',$firm_id)}}">Our room</a>
                               </li>
                               <li class="nav-item">
-                                 <a class="nav-link" href="{{url('/hotel_gallery')}}">Gallery</a>
+                                 <a class="nav-link" href="{{url('/hotel_gallery',$firm_id)}}">Gallery</a>
                               </li>
                               <li class="nav-item">
-                                 <a class="nav-link" href="{{url('/hotel_blog')}}">Blog</a>
+                                 <a class="nav-link" href="{{url('/hotel_blog',$firm_id)}}">Blog</a>
                               </li>
                               <li class="nav-item">
-                                 <a class="nav-link" href="{{url('/hotel_contact')}}">Contact Us</a>
+                                 <a class="nav-link" href="{{url('/hotel_contact',$firm_id)}}">Contact Us</a>
                               </li>
                            </ul>
                         </div>
@@ -102,38 +102,46 @@
       <div class="contact">
          <div class="container">
             <div class="row">
+               <div class="col-md-12">
+                  <div class="titlepage">
+                     <h2>Contact Us</h2>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
                <div class="col-md-6">
                   <form id="request" class="main_form">
                      <div class="row">
                         <div class="col-md-12 ">
-                           <input class="contactus" placeholder="Name" type="type" name="Name"> 
+                           <input class="contactus" placeholder="{{ $componyinfo->cominfo_firm_name }} " type="type" name="Name" readonly> 
                         </div>
                         <div class="col-md-12">
-                           <input class="contactus" placeholder="Email" type="type" name="Email"> 
+                           <input class="contactus" placeholder="{{ $componyinfo->cominfo_email }}" type="type" name="Email"readonly> 
                         </div>
                         <div class="col-md-12">
-                           <input class="contactus" placeholder="Phone Number" type="type" name="Phone Number">                          
+                           <input class="contactus" placeholder="{{ $componyinfo->cominfo_mobile }}" type="type" name="Phone Number" readonly>                          
                         </div>
                         <div class="col-md-12">
-                           <textarea class="textarea" placeholder="Message" type="type" Message="Name">Message</textarea>
+                           <textarea class="textarea" placeholder="{{ $componyinfo->cominfo_phone }}" type="type" Message="Name"></textarea>
                         </div>
                         <div class="col-md-12">
-                           <button class="send_btn">Send</button>
+                           <!--<button class="send_btn">Send</button>-->
                         </div>
                      </div>
                   </form>
                </div>
                <div class="col-md-6">
                   <div class="map_main">
-                     <div class="map-responsive">
-                        <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&amp;q=Eiffel+Tower+Paris+France" width="600" height="400" frameborder="0" style="border:0; width: 100%;" allowfullscreen=""></iframe>
-                     </div>
+                     <!--<div class="map-responsive">-->
+                     <!--   <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&amp;q=Eiffel+Tower+Paris+France" width="600" height="400" frameborder="0" style="border:0; width: 100%;" allowfullscreen=""></iframe>-->
+                     <!--</div>-->
+                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3752.8399879622184!2d77.91773067522497!3d19.846722281523032!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd18098853440bd%3A0xd686c589320a16bd!2sHotel%20MAULI!5e0!3m2!1sen!2sin!4v1727515343852!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                   </div>
                </div>
             </div>
          </div>
       </div>
-      <!-- end contact -->
+            <!-- end contact -->
       <!--  footer -->
       <footer>
          <div class="footer">
@@ -142,20 +150,20 @@
                   <div class=" col-md-4">
                      <h3>Contact US</h3>
                      <ul class="conta">
-                        <li><i class="fa fa-map-marker" aria-hidden="true"></i> Address</li>
-                        <li><i class="fa fa-mobile" aria-hidden="true"></i> +01 1234569540</li>
-                        <li> <i class="fa fa-envelope" aria-hidden="true"></i><a href="#"> demo@gmail.com</a></li>
+                        <li><i class="fa fa-map-marker" aria-hidden="true"></i> "{{ $componyinfo->cominfo_address1 }}&nbsp; &nbsp; {{ $componyinfo->cominfo_address2 }}"</li>
+                        <li><i class="fa fa-mobile" aria-hidden="true"></i> {{ $componyinfo->cominfo_phone }} &nbsp; {{ $componyinfo->cominfo_mobile }}</li>
+                        <li> <i class="fa fa-envelope" aria-hidden="true"></i><a href="#">{{ $componyinfo->cominfo_email }}</a></li>
                      </ul>
                   </div>
                   <div class="col-md-4">
                      <h3>Menu Link</h3>
                      <ul class="link_menu">
-                        <li><a href="#">Home</a></li>
+                        <li class="active"><a href="#">Home</a></li>
                         <li><a href="about.html"> about</a></li>
                         <li><a href="room.html">Our Room</a></li>
                         <li><a href="gallery.html">Gallery</a></li>
                         <li><a href="blog.html">Blog</a></li>
-                        <li class="active"><a href="contact.html">Contact Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
                      </ul>
                   </div>
                   <div class="col-md-4">
@@ -165,10 +173,10 @@
                         <button class="sub_btn">subscribe</button>
                      </form>
                      <ul class="social_icon">
-                        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li><a href="{{$softwarecompinfo->software_facebook}}"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
                         <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+                        <li><a href="{{$softwarecompinfo->software_twitter}}"><i class="fa fa-youtube" aria-hidden="true"></i></a></li>
+                        <li><a href="{{$softwarecompinfo->software_youtube}}"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
                      </ul>
                   </div>
                </div>
@@ -177,11 +185,13 @@
                <div class="container">
                   <div class="row">
                      <div class="col-md-10 offset-md-1">
+                        
                         <p>
-                           © 2019 All Rights Reserved. Design by <a href="https://html.design/"> Free Html Templates</a>
-                           <br><br>
-                           Distributed by <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
-                           </p>
+                        ©  {{ now()->format('Y') }} All Rights Reserved. Design by {{$softwarecompinfo->software_firm_name}}  </a>
+                        <br><br>
+                        Distributed by &nbsp; {{$softwarecompinfo->software_firm_name}}
+                        </p>
+
                      </div>
                   </div>
                </div>

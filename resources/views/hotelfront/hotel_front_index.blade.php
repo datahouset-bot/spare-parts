@@ -1,45 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <!-- basic -->
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <!-- mobile metas -->
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-      <!-- site metas -->
-      <title>{{ $componyinfo->cominfo_firm_name }}</title>
+      <title>{{ $firm_cominfo->cominfo_firm_name }}</title>
       <meta name="keywords" content="">
       <meta name="description" content="">
       <meta name="author" content="">
-      <!-- bootstrap css -->
       <link rel="stylesheet" href="{{ global_asset('hotel_front_assets/css/bootstrap.min.css') }}">
-      <!-- style css -->
       <link rel="stylesheet" href="{{ global_asset('hotel_front_assets/css/style.css') }}">
 
-      <!-- Responsive-->
      <link rel="stylesheet" href="{{ global_asset('hotel_front_assets/css/responsive.css') }}">     
-      <!-- fevicon -->
       <link rel="icon" href="{{ global_asset('hotel_front_assets/images/fevicon.png') }}" type="image/gif" />
-      <!-- Scrollbar Custom CSS -->
       <link rel="stylesheet" href="{{global_asset('hotel_front_assets/css/jquery.mCustomScrollbar.min.css')}}">
-      <!-- Tweaks for older IEs-->
       <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
-      <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
    </head>
-   <!-- body -->
    <body class="main-layout">
-      <!-- loader  -->
       <div class="loader_bg">
-         {{-- <div class="loader"><img src="{{global_asset('hotel_front_assets/images/loading.gif')}}" alt="#"/></div> --}}
       </div>
-      <!-- end loader -->
-      <!-- header -->
       <header>
-         <!-- header inner -->
          <div class="header">
             <div class="container">
                <div class="row">
@@ -47,7 +29,8 @@
                      <div class="full">
                         <div class="center-desk">
                            <div class="logo">
-                              <a href="index.html"><img src="{{global_asset('hotel_front_assets/images/logo.png')}}" alt="#" /></a>
+                              <img src="{{ asset('storage\app\public\image\\' . $firm_pic->logo) }}" alt="qr_code"
+                                 width="80px">
                            </div>
                         </div>
                      </div>
@@ -60,22 +43,22 @@
                         <div class="collapse navbar-collapse" id="navbarsExample04">
                            <ul class="navbar-nav mr-auto">
                               <li class="nav-item active">
-                                 <a class="nav-link" href="{{url('/hotel_index')}}">Home</a>
+                                 <a class="nav-link" href="{{url($firm_id)}}">Home</a>
                               </li>
                               <li class="nav-item">
-                                 <a class="nav-link" href="{{url('/hotel_about')}}">About</a>
+                                 <a class="nav-link" href="{{url('/hotel_about',$firm_id)}}">About</a>
                               </li>
                               <li class="nav-item">
-                                 <a class="nav-link" href="{{url('/hotel_room')}}">Our room</a>
+                                 <a class="nav-link" href="{{url('/hotel_room',$firm_id)}}">Our room</a>
                               </li>
                               <li class="nav-item">
-                                 <a class="nav-link" href="{{url('/hotel_gallery')}}">Gallery</a>
+                                 <a class="nav-link" href="{{url('/hotel_gallery',$firm_id)}}">Gallery</a>
                               </li>
                               <li class="nav-item">
-                                 <a class="nav-link" href="{{url('/hotel_blog')}}">Blog</a>
+                                 <a class="nav-link" href="{{url('/hotel_blog',$firm_id)}}">Blog</a>
                               </li>
                               <li class="nav-item">
-                                 <a class="nav-link" href="{{url('/hotel_contact')}}">Contact Us</a>
+                                 <a class="nav-link" href="{{url('/hotel_contact',$firm_id)}}">Contact Us</a>
                               </li>
                            </ul>
                         </div>
@@ -85,13 +68,10 @@
             </div>
          </div>
       </header>
-      <!-- end header inner -->
-      <!-- end header -->
-      <!-- banner -->
       <section class="banner_main">
          <div id="myCarousel" class="carousel slide banner" data-ride="carousel">
             <ol class="carousel-indicators">
-               <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+               <li data-target="#myCarousel" data-slide-to="0" class="active"></hotelli>
                <li data-target="#myCarousel" data-slide-to="1"></li>
                <li data-target="#myCarousel" data-slide-to="2"></li>
             </ol>
@@ -127,9 +107,8 @@
                            <div class="row">
                               
                               <div class="col-md-12">
-                                 <a class="book_btn" href="{{url('booking_by_guest_create')}}">
+                                 <a class="book_btn" href="{{url('hotel_room',$firm_id)}}">
                                     &nbsp;&nbsp;&nbsp;Book Now
-                                 {{-- <button class="book_btn">Book Now</button> --}}
                               </a>
                               </div>
 
@@ -141,15 +120,13 @@
             </div>
          </div>
       </section>
-      <!-- end banner -->
-      <!-- about -->
       <div class="about">
          <div class="container-fluid">
             <div class="row">
                <div class="col-md-5">
                   <div class="titlepage">
                      <h2>About Us</h2>
-                     <p>The passage experienced a surge in popularity during the 1960s when Letraset used it on their dry-transfer sheets, and again during the 90s as desktop publishers bundled the text with their software. Today it's seen all around the web; on templates, websites, and stock designs. Use our generator to get your own, or read on for the authoritative history of lorem ipsum. </p>
+                     <p>Welcome to {{ $firm_cominfo->cominfo_firm_name }}, where comfort meets elegance. Nestled in the heart of {{ $firm_cominfo->cominfo_city }}, our hotel offers a serene escape with a blend of modern amenities and traditional charm. Since our establishment, we have been dedicated to providing an exceptional experience for all our guests. </p>
                      <a class="read_more" href="Javascript:void(0)"> Read More</a>
                   </div>
                </div>
@@ -161,197 +138,7 @@
             </div>
          </div>
       </div>
-      <!-- end about -->
-      <!-- our_room -->
-      <div  class="our_room">
-         <div class="container">
-            <div class="row">
-               <div class="col-md-12">
-                  <div class="titlepage">
-                     <h2>Our Room</h2>
-                     <p>Lorem Ipsum available, but the majority have suffered </p>
-                  </div>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-md-4 col-sm-6">
-                  <div id="serv_hover"  class="room">
-                     <div class="room_img">
-                        <figure><img src={{global_asset('hotel_front_assets/images/room1.jpg')}} alt="#"/></figure>
-                     </div>
-                     <div class="bed_room">
-                        <h3>Bed Room</h3>
-                        <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there </p>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-md-4 col-sm-6">
-                  <div id="serv_hover"  class="room">
-                     <div class="room_img">
-                        <figure><img src="{{global_asset('hotel_front_assets/images/room2.jpg')}}" alt="#"/></figure>
-                     </div>
-                     <div class="bed_room">
-                        <h3>Bed Room</h3>
-                        <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there </p>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-md-4 col-sm-6">
-                  <div id="serv_hover"  class="room">
-                     <div class="room_img">
-                        <figure><img src="{{global_asset('hotel_front_assets/images/room3.jpg')}}" alt="#"/></figure>
-                     </div>
-                     <div class="bed_room">
-                        <h3>Bed Room</h3>
-                        <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there </p>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-md-4 col-sm-6">
-                  <div id="serv_hover"  class="room">
-                     <div class="room_img">
-                        <figure><img src="{{global_asset('hotel_front_assets/images/room4.jpg')}}" alt="#"/></figure>
-                     </div>
-                     <div class="bed_room">
-                        <h3>Bed Room</h3>
-                        <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there </p>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-md-4 col-sm-6">
-                  <div id="serv_hover"  class="room">
-                     <div class="room_img">
-                        <figure><img src="{{global_asset('hotel_front_assets/images/room5.jpg')}}" alt="#"/></figure>
-                     </div>
-                     <div class="bed_room">
-                        <h3>Bed Room</h3>
-                        <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there </p>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-md-4 col-sm-6">
-                  <div id="serv_hover"  class="room">
-                     <div class="room_img">
-                        <figure><img src="{{global_asset('hotel_front_assets/images/room6.jpg')}}" alt="#"/></figure>
-                     </div>
-                     <div class="bed_room">
-                        <h3>Bed Room</h3>
-                        <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there </p>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <!-- end our_room -->
-      <!-- gallery -->
-      <div  class="gallery">
-         <div class="container">
-            <div class="row">
-               <div class="col-md-12">
-                  <div class="titlepage">
-                     <h2>gallery</h2>
-                  </div>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-md-3 col-sm-6">
-                  <div class="gallery_img">
-                     <figure><img src="{{global_asset('hotel_front_assets/images/gallery1.jpg')}}" alt="#"/></figure>
-                  </div>
-               </div>
-               <div class="col-md-3 col-sm-6">
-                  <div class="gallery_img">
-                     <figure><img src="{{global_asset('hotel_front_assets/images/gallery2.jpg')}}" alt="#"/></figure>
-                  </div>
-               </div>
-               <div class="col-md-3 col-sm-6">
-                  <div class="gallery_img">
-                     <figure><img src="{{global_asset('hotel_front_assets/images/gallery3.jpg')}}" alt="#"/></figure>
-                  </div>
-               </div>
-               <div class="col-md-3 col-sm-6">
-                  <div class="gallery_img">
-                     <figure><img src="{{global_asset('hotel_front_assets/images/gallery4.jpg')}}" alt="#"/></figure>
-                  </div>
-               </div>
-               <div class="col-md-3 col-sm-6">
-                  <div class="gallery_img">
-                     <figure><img src="{{global_asset('hotel_front_assets/images/gallery5.jpg')}}" alt="#"/></figure>
-                  </div>
-               </div>
-               <div class="col-md-3 col-sm-6">
-                  <div class="gallery_img">
-                     <figure><img src="{{global_asset('hotel_front_assets/images/gallery6.jpg')}}" alt="#"/></figure>
-                  </div>
-               </div>
-               <div class="col-md-3 col-sm-6">
-                  <div class="gallery_img">
-                     <figure><img src="{{global_asset('hotel_front_assets/images/gallery7.jpg')}}" alt="#"/></figure>
-                  </div>
-               </div>
-               <div class="col-md-3 col-sm-6">
-                  <div class="gallery_img">
-                     <figure><img src="{{global_asset('hotel_front_assets/images/gallery8.jpg')}}" alt="#"/></figure>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <!-- end gallery -->
-      <!-- blog -->
-      <div  class="blog">
-         <div class="container">
-            <div class="row">
-               <div class="col-md-12">
-                  <div class="titlepage">
-                     <h2>Blog</h2>
-                     <p>Lorem Ipsum available, but the majority have suffered </p>
-                  </div>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-md-4">
-                  <div class="blog_box">
-                     <div class="blog_img">
-                        <figure><img src="images/blog1.jpg" alt="#"/></figure>
-                     </div>
-                     <div class="blog_room">
-                        <h3>Bed Room</h3>
-                        <span>The standard chunk </span>
-                        <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generatorsIf you are   </p>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-md-4">
-                  <div class="blog_box">
-                     <div class="blog_img">
-                        <figure><img src="images/blog2.jpg" alt="#"/></figure>
-                     </div>
-                     <div class="blog_room">
-                        <h3>Bed Room</h3>
-                        <span>The standard chunk </span>
-                        <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generatorsIf you are   </p>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-md-4">
-                  <div class="blog_box">
-                     <div class="blog_img">
-                        <figure><img src="images/blog3.jpg" alt="#"/></figure>
-                     </div>
-                     <div class="blog_room">
-                        <h3>Bed Room</h3>
-                        <span>The standard chunk </span>
-                        <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generatorsIf you are   </p>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <!-- end blog -->
-      <!--  contact -->
+
       <div class="contact">
          <div class="container">
             <div class="row">
@@ -366,35 +153,44 @@
                   <form id="request" class="main_form">
                      <div class="row">
                         <div class="col-md-12 ">
-                           <input class="contactus" placeholder="Name" type="type" name="Name"> 
+                           <input class="contactus" placeholder="{{ $firm_cominfo->cominfo_firm_name }} " type="type" name="Name" readonly> 
                         </div>
                         <div class="col-md-12">
-                           <input class="contactus" placeholder="Email" type="type" name="Email"> 
+                           <input class="contactus" placeholder="{{ $firm_cominfo->cominfo_email }}" type="type" name="Email"readonly> 
                         </div>
                         <div class="col-md-12">
-                           <input class="contactus" placeholder="Phone Number" type="type" name="Phone Number">                          
+                           <input class="contactus" placeholder="{{ $firm_cominfo->cominfo_mobile }}" type="type" name="Phone Number" readonly>                          
                         </div>
                         <div class="col-md-12">
-                           <textarea class="textarea" placeholder="Message" type="type" Message="Name">Message</textarea>
+                           <textarea class="textarea" placeholder="{{ $firm_cominfo->cominfo_phone }}" type="type" Message="Name"></textarea>
                         </div>
                         <div class="col-md-12">
-                           <button class="send_btn">Send</button>
                         </div>
                      </div>
                   </form>
                </div>
                <div class="col-md-6">
                   <div class="map_main">
-                     <div class="map-responsive">
-                        <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&amp;q=Eiffel+Tower+Paris+France" width="600" height="400" frameborder="0" style="border:0; width: 100%;" allowfullscreen=""></iframe>
-                     </div>
+                     <?php 
+    $latitude = 17.595753; 
+    $longitude = 78.084418; 
+    
+?>
+<iframe 
+    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15248.404720891936!2d<?php echo $longitude; ?>!3d<?php echo $latitude; ?>!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z17°35'44.7%22N%2078°05'03.9%22E!5e0!3m2!1sen!2sin!4v1727515343852!5m2!1sen!2sin" 
+    width="600" 
+    height="450" 
+    style="border:0;" 
+    allowfullscreen="" 
+    loading="lazy" 
+    referrerpolicy="no-referrer-when-downgrade">
+</iframe>
+
                   </div>
                </div>
             </div>
          </div>
       </div>
-      <!-- end contact -->
-      <!--  footer -->
       <footer>
          <div class="footer">
             <div class="container">
@@ -402,9 +198,9 @@
                   <div class=" col-md-4">
                      <h3>Contact US</h3>
                      <ul class="conta">
-                        <li><i class="fa fa-map-marker" aria-hidden="true"></i> Address</li>
-                        <li><i class="fa fa-mobile" aria-hidden="true"></i> +01 1234569540</li>
-                        <li> <i class="fa fa-envelope" aria-hidden="true"></i><a href="#"> demo@gmail.com</a></li>
+                        <li><i class="fa fa-map-marker" aria-hidden="true"></i> "{{ $firm_cominfo->cominfo_address1 }}&nbsp; &nbsp; {{ $firm_cominfo->cominfo_address2 }}"</li>
+                        <li><i class="fa fa-mobile" aria-hidden="true"></i> {{ $firm_cominfo->cominfo_phone }} &nbsp; {{ $firm_cominfo->cominfo_mobile }}</li>
+                        <li> <i class="fa fa-envelope" aria-hidden="true"></i><a href="#">{{ $firm_cominfo->cominfo_email }}</a></li>
                      </ul>
                   </div>
                   <div class="col-md-4">
@@ -425,10 +221,10 @@
                         <button class="sub_btn">subscribe</button>
                      </form>
                      <ul class="social_icon">
-                        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li><a href="{{$softwarecompinfo->software_facebook}}"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
                         <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+                        <li><a href="{{$softwarecompinfo->software_twitter}}"><i class="fa fa-youtube" aria-hidden="true"></i></a></li>
+                        <li><a href="{{$softwarecompinfo->software_youtube}}"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
                      </ul>
                   </div>
                </div>
@@ -439,9 +235,9 @@
                      <div class="col-md-10 offset-md-1">
                         
                         <p>
-                        © 2019 All Rights Reserved. Design by <a href="https://html.design/"> Free Html Templates</a>
+                        ©  {{ now()->format('Y') }} All Rights Reserved. Design by {{$softwarecompinfo->software_firm_name}}  </a>
                         <br><br>
-                        Distributed by <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+                        Distributed by &nbsp; {{$softwarecompinfo->software_firm_name}}
                         </p>
 
                      </div>
@@ -450,19 +246,16 @@
             </div>
          </div>
       </footer>
-      <!-- end footer -->
-      <!-- Javascript files-->
+      
       <script src="{{ global_asset('hotel_front_assets/js/jquery.min.js') }}"></script>
 <script src="{{ global_asset('hotel_front_assets/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ global_asset('hotel_front_assets/js/jquery-3.0.0.min.js') }}"></script>
 <script src="{{ global_asset('hotel_front_assets/js/jquery.mCustomScrollbar.concat.min.js') }}"></script>
 <script src="{{ global_asset('hotel_front_assets/js/custom.js') }}"></script>
 
-      {{-- <script src={{global_asset('hotel_front_assets/js/jquery.min.js')}}></script>
-      <script src="js/bootstrap.bundle.min.js"></script>
-      <script src="js/jquery-3.0.0.min.js"></script>
-      <!-- sidebar -->
-      <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-      <script src="js/custom.js"></script> --}}
+      
    </body>
 </html>
+
+
+

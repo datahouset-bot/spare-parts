@@ -15,6 +15,17 @@
 </script>
 
 <div class="container ">
+  @if (session('message'))
+          <div class="alert alert-primary">
+              {{ session('message') }}
+          </div>
+      @endif
+      @if (session('error'))
+          <div class="alert alert-danger ">
+              {{ session('error') }}
+          </div>
+      @endif
+
 
     <div class="card my-3">
         <div class="card-header">
@@ -68,9 +79,21 @@
                     <td>{{$record->gstmaster->taxname}}</td>
  
                     <td><a href="{{('itemformview/'.$record['id']) }}"  class="btn  btn-sm"><i class="fa fa-eye" style="font-size:20px;color:DarkGreen"></i></a></a></td>
-                    <td><a href="{{('showedititem/'.$record['id']) }}"  class="btn  btn-sm"><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a></td>
-                    <td><a href="{{('deleteitem/'.$record['id']) }}"  class="btn  btn-sm"><i class="fa fa-trash" style="font-size:20px;color:OrangeRed"></i></a></td>
-                  </tr>
+                    <td>
+                      @can('update role')
+                      <a href="{{('showedititem/'.$record['id']) }}"  class="btn  btn-sm"><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
+                      @endcan
+                      </td>
+ 
+                    <td>
+                      @can('delete role')
+ 
+                      <a href="{{('deleteitem/'.$record['id']) }}"  class="btn  btn-sm"><i class="fa fa-trash" style="font-size:20px;color:OrangeRed"></i></a>
+                      @endcan
+ 
+                      </td>
+                   
+                      </tr>
                   @endforeach
                   
                   

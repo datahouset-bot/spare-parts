@@ -4,18 +4,7 @@
 @extends('layouts.blank')
 {{-- @include('layouts.blank') --}}
 @section('pagecontent')
-<link rel="stylesheet" href="//cdn.datatables.net/2.0.0/css/dataTables.dataTables.min.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="jquery/master.js"></script>
-    <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
-    
-    
-<script>
-  $(document).ready(function () {
-    let table = new DataTable('#remindtable');
-   
-  });
-</script>
+
 <div class="container ">
   @if(session('message'))
     <div class="alert alert-primary">
@@ -37,7 +26,7 @@
 
           {{-- data table start  --}}
         <div class="card-body table-scrollable">
-            <table class="table table-striped table-responsive" id="remindtable1">
+            <table class="table table-striped table-responsive" id="remindtable">
                 <thead>
                   <tr>
                     <th scope="col">S.No</th>
@@ -56,6 +45,7 @@
                     <th scope="col"> Comming From  </th>
                     <th scope="col"> Going To   </th>
                     <th scope="col"> No Of Guest   </th>
+                    <th>Print</th>
            
                   </tr>
                 </thead>
@@ -75,15 +65,19 @@
                      <td>{{$record->guest_mobile}}</td>
                       <td scope="col">{{ \Carbon\Carbon::parse($record->checkin_date)->format('d-m-y') }}</td>
                       <td scope="col">{{ $record->checkin_time }}</td>
-                      <td><img src="{{ asset('storage\app\public\image\\' . $record->account_pic1) }}" alt="" width="70px"></td>
+                    <td><img src="{{ asset('storage/app/public/account_image/'.$record->account_pic1) }}" width="130px" height="130px"></td>          
+                      <!--<td><img src="{{ asset('storage/account_image\\' . $record->account_pic1) }}" alt="" width="70px"></td>-->
  
                       <td>{{$record->account_idproof_name}}</td>
                       <td>{{$record->account_idproof_no}}</td>
-                      <td><img src="{{ asset('storage\app\public\image\\' . $record->account_id_pic) }}" alt="" width="70px"></td>
+                      <td><img src="{{ asset('storage/app/public/account_image/' . $record->account_id_pic) }}" alt="" width="130px"></td>
                       <td>{{$record->nationality}}</td>
                       <td>{{$record->comming_from}}</td>
                       <td>{{$record->going_to}}</td>
                       <td>{{$record->no_of_guest}}</td>
+                      <td>
+                        <a href="{{ url('roomcheckin_guest_profile_print', $record->voucher_no) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
+                     </td> 
 
 
 
@@ -104,4 +98,31 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+
+<script>
+  $(document).ready(function () 
+  {
+
+    new DataTable('#remindtable', {
+    layout: {
+        topStart: {
+            buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+        }
+    }
+});
+
+
+  }
+  );
+ 
+</script>
 @endsection

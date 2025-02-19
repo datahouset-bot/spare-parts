@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('businesssettings', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->string('calculation_type');
             $table->time('standard_checkout_time');
             $table->timestamps();

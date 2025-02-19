@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('tempentries', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('user_name')->nullable();
             $table->date('entry_date')->nullable();

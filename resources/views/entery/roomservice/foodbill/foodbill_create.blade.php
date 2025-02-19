@@ -50,7 +50,7 @@
 
         <div class="card my-3">
             <div class="card-header">
-                Food Bill
+                Food Bill 
             </div>
             <div class="row my-2">
                 <div class="col-md-12 text-center">
@@ -507,5 +507,13 @@
                 window.location.href = '/facthkot_records/' + service_id;
             }
         });
+    </script>
+    <script>
+             $(document).ready(function () {
+        $('#saveForm').on('submit', function () {
+            // Disable the submit button and show loading spinner
+            $('#saveButton').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Please wait...');
+        });
+    });
     </script>
 @endsection

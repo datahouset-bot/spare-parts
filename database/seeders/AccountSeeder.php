@@ -2,45 +2,69 @@
 
 namespace Database\Seeders;
 
+use App\Models\accountgroup;
 use Illuminate\Database\Seeder;
-use App\Models\Account;
-use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class AccountSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
-    public function run()
+    public function run(): void
     {
-        // Initialize Faker library
-        $faker = Faker::create();
 
-        // Define an empty array to hold the accounts
-        $accounts = [];
+        // Disable foreign key checks to avoid constraint issues
+        Schema::disableForeignKeyConstraints();
 
-        // Generate 500 accounts
-        for ($i = 0; $i < 500; $i++) {
-            // Create a new account with fake data
-            $accounts[] = [
-                'account_name' => $faker->company,
-                'account_group' => $faker->word,
-                'op_balnce' => $faker->randomFloat(2, 0, 10000),
-                'balnce_type' => $faker->randomElement(['credit', 'debit']),
-                'city' => $faker->city,
-                'state' => $faker->state,
-                'phone' => $faker->phoneNumber,
-                'mobile' => $faker->phoneNumber,
-                'email' => $faker->email,
-                'person_name' => $faker->name,
-                'gst_no' => $faker->ean8,
-            ];
-        }
+        // Insert the account record into the database
+        DB::table('accounts')->insert([
+            'firm_id'=>'DATA0001',
+            'account_name' => 'Sale',
+            'account_group_id' => 17,
+            'op_balnce' => 0,
+            'balnce_type' => 'Dr',
+            'address' => null,
+            'city' => null,
+            'state' => null,
+            'phone' => null,
+            'mobile' => null,
+            'email' => null,
+            'person_name' => null,
+            'gst_no' => null,
+            // 'pincode' => '0',
+            // 'nationality' => '0',
+            // 'address2' => '0',
+            // 'pen_card' => '0',
+            // 'account_idproof_name' => '0',
+            // 'account_idproof_no' => '0',
+            // 'account_id_pic' => '0',
+            // 'account_pic1' => '0',
+            // 'account_attachment1' => '0',
+            // 'account_route' => '0',
+            // 'account_salsman' => '0',
+            // 'account_cr_days' => '0',
+            // 'account_birthday' => '0',
+            // 'account_anniversary' => '0',
+            // 'account_code' => '0',
+            // 'gst_code' => '0',
+            // 'account_dl1' => '0',
+            // 'account_dl2' => '0',
+            // 'account_af1' => '0',
+            // 'account_af2' => '0',
+            'account_af3' => 'YES',
+            // 'account_af4' => '0',
+            // 'account_af5' => '0',
+            // 'account_af6' => '0',
+            // 'account_af7' => '0',
+            // 'account_af8' => '0',
+            // 'account_af9' => '0',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
-        // Insert accounts into the database in chunks of 100
-        $chunks = array_chunk($accounts, 100);
-        foreach ($chunks as $chunk) {
-            Account::insert($chunk);
-        }
+        // Re-enable foreign key checks
+        Schema::enableForeignKeyConstraints();
     }
 }

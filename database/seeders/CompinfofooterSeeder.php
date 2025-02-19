@@ -14,7 +14,7 @@ class CompinfofooterSeeder extends Seeder
     public function run(): void
     {
         DB::table('compinfofooters')->insert([
-            [
+            [   'firm_id'=>'DATA0001',
                 'bank_name' => 'Bank A',
                 'bank_ac_no' => '1234567890',
                 'bank_ifsc' => 'IFSC001',

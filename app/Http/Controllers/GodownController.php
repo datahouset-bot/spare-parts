@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\godown;
-use App\Http\Requests\StoregodownRequest;
-use App\Http\Requests\UpdategodownRequest;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoregodownRequest;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\UpdategodownRequest;
 
 class GodownController extends CustomBaseController
 {
@@ -15,7 +16,7 @@ class GodownController extends CustomBaseController
      */
     public function index()
     {
-        $record=godown::orderBy('godown_name', 'asc')->get();
+        $record=godown:: where('firm_id',Auth::user()->firm_id)->orderBy('godown_name', 'asc')->get();
         return view('master.godown',['data'=>$record]); 
  
     }
@@ -35,7 +36,9 @@ class GodownController extends CustomBaseController
 
 
                     if ($validator->passes()) {
+
                 $godown = new godown;
+                $godown->firm_id=Auth::user()->firm_id;
                 $godown->godown_name = $request->godown_name;
                 $godown->godown_address=$request->godown_address;
 
@@ -54,7 +57,7 @@ class GodownController extends CustomBaseController
      */
     public function edit(string $id)
     {
-        $godown = godown::findOrFail($id);
+        $godown = godown::where('firm_id',Auth::user()->firm_id)->findOrFail($id);
   
         return view('master.godown_edit', compact('godown'));
 
@@ -70,7 +73,7 @@ class GodownController extends CustomBaseController
             
         ]);
 
-        $godown =godown::findOrFail($id);
+        $godown =godown::where('firm_id',Auth::user()->firm_id)->findOrFail($id);
         $godown->update($request->all());
 
         return redirect()->route('godowns.index')->with('message', 'Record updated successfully.');
@@ -81,24 +84,23 @@ class GodownController extends CustomBaseController
      */
     public function destroy($id)
     {
-        $godown = godown::find($id);
-
+        $godown = Godown::where('firm_id', Auth::user()->firm_id)
+            ->where('id', $id)
+            ->first(); // Use first() to retrieve a single record instead of get()
+        
         // Check if the godown exists
         if ($godown) {
-            if($godown->godown_name="Main Store"){
-                return redirect('/godowns')->with('message', 'This Is Main Store So We Can Not Delete ');    
-            }else{
+            if ($godown->godown_name === "Main Store") { // Use === for comparison
+                return redirect('/godowns')->with('message', 'This is the Main Store, so it cannot be deleted.');
+            } else {
                 $godown->delete();
-                return redirect('/godowns')->with('message', 'godown Delete successfully!');
-
+                return redirect('/godowns')->with('message', 'Godown deleted successfully!');
             }
-            
-            
         } else {
-            // godown not found
-            return redirect('/godowns')->with('message', 'godown Not Found');
-
+            // Godown not found
+            return redirect('/godowns')->with('message', 'Godown not found.');
         }
     }
+    
     
 }

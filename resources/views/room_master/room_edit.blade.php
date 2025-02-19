@@ -20,7 +20,7 @@
             <div class="row justify-content-center align-items-center">
                 <div class="col-md-6">
 <div class="modal-body">
-    <form action="{{ route('rooms.update', $room->id) }}" method="POST">
+    <form action="{{ route('rooms.update', $room->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
                             <div>
@@ -34,48 +34,37 @@
                             </span>
                           </div>
                           <div>
-
-                            Room Type     <select  name ="roomtype_id" id ="myitemgroup"class="myitemgroup form-select" aria-label="Default select example">
-                              <option  value ="" selected disabled>Select Room Type</option>
-                            @foreach ($roomtype as $record2 )
-                                                       
-                              <option value={{$record2['id']}}>{{$record2['roomtype_name']}}&nbsp;||&nbsp; {{$record2['room_tariff']}}&nbsp;||&nbsp;{{$record2->gstmaster->taxname}}</option>
-                              @endforeach 
+                            Room Type
+                            <select name="roomtype_id" id="myitemgroup" class="myitemgroup form-select" aria-label="Default select example">
+                                <option value="" disabled>Select Room Type</option>
+                                @foreach ($roomtype as $record2)
+                                    <option value="{{ $record2['id'] }}" 
+                                        @if (old('roomtype_id', $room->roomtype_id) == $record2['id']) selected @endif>
+                                        {{ $record2['roomtype_name'] }}&nbsp;||&nbsp;{{ $record2['room_tariff'] }}&nbsp;||&nbsp;{{ $record2->gstmaster->taxname }}
+                                    </option>
+                                @endforeach
                             </select>
-                            <span class="text-danger"> 
-                              @error('roomtype_id')
-                              {{$message}}
-                                  
-                              @enderror
+                            <span class="text-danger">
+                                @error('roomtype_id')
+                                    {{ $message }}
+                                @enderror
                             </span>
-                          </div>
-                          <div>
-
-                            Floor   <select  name ="room_floor" id ="myitemgroup"class="myitemgroup form-select" aria-label="Default select example">
-                              <option  value ="" selected disabled>Select Room Floor</option>
-                              <option value=1>1</option>
-                              <option value=2>2</option>
-                              <option value=3>3</option>
-                              <option value=4>4</option>
-                              <option value=5>5</option>
-                              <option value=6>6</option>
-                              <option value=7>7</option>
-                              <option value=8>8</option>
-                              <option value=9>9</option>
-                              <option value=10>10</option>
-                              <option value=11>11</option>
-                              <option value=12>12</option>
-                              <option value=13>13</option>
-                              <option value=14>14</option>
-                              <option value=15>15</option>
-                              </select>
-                            <span class="text-danger"> 
-                              @error('room_floor')
-                              {{$message}}
-                                  
-                              @enderror
-                            </span>
-                          </div> 
+                        </div>
+                        
+                        <div>
+                          Floor
+                          <select name="room_floor" id="myitemgroup" class="myitemgroup form-select" aria-label="Default select example">
+                            @for ($i = 1; $i <= 15; $i++)
+                              <option value="{{ $i }}" @if (old('room_floor', $room->room_floor) == $i) selected @endif>{{ $i }}</option>
+                            @endfor
+                          </select>
+                          <span class="text-danger">
+                            @error('room_floor')
+                              {{ $message }}
+                            @enderror
+                          </span>
+                        </div>
+                        
                           <div> 
                             Facilities  <input type="text" name ="room_facilities"class="form-control" placeholder="Room Facilities  ">
                             <span class="text-danger"> 

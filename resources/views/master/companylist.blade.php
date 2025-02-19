@@ -52,7 +52,7 @@
                           <form action="{{url('/savecompany')}}" method="POST">
                             @csrf
 
-                            Company Name  <input type="text" name ="comp_name"class="form-control" placeholder="Company Name / Brand">
+                            Company Name  <input type="text" name ="comp_name"class="form-control" placeholder="Company Name / Brand" autocomplete="off">
                             <span class="text-danger"> 
                               @error('comp_name')
                               {{$message}}
@@ -60,7 +60,7 @@
                               @enderror
                             </span>
                             
-                           Company Dis %  <input type="text" name ="comp_dis" class="form-control" placeholder="Company Dis% Is Optional ">
+                           Company Dis %  <input type="text" name ="comp_dis" class="form-control" placeholder="Company Dis% Is Optional " autocomplete="off">
                            <span class="text-danger"> 
                             @error('comp_dis')
                             {{$message}}

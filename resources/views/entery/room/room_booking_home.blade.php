@@ -32,7 +32,7 @@
           <div class="col-md-12 text-center">
             <a href="{{url('room_dashboard')}}" class="btn btn-warning">Room Dash Board</a>
             <a href="{{route('roombookings.create')}}" class="btn btn-primary">Book New Room</a>
-            <a href="{{url('pending_booking')}}" class="btn btn-danger">Pending For Confirmation</a>
+            <a href="{{url('pending_booking')}}" class="btn btn-danger">Unconfirmed Bookings</a>
             <a href="{{url('/clear_booking')}}" class="btn btn-dark">Clear Booking</a>
           </div>
        </div>
@@ -55,7 +55,14 @@
                     <th scope="col"> Contact No </th>
                     <th scope="col"> Booking Date </th>
                     <th scope="col"> Check in Date </th>
+                    <th scope="col"> Check in Time </th>
                     <th scope="col"> Check Out Date  </th>
+                    <th scope="col"> Check Out Time  </th>
+                    <th scope="col"> No Of Day  </th>
+                    <th scope="col"> No Of Guest  </th>
+                    <th scope="col"> Per Day Tariff </th>
+                    <th scope="col"> Total Tariff </th>
+                    <th scope="col"> Advance </th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -78,7 +85,17 @@
                      <td>{{$record->guest_mobile}}</td>
                      <td scope="col">{{ \Carbon\Carbon::parse($record->booking_date)->format('d-m-y') }}</td>
                      <td scope="col">{{ \Carbon\Carbon::parse($record->checkin_date)->format('d-m-y') }}</td>
+                     <td scope="col">{{ $record->checkin_time }}</td>
                      <td scope="col">{{ \Carbon\Carbon::parse($record->checkout_date)->format('d-m-y') }}</td>
+                     <td scope="col">{{ $record->checkout_time }}</td>
+                     <td scope="col">{{ $record->commited_days }}</td>
+                     <td scope="col">{{ $record->no_of_guest }}</td>
+
+                     <td scope="col">{{ $record->room_tariff_perday }}</td>
+                     <td scope="col">{{ $record->room_tariff_perday*$record->commited_days }}</td>
+                     <td scope="col">{{ $record->booking_amount ?? 0 }}</td>
+
+
 
                     
                      <td>
@@ -89,7 +106,7 @@
                   
 
                      <td>
-                      <a href="{{ url('roombooking_view', $record->voucher_no) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
+                      <a href="{{ url('roombooking_print_view', $record->voucher_no) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
                   </td> 
                   <td>
                       <a href="{{ route('roombookings.edit', $record->voucher_no) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>

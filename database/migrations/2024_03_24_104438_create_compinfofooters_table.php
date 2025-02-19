@@ -13,28 +13,29 @@ return new class extends Migration
     {
         Schema::create('compinfofooters', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->timestamps();
-            $table->string('bank_name',20)->nullable();
-            $table->string('bank_ac_no',20)->nullable();
-            $table->string('bank_ifsc',20)->nullable();
-            $table->string('upiid',20)->nullable();
-            $table->string('pay_no',20)->nullable();
-            $table->string('bank_branch',20)->nullable();
-            $table->string('voucher_prefix',20)->nullable();
-            $table->string('voucher_suffix',20)->nullable();
+            $table->string('bank_name',100)->nullable();
+            $table->string('bank_ac_no',100)->nullable();
+            $table->string('bank_ifsc',100)->nullable();
+            $table->string('upiid',100)->nullable();
+            $table->string('pay_no',100)->nullable();
+            $table->string('bank_branch',100)->nullable();
+            $table->string('voucher_prefix',100)->nullable();
+            $table->string('voucher_suffix',100)->nullable();
             $table->string('voucher_note',100)->nullable();
-            $table->string('country',20)->nullable();
-            $table->string('currency',20)->nullable();
+            $table->string('country',100)->nullable();
+            $table->string('currency',100)->nullable();
             $table->string('terms',300)->nullable();
-            $table->string('ct1',30)->nullable();
-            $table->string('ct2',30)->nullable();
-            $table->string('ct3',30)->nullable();
+            $table->string('ct1',100)->nullable();
+            $table->string('ct2',100)->nullable();
+            $table->string('ct3',100)->nullable();
             $table->string('ct4',200)->nullable();
-            $table->string('ct5',30)->nullable();
-            $table->string('ct6',30)->nullable();
-            $table->string('ct7',30)->nullable();
-            $table->string('ct8',30)->nullable();
-            $table->string('ct9',30)->nullable();
+            $table->string('ct5',100)->nullable();
+            $table->string('ct6',100)->nullable();
+            $table->string('ct7',100)->nullable();
+            $table->string('ct8',100)->nullable();
+            $table->string('ct9',100)->nullable();
             
             
             

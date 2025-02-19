@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-use App\Models\roomtype;
 use App\Models\package;
+use App\Models\roomtype;
 use App\Models\gstmaster;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreroomtypeRequest;
 use App\Http\Requests\UpdateroomtypeRequest;
 
@@ -13,9 +14,9 @@ class RoomtypeController extends CustomBaseController
 {
     public function index()
     {
-         $record=package::all();
-         $record1=gstmaster::all();
-         $record2 =roomtype::with('package','gstmaster')->get();
+         $record=package::where('firm_id',Auth::user()->firm_id)->get();
+         $record1=gstmaster::where('firm_id',Auth::user()->firm_id)->get();
+         $record2 =roomtype::where('firm_id',Auth::user()->firm_id)->with('package','gstmaster')->get();
 
 
         return view('room_master.roomtype',['data'=>$record,'data1'=>$record1,'data2'=>$record2]); 
@@ -50,6 +51,7 @@ class RoomtypeController extends CustomBaseController
             ]);
             if ($validator->passes()) {
                 $roomtype = new roomtype;
+                $roomtype->firm_id=Auth::user()->firm_id;
                 $roomtype->roomtype_name = $request->roomtype_name;
                 $roomtype->package_id=$request->package_id;
                 $roomtype->gst_id=$request->gst_id;
@@ -77,9 +79,9 @@ class RoomtypeController extends CustomBaseController
      */
     public function edit(string $id)
     {          
-        $record = Package::all();
-        $record1 = GstMaster::all();
-        $record2 = RoomType::findOrFail($id);
+        $record = Package::where('firm_id',Auth::user()->firm_id)->get();
+        $record1 = GstMaster::where('firm_id',Auth::user()->firm_id)->get();
+        $record2 = RoomType::where('firm_id',Auth::user()->firm_id)->findOrFail($id);
 
         return view('room_master.roomtype_edit', compact('record2', 'record1', 'record'));
 
@@ -99,7 +101,7 @@ class RoomtypeController extends CustomBaseController
              
         ]);
 
-        $roomtype = roomtype::findOrFail($id);
+        $roomtype = roomtype::where('firm_id',Auth::user()->firm_id)->findOrFail($id);
         $roomtype->update($request->all());
 
         return redirect()->route('roomtypes.index')->with('message', 'Room Type Updated Successfully.');
@@ -111,7 +113,7 @@ class RoomtypeController extends CustomBaseController
      */
     public function destroy(string $id)
     {
-        $roomtype = roomtype::find($id);
+        $roomtype = roomtype::where('firm_id',Auth::user()->firm_id)->find($id);
 
         // Check if the roomtype exists
         if ($roomtype) {

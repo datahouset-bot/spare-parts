@@ -31,11 +31,11 @@
 
     <div class="card my-3">
         <div class="card-header">
-        Room Type
+        Room 
         </div>
        <div class="row my-2">
         <div class="col-md-12 text-center"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-          Add New Room Type
+          Add New Room
       </button>
           </div></div>
         
@@ -48,7 +48,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Add Room Type</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Add Room </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">

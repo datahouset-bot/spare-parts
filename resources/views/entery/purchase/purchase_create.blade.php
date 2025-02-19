@@ -94,21 +94,14 @@
                     <input type="hidden" class="form-control" id="voucher_no" name="voucher_no"
                         value={{ $new_voucher_no }}>
                     <input type="hidden" class="form-control" id="voucher_type" name="voucher_type" value="Purchase">
-                    {{-- <input type="hidden" class="form-control" id="total_item_dis_amt" name="total_item_dis_amt" > --}}
-
+                    
+                    <input type="hidden" class="form-control" id ="entery_no"name="entery_no"
+                    value="{{ $new_bill_no }}" >
+                    <input type="hidden" class="form-control date" id ="voucher_date" name="voucher_date" >
                     {{-- hidden input close  --}}
 
-                    <div class="col-md-2 col-4  text-center">
-                        <label for="voucher_date">Date</label>
-                        <input type="text" class="form-control date" id ="voucher_date" name="voucher_date">
-                    </div>
+                   
 
-
-                    <div class="col-md-1 col-4  text-center">
-                        <label for="entery_no">Entry No </label>
-                        <input type="text" class="form-control" id ="entery_no"name="entery_no"
-                            value="{{ $new_bill_no }}">
-                    </div>
                     <div class="col-md-2 col-4  text-center">
                         <label for="godown_id">Godown</label>
 
@@ -127,16 +120,16 @@
                         <select name="terms" id="terms" class="form-select">
 
                             <option value="Cash" selected>Cash</option>
-                            <option value="credit" >Credit</option>
+                            <option value="Credit" >Credit</option>
 
 
 
                         </select>
 
                     </div>
-                    <div class="col-md-2 col-4   text-center">
+                    <div class="col-md-3 col-4   text-center">
                         <label for="kot_on">Account Name </label>
-                        <select name="account_id" id="account_id" class="form-select">
+                        <select name="account_id" id="account_id" class="form-select" required>
                             <option selected disabled>Select Party</option>
                             @foreach ($accountdata as $record)
                                 <option value="{{ $record->id }}">{{ $record->account_name }} </option>
@@ -147,13 +140,13 @@
                         </select>
 
                     </div>
-                    <div class="col-md-1 col-4  text-center left-margin">
+                    <div class="col-md-2 col-4  text-center left-margin">
                         <label for="purchase_bill_date">Bill Date</label>
-                        <input type="text" id="purchase_bill_date" class="form-control date" name="purchase_bill_date">
+                        <input type="text" id="purchase_bill_date" class="form-control date" name="purchase_bill_date" required>
                     </div>
-                    <div class="col-md-1 col-4  text-center">
+                    <div class="col-md-2 col-4  text-center">
                         <label for="voucher_bill_no">Bill No</label>
-                        <input type="text" id="voucher_bill_no" class="form-control" name="voucher_bill_no">
+                        <input type="text" id="voucher_bill_no" class="form-control" name="voucher_bill_no" required autocomplete="off">
                     </div>
                 </div>
                 <div class="row no-gutter" name="itementery">
@@ -477,79 +470,99 @@
 
     {{-- fetching records --}}
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             function fetchAndDisplayRecords(user_id) {
                 $.ajax({
                     url: '/fetchItemRecords_inventory/' + user_id,
                     type: 'GET',
                     dataType: 'json',
-                    success: function(response) {
+                    success: function (response) {
                         console.log(response);
-
+    
                         if (response.status === 200) {
                             var itemRecords = response.itemrecords;
                             var totalQty = 0;
                             var totalAmount = 0;
-                            var total_bill_discount=0;
-                            var total_bill_taxable=0;
-                            var total_bill_gst=0;
-                            var total_bill_net=0;
-
-
-
+                            var total_bill_discount = 0;
+                            var total_bill_taxable = 0;
+                            var total_bill_gst = 0;
+                            var total_bill_net = 0;
+    
                             $('#sold_item_record tbody').empty(); // Clear previous records
-
-                            itemRecords.forEach(function(record, index) {
+    
+                            itemRecords.forEach(function (record, index) {
                                 var amount = record.qty * record.rate;
                                 totalQty += parseFloat(record.qty);
                                 totalAmount += parseFloat(amount);
-                                total_bill_discount+=parseFloat(record.total_discount);
-                                total_bill_taxable+=parseFloat(record.total_amount);
+                                total_bill_discount += parseFloat(record.total_discount);
+                                total_bill_taxable += parseFloat(record.total_amount);
                                 total_bill_gst += parseFloat(record.total_gst);
                                 total_bill_net += parseFloat(record.item_net_value);
-
-
+    
                                 $('#sold_item_record tbody').append(`
-                                <tr>
-                                    <td>${index + 1}</td>
-                                    <td>${record.item_name}</td>
-                                    <td>${record.qty}</td>
-                                    <td>${record.rate}</td>
-                                    <td>${record.amount}</td>
-                                    <td>${ record.dis_percent ?? 0 }</td>
-
-                                    <td>${record.dis_amt??0}</td>
-                                    <td>${record.total_discount}</td>
-                                    <td>${record.total_amount}</td>
-                                    <td>${record.item_gst_id}</td>
-                                     <td>${record.total_gst}</td>
-                                    <td>${record.item_net_value}</td>
-                                    <td><button class="btn btn-primary btn-sm">Edit</button></td>
-                                    <td><button class="btn btn-danger btn-sm" id="item_delete">Delete</button></td>
-                                </tr>
-                            `);
+                                    <tr>
+                                        <td>${index + 1}</td>
+                                        <td>${record.item_name}</td>
+                                        <td>${record.qty}</td>
+                                        <td>${record.rate}</td>
+                                        <td>${amount.toFixed(2)}</td>
+                                        <td>${record.dis_percent ?? 0}</td>
+                                        <td>${record.dis_amt ?? 0}</td>
+                                        <td>${record.total_discount}</td>
+                                        <td>${record.total_amount}</td>
+                                        <td>${record.item_gst_id}</td>
+                                        <td>${record.total_gst}</td>
+                                        <td>${record.item_net_value}</td>
+                                        <td>
+                                            <span class="btn btn-danger btn-sm delete-record" data-id="${record.id}">
+                                                X
+                                            </span>
+                                        </td>
+                                    </tr>
+                                `);
                             });
-
+    
                             $('#total_records').val(itemRecords.length);
                             $('#total_qty').val(totalQty);
-                            $('#total_amount').val(totalAmount);
-                            $('#total_bill_discount').val(total_bill_discount);
-                            $('#total_bill_taxable').val(total_bill_taxable);
-                            $('#total_bill_gst').val(total_bill_gst);
-                            $('#total_bill_net').val(total_bill_net);
-
+                            $('#total_amount').val(totalAmount.toFixed(2));
+                            $('#total_bill_discount').val(total_bill_discount.toFixed(2));
+                            $('#total_bill_taxable').val(total_bill_taxable.toFixed(2));
+                            $('#total_bill_gst').val(total_bill_gst.toFixed(2));
+                            $('#total_bill_net').val(total_bill_net.toFixed(2));
                         } else {
                             alert('Failed to fetch records');
                         }
                     },
-                    error: function() {
+                    error: function () {
                         alert('Error fetching records');
                     }
                 });
             }
-
+    
+            // Delete Record Handler
+            $(document).on('click', '.delete-record', function () {
+                var recordId = $(this).data('id');
+                console.log("Deleting record:", recordId);
+    
+                $.ajax({
+                    url: '/delete_kot_temprecord/' + recordId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log(response);
+                        var user_id = $("#user_id").val();
+                        if (user_id) {
+                            fetchAndDisplayRecords(user_id);
+                        }
+                    },
+                    error: function () {
+                        alert('Error deleting record');
+                    }
+                });
+            });
+    
+            // Fetch records when page loads
             var initialUserId = $("#user_id").val();
-
             if (initialUserId) {
                 fetchAndDisplayRecords(initialUserId);
             }
@@ -589,7 +602,7 @@
             });
 
             // Fetch records on Enter key press
-            $('#user_id').keyUp(function(event) {
+            $('#user_id').keyup(function(event) {
                 var user_id = $("#user_id").val();
                 console.log(user_id);
                 if (user_id) {
@@ -603,22 +616,45 @@
 
             });
 
-
-
-
-
-
-            console.log("fetching record function");
+    
+            console.log("Fetching record function initialized.");
         });
     </script>
-    {{-- <script>
-        $(document).ready(function() {
-            $('#item_delete').submit(function(e) {
-                e.preventDefault();
-                console.log("ready to delete ");
-            });
+    
 
-           
+    <script>
+        $(document).ready(function() {
+            $('#additem').on('click', function(e) {
+                // Get field values
+                var accountId = $('#account_id').val();
+                var billDate = $('#purchase_bill_date').val();
+                var billNo = $('#voucher_bill_no').val();
+    
+                // Check if fields are empty
+                if (!accountId || accountId === 'Select Party') {
+                    alert('Please select Account Name');
+                    $('#account_id').focus();
+                    return false;
+                }
+    
+                if (!billDate) {
+                    alert('Please enter Bill Date');
+                    $('#purchase_bill_date').focus();
+                    return false;
+                }
+    
+                if (!billNo) {
+                    alert('Please enter Bill No');
+                    $('#voucher_bill_no').focus();
+                    return false;
+                }
+    
+                // If all fields have values, proceed with adding the item
+                // You can add the logic for adding item here
+            });
         });
-    </script> --}}
+    </script>
+    
+   
+
 @endsection

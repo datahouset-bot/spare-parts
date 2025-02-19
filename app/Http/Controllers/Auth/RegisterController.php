@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\super_comp_list;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +17,7 @@ class RegisterController extends Controller
     |--------------------------------------------------------------------------
     |
     | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
+    | validation and creation. By default, this controller uses a trait to
     | provide this functionality without requiring any additional code.
     |
     */
@@ -48,7 +49,20 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        // Check if the firm ID exists in the super_comp_list table
+        $firmExists = super_comp_list::whereRaw('BINARY firm_id = ?', [$data['firm_id']])->exists();
+        // dd($firmExists);
+
+        if (!$firmExists) {
+            // Return custom error message for invalid firm_id
+            return Validator::make([], [])->after(function ($validator) {
+                $validator->errors()->add('firm_id', 'Please Retry and Enter Correct Firm ID');
+            });
+        }
+
+        // Proceed with standard validation if firm_id exists
         return Validator::make($data, [
+            'firm_id' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -64,6 +78,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
+            'firm_id' => $data['firm_id'],
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),

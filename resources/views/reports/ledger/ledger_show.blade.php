@@ -173,7 +173,7 @@
                                 <select name="account_id" class="form-control" id="account_id" required>
                                     <option value="" selected disabled>Select Account Name</option>
                                     @foreach ($accounts as $account)
-                                        <option value="{{ $account->id }}">{{ $account->account_name }}</option>
+                                        <option value="{{ $account->id }}">{{ $account->account_name }} </option>
                                     @endforeach
                                 </select>
                             </div>

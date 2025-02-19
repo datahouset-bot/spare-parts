@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
-
+            $table->string('firm_id',100);
             $table->date('reminder_date');
             $table->string('reminder_title')->nullable();
             $table->string('reminder_name')->nullable();

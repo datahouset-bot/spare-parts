@@ -1,10 +1,11 @@
 @extends('layouts.blank')
 @section('pagecontent')
-    
 
     <div class="container mt-5">
         <a href="{{ url('roles') }}" class="btn btn-primary mx-1">Roles</a>
+        @if (auth()->check() && (auth()->user()->email === 'datahouset@gmail.com' || auth()->user()->email === Auth::user()->firm_id.'@gmail.com'))
         <a href="{{ url('permissions') }}" class="btn btn-info mx-1">Permissions</a>
+        @endif
         <a href="{{ url('users') }}" class="btn btn-warning mx-1">Users</a>
     </div>
 
@@ -21,8 +22,10 @@
                         <h4>
                             Roles
                             {{-- @can('create role') --}}
+                            @if (auth()->check() && (auth()->user()->email === 'datahouset@gmail.com' || auth()->user()->email === Auth::user()->firm_id.'@gmail.com'))
                             <a href="{{ url('roles/create') }}" class="btn btn-primary float-end">Add Role</a>
                             {{-- @endcan --}}
+                            @endif
                         </h4>
                     </div>
                     <div class="card-body">
@@ -44,6 +47,8 @@
                                         <a href="{{ url('roles/'.$role->id.'/give-permissions') }}" class="btn btn-warning">
                                             Add / Edit Role Permission
                                         </a>
+                                        @if (auth()->check() && (auth()->user()->email === 'datahouset@gmail.com' || auth()->user()->email === Auth::user()->firm_id.'@gmail.com'))
+
 
                                         @can('update role')
                                         <a href="{{ url('roles/'.$role->id.'/edit') }}" class="btn btn-success">
@@ -51,11 +56,13 @@
                                         </a>
                                         @endcan
 
+
                                         @can('delete role')
                                         <a href="{{ url('roles/'.$role->id.'/delete') }}" class="btn btn-danger mx-2">
                                             Delete
                                         </a>
                                         @endcan
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach

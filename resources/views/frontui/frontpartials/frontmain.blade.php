@@ -39,6 +39,11 @@
 #navbar{
     display: inline;
 }
+.youtube-button {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
 </style>
 </head>
 <body class="home">
@@ -55,8 +60,8 @@
             <div class="container">
                 <div class="row">
                     <div class="hidden-xs col-lg-7 col-sm-5 top-info">
-                        <span><i class="fa fa-phone"></i>Phone:+91-799966396</span>
-                        <span class="hidden-sm"><i class="fa fa-envelope"></i>Email: Datahouseerp@gmail.com</span>
+                        <span><i class="fa fa-phone"></i>Phone:{{$softwarecompinfo->software_mobile}},{{$softwarecompinfo->software_phone}}</span>
+                        <span class="hidden-sm"><i class="fa fa-envelope"></i>Email: {{$softwarecompinfo->software_email}}</span>
                     </div>
                     <div class="col-lg-5 col-sm-7 top-info clearfix">
                         <ul>
@@ -96,13 +101,16 @@
                             @endguest
 
 
-
-                            <li><a class="my-facebook" href=""><i class="fa fa-facebook"></i></a></li>
-                            <li><a class="my-tweet" href=""><i class="fa fa-twitter"></i></a></li>
-                            <li><a class="my-pint" href=""><i class="fa fa-pinterest"></i></a></li>
-                            <li><a class="my-rss" href=""><i class="fa fa-rss"></i></a></li>
-                            <li><a class="my-skype" href=""><i class="fa fa-skype"></i></a></li>
-                            <li><a class="my-google" href=""><i class="fa fa-google-plus"></i></a></li>
+                        
+                            <li><a class="my-facebook" href="{{$softwarecompinfo->software_facebook}}"><i class="fa fa-facebook"></i></a></li>
+                            <li><a class="my-tweet" href="{{$softwarecompinfo->software_youtube}}"><i class="fa fa-youtube"></i></a></li>
+                            <li><a class="my-pint" href="{{$softwarecompinfo->software_af1}}"><i class="fa fa-pinterest"></i></a></li>
+                            <li><a class="my-rss" href="{{$softwarecompinfo->software_af2}}"><i class="fa fa-rss"></i></a></li>
+                            <li><a class="my-skype" href="{{$softwarecompinfo->software_af3}}"><i class="fa fa-skype"></i></a></li>
+                            <li><a class="my-google" href="{{$softwarecompinfo->software_af4}}"><i class="fa fa-google-plus"></i></a></li>
+                            <li><a class="my-rss" href="{{$softwarecompinfo->software_af5}}"><i class="fa fa-eye"></i></a></li>
+                            <li><a class="my-skype" href="{{$softwarecompinfo->software_af6}}"><i class="fa fa-edit"></i></a></li>
+                            <li><a class="my-google" href="{{$softwarecompinfo->software_af7}}"><i class="fa fa-print"></i></a></li>
                             <li>
                                 <form class="search-bar">
                                     <label for="search" class="search-label">
@@ -127,9 +135,9 @@
         <div class="container">
             <div class="row sub_content">
                 <div class="col-lg-12 col-md-12 col-sm-12 wow fadeInDown">
-                    <h1 class="intro text-center">"Data House Hotel ERP: A Complete Solution for Hotel Management"
+                    <h1 class="intro text-center">"{{$softwarecompinfo->software_firm_name}}: A Complete Solution for Hotel Management"
                     </h1>
-                    <p class="lead text-center">"Data House Hotel ERP offers comprehensive, easy-to-use management solutions for hotels, enhancing operations, improving guest experience, and streamlining processes for efficient and effective hotel management."</p>
+                    <p class="lead text-center">"{{$softwarecompinfo->software_firm_name}} Hotel ERP offers comprehensive, easy-to-use management solutions for hotels, enhancing operations, improving guest experience, and streamlining processes for efficient and effective hotel management."</p>
                 </div>
                 <div class="rs_box  wow bounceInRight" data-wow-offset="200">
                     <div class="col-sm-6 col-lg-3">
@@ -412,7 +420,7 @@
                     <div class="dividerHeading">
                         <h4><span>Why Choose Us?</span></h4>
                     </div>
-                    <p>"Choose Data House Hotel ERP for seamless management and unmatched efficiency. Our system offers intuitive interfaces, real-time analytics, and customizable features to streamline operations and enhance guest satisfaction. Experience the future of hospitality management with us!"</p>
+                    <p>"Choose {{$softwarecompinfo->software_firm_name}} Hotel ERP for seamless management and unmatched efficiency. Our system offers intuitive interfaces, real-time analytics, and customizable features to streamline operations and enhance guest satisfaction. Experience the future of hospitality management with us!"</p>
                     <ul class="list_style circle">
                         <li><a href="#"> Comprehensive Features</a></li>
                         <li><a href="#"> User-Friendly Interface</a></li>
@@ -586,16 +594,21 @@
                 <div class="col-sm-9 col-md-9 col-lg-9">
                     <div class="promo_content">
                         <h3>Best Software For Hotel Business .</h3>
-                        <p>Data House Hotel ERP: The ultimate software solution for hotel businesses, offering comprehensive features, real-time analytics, and exceptional support to streamline operations and elevate guest satisfaction </p>
+                        <p>{{$softwarecompinfo->software_firm_name}} Hotel ERP: The ultimate software solution for hotel businesses, offering comprehensive features, real-time analytics, and exceptional support to streamline operations and elevate guest satisfaction </p>
                     </div>
                 </div>
                 <div class="col-sm-3 col-md-3 col-lg-3">
-                    <div class="pb_action">
+                    {{-- <div class="pb_action">
                         <a class="btn btn-lg btn-default" href="#fakelink">
                             <i class="fa fa-youtube"></i>
                             Watch Demo 
                         </a>
+                    </div> --}}
+                    <div class="youtube-button">
+                        <script src="https://apis.google.com/js/platform.js"></script>
+                        <div class="g-ytsubscribe" data-channelid="UCArw9uq7lQNVMyWSLO9XzuQ" data-layout="full" data-count="default"></div>
                     </div>
+                
                 </div>
             </div>
         </div>
@@ -611,11 +624,11 @@
                     <h4><span>About Us</span></h4>
                 </div>
                 <div class="widget_content">
-                    <p>Welcome to Data House ERP, where we revolutionize hotel management with our cutting-edge Hotel ERP system. At Data House, we understand the complexities and challenges that come with running a successful hotel. That’s why we’ve developed a comprehensive solution designed to streamline operations, enhance guest experiences, and maximize efficiency.</p>
+                    <p>Welcome to {{$softwarecompinfo->software_firm_name}} ERP, where we revolutionize hotel management with our cutting-edge Hotel ERP system. At {{$softwarecompinfo->software_firm_name}}, we understand the complexities and challenges that come with running a successful hotel. That’s why we’ve developed a comprehensive solution designed to streamline operations, enhance guest experiences, and maximize efficiency.</p>
                     <ul class="contact-details-alt">
-                        <li><i class="fa fa-map-marker"></i> <p><strong>Address</strong>: Shop  No 8 3rd Floor Good Luck Apartmnet malviya chowk jabalpur M.P.</p></li>
-                        <li><i class="fa fa-user"></i> <p><strong>Phone</strong>:(+91) 7999663696</p></li>
-                        <li><i class="fa fa-envelope"></i> <p><strong>Email</strong>: <a href="#">datahouseerp@gmail.com</a></p></li>
+                        <li><i class="fa fa-map-marker"></i> <p><strong>Address</strong>: {{$softwarecompinfo->software_address1}}&nbsp;{{$softwarecompinfo->software_address2}}&nbsp;{{$softwarecompinfo->software_city}}&nbsp;{{$softwarecompinfo->software_state}}&nbsp;{{$softwarecompinfo->software_pincode}}</p></li>
+                        <li><i class="fa fa-user"></i> <p><strong>Phone</strong>:{{$softwarecompinfo->software_mobile}}</p></li>
+                        <li><i class="fa fa-envelope"></i> <p><strong>Email</strong>: <a href="#">{{$softwarecompinfo->software_email}}</a></p></li>
                     </ul>
                 </div>
             </div>
@@ -676,7 +689,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-                <p class="copyright">&copy; Copyright 202-254 | Powered by  <a href="https://www.yahoobaba.net/">Data House ERP </a></p>
+                <p class="copyright">&copy; Copyright 202-254 | Powered by  <a href="https://www.yahoobaba.net/">{{$softwarecompinfo->software_firm_name}} ERP </a></p>
             </div>
 
             <div class="col-sm-6 ">

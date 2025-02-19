@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\kot;
 use App\Models\item;
+use App\Models\table;
 use App\Models\account;
 use App\Models\tempentry;
 use App\Models\roomcheckin;
@@ -27,20 +28,64 @@ class KotController extends CustomBaseController
      */
     public function index()
     {
-        $kots = Kot::where('status','0')
-        ->select('total_amount', 'total_qty', 'voucher_no','bill_no','service_id','voucher_date','status','user_id','ready_to_serve', DB::raw('GROUP_CONCAT(voucher_no ORDER BY voucher_date SEPARATOR ",") as room_nos'))
-        ->groupBy('voucher_no', 'total_amount', 'total_qty','bill_no','service_id','status','user_id','voucher_date','ready_to_serve')  // Ensure groupBy includes all non-aggregated selected columns
-        ->get();
-
-// return $kots;
+        $kots = Kot::where('kots.status', '0')
+            ->leftJoin('roomcheckins', function ($join) {
+                $join->on('kots.service_id', '=', 'roomcheckins.voucher_no')
+                     ->whereColumn('roomcheckins.firm_id', 'kots.firm_id') // Ensure firm_id matches
+                     ->where('kots.voucher_type', 'Kot'); // Ensuring join applies only to 'Kot' type
+            })
+            ->leftJoin('vouchers', function ($join) {
+                $join->on('kots.voucher_no', '=', 'vouchers.voucher_no')
+                     ->whereColumn('kots.firm_id', 'vouchers.firm_id'); // Ensuring firm_id matches
+            })
+            ->select(
+                'kots.voucher_type', 
+                'kots.total_amount', 
+                'kots.total_qty', 
+                'kots.voucher_no', 
+                'kots.bill_no', 
+                'kots.service_id', 
+                'kots.voucher_date', 
+                'kots.status', 
+                'kots.user_id', 
+                'kots.ready_to_serve', 
+                'vouchers.voucher_remark', // Example column from vouchers
+                'vouchers.voucher_terms',  // Example column from vouchers
+                DB::raw('GROUP_CONCAT(DISTINCT CASE WHEN roomcheckins.firm_id = kots.firm_id THEN roomcheckins.room_no END ORDER BY roomcheckins.room_no SEPARATOR ",") as room_nos'), // Collect only room numbers for the auth firm_id
+                DB::raw('GROUP_CONCAT(DISTINCT kots.voucher_no ORDER BY kots.voucher_date SEPARATOR ",") as kot_voucher_nos') // Collect voucher numbers
+            )
+            ->groupBy(
+                'kots.voucher_type', 
+                'kots.voucher_no', 
+                'kots.total_amount', 
+                'kots.total_qty', 
+                'kots.bill_no', 
+                'kots.service_id', 
+                'kots.status', 
+                'kots.user_id', 
+                'kots.voucher_date', 
+                'kots.ready_to_serve', 
+                'vouchers.voucher_remark', // Add vouchers columns to groupBy
+                'vouchers.voucher_terms'
+            )
+            ->where('kots.firm_id', Auth::user()->firm_id) // Ensure firm_id matches for kots
+            ->where('kots.voucher_type', 'Kot')
+            ->orderByRaw('CAST(kots.voucher_no AS UNSIGNED) DESC')
+            ->get();
+    
         return view('entery.roomservice.kot.kot_index', compact('kots'));
     }
+    
+    
+    
+    
    // 
    public function kots_cleared()
    {
        $kots = Kot::where('status','!=','0')
        ->select('total_amount', 'total_qty', 'voucher_no','bill_no','service_id','voucher_date','status','user_id', DB::raw('GROUP_CONCAT(voucher_no ORDER BY voucher_date SEPARATOR ",") as room_nos'))
        ->groupBy('voucher_no', 'total_amount', 'total_qty','bill_no','service_id','status','user_id','voucher_date')  // Ensure groupBy includes all non-aggregated selected columns
+       ->where('firm_id',Auth::user()->firm_id)
        ->get();
 
 // return $kots;
@@ -52,19 +97,27 @@ class KotController extends CustomBaseController
      */
     public function create()
     {
-             $kot_record=kot::count();
+        $id=Auth::user()->id;
+
+
+        $this->temp_item_delete($id);
+
+             $kot_record=kot::where('firm_id',Auth::user()->firm_id)->count();
          if ($kot_record > 0) {
-            $lastRecord = kot::orderBy('voucher_no', 'desc')->first();
+            $lastRecord = kot::where('firm_id',Auth::user()->firm_id)
+            ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')->first();
             $voucher_no = $lastRecord->voucher_no;
             $new_voucher_no=$voucher_no+1;
-            $voucher_type = voucher_type::where('voucher_type_name', 'Kot')->first();
+            $voucher_type = voucher_type::where('firm_id',Auth::user()->firm_id)
+            ->where('voucher_type_name', 'Kot')->first();
             $voucher_prefix=$voucher_type->voucher_prefix;
             $voucher_suffix=$voucher_type->voucher_suffix;
             $new_bill_no=$voucher_prefix."".$new_voucher_no."".$voucher_suffix;
         
          }
          else {
-            $voucher_type = voucher_type::where('voucher_type_name', 'Kot')->first();
+            $voucher_type = voucher_type::where('firm_id',Auth::user()->firm_id)
+            ->where('voucher_type_name', 'Kot')->first();
  
             $voucher_no=$voucher_type->numbring_start_from;
             $new_voucher_no=$voucher_no+1;
@@ -77,10 +130,11 @@ class KotController extends CustomBaseController
         $checkinlists = roomcheckin::where('checkout_voucher_no', 0)
         ->select('guest_name', 'voucher_no', DB::raw('GROUP_CONCAT(room_no ORDER BY room_no SEPARATOR ",") as room_nos'))
         ->groupBy('guest_name', 'voucher_no')
+        ->where('firm_id',Auth::user()->firm_id)
         ->get();
 
-        $accountdata = account::all();
-        $itemdata = item::all();
+        $accountdata = account::where('firm_id',Auth::user()->firm_id)->get();
+        $itemdata = item::where('firm_id',Auth::user()->firm_id)->get();
 
         return view('entery.roomservice.room_kot', compact('new_bill_no','new_voucher_no','checkinlists','accountdata','itemdata')); 
 
@@ -101,7 +155,8 @@ class KotController extends CustomBaseController
              
             ]);
      if ($validator->passes()) {            
-        $item = item::where('id', $request->item_id)->firstOrFail();
+        $item = item::where('id', $request->item_id)
+        ->where('firm_id',Auth::user()->firm_id)->firstOrFail();
         $itemName = $item->item_name;
         // format entery date 
         $date_variable=$request->voucher_date;
@@ -109,6 +164,7 @@ class KotController extends CustomBaseController
          $formatted_voucher_date = $parsed_date->format('Y-m-d');
          //storing data 
         $tempkot = new tempentry;
+        $tempkot->firm_id=Auth::user()->firm_id;
         $tempkot->user_id = $request->user_id;
         $tempkot->user_name=$request->user_name;
         $tempkot->entry_date=now();  
@@ -122,6 +178,7 @@ class KotController extends CustomBaseController
         $tempkot->rate=$request->item_rate;
         $tempkot->amount=$request->item_amount;
         $tempkot->sale_to_voucher_no=$request->service_id;
+        $tempkot->temp_af1=$request->checkin_time;   //store kot creation time
         $tempkot->save();
         $itemName="test item ";
             return response()->json([
@@ -182,6 +239,7 @@ class KotController extends CustomBaseController
         $tempkot->rate=$request->item_rate;
         $tempkot->amount=$request->item_amount;
         $tempkot->sale_to_voucher_no=$request->service_id;
+
         $tempkot->save();
 
         
@@ -206,16 +264,24 @@ class KotController extends CustomBaseController
 
     public function store_toKot($id)
     {
-    $tempkots=tempentry::where('user_id',$id)->get();
+
+    $tempkots=tempentry::where('user_id',$id)
+    ->where('firm_id',Auth::user()->firm_id)->get();
+    $tempkots_first=tempentry::where('user_id',$id)
+    ->where('firm_id',Auth::user()->firm_id)->first();
+    $store_time=$tempkots_first->temp_af1;
+
     if($tempkots->count()){
     $totalQty = $tempkots->sum('qty');
     $totalAmount = $tempkots->sum('amount');
+    
     foreach ($tempkots as $tempkot) {
          $kot=new kot;
+         $kot->firm_id=Auth::user()->firm_id;
          $kot->entry_date=$tempkot->entry_date;
          $kot->voucher_no=$tempkot->voucher_no;
          $kot->voucher_date=$tempkot->voucher_date;
-         $kot->voucher_type='Kot';
+         $kot->voucher_type=$tempkot->voucher_type;
          $kot->bill_no=$tempkot->bill_no;
          $kot->user_id=$tempkot->user_id;
          $kot->user_name=$tempkot->user_name;
@@ -228,9 +294,12 @@ class KotController extends CustomBaseController
          $kot->total_amount=$totalAmount;
          $kot->kot_remark=$tempkot->kot_remark;
          $kot->service_id=$tempkot->sale_to_voucher_no;
+         $date = $tempkot->entry_date; // Assuming this is in 'Y-m-d' format
+         $time = $store_time . ':00'; // Append ':00' to make it 'H:i:s'
+         $kot->created_at = "$date $time";
          $kot->save();
     }
-    $tempkots_delete=tempentry::where('user_id',$id);
+    $tempkots_delete=tempentry::where('firm_id',Auth::user()->firm_id)->where('user_id',$id);
     $tempkots_delete->delete();        
     return back()->with('message', 'Records Save Success Fully  ');
     }
@@ -244,16 +313,21 @@ class KotController extends CustomBaseController
 
     public function store_and_print($id,$voucher_no)
     {
-    $tempkots=tempentry::where('user_id',$id)->get();
+    $tempkots=tempentry::where('user_id',$id)->where('firm_id',Auth::user()->firm_id)->get();
+    $tempkots_first=tempentry::where('user_id',$id)
+    ->where('firm_id',Auth::user()->firm_id)->first();
+    $store_time=$tempkots_first->temp_af1;
+
     if($tempkots->count()>0){
     $totalQty = $tempkots->sum('qty');
     $totalAmount = $tempkots->sum('amount');
     foreach ($tempkots as $tempkot) {
          $kot=new kot;
+         $kot->firm_id=Auth::user()->firm_id;
          $kot->entry_date=$tempkot->entry_date;
          $kot->voucher_no=$tempkot->voucher_no;
          $kot->voucher_date=$tempkot->voucher_date;
-         $kot->voucher_type='Kot';
+         $kot->voucher_type=$tempkot->voucher_type;
          $kot->bill_no=$tempkot->bill_no;
          $kot->user_id=$tempkot->user_id;
          $kot->user_name=$tempkot->user_name;
@@ -266,23 +340,37 @@ class KotController extends CustomBaseController
          $kot->total_amount=$totalAmount;
          $kot->kot_remark=$tempkot->kot_remark;
          $kot->service_id=$tempkot->sale_to_voucher_no;
+         $date = $tempkot->entry_date; // Assuming this is in 'Y-m-d' format
+         $time = $store_time . ':00'; // Append ':00' to make it 'H:i:s'
+         $kot->created_at = "$date $time";
          $kot->save();
     }
-    $tempkots_delete=tempentry::where('user_id',$id);
+    $tempkots_delete=tempentry::where('firm_id',Auth::user()->firm_id)->where('user_id',$id);
     $tempkots_delete->delete();        
-    $kot_to_print = kot::where('user_id', $id)
+    $kot_to_print = kot::where('user_id', $id)->where('firm_id',Auth::user()->firm_id)
     ->where('voucher_no', $voucher_no)
     ->get();
-    $kot_header=kot::where('user_id', $id)
+    $kot_header=kot::where('user_id', $id)->where('firm_id',Auth::user()->firm_id)
     ->where('voucher_no', $voucher_no)
     ->first();
 
     $guest_detail = roomcheckin::where('checkout_voucher_no', 0)
      ->select('guest_name', 'voucher_no', DB::raw('GROUP_CONCAT(room_no ORDER BY room_no SEPARATOR ",") as room_nos'))
     ->groupBy('guest_name', 'voucher_no')
-    ->where('voucher_no', $kot_header->service_id)->first();
+    ->where('voucher_no', $kot_header->service_id)
+    ->where('firm_id',Auth::user()->firm_id)
+    ->first();
+    if ($guest_detail === null) {
 
-    return view('entery.roomservice.kot_print_view',compact('kot_to_print','kot_header','guest_detail'));
+        $tabledata=table::where('id',$kot_header->service_id)->where('firm_id',Auth::user()->firm_id)->first();
+      $table_name=$tabledata->table_name;
+
+    }else{
+        $table_name=Null;
+    }
+    
+
+    return view('entery.roomservice.kot_print_view',compact('kot_to_print','kot_header','guest_detail','table_name'));
    } 
    else{
     return back()->with('error', 'Nothing To Print  ');
@@ -290,27 +378,46 @@ class KotController extends CustomBaseController
     }
    public function kot_print($id,$voucher_no)
    {
+
+    
     $kot_to_print = kot::where('user_id', $id)
     ->where('voucher_no', $voucher_no)
+    ->where('firm_id',Auth::user()->firm_id)
     ->get();
     $kot_header=kot::where('user_id', $id)
+    ->where('firm_id',Auth::user()->firm_id)
     ->where('voucher_no', $voucher_no)
     ->first();
 
     $guest_detail = roomcheckin::where('checkout_voucher_no', 0)
      ->select('guest_name', 'voucher_no', DB::raw('GROUP_CONCAT(room_no ORDER BY room_no SEPARATOR ",") as room_nos'))
     ->groupBy('guest_name', 'voucher_no')
-    ->where('voucher_no', $kot_header->service_id)->first();
-    return view('entery.roomservice.kot.kot_print',compact('kot_to_print','kot_header','guest_detail'));
+    ->where('voucher_no', $kot_header->service_id)
+    ->where('firm_id',Auth::user()->firm_id)
+    ->first();
+   
+    if ($guest_detail === null) {
+
+        $tabledata=table::where('id',$kot_header->service_id)->where('firm_id',Auth::user()->firm_id)->first();
+      $table_name=$tabledata->table_name;
+
+    }else{
+        $table_name=Null;
+    }
+
+    return view('entery.roomservice.kot.kot_print',compact('kot_to_print','kot_header','guest_detail','table_name'));
    } 
    public function kot_print_view($id,$voucher_no)
    {
+   
       
     $kot_to_print = kot::where('user_id', $id)
+    ->where('firm_id',Auth::user()->firm_id)
     ->where('voucher_no', $voucher_no)
     ->get();
     
     $kot_header=kot::where('user_id', $id)
+    ->where('firm_id',Auth::user()->firm_id)
     ->where('voucher_no', $voucher_no)
     ->first();
       $checkin_no =$kot_header->service_id;
@@ -318,15 +425,30 @@ class KotController extends CustomBaseController
     $guest_detail = roomcheckin::where('checkout_voucher_no', 0)
      ->select('guest_name', 'voucher_no', DB::raw('GROUP_CONCAT(room_no ORDER BY room_no SEPARATOR ",") as room_nos'))
     ->groupBy('guest_name', 'voucher_no')
-    ->where('voucher_no', $kot_header->service_id)->first();
+    ->where('voucher_no', $kot_header->service_id)
+    ->where('firm_id',Auth::user()->firm_id)
+    ->first();
+
+
+    if ($guest_detail === null) {
+
+        $tabledata=table::where('id',$kot_header->service_id)->where('firm_id',Auth::user()->firm_id)->first();
+      $table_name=$tabledata->table_name;
+
+    }else{
+        $table_name=Null;
+    }
+    
      
-    return view('entery.roomservice.kot_print_view',compact('kot_to_print','kot_header','guest_detail'));
+    return view('entery.roomservice.kot_print_view',compact('kot_to_print','kot_header','guest_detail','table_name'));
    } 
 
     public function fetchItemRecords(string $id)
     {
         $user_id = $id;
-        $itemrecords = tempentry::where('user_id', $user_id)->get();
+        $itemrecords = tempentry::where('user_id', $user_id)
+        ->where('firm_id',Auth::user()->firm_id)
+        ->get();
         
         return response()->json([
             'message' => 'Records fetched successfully for user ' . $user_id,
@@ -357,8 +479,10 @@ class KotController extends CustomBaseController
      */
     public function destroy($voucher_no)
     {
-        $kots = kot::where('voucher_no', $voucher_no)
+
+        $kots = kot::where('voucher_no', $voucher_no)->where('firm_id',Auth::user()->firm_id)
         ->where('status','0');
+   
        if($kots->count()){
            $kots->delete();
            return back()->with('message', 'Record Deleteted '.$voucher_no);
@@ -371,10 +495,11 @@ class KotController extends CustomBaseController
         public function temp_item_delete($id)
     {
         $user_id = $id;
-         $itemrecords = tempentry::where('user_id', $user_id);
+         $itemrecords = tempentry::where('firm_id',Auth::user()->firm_id)
+         ->where('user_id', $user_id);
         if($itemrecords->count()){
             $itemrecords->delete();
-            return back()->with('message', 'Wecome on New Kot ');
+            return back()->with('message', 'Welcome on New Kot ');
         }
         else{
             return back()->with('message', 'Please Add Items   '); 
@@ -384,4 +509,29 @@ class KotController extends CustomBaseController
  
 
     }
+
+    public function delete_kot_temprecord($recordValue)
+    {
+        // Search for the customer by contact number
+ 
+        $tempitem_record = tempentry::where('id', $recordValue)->where('firm_id',Auth::user()->firm_id)
+        ->first();
+
+        if ($tempitem_record) {
+            $tempitem_record->delete();
+            
+            return response()->json([
+                'message' => '<p class="alart alart-success">Record Delete Sucessfully <p>'
+              
+            ]);
+        } 
+        else {
+            return response()->json([
+                'message' => ' <p class="alart alart-danger">No Record Found<p>',
+                'customer_info' => null
+            ]);
+        }
+    }
+ 
+
 }

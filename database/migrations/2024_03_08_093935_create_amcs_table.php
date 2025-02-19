@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('amcs', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->date('amc_start_date');
             $table->date('amc_end_date');
             $table->integer('amc_amount');

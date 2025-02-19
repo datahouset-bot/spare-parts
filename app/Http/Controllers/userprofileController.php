@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use illuminate\Support\Facades\Validator;
 use app\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use illuminate\Support\Facades\Validator;
 
 class userprofileController extends Controller
 {
@@ -24,10 +25,41 @@ class userprofileController extends Controller
     }
     public function show_userprofile()
     {
-        $record = User::where('email', '!=', 'datahouset@gmail.com')->get();
+        if(Auth::user()->email != 'datahouset@gmail.com') {
+        $record = User::where('email', '!=', 'datahouset@gmail.com')
+        ->where('email','!=',Auth::user()->firm_id.'@gmail.com')
+        ->where('firm_id',Auth::user()->firm_id)
+        ->get();
+    }else{
+        $record = User::where('email', '!=', 'datahouset@gmail.com')
+                ->get();
+    }
         return view('userprofile', ['data' => $record]);
          
     }
+    public function verifyid($id)
+    {
+        // Find the user by ID
+        $user = User::findOrFail($id);
+    
+        // Set the email_verified_at field to the current date and time
+        $user->email_verified_at = now(); // Using Laravel's helper function for current timestamp
+    
+        // Save the changes to the database
+        $user->save();
+        if(Auth::user()->email != 'datahouset@gmail.com') {
+        $record = User::where('email', '!=', 'datahouset@gmail.com')
+        ->where('email','!=',Auth::user()->firm_id.'@gmail.com')
+        ->where('firm_id',Auth::user()->firm_id)
+        ->get();
+    }else{
+        $record = User::where('email', '!=', 'datahouset@gmail.com')
+                ->get();
+    }
+        return view('userprofile', ['data' => $record]);
+
+    }
+    
 
     public function delete_userprofile(User $user,$id )
     {

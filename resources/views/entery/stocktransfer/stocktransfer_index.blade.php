@@ -49,7 +49,7 @@
                     <th scope="col">S.No</th>
                     <th scope="col"> Bill No    </th>
                     <th scope="col"> Bill Date</th>
-                    <th scope="col"> Party</th>
+                    <th scope="col"> Type</th>
                     <th scope="col">Total Qty </th>
                     <th scope="col">Taxable Amt</th>
                     <th scope="col">Total Discount </th>
@@ -59,7 +59,7 @@
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
-                    <th scope="col"></th>
+
                     <th scope="col"></th>
 
 
@@ -77,9 +77,8 @@
                     <td scope="row">{{$r1=$r1+1}}</td>
                     <td>{{$record->voucher_bill_no}}</td>
                     <td scope="col">{{ \Carbon\Carbon::parse($record['voucher_date'])->format('d-m-y') }}</td>
-                    <td></td>
 
-                     {{-- <td>{{$record->account->account_name}}</td> --}}
+                     <td>{{$record->voucher_type}}</td>
                      <td>{{$record['total_qty']}}</td>
                      <td>{{$record['total_item_basic_amount']}}</td>
                      <td>{{$record['total_disc_item_amount']}}</td>
@@ -102,7 +101,6 @@
                   </td>
                   {{-- <td><a href="http://wa.me/91{{$record->account->mobile}}" ><i class="fa fa-bullhorn"style="font-size:20px;color:green"></i> </a></td> --}}
 
-<td></td>
                     <td>
                       <form action="{{ route('stocktransfers.destroy', $record['voucher_no']) }}" method="POST" style="display:inline;">
                           @csrf

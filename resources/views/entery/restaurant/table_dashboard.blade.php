@@ -10,12 +10,17 @@
         padding-left: 5px;
     }
     .room-box {
-        border: 2px solid #ccc;
+        border: 2px solid #f30606;
         padding: 5px;
-        margin: 0px;
+        margin: 5px;
         border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        background-color: mintcream;
+        box-shadow: 0 0 10px rgba(209, 63, 63, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        /* background-color: mintcream; */
+    }
+    .room-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
     h5 {
         text-align: center;
@@ -102,7 +107,7 @@
           </div>
     </div>
 
-    <div class="row">
+    <div class="row ">
         @foreach($data as $record)
         <div class="col-lg-2 col-md-4 col-sm-6 col-6 mt-1">
             @php

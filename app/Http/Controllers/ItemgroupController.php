@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Models\itemgroup;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreitemgroupRequest;
 use App\Http\Requests\UpdateitemgroupRequest;
 
@@ -22,7 +23,7 @@ class ItemgroupController extends CustomBaseController
     public function index()
     {
 
-        $record=itemgroup::all();
+        $record=itemgroup::where('firm_id',Auth::user()->firm_id)->get();
         return view('master.Itemgrouplist',['data'=>$record]); 
     }
 
@@ -45,12 +46,17 @@ class ItemgroupController extends CustomBaseController
         // print_r($request->all());
 
         $validator= validator::make($request->all(),[
-            'item_group' => 'required|unique:itemgroups',
+           'item_group' => [
+        'required',
+        'unique:itemgroups,item_group,NULL,id,firm_id,' . auth()->user()->firm_id,
+    ],
+           
             'head_group'=>'required'
              
             ]);
             if ($validator->passes()) {
                 $itemgroup = new itemgroup;
+                $itemgroup->firm_id=Auth::user()->firm_id;
                 $itemgroup->item_group = $request->item_group;
                 $itemgroup->head_group=$request->head_group;
 
@@ -69,7 +75,7 @@ class ItemgroupController extends CustomBaseController
      */
     public function show(itemgroup $id)
     {
-        $record= itemgroup::find($id);
+        $record= itemgroup::where('firm_id',Auth::user()->firm_id)->find($id);
 
         return view('master.itemgrouplist',['data'=>$record]);
     }
@@ -98,7 +104,9 @@ class ItemgroupController extends CustomBaseController
 {
     try {
         // Attempt to delete the record
-        $deleted = itemgroup::destroy($id);
+        $deleted = itemgroup::where('firm_id',Auth::user()->firm_id)
+        ->where('id',$id)
+        ->delete();
 
         // Check if the deletion was successful
         if ($deleted) {

@@ -25,6 +25,11 @@
             .table {
                 margin-bottom: 0;
             }
+            .inline-form {
+    display: inline-block;
+    margin-right: 5px; /* Adjust spacing between buttons */
+}
+
         </style>
         <div class="col-md-6 mt-1">
             @if (isset($message))
@@ -54,6 +59,7 @@
 
                     <div class="card-body">
                         <h6>
+ 
                             Room No:{{$service_ids}}||
                             Total Qty:{{$firstItem->total_qty}}||
                             Remark: {{ $firstItem->kot_remark }}||
@@ -78,11 +84,25 @@
 
                             </tbody>
                         </table>
-                        <form action="{{url('/readytoserve')}}" method="POST">
-                            @csrf
-                            <input type="hidden" name="kot_voucher_no" value ="{{$voucher_no}}">
-                            <button type="submit" class="btn btn-success">Ready To Serve </button>
-                        </form>
+<table>
+    <tbody>
+        <tr>
+            <td>  <form action="{{ url('/readytoserve') }}" method="POST">
+                @csrf
+                <input type="hidden" name="kot_voucher_no" value="{{ $voucher_no }}">
+                <button type="submit" class="btn btn-success">Ready To Serve</button>
+            </form></td>
+        <td> <form action="{{ url('/readytoserve_print') }}" method="POST">
+            @csrf
+            <input type="hidden" name="kot_voucher_no" value="{{ $voucher_no }}">
+            <button type="submit" class="btn btn-warning">Serve & Print</button>
+        </form></td>
+        </tr>
+    </tbody>
+</table>
+                        
+                        
+                         
                     </div>
                 </div>
             </div>

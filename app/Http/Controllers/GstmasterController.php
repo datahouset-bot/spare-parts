@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
 use App\Models\gstmaster;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+
 class GstmasterController extends CustomBaseController
 {
     /**
@@ -11,7 +13,7 @@ class GstmasterController extends CustomBaseController
      */
     public function index()
     {
-        $record=gstmaster::all();
+        $record=gstmaster::where('firm_id',Auth::user()->firm_id)->get();
         return view('other.gst_master',['data'=>$record]); 
 
     }
@@ -44,6 +46,7 @@ class GstmasterController extends CustomBaseController
             ]);
             if ($validator->passes()) {
                 $gstmaster = new gstmaster;
+                $gstmaster->firm_id=Auth::user()->firm_id;
                 $gstmaster->taxname = $request->taxname;
                 $gstmaster->sgst = $request->sgst;
                 $gstmaster->cgst = $request->cgst;
@@ -78,7 +81,7 @@ class GstmasterController extends CustomBaseController
      */
     public function edit(string $id)
     {
-        $gstmaster = gstmaster::findOrFail($id);
+        $gstmaster = gstmaster::where('firm_id',Auth::user()->firm_id)->findOrFail($id);
         return view('other.gst_master_edit', compact('gstmaster'));
  
     }
@@ -101,7 +104,7 @@ class GstmasterController extends CustomBaseController
             'tax5' => [ 'numeric', 'regex:/^\d+(\.\d{1,4})?$/']
         ]);
 
-        $gstmster = gstmaster::findOrFail($id);
+        $gstmster = gstmaster::where('firm_id',Auth::user()->firm_id)->findOrFail($id);
         $gstmster->update($request->all());
 
         return redirect()->route('gstmasters.index')->with('message', 'GST / TAX  updated successfully.');
@@ -112,7 +115,7 @@ class GstmasterController extends CustomBaseController
      */
     public function destroy(string $id)
     {
-        $gstmaster = gstmaster::find($id);
+        $gstmaster = gstmaster::where('firm_id',Auth::user()->firm_id)->where('id',$id)->first();
 
         // Check if the gstmaster exists
         if ($gstmaster) {

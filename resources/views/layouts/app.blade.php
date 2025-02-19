@@ -13,7 +13,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {{-- <title>{{ config('app.name', 'AMC SOftware ') }}</title> --}}
-    <title>Data House Hotel ERP</title>
+    <title>{{$softwarecompinfo->software_firm_name}} ERP</title>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link rel="stylesheet" href="{{ global_asset('\front_assets\css\bootstrap.min.css') }}"/>

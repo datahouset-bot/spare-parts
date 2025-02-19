@@ -542,6 +542,12 @@ text-align: center;
                                     <td>:</td>
                                     <td>{{ \Carbon\Carbon::parse($roomcheckouts->check_out_time)->format('g:i A') }}</td>
                                 </tr>
+                                <tr>
+                                    <td>Billing Officer</td>
+                                    <td>:</td>
+                                    <td>{{ $roomcheckouts->username }}</td>
+                                </tr>
+
 
                             </tbody>
 

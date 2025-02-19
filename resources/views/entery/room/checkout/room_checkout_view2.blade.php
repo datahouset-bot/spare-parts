@@ -350,7 +350,8 @@ text-align: left;
                         <tr>
                             <td>G.R.C.No:{{ $roomcheckouts->checkin_voucher_no }}</td>
                             <td>Bill No: {{ $roomcheckouts->check_out_no }} </td>
-                            <td>Bill Date: {{ $roomcheckouts->checkout_date }}</td>
+                            <td>Bill Date: {{ \Carbon\Carbon::parse($roomcheckouts->checkout_date)->format('d-m-y') }}
+                            </td>
                         </tr>
 
                     </thead>
@@ -394,8 +395,10 @@ text-align: left;
                     </thead>
                     <tbody>
                             <td>{{ $guest_detail->address }}&nbsp;{{ $guest_detail->_city }} &nbsp;{{ $guest_detail->state }}</td>
-                            <td>{{ $roomcheckouts->checkin_date }} &nbsp; {{ $roomcheckouts->checkin_time }}</td>
-                            <td>{{ $roomcheckouts->checkout_date }} &nbsp;{{ $roomcheckouts->check_out_time }}</td>
+                            <td>{{ \Carbon\Carbon::parse($roomcheckouts->checkin_date)->format('d-m-y') }}
+                                &nbsp; {{ $roomcheckouts->checkin_time }}</td>
+                            <td>{{ \Carbon\Carbon::parse($roomcheckouts->checkout_date)->format('d-m-y') }}
+                                &nbsp;{{ $roomcheckouts->check_out_time }}</td>
                             
 
                     </tbody>
@@ -425,34 +428,6 @@ text-align: left;
                 </table>
             </div>
 
-            {{-- <div class="page_header">
-                <div class="info-container">
-                    <div class="cust_info">
-                        <span class="heading">Guest Detail</span><br>
-                        <span>Guest Name:{{ $guest_detail->account_name }}</span><br>
-                        <span>Add:</span><br>
-                        <span>city:</span><br>
-                        <span>State:</span><br>
-                        <span>Mob:{{ $guest_detail->mobile }}</span><br>
-
-                        <span>Email:{{ $guest_detail->email }}</span><br>
-                        <span>GST NO:{{ $guest_detail->gst_no }}</span><br>
-
-
-                    </div>
-                    <div class="voucher_info">
-                        <span class="heading">Detail</span><br>
-                        <span>Invoice No : {{ $roomcheckouts->check_out_no }}</span><br>
-                        <span>Check In Date:</span><br>
-                        <span>Check In Time:</span><br>
-                        <span>Check Out Date:{{ $roomcheckouts->checkout_date }}</span><br>
-                        <span>Check Out Time:</span><br>
-                        <span>Total Day :{{ $roomcheckouts->no_of_days }}</span><br>
-                        <span>Room No :{{ $roomcheckouts->room_no }}</span><br>
-                    </div>
-                </div>
-
-            </div> --}}
            
 
 
@@ -465,8 +440,6 @@ text-align: left;
                             <th class="th_detail">SAC Code</th>
                             <th class="th_detail">Description </th>
                             <th class="th_detail">Per Day Charge </th>
-                            <th class="th_detail">Food Charege </th>
-                            <th class="th_detail">Total </th>
 
 
 
@@ -474,41 +447,27 @@ text-align: left;
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- <tr>
-                            <td></td>
-                            <td class="td_detail">996311</td>
-                            <td class="td_detail">Room Charge  </td>
-                            <td class="td_detail">{{ $roomcheckouts->no_of_days }}</td>
-                            <td class="td_detail">{{ $roomcheckouts->per_day_tariff }}</td>
-                            <td></td>
 
-                        </tr>
-                        <tr>
-                            <td class="td_detail"></td>
-                            <td class="td_detail">Food Amount</td>
-                            <td class="td_detail"></td>
-                            <td class="td_detail">{{ $roomcheckouts->total_food_amt }}</td>
-                            <td></td>
-                        </tr> --}}
-                        @for ($i = 0; $i < $days; $i++)
+                        @for ($i = 0; $i < $totaldays; $i++)
                         @php
     
                 $checkindate = \Carbon\Carbon::parse($roomcheckouts->checkin_date)->addDays($i)->format('Y-m-d');
     
     
                             $roomTariff = $roomcheckouts->per_day_tariff;
-                            $foodBill = $foodBills->get($checkindate)->total_amount ?? 0;
-                            $totalForDay = $roomTariff + $foodBill;
+                            //  $foodBill = $foodBills->get($checkindate)->total_amount ?? 0;
+                            //  $totalForDay = $roomTariff + $foodBill;
                         @endphp
         
                         <tr class="item">
                             
-                            <td>{{$checkindate}}</td>
+                            <td>{{ \Carbon\Carbon::parse($checkindate)->format('d-m-y') }}
+                            </td>
                            <td>996311</td>
                            <td>Room Charge</td>
                              <td>{{$roomTariff}}</td>
-                            <td>{{$foodBill}}</td>
-                            <td>{{ number_format($totalForDay, 2) }}</td>
+                            {{-- <td>{{$foodBill}}</td> --}}
+                            {{-- <td>{{ number_format($totalForDay, 2) }}</td> --}}
     
     
                         </tr>
@@ -541,14 +500,23 @@ text-align: left;
                             <td></td>
                             <td></td>
                             <td class="">SGST</td>
-                            <td class="tfooter_amount">{{ $roomcheckouts->gst_total/2 }}</td>
+                            <td class="tfooter_amount">{{ $roomcheckouts->sgst }}</td>
  
                         </tr>
                         <tr>
                             <td></td>
                             <td></td>
                             <td class="">CGST</td>
-                            <td class="tfooter_amount">{{ $roomcheckouts->gst_total/2 }}</td>
+                            <td class="tfooter_amount">{{ $roomcheckouts->cgst }}</td>
+ 
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td class="">IGST</td>
+                            <td class="tfooter_amount">{{ $roomcheckouts->igst }}
+
+                            </td>
  
                         </tr>
                         <tr>
@@ -576,10 +544,10 @@ text-align: left;
                             <td></td>
                             <td></td>
                             <td class="">
-                                <h4>Net Bill Amount</h4>
+                                Net Bill Amount
                             </td>
                             <td class="tfooter_amount">
-                                <h4>{{ $roomcheckouts->total_billamount }}</h4>
+                                {{ $roomcheckouts->total_billamount }}
                             </td>
 
                         </tr>
@@ -592,8 +560,8 @@ text-align: left;
                         <tr>
                             <td></td>
                             <td></td>
-                            <td class="">Net Payable Amount</td>
-                            <td class="tfooter_amount">{{ $roomcheckouts->balance_to_pay }}</td>
+                            <td class=""><h5>Net Payable Amount</h5></td>
+                            <td class="tfooter_amount"><h5>{{ $roomcheckouts->balance_to_pay }}</h5></td>
    
                         </tr>
                     </tbody>
@@ -642,9 +610,12 @@ text-align: left;
 
 
             <div class="button-container my-2">
-                <button class="btn btn-primary btn-lg" onclick="printInvoice()">Print</button>
-                <a href="{{ url('room_checkout_view', $roomcheckouts->voucher_no) }}" class="btn  btn-primary btn-lg" >Format 2</a>
-                <a href="{{ url('room_checkout_view3', $roomcheckouts->voucher_no) }}" class="btn  btn-primary btn-lg" >Format 3</a>
+                <a href="{{ url('roomcheckouts') }}" class="btn  btn-danger btn-lg" ><i class="fa fa-home" style="font-size:36px"></i></a>
+                <button class="btn btn-dark btn-lg mx-2" onclick="printInvoice()">Print</button>
+                <a href="{{ url('room_checkout_view2', $roomcheckouts->voucher_no) }}" class="btn  btn-primary btn-lg" >Format 2</a>
+                <a href="{{ url('room_checkout_view3', $roomcheckouts->voucher_no) }}" class="btn  btn-success btn-lg mx-2" >Format 3</a>
+                <a href="{{ url('room_checkout_view4', $roomcheckouts->voucher_no) }}" class="btn  btn-warning btn-lg mx-2" >Format 4(A5)</a>
+
             </div>
 
 

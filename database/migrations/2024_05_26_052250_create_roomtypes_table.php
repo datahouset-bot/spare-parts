@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('roomtypes', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->string('roomtype_name',50);
             $table->unsignedBigInteger('package_id');
             $table->foreign('package_id')->references('id')->on('packages')->onDelete('restrict')->onUpdate('cascade');

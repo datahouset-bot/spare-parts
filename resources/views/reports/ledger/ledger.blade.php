@@ -105,12 +105,12 @@ td {
           <form action="{{ url('ledger_show') }}" method="POST">
               @csrf
               <div class="row">
-                  <div class="col-md-3 mb-3 mx-3">
+                  <div class="col-md-3 mb-3 mx-2">
                     Salect Account  
                     <select name="account_id" class="form-control" id="account_id" required>
                           <option value="" selected disabled>Select Account Name</option>
                           @foreach ($accounts as $account)
-                          <option value="{{ $account->id }}">{{ $account->account_name }}</option>
+                          <option value="{{ $account->id }}">{{ $account->account_name }} &nbsp;::{{ $account->city }}:: &nbsp;{{ $account->mobile }}</option>
                           @endforeach
                       </select>
                   </div>

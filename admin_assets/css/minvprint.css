@@ -1,0 +1,81 @@
+#img1{
+    width: 38%;
+   
+    position: absolute;
+    
+    top: -1%;
+}
+
+
+#companydetail{
+    width: 60%;
+height: 30%;
+position: absolute;
+left: 20%;
+top: 2%;
+
+}
+
+#img2{
+
+    width: 38%;
+   
+    position: absolute;
+    right: 0%;
+    top: -1%;
+
+
+}
+#main{
+    position: relative;
+    top: 180px;
+
+
+
+}
+#partydetails{
+    position: relative;
+    top: 180px;
+
+
+}
+
+
+.btn{
+    display: none;
+}
+
+
+
+
+hr{
+    border: 1px solid black;
+}
+.col-form-label-sm{
+    display: inline;
+}
+.noprint{
+    display: none;
+}
+.footer {
+    width: 10em;
+    display: inline-block;
+    
+}
+#iname,#iqty,#irate,#idis{
+ display: none;
+}
+#iamount,#save-button{
+    display: none;
+}
+
+th{
+    padding: 15px;
+    border: 1px solid black;
+  
+}
+td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid gray;
+  } 

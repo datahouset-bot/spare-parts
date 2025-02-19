@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->string('account_name', 100);   
             $table->unsignedBigInteger('account_group_id');
             $table->foreign('account_group_id')->references('id')->on('accountgroups');

@@ -281,12 +281,15 @@ background-color:white;
         <div class="page">
 
             <div class="company_info">
-                <div class="logo1">&nbsp;<img src="{{ asset('torage\app\public\image\\' . $pic->logo) }}" alt="qr_code" width="80px">
+                <div class="logo1">&nbsp;<img src="{{ asset('storage\app\public\image\\' . $pic->logo) }}" alt="qr_code"
+                        width="80px">
                 </div>
                 <div class="firm_detail">
                     <h4>{{ $componyinfo->cominfo_firm_name }}</h4>
                 </div>
-                <div class="logo2"><img src="{{ asset('storage\app\public\image\\' . $pic->brand) }}" alt="qr_code" width="80px">
+                <div class="logo2"><img src="{{ asset('storage\app\public\image\\' . $pic->qrcode) }}" alt="qr_code"
+                        width="80px">
+               
                 </div>
             </div>
             <div class="header_info">
@@ -321,11 +324,11 @@ background-color:white;
                     @endif
                     
 
-
+{{-- 
                        <span>Name:{{ $guest_detail->guest_name }}</span><br>
                        <span>Mobile No:{{ $guest_detail->guest_mobile }}</span><br>
                        <span>Room No:{{ $guest_detail->room_nos }}</span><br>
-                       <span>Check In No   :{{ $guest_detail->voucher_no }}</span><br>
+                       <span>Check In No   :{{ $guest_detail->voucher_no }}</span><br> --}}
                     </div>
                     <div class="voucher_info">
 
@@ -386,6 +389,7 @@ background-color:white;
                        
                         <span>Total Item ={{$foodbill_header->total_item}}</span><br>
                         <span>Total Qty ={{$foodbill_header->total_qty}}</span><br>
+                        <span>Kot Number ={{$foodbill_header->kot_no}}</span><br>
                        
                     </div>
                     <div class="voucher_info">

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('foodbills', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->unsignedBigInteger('user_id');
             $table->string('user_name');
             $table->string('voucher_type');

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\pic;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorepicRequest;
 use App\Http\Requests\UpdatepicRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class PicController extends CustomBaseController
@@ -25,10 +26,10 @@ class PicController extends CustomBaseController
     {
         // $pic=pic::find(1);
 
-        $comppic = pic::find(1);
+        $comppic = pic::where('firm_id',Auth::user()->firm_id)->first();
         if (!$comppic) {
             $comppic = new pic();
-            $comppic->id = 1;
+
             $comppic->logo=null;
             $comppic->qrcode=null;
             $comppic->seal=null;
@@ -85,7 +86,7 @@ class PicController extends CustomBaseController
         // $image_save->logo=$name;
         // $image_save->save();
          // $image_save=new pic;
-        $comppic = pic::find(1);
+        $comppic = pic::where('firm_id',Auth::user()->firm_id)->first();
         $image=$request->comp_logo;
         $name=$image->getClientOriginalName();
         $image->storeAS('public\image',$name);
@@ -104,7 +105,7 @@ class PicController extends CustomBaseController
 
     public function comp_pic_qrstore(Request $request)
     {      
-        $comppic = pic::find(1);
+        $comppic = pic::where('firm_id',Auth::user()->firm_id)->first();
         $image=$request->comp_qr;
         $name=$image->getClientOriginalName();
         $image->storeAS('public\image',$name);
@@ -116,7 +117,7 @@ class PicController extends CustomBaseController
     }
     public function comp_pic_sealstore(Request $request)
     {      
-        $comppic = pic::find(1);
+        $comppic = pic::where('firm_id',Auth::user()->firm_id)->first();
         $image=$request->comp_seal;
         $name=$image->getClientOriginalName();
         $image->storeAS('public\image',$name);
@@ -129,7 +130,7 @@ class PicController extends CustomBaseController
 
     public function comp_pic_signaturestore(Request $request)
     {      
-        $comppic = pic::find(1);
+        $comppic = pic::where('firm_id',Auth::user()->firm_id)->first();
         $image=$request->comp_signature;
         $name=$image->getClientOriginalName();
         $image->storeAS('public\image',$name);
@@ -141,7 +142,7 @@ class PicController extends CustomBaseController
     } 
     public function comp_pic_brandstore(Request $request)
     {      
-        $comppic = pic::find(1);
+        $comppic = pic::where('firm_id',Auth::user()->firm_id)->first();
         $image=$request->comp_brand;
         $name=$image->getClientOriginalName();
         $image->storeAS('public\image',$name);

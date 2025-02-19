@@ -159,6 +159,7 @@
                                 $creditBalance = 0;
                                 $runningBalance = $report['final_opning_balance'];
                                 $opening_balanceDisplay = abs($report['final_opning_balance']) . ($report['final_opning_balance'] >= 0 ? ' Dr' : ' Cr');
+                                $balanceDisplay = $opening_balanceDisplay; // Initialize $balanceDisplay here
                             @endphp
                             <tr>
                                 <td></td>
@@ -169,7 +170,7 @@
                                 <td></td>
                                 <td>{{ $opening_balanceDisplay }}</td>
                             </tr>
-
+                        
                             @foreach ($report['ledgers'] as $ledger)
                                 <tr>
                                     <td scope="col">{{ \Carbon\Carbon::parse($ledger->entry_date)->format('d-m-y') }}</td>
@@ -187,19 +188,20 @@
                                     @endphp
                                     <td>{{ $balanceDisplay }}</td>
                                 </tr>
-                                <tr>
-                                    <td>TOTAL</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>{{ $debitBalance }}</td>
-                                    <td>{{ $creditBalance }}</td>
-                                    <td>{{ $balanceDisplay }}</td>
-                                </tr>
-
                             @endforeach
+                        
+                            <tr>
+                                <td>TOTAL</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{ $debitBalance }}</td>
+                                <td>{{ $creditBalance }}</td>
+                                <td>{{ $balanceDisplay }}</td> <!-- Now $balanceDisplay is properly initialized -->
+                            </tr>
                         </tbody>
-                        <tfoot>
+                        
+                                                <tfoot>
                      
                         </tfoot>
                     </table>

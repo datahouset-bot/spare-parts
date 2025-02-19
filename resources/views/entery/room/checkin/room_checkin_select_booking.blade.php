@@ -20,11 +20,24 @@ include(public_path('cdn/cdn.blade.php'));
     overflow: auto; 
 
   }
-  #room_selection {
-    width: 100%;
-    border: 2px solid #ddd;
 
-}
+#payment_selection_box {
+        background-color: rgb(242, 247, 247);
+
+        border: 5px solid #2196F3;
+        max-height: 270px;
+        min-height: 370px;
+        overflow: auto;
+
+    }
+
+    #room_selection,
+    #payment_det {
+        width: 100%;
+        border: 2px solid #ddd;
+
+    }
+
 #other_charge_detail{
  width: 200px;
  font-size: 15px;
@@ -266,7 +279,7 @@ font-weight:800;
                                             </div>
                                             <div class="col-md-3"><span class="requierdfield">*</span>
                                               <label for="commited_days">No Of Days</label>
-                                              <input class="form-control" id="commited_days" type="text" name="commited_days" value=""  autocomplete="off"/>
+                                              <input class="form-control" id="commited_days" type="text" name="commited_days" value="{{$roombooking_firstrecord->commited_days}}"  autocomplete="off"/>
                                               <span class="text-danger"> 
                                                 @error('commited_days')
                                                 {{$message}}
@@ -277,7 +290,7 @@ font-weight:800;
                                             </div>
                                             <div class="col-md-3"><span class="requierdfield">*</span>
                                               <label for="no_of_guest">No Of Guest</label>
-                                              <input class="form-control" id="no_of_guest" type="text" name="no_of_guest" value=""  autocomplete="off"/>
+                                              <input class="form-control" id="no_of_guest" type="text" name="no_of_guest" value={{$roombooking_firstrecord->no_of_guest}}  autocomplete="off"/>
                                               <span class="text-danger"> 
                                                 @error('no_of_guest')
                                                 {{$message}}
@@ -285,31 +298,34 @@ font-weight:800;
                                                 @enderror
                                               </span>
                                             </div>
-                                            <div class="col-md-3"><span class="requierdfield">*</span>
+                                            <div class="col-md-3">
+                                              <span class="requierdfield">*</span>
                                               <label for="business_source_id">Business Source</label>
-                                              <select name="business_source_id" Id ="business_source_id "class="form-select" aria-label="Default select example">
-                                                <option selected disabled>Select Buiness Source </option>
-                                                @foreach ($businesssource as $businesssource)
-                                                      <option value="{{ $businesssource->id }}">
-                                                          {{ $businesssource->business_source_name }}
-                                                         
+                                              <select name="business_source_id" id="business_source_id" class="form-select" aria-label="Default select example">
+                                                  <option disabled>Select Business Source</option>
+                                                  
+                                                  @foreach ($businesssource as $source)
+                                                      <option value="{{ $source->id }}" 
+                                                          {{ isset($roombooking_firstrecord) && $roombooking_firstrecord->business_source_id == $source->id ? 'selected' : '' }}>
+                                                          {{ $source->business_source_name }}
                                                       </option>
-                                                @endforeach
-                  
+                                                  @endforeach
                                               </select>
                                               <span class="text-danger"> 
-                                                @error('business_source_id')
-                                                {{$message}}
-                                                    
-                                                @enderror
+                                                  @error('business_source_id')
+                                                      {{ $message }}
+                                                  @enderror
                                               </span>
-                                            </div>
+                                          </div>
+                                           
                                             <div class="col-md-6"><span class="requierdfield">*</span>
                                               <label for="package">Package</label>
                                               <select name="package_id" Id ="package_id"class="form-select" aria-label="Default select example">
                                                 <option selected disabled>Select Package </option>
                                                 @foreach ($package as $package)
-                                                      <option value="{{ $package->id }}">
+                                                <option value="{{ $package->id }}"
+                                                {{ isset($roombooking_firstrecord) && $roombooking_firstrecord->package_id == $package->id ? 'selected' : '' }}>
+                                                      
                                                           {{ $package->package_name }}||{{ $package->plan_name }}
                                                          
                                                       </option>
@@ -325,7 +341,7 @@ font-weight:800;
                                             </div>
                                              <div class="col-md-4">
                                               <label for="checkin_remark1">Remark 1</label>
-                                              <input class="form-control" id="checkin_remark1" type="text" name="checkin_remark1" value="" />
+                                              <input class="form-control" id="checkin_remark1" type="text" name="checkin_remark1" value={{$roombooking_firstrecord->checkin_remark1}} />
                                               <span class="text-danger"> 
                                                 @error('checkin_remark1')
                                                 {{$message}}
@@ -335,7 +351,7 @@ font-weight:800;
                                             </div>
                                             <div class="col-md-8 mb-1">
                                               <label for="checkin_remark2">Remark 2</label>
-                                              <input class="form-control" id="checkin_remark2" type="text" name="checkin_remark2" value="" />
+                                              <input class="form-control" id="checkin_remark2" type="text" name="checkin_remark2" value={{$roombooking_firstrecord->checkin_remark2}} />
                                               <span class="text-danger"> 
                                                 @error('checkin_remark2')
                                                 {{$message}}
@@ -356,7 +372,7 @@ font-weight:800;
                                             <th># </th>
                                             <th>Room No </th>
                                             <th>Room Type</th>
-                                            <th>Tariff</th>
+                                            {{-- <th>Tariff</th> --}}
 
                                           </tr>
                                         </thead>
@@ -378,9 +394,9 @@ font-weight:800;
                                               <td>
                                                   <input type="text" name="checkin_roomtype" id="checkin_roomtype" value ="{{$roombooking->room->roomtype->roomtype_name}}" readonly>
                                               </td>
-                                              <td>
+                                              {{-- <td>
                                                   <input type="text" name="checkin_room_tariff"id="checkin_room_tariff" class ="tariff"value ="{{$roombooking->room->roomtype->room_tariff}}" >
-                                              </td>
+                                              </td> --}}
 
                                           </tr>
 
@@ -519,213 +535,178 @@ font-weight:800;
                                               </span>
                                             </div>   
 
+                                            <div class="col-md-6">
+                                              <label for="label1">Purpose Of Vist </label>
+                                              <input type="text" class=" form-control"id=""  name="purpose_of_visit" class="">
+                                            </div>
+                                            <div class="col-md-3">
+                                              <label for="label1">Coming From</label>
+                                              <input type="text" class=" form-control"id=""  name="comming_from" class="">
+                                            </div>
+                                            <div class="col-md-3">
+                                              <label for="label1">Going To </label>
+                                              <input type="text" class=" form-control"id=""  name="going_to" class="">
+                                            </div>
+                                            <div class="col-md-3">
+                                              <label for="label1">Agent</label>
+                                              <input type="text" class=" form-control"id=""  name="agent" class="">
+                                            </div>
+                                            <div class="col-md-3">
+                                              <label for="guest_idproof">Document Name </label>
+                                              <input class="form-control" id="guest_idproof" type="text" name="guest_idproof" value="{{ $booking_detail->guest_idproof  }}" />
+                                              <span class="text-danger"> 
+                                                @error('guest_idproof')
+                                                {{$message}}
+                                                    
+                                                @enderror
+                                              </span>
+                                            </div>
+                                            <div class="col-md-3">
+                                              <label for="guest_idproof_no">Document No </label>
+                                              <input class="form-control" id="guest_idproof_no" type="text" name="guest_idproof_no" value="{{$booking_detail->guest_idproof_no }}" />
+                                              <span class="text-danger"> 
+                                                @error('guest_idproof_no')
+                                                {{$message}}
+                                                    
+                                                @enderror
+                                              </span>
+                                            </div>
+                                
+                                            <div class="col-md-3">
+                                              <label for="firm_name">Company  Name</label>
+                                              <input class="form-control" id="firm_name" type="text" name="firm_name" value="{{ $booking_detail->firm_name}}" />
+                                              <span class="text-danger"> 
+                                                @error('firm_name')
+                                                {{$message}}
+                                                    
+                                                @enderror
+                                              </span>
+                                   
+                                            </div>
+                                
+                                            <div class="col-md-3">
+                                              <label for="firm_address">Company Address </label>
+                                              <input class="form-control" id="firm_address" type="text" name="firm_address" value="{{$booking_detail->firm_address }}" />
+                                              <span class="text-danger"> 
+                                                @error('firm_address')
+                                                {{$message}}
+                                                    
+                                                @enderror
+                                              </span>
+                                   
+                                            </div>
+                                
+                                
+                                            <div class="col-md-3">
+                                              <label for="gst_no">GST NO </label>
+                                              <input class="form-control" id="gst_no" type="text" name="gst_no" value="{{ $booking_detail->gst_no }}" />
+                                              <span class="text-danger"> 
+                                                @error('gst_no')
+                                                {{$message}}
+                                                    
+                                                @enderror
+                                              </span>
+                                   
+                                            </div>
+                                            <div class="col-md-3">
+                                              <label for="guest_id_pic">Document Image  </label>
+                                              <input class="form-control" id="guest_id_pic" type="file" name="guest_id_pic" value="" />
+                                              <span class="text-danger"> 
+                                                @error('guest_id_pic')
+                                                {{$message}}
+                                                    
+                                                @enderror
+                                              </span>
+                                            </div>
+                                            <div class="col-md-3">
+                                              <label for="guest_pic">Guest Image </label>
+                                              <input class="form-control" id="guest_pic" type="file" name="guest_pic" value="{{ old('guest_pic') }}" />
+                                              <span class="text-danger"> 
+                                                @error('guest_pic')
+                                                {{$message}}
+                                                    
+                                                @enderror
+                                              </span>
+                                
+                                            </div>
+
                                           </div>
                                         </div>
                                        
 
 
-                                      <div class="col-md-4" id ="room_selection_box">
-                                          <table id="charge_selection" class="table table-striped table-responsive">
-                                           <thead>
-                                             <tr>
-                                               <th># </th>
-                                               <th>Charge Name </th>
-                                             </tr>
-                                           </thead>
-                                           <tbody>
-   
-                                             
-   
-                                           @foreach ($othercharges as $othercharge)
-                                           <tr>
-                                               <td>
-                                                   <label class="container_chekbox">
-                                                       <input type="checkbox" class="room-checkbox" name="othercharge_id[]" value="{{ $othercharge->id }}">
-                                                       <span class="checkmark"></span>
-                                                   </label> 
-                                               </td>
-                                               <td>
-                                                   <input type="text"id="other_charge_detail"  value="{{ $othercharge->charge_name }}||{{ $othercharge->charge_type }}||{{ $othercharge->applicable_on }}" readonly>
-                                               </td>
-
-                                           </tr>
-                                           @endforeach
-                                           
-   
-   
-                                           </tbody>
-                                          </table>
-                                           
-   
-                                            
-   
-   
-   
-
-
-
-
-                                          </div> 
-                                          
-                                        
-                                      </div>  
-          </div>                        
        {{-- 4rd row start for guest Correspondence                              --}}
-  <div class="row justify-content-centerm-3 my-3">
-        <div class="col-md-8">
-          <div class="row form-group">
-            <div class="col-md-6">
-              <label for="label1">Purpose Of Vist </label>
-              <input type="text" class=" form-control"id=""  name="purpose_of_visit" class="">
-            </div>
-            <div class="col-md-3">
-              <label for="label1">Coming From</label>
-              <input type="text" class=" form-control"id=""  name="comming_from" class="">
-            </div>
-            <div class="col-md-3">
-              <label for="label1">Going To </label>
-              <input type="text" class=" form-control"id=""  name="going_to" class="">
-            </div>
-            <div class="col-md-3">
-              <label for="label1">Agent</label>
-              <input type="text" class=" form-control"id=""  name="agent" class="">
-            </div>
-            <div class="col-md-3">
-              <label for="guest_idproof">Document Name </label>
-              <input class="form-control" id="guest_idproof" type="text" name="guest_idproof" value="{{ $booking_detail->guest_idproof  }}" />
-              <span class="text-danger"> 
-                @error('guest_idproof')
-                {{$message}}
-                    
-                @enderror
-              </span>
-            </div>
-            <div class="col-md-3">
-              <label for="guest_idproof_no">Document No </label>
-              <input class="form-control" id="guest_idproof_no" type="text" name="guest_idproof_no" value="{{$booking_detail->guest_idproof_no }}" />
-              <span class="text-danger"> 
-                @error('guest_idproof_no')
-                {{$message}}
-                    
-                @enderror
-              </span>
-            </div>
-
-            <div class="col-md-3">
-              <label for="firm_name">Company  Name</label>
-              <input class="form-control" id="firm_name" type="text" name="firm_name" value="{{ $booking_detail->firm_name}}" />
-              <span class="text-danger"> 
-                @error('firm_name')
-                {{$message}}
-                    
-                @enderror
-              </span>
-   
-            </div>
-
-            <div class="col-md-3">
-              <label for="firm_address">Company Address </label>
-              <input class="form-control" id="firm_address" type="text" name="firm_address" value="{{$booking_detail->firm_address }}" />
-              <span class="text-danger"> 
-                @error('firm_address')
-                {{$message}}
-                    
-                @enderror
-              </span>
-   
-            </div>
-
-
-            <div class="col-md-3">
-              <label for="gst_no">GST NO </label>
-              <input class="form-control" id="gst_no" type="text" name="gst_no" value="{{ $booking_detail->gst_no }}" />
-              <span class="text-danger"> 
-                @error('gst_no')
-                {{$message}}
-                    
-                @enderror
-              </span>
-   
-            </div>
-            <div class="col-md-3">
-              <label for="guest_id_pic">Document Image  </label>
-              <input class="form-control" id="guest_id_pic" type="file" name="guest_id_pic" value="" />
-              <span class="text-danger"> 
-                @error('guest_id_pic')
-                {{$message}}
-                    
-                @enderror
-              </span>
-            </div>
-            <div class="col-md-3">
-              <label for="guest_pic">Guest Image </label>
-              <input class="form-control" id="guest_pic" type="file" name="guest_pic" value="{{ old('guest_pic') }}" />
-              <span class="text-danger"> 
-                @error('guest_pic')
-                {{$message}}
-                    
-                @enderror
-              </span>
-
-            </div>
-
-
-
-          </div>
-  </div>
-       
-
-      <div class="col-md-4" id ="room_selection_box">
-        <h5>Payment Detail</h5>
-        <table id="room_selection" class="table table-striped table-responsive">
-          <thead>
-            <tr>
-              <th> </th>
-              <th>Amount</th>
  
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Per Day Room Tariff</td>
-              <td><input type="text" id="room_tariff_perday" name="room_tariff_perday" class="amount_input" readonly ></td>
-            </tr>
-            <tr>
-              <td>Booking Advance</td>
-              <td><input type="hidden" id="booking_advance" name="booking_advance" class="amount_input" readonly>     </td>
-            </tr>
 
+  <div class="col-md-4" id="payment_selection_box">
+    <h5>Payment Detail</h5>
+    <table id="room_selection"
+        class="table table-striped table-responsive">
+        <thead>
             <tr>
-              <td><select name="posting_acc_id" id="posting_acc_id">
-              <option value="" selected disabled>Select Mode</option>
-              @foreach ($paymentmodes as $paymentmode )
-              <option value="{{$paymentmode->id}}" >{{$paymentmode->account_name}}</option>
-                
-              @endforeach  
-
-
-              </select></td>
-              <td>
-              <input type="text" class="amount_input" id="booking_amount" name="booking_amount" autocomplete="off">
-              </td>
+                <th>Payment Mode</th>
+                <th>Amount</th>
             </tr>
-
+        </thead>
+        <tbody id="payment_mode_body">
             <tr>
-              <td>Payment Refance</td>
-              <td><input type="text" name="voucher_payment_ref"class="amount_input" autocomplete="off"></td>
+                <td>Per Day Room Tariff</td>
+                <td><input type="text" id="room_tariff_perday"
+                        name="room_tariff_perday" class="amount_input" value="{{$booking_detail->room_tariff_perday}}"
+                        readonly></td>
             </tr>
             <tr>
-              <td>Payment Remark</td>
-              <td><input type="text"  name="voucher_payment_remark" class="amount_input" autocomplete="off"></td>
+              <td>Total Advance </td>
+              <td><input type="text" class="amount_input"
+                      id="total_advance" name="total_advance"
+                      value={{ $final_opning_balance }} readonly></td>
+          </tr>
+            <tr>
+                <td>
+                    <select name="posting_acc_id[]"
+                        class="posting_acc_id">
+                        <option value="" selected disabled>Select
+                            Mode</option>
+                        @foreach ($paymentmodes as $paymentmode)
+                            <option value="{{ $paymentmode->id }}">
+                                {{ $paymentmode->account_name }}</option>
+                        @endforeach
+                    </select>
+                </td>
+                <td>
+                    <input type="text" class="amount_input"
+                        name="booking_amount[]" autocomplete="off">
+                </td>
             </tr>
+        </tbody>
+    </table>
+    <!-- Button to add more payment modes -->
 
-               
 
-          </tbody>
-         </table>
-      </div>  
-</div>                        
+    <table class="table" id="payment_det">
+        <tr>
+            <td>
+                <button type="button" id="add_payment_mode"
+                    class="btn  btn-sm btn-primary">+ Payment Mode</button>
+            </td>
 
+
+            <td><input type="text" id="total_receipt_amt"
+                    name="total_receipt_amt" class="amount_input"
+                    readonly></td>
+        </tr>
+        <tr>
+            <td>Payment Reference</td>
+            <td><input type="text" name="voucher_payment_ref"
+                    class="amount_input" autocomplete="off"></td>
+        </tr>
+        <tr>
+            <td>Payment Remark</td>
+            <td><input type="text" name="voucher_payment_remark"
+                    class="amount_input" autocomplete="off"></td>
+        </tr>
+    </table>
+</div>
  
   <div id="contentstart">
 
@@ -737,52 +718,6 @@ font-weight:800;
 
                                         <div class="col-md-4 mt-4">
                                           <div class="form-floating mb-3 mb-md-0">
-{{--                                              
-                                            <select name="room_id" Id ="room_id"class="form-select" aria-label="Default select example">
-                                              <option selected disabled>Select Room No </option>
-                                              @foreach ($rooms as $room)
-                                                    <option value="{{ $room->id }}">
-                                                        {{ $room->room_no }}
-                                                       
-                                                    </option>
-                                              @endforeach
-                
-                                            </select>
-                                              <label for="room_id">Room No   </label>
-                                             
-                                          </div>
-                                          <span class="text-danger"> 
-                                            @error('room_no')
-                                            {{$message}}
-                                                
-                                            @enderror
-                                          </span>
-
-                                      </div>       
-                                            
-  --}}
-                                           
-                                            
-                                   
-{{-- 
-                                          <div class="col-md-4 mt-4">
-                                            <div class="form-floating mb-3 mb-md-0">
-                                              <input class="form-control" id="advance_amount" type="text" name="advance_amount" value="{{ old('advance_amount') }}" />
-                                                <label for="priority">Advance Amount  </label>
-                                               
-                                            </div>
-                                            <span class="text-danger"> 
-                                              @error('advance_amount')
-                                              {{$message}}
-                                                  
-                                              @enderror
-                                            </span>
-
-                                        </div> --}}
-
-                                        
-                        
-
 
 
                                         <div class="row">
@@ -790,22 +725,6 @@ font-weight:800;
                                                </div></DIV>
 
 
-
-                                               {{-- <input type="text" name ="room_no" id="room_no" value="" >
-                                               <input type="text" name ="room_tariff" id="room_tariff" value="" >
-                                               <input type="text" name ="room_dis" id="room_dis" value="" >
-                                               <input type="text" name ="package_name" id="package_name" value="" >
-                                               <input type="text" name ="plan_name" id="plan_name" value="" >
-                                               <input type="text" name ="taxname" id="taxname" value="" >
-                                               <input type="text" name ="sgst" id="sgst" value="" >
-                                               <input type="text" name ="cgst" id="cgst" value="" >
-                                               <input type="text" name ="igst" id="igst" value="" >
-                                               <input type="text" name ="vat" id="vat" value="" >
-                                               <input type="text" name ="tax1" id="tax1" value="" >
-                                               <input type="text" name ="tax2" id="tax2" value="" >
-                                               <input type="text" name ="tax3" id="tax3" value="" >
-                                               <input type="text" name ="tax4" id="tax4" value="" >
-                                               <input type="text" name ="tax5" id="tax5" value="" > --}}
 
                                                 
                                                 
@@ -860,7 +779,7 @@ font-weight:800;
                             const roomTariff = parseFloat(roomTariffInput.val());
                             total += roomTariff;
                         });
-                        $('#room_tariff_perday').val(total.toFixed(2));
+                        // $('#room_tariff_perday').val(total.toFixed(2));
                     // }
                 });
              </script>
@@ -1119,6 +1038,32 @@ font-weight:800;
                       
                 });
             });
+        </script>
+        <script>
+                                                             document.getElementById('add_payment_mode').addEventListener('click', function() {
+                                                        let paymentBody = document.getElementById('payment_mode_body');
+                                                        let newRow = `
+                                                          <tr>
+                                                              <td>
+                                                                  <select name="posting_acc_id[]" class="posting_acc_id">
+                                                                      <option value="" selected disabled>Select Mode</option>
+                                                                      @foreach ($paymentmodes as $paymentmode)
+                                                                      <option value="{{ $paymentmode->id }}">{{ $paymentmode->account_name }}</option>
+                                                                      @endforeach
+                                                                  </select>
+                                                              </td>
+                                                              <td>
+                                                                  <input type="text" class="amount_input" name="booking_amount[]" autocomplete="off">
+                                                              </td>
+                                                          </tr>`;
+
+                                                        paymentBody.insertAdjacentHTML('beforeend', newRow);
+
+                                                        // Add event listener to the new amount input
+                                                        paymentBody.querySelectorAll('.amount_input[name="booking_amount[]"]').forEach(function(input) {
+                                                            input.addEventListener('input', calculateTotalAmount);
+                                                        });
+                                                      });
         </script>
 
 @endsection

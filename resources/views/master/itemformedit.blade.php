@@ -51,53 +51,43 @@ include(public_path('cdn/cdn.blade.php'));
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 mt-2">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                    <select  name ="company_id" id ="company"class="mycompany form-select" aria-label="Default select example">
-                                                        <option  value ="" selected disabled>Select Company</option>
-                                                      @foreach ($companydata as $record )
-                                                        
-                                                    
-                                                        <option value={{$record['id']}}>{{$record['comp_name']}} </option>
-                                                        @endforeach
+                                                  <div class="form-floating mb-3 mb-md-0">
+                                                      <select name="company_id" id="company" class="mycompany form-select" aria-label="Default select example">
+                                                          <option value="" selected disabled>Select Company</option>
+                                                          @foreach ($companydata as $record)
+                                                              <option value="{{ $record['id'] }}" 
+                                                                  {{ isset($data) && $data->company_id == $record['id'] ? 'selected' : '' }}>
+                                                                  {{ $record['comp_name'] }}
+                                                              </option>
+                                                          @endforeach
                                                       </select>
-                                                      <span class="text-danger"> 
-                                                        @error('company_id')
-                                                        {{$message}}
-                                                            
-                                                        @enderror
+                                                      <span class="text-danger">
+                                                          @error('company_id')
+                                                              {{ $message }}
+                                                          @enderror
                                                       </span>
-                                                       
-                                                    </div>
+                                                  </div>
+                                              </div>
+                                              
+                                              <div class="col-md-6 mt-2">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    <select name="group_id" id="myitemgroup" class="myitemgroup form-select" aria-label="Default select example">
+                                                        <option value="" selected disabled>Select group</option>
+                                                        @foreach ($itemgroupdata as $record)
+                                                            <option value="{{ $record['id'] }}" 
+                                                                {{ isset($data) && $data->group_id == $record['id'] ? 'selected' : '' }}>
+                                                                {{ $record['item_group'] }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="text-danger">
+                                                        @error('group_id')
+                                                            {{ $message }}
+                                                        @enderror
+                                                    </span>
                                                 </div>
-                                                <div class="col-md-6 mt-2">
-
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <select  name ="group_id" id ="myitemgroup"class="myitemgroup form-select" aria-label="Default select example">
-                                                            <option  value ="" selected disabled>Select group</option>
-                                                          @foreach ($itemgroupdata as $record )
-                                                            
-                                                        
-                                                            <option value={{$record['id']}}>{{$record['item_group']}} </option>
-                                                            @endforeach
-                                                          </select>
-                                                          <span class="text-danger"> 
-                                                            @error('group_id')
-                                                            {{$message}}
-                                                                
-                                                            @enderror
-                                                          </span>
-        
-
-
-
-
-
-
-
-                                                </div>
-
-                                                </div>   
-                                                <div class="col-md-2 mt-2">
+                                            </div>
+                                                                                            <div class="col-md-2 mt-2">
                                                     <div class="form-floating mb-3 mb-md-0">
                                                         <input class="form-control" id="mrp" type="text" name="mrp" value="{{ $data['mrp'] }}" />
                                                       <span class="text-danger"> 
@@ -180,48 +170,46 @@ include(public_path('cdn/cdn.blade.php'));
                                               </div>
 
                                           </div>  
-                                                <div class="col-md-2 mt-2">
-                                                        <div class="form-floating mb-3 mb-md-0">
-                                                         
-                                                          <select name="unit_id" Id ="unit"class="form-select" aria-label="Default select example">
-                                                            <option selected disabled>Select Unit </option>
-                                                            @foreach ($unit as $unit )
-                                                              <option value="{{$unit->id}}">{{$unit->primary_unit_name}}</option>
-                                                            @endforeach
-                                                            
-                                                          </select>
-                                                            <label for="unit">Unit  </label>
-                                                           
-                                                        </div>
-                                                        <span class="text-danger"> 
-                                                          @error('unit_id')
-                                                          {{$message}}
-                                                              
-                                                          @enderror
-                                                        </span>
-          
-                                                    </div>   
-                                                    <div class="col-md-2 mt-2">
-                                                      <div class="form-floating mb-3 mb-md-0">
-                                                       
-                                                        <select name="item_gst_id" Id ="item_gst"class="form-select" aria-label="Default select example">
-                                                          <option selected disabled>GST / Tax %  </option>
-                                                          @foreach ($gstmaster as $gstmaster )
-                                                            <option value="{{$gstmaster->id}}">{{$gstmaster->taxname}}</option>
-                                                          @endforeach
-                                                          
-                                                        </select>
-                                                          <label for="GST %">GST /Tax %   </label>
-                                                         
-                                                      </div>
-                                                      <span class="text-danger"> 
-                                                        @error('item_gst_id')
-                                                        {{$message}}
-                                                            
-                                                        @enderror
-                                                      </span>
-        
-                                                  </div>     
+                                          <div class="col-md-2 mt-2">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <select name="unit_id" id="unit" class="form-select" aria-label="Default select example">
+                                                    <option selected disabled>Select Unit</option>
+                                                    @foreach ($unit as $u)
+                                                        <option value="{{ $u->id }}" 
+                                                            {{ isset($data) && $data->unit_id == $u->id ? 'selected' : '' }}>
+                                                            {{ $u->primary_unit_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <label for="unit">Unit</label>
+                                            </div>
+                                            <span class="text-danger">
+                                                @error('unit_id')
+                                                    {{ $message }}
+                                                @enderror
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="col-md-2 mt-2">
+                                          <div class="form-floating mb-3 mb-md-0">
+                                              <select name="item_gst_id" id="item_gst" class="form-select" aria-label="Default select example">
+                                                  <option selected disabled>GST / Tax %</option>
+                                                  @foreach ($gstmaster as $gst)
+                                                      <option value="{{ $gst->id }}" 
+                                                          {{ isset($data) && $data->item_gst_id == $gst->id ? 'selected' : '' }}>
+                                                          {{ $gst->taxname }}
+                                                      </option>
+                                                  @endforeach
+                                              </select>
+                                              <label for="item_gst">GST / Tax %</label>
+                                          </div>
+                                          <span class="text-danger">
+                                              @error('item_gst_id')
+                                                  {{ $message }}
+                                              @enderror
+                                          </span>
+                                      </div>
+                                      
         
         
 

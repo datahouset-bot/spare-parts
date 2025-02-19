@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\compinfofooter;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StorecompinfofooterRequest;
 use App\Http\Requests\UpdatecompinfofooterRequest;
@@ -21,10 +22,11 @@ class CompinfofooterController extends CustomBaseController
      */
     public function index()
     {
-        $compinfofooter = compinfofooter::find(1);
+        $compinfofooter = compinfofooter::where('firm_id',Auth::user()->firm_id)->first();
         if (!$compinfofooter) {
             $compinfofooter = new compinfofooter();
-            $compinfofooter->id = 1;
+            $compinfofooter->user_id = Auth::user()->id;
+            
             $compinfofooter->bank_name = "enterbankname" ;
             $compinfofooter->bank_ac_no = "Eneter Bank A/C NO ";
             $compinfofooter->bank_ifsc ="Eneter Bank ifsc ";
@@ -61,7 +63,8 @@ class CompinfofooterController extends CustomBaseController
     {
         // echo"<pre>";
         // return print_r($request->all());
-        $compinfofooter = compinfofooter::find(1);
+        $compinfofooter = compinfofooter::where('firm_id',Auth::user()->firm_id)->first();
+        $compinfofooter->firm_id=Auth::user()->firm_id;
         $compinfofooter->bank_name = $request->bank_name;
         $compinfofooter->bank_ac_no = $request->bank_ac_no;
         $compinfofooter->bank_ifsc = $request->bank_ifsc;

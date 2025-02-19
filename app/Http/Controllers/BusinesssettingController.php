@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\businesssetting;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -23,11 +24,12 @@ class BusinesssettingController extends CustomBaseController
      */
     public function create()
     {
-        $businesssetting = businesssetting::find(1);
+        $businesssetting = businesssetting::where('firm_id',Auth::user()->firm_id)->first();
 
         if(!$businesssetting){
             $newrecord= new businesssetting;
-            $newrecord->id=1;
+            $newrecord->firm_id=Auth::user()->firm_id;
+            
             $newrecord->calculation_type='24hour';
             $newrecord->standard_checkout_time='11:00:00';
             $newrecord->save();
@@ -45,7 +47,8 @@ class BusinesssettingController extends CustomBaseController
             'standard_checkout_time'=>'required|date_format:H:i',
       
             ]);
-                $id=1;
+                $gettingid=businesssetting::where('firm_id',Auth::user()->firm_id)->first();
+                $id=$gettingid->id;
             if ($validator->passes()) {
                 $standard_checkout_time = Carbon::createFromFormat('H:i', $request->input('standard_checkout_time'))->format('H:i:s');
                 $businesssetting = businesssetting::find($id);

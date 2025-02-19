@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('roomcheckouts', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->string('voucher_no');
             $table->string('check_out_no');
             $table->date('checkin_date');

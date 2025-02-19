@@ -680,4 +680,18 @@
                     });
                 });
             </script>
+
+<script>
+    $(document).ready(function() {
+        $('#saveForm').on('submit', function(event) {
+            // Check if at least one checkbox is selected
+            if ($('.room-checkbox:checked').length === 0) {
+                event.preventDefault(); // Prevent form submission
+                alert("Please select at least one room to proceed.");
+            }
+        });
+    });
+</script>
+
+
         @endsection

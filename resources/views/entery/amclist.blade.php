@@ -242,7 +242,7 @@ td {
                           <span class="badge badge-{{ $badgeColor }}">{{ $priority }}</span>
                       </td>
                       
-                        <td><a href="{{('amc_view/'.$amc['id']) }}"  class=""><i class="fa fa-eye" style="font-size:20px;color:DarkGreen"></i></a></td>
+                        <td><a href="{{('amc_format/'.$amc['id']) }}"  class=""><i class="fa fa-eye" style="font-size:20px;color:DarkGreen"></i></a></td>
                         <td><a href="{{('show_edit_amc/'.$amc['id']) }}"  class=""><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a></td>
                         <td><a href="{{('delete_amc/'.$amc['id']) }}"  class=""><i class="fa fa-trash" style="font-size:20px;color:OrangeRed"></i></a></td>
                       </tr>

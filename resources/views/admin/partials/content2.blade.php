@@ -11,8 +11,13 @@
                 <li class="breadcrumb-item active">
                     {{ $compinfofooter->ct2 }} Dashboard Date {{ now()->format('d-m-y') }} Time
                     <span id="current-time"></span>
+                    <br>Activation Date:&nbsp;{{ \Carbon\Carbon::parse($softwarecompinfo->activation_date)->format('d-m-y') }}  & Renew Date:&nbsp;{{ \Carbon\Carbon::parse($softwarecompinfo->expiry_date)->format('d-m-y') }} & Day Remaining:&nbsp;{{$daysDifference}}
+
+
+
 
                 </li>
+
 
             </ol>
          
@@ -21,98 +26,281 @@
 
 
             <div class="row">
+                @can('Room_Dashboard')
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{ url('/room_dashboard') }}" class="btn btn-success d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-home"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;">Room Dashboard</span>
+                        </a>
+                    </div>
+                </div>
+                @endcan
+
+
+
+                @can('roombooking')
+                <div class="col-xl-3 col-md-6">
+                    
+                    <div class="card bg-primary text-white mb-4">
+                     
+                          
+                        <a href="{{ url('/roombookings/create') }}" class="btn btn-warning d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-calendar-plus"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;">Room Booking</span>
+                        </a>
+
+                    </div>
+                </div>
+                @endcan 
+                @can('roomcheckin') 
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{ url('/roomcheckins/create') }}" class="btn btn-info d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-sign-in-alt"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;">Room Check In</span>
+                        </a>
+                    </div>
+                </div>
+                @endcan
+                @can('roomcheckout')
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{ url('/roomcheckouts/create') }}" class="btn btn-primary d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;">Room Checkout</span>
+                        </a>
+                    </div>
+                </div>
+            @endcan
+            @can('kot')
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{ url('/kots/create') }}" class="btn btn-warning d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-utensils"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;">New Kot</span>
+                        </a>
+                    </div>
+                </div>
+            @endcan
+            @can('foodbills')
+                
 
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/room_dashboard') }}" class="btn btn-success"> Room Dashboard </a>
-
+                        <a href="{{ url('foodbills/create') }}" class="btn btn-dark d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-receipt"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;">New Food Bill</span>
+                        </a>
                     </div>
                 </div>
+           @endcan
+           @can('advance_reciept') 
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/roombookings/create') }}" class="btn btn-warning"> Room Booking </a>
-
+                        <a href="{{ url('/advace_receipt') }}" class="btn btn-primary d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;">Room Advance Receipt</span>
+                        </a>
                     </div>
                 </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/roomcheckins/create') }}" class="btn btn-info"> Room Check In </a>
-
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/roomcheckouts/create') }}" class="btn btn-primary"> Room Checkout </a>
-
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/kots/create') }}" class="btn btn-warning"> New Kot </a>
-
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('foodbills/create') }}" class="btn btn-dark"> New Food Bill </a>
-
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/advace_receipt') }}" class="btn btn-primary">Room Advance Reciept </a>
-
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/reciepts') }}" class="btn btn-warning"> Reciept </a>
-
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/payments') }}" class="btn btn-info">Payment </a>
-
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/ledgers') }}" class="btn btn-danger">Ledger </a>
-
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-info text-white mb-4">
-                        <a href="{{ url('/table_dashboard') }}" class="btn btn-info">Restaurant </a>
-
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/purchases') }}" class="btn btn-primary">Purchase </a>
-
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-success text-white mb-4">
-                        <a href="{{ url('/stocktransfers') }}" class="btn btn-success">Stock Transfer </a>
-
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-warning text-white mb-4">
-                        <a href="{{ url('/sales') }}" class="btn btn-sales">Stock Issue </a>
-
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/report_dashboard') }}" class="btn btn-dark">Report </a>
-
-                    </div>
+            @endcan
+            @can('Lead Module')
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-primary text-white mb-4">
+                    <a href="{{ url('/amclist') }}" class="btn btn-success d-flex align-items-center justify-content-start">
+                        <span class="d-flex" style="width: 10%;">
+                            <i class="fas fa-database"></i>
+                        </span>
+                        <span class="ms-2" style="width: 90%;">AMC - {{ $amcCount }} </span>
+                    </a>
                 </div>
             </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-primary text-white mb-4">
+                    <a href="{{ url('/amclist_due') }}" class="btn btn-danger d-flex align-items-center justify-content-start">
+                        <span class="d-flex" style="width: 10%;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </span>
+                        <span class="ms-2" style="width: 90%;">Toatl Due - {{ $dueAmcCount }} </span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-primary text-white mb-4">
+                    <a href="{{ url('/todolist') }}" class="btn btn-warning d-flex align-items-center justify-content-start">
+                        <span class="d-flex" style="width: 10%;">
+                            <i class="fas fa-tasks"></i>
+                        </span>
+                        <span class="ms-2" style="width: 90%;">Pending Task - {{ $pendingTask }} </span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-primary text-white mb-4">
+                    <a href="{{ url('/followup_list') }}" class="btn btn-dark d-flex align-items-center justify-content-start">
+                        <span class="d-flex" style="width: 10%;">
+                            <i class="fas fa-calendar-check"></i>
+                        </span>
+                        <span class="ms-2" style="width: 90%;">Today's Follow Up -  {{ $todayFollowup }}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-primary text-white mb-4">
+                    <a href="{{ url('/coldcall') }}" class="btn btn-success d-flex align-items-center justify-content-start">
+                        <span class="d-flex" style="width: 10%;">
+                            <i class="fas fa-user-plus"></i>
+                        </span>
+                        <span class="ms-2" style="width: 90%;">Add New Lead </span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-primary text-white mb-4">
+                    <a href="{{ url('/amclist_end_month') }}" class="btn btn-dark d-flex align-items-center justify-content-start">
+                        <span class="d-flex" style="width: 10%;">
+                            <i class="fas fa-chart-bar"></i>
+                        </span>
+                        <span class="ms-2" style="width: 90%;">Month Wise Amc  </span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-primary text-white mb-4">
+                    <a href="{{ url('/amc_month_inactive') }}" class="btn btn-danger d-flex align-items-center justify-content-start">
+                        <span class="d-flex" style="width: 10%;">
+                            <i class="fas fa-clock"></i>
+                        </span>
+                        <span class="ms-2" style="width: 90%;">Month Wise Inactive  </span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-primary text-white mb-4">
+                    <a href="{{ url('/amclist_due_month') }}" class="btn btn-info d-flex align-items-center justify-content-start">
+                        <span class="d-flex" style="width: 10%;">
+                            <i class="fas fa-calendar"></i>
+                        </span>
+                        <span class="ms-2" style="width: 90%;">Month Wise Due  </span>
+                    </a>
+                </div>
+            </div>
+        @endcan
+            @can('receipt')
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{ url('/reciepts') }}" class="btn btn-warning d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-file-alt"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;">Receipt</span>
+                        </a>
+                    </div>
+                </div>
+            @endcan
+            @can('payment')
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{ url('/payments') }}" class="btn btn-info d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-money-bill"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;">Payment</span>
+                        </a>
+                    </div>
+                </div>
+            @endcan
+            @can('ledger')
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{ url('/ledgers') }}" class="btn btn-danger d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-book"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;">Ledger</span>
+                        </a>
+                    </div>
+                </div>
+            @endcan
+            @can('Restaurant')
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-info text-white mb-4">
+
+                        <a href="{{ url('/table_dashboard') }}" class="btn btn-info d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-store"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;">Restaurant</span>
+                        </a>
+                    </div>
+                </div>
+                @endcan
+            @can('purchase')
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{ url('/purchases') }}" class="btn btn-primary d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-cart-plus"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;">Purchase</span>
+                        </a>
+                    </div>
+                </div>
+            @endcan
+            
+            @can('Stock_Transfer')
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-success text-white mb-4">
+                        <a href="{{ url('/stocktransfers') }}" class="btn btn-success d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-exchange-alt"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;">Stock Transfer</span>
+                        </a>
+                    </div>
+                </div>
+            @endcan
+            @can('sale')
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-warning text-white mb-4">
+                        <a href="{{ url('/sales') }}" class="btn btn-sales d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-box-open"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;">Stock Issue</span>
+                        </a>
+                    </div>
+                </div>
+            @endcan
+            @can('Report')
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{ url('/report_dashboard') }}" class="btn btn-dark d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-chart-line"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;">Report</span>
+                        </a>
+                    </div>
+                </div>
+            @endcan    
+            </div>
+            
 
             {{-- <div class="row">
                 <div class="col-xl-6">
@@ -134,7 +322,11 @@
                     </div>
                 </div>
             </div> --}}
+            
+                
+
             <div class="row">
+                @can('Hotel Module')
 
                 <div class="col-md-6">
                     <h4>Overview</h4>
@@ -159,6 +351,7 @@
 
                     </table>
                 </div>
+                @endcan
                 <div class="col-md-6 d-flex">
                     <div class="col-md-3">
                         <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Enter mobile number" autocomplete="off">
@@ -169,10 +362,19 @@
                             <i class="fa fa-bullhorn" style="font-size:40px;color:green"></i>
                         </a>
                     </div>
+                    @can('Hotel Module')
+            
                     <div class="col-md-2">
                         <!-- Second Button: Send message to WhatsApp -->
                         <a href="#" id="send-message" class="btn btn-success">Send Website Link</a>
                     </div>
+                        
+
+                    <div class="col-md-2">
+                        <!-- Second Button: Send message to WhatsApp -->
+                        <a href="{{ url('/') }}/{{ Auth::user()->firm_id }}" id="send-message" class="btn btn-danger mx-1">Visit Website</a>
+                    </div>
+                    @endcan
                 </div>
                 
                 <script>
@@ -194,7 +396,7 @@
                     document.getElementById("send-message").addEventListener("click", function (event) {
                         event.preventDefault(); // Prevents the link from navigating immediately
                         var mobileNumber = document.getElementById("mobile").value;
-                        var message = encodeURIComponent("{{ url('/') }}/{{ $compinfofooter->ct4 }}");
+                        var message = encodeURIComponent("{{ url('/') }}/{{ Auth::user()->firm_id }}");
                         // URL encode the message
                 
                         if (mobileNumber) {

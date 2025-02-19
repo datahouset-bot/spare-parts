@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('kots', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->date('entry_date');
             $table->unsignedBigInteger('voucher_no');
             $table->date('voucher_date');

@@ -275,7 +275,7 @@ td {
 
         
     <div class="d-flex justify-content-center">
-      {{ $amcs->links() }}
+      {{-- {{ $amcs->links() }} --}}
   </div>    
         </div>
         

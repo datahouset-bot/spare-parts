@@ -91,7 +91,7 @@
                                 <td>{{ $record['mobile'] }}</td>
                                 {{-- <td>{{$result_checkin->guest_name}}||{{$result_checkin->room_no}}</td> --}}
                                 <td>{{ $record['total_qty'] }}</td>
-                                <td>{{ $record['total_bill_value'] }}</td>
+                                <td>{{ $record['net_food_bill_amount'] }}</td>
                                 <td>{{ $record['status'] }}</td>
 
 
@@ -111,10 +111,12 @@
                                             style="font-size:20px;color:SlateBlue"></i></a>
                                 </td>
                                 <td>
-                                    <a href="{{ route('roombookings.edit', $record['voucher_no']) }}"
-                                        class="btn  btn-sm"><i class="fa fa-edit"
-                                            style="font-size:20px;color:SlateBlue"></i></a>
+                                    <a href="{{ url('table_facthkot_records_edit', ['voucher_no' => $record['voucher_no'], 'service_id' => $record['service_id']]) }}"
+                                        class="btn btn-sm">
+                                        <i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i>
+                                    </a>
                                 </td>
+                                
 
 
                                 <td>

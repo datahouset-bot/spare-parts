@@ -14,6 +14,19 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             CompinfofooterSeeder::class,
+            UserRolePermissionSeeder::class,
+            ComponyInfosTableSeeder::class,
+            PicsTableSeeder::class,
+           
+            SoftwareCompaniesTableSeeder::class,
+            VoucherTypeSeeder::class,
+            GstmasterSeeder::class,
+            UnitSeeder::class,
+            TableSeeder::class,
+            BusinesssourceSeeder::class,
+            GodownSeeder::class,
+            PrimarygroupSeeder::class,
+            AccountgroupSeeder::class
         ]);
     }
 }

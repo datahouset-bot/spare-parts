@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->string('comp_name',40);
             $table->float('comp_dis', 25, 4)->nullable();
             $table->timestamps();

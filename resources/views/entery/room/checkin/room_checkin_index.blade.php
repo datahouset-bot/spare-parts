@@ -50,6 +50,7 @@
                     <th scope="col"> Room No   </th>
                     <th scope="col"> Guest Name </th>
                     <th scope="col"> Contact No </th>
+                    <th scope="col"> Total Guest  </th>
                     <th scope="col"> Check in Date </th>
                     <th scope="col"> Check in Time  </th>
                     <th scope="col"> Status  </th>
@@ -73,6 +74,7 @@
                      <td>{{$record->room_nos}}</td>
                      <td>{{$record->guest_name}}</td>
                      <td>{{$record->guest_mobile}}</td>
+                     <td>{{$record->no_of_guest}}</td>
                       <td scope="col">{{ \Carbon\Carbon::parse($record->checkin_date)->format('d-m-y') }}</td>
                       <td scope="col">{{ $record->checkin_time }}</td>
 
@@ -86,13 +88,13 @@
                   
 
                   <td>
-                    <a href="{{ url('roomcheckin_view', $record->voucher_no) }}" class="btn btn-sm">
+                    <a href="{{ url('guest_reg_print', $record->voucher_no) }}" class="btn btn-sm">
                         <i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i>
                     </a>
                 </td>
                 
                   <td>
-                      <a href="{{ route('roombookings.edit',  $record->voucher_no) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
+                      <a href="{{ route('roomcheckins.edit',  $record->voucher_no) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
                   </td>
 
 

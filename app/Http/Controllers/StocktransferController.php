@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\sale;
 use Carbon\Carbon;
 use App\Models\kot;
 use App\Models\item;
+use App\Models\sale;
 use App\Models\godown;
 use App\Models\account;
 use App\Models\voucher;
@@ -14,8 +14,9 @@ use App\Models\tempentry;
 use App\Models\roomcheckin;
 use App\Models\voucher_type;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Models\stocktransfer;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StorestocktransferRequest;
 use App\Http\Requests\UpdatestocktransferRequest;
 
@@ -26,19 +27,23 @@ class StocktransferController extends Controller
      */
     public function index()
     {
-        $stocktransfers = voucher::with('account')->where('voucher_type','Stock_Transfer')->orderBy('voucher_no','desc')->get();
- 
+        $stocktransfers = voucher::where('firm_id', Auth::user()->firm_id)
+        ->with('account')->where('voucher_type','Stock_Transfer')->orderBy('voucher_no','desc')->get();
+
         return view('entery.stocktransfer.stocktransfer_index',compact('stocktransfers'));
 
     }
     public function create()
     {  //create function 
-        $voucher_record=voucher::where('voucher_type','Stock_Transfer')->count();
+        $voucher_record=voucher::where('firm_id', Auth::user()->firm_id)
+        ->where('voucher_type','Stock_Transfer')->count();
         if ($voucher_record > 0) {
-           $lastRecord = voucher::orderBy('voucher_no', 'desc')->first();
+           $lastRecord = voucher::where('firm_id', Auth::user()->firm_id)
+           ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')->first();
            $voucher_no = $lastRecord->voucher_no;
            $new_voucher_no=$voucher_no+1;
-           $voucher_type = voucher_type::where('voucher_type_name', 'Stock_Transfer')->first();
+           $voucher_type = voucher_type::where('firm_id', Auth::user()->firm_id)
+           ->where('voucher_type_name', 'Stock_Transfer')->first();
            $voucher_prefix=$voucher_type->voucher_prefix;
            $voucher_suffix=$voucher_type->voucher_suffix;
            $new_bill_no=$voucher_prefix."".$new_voucher_no."".$voucher_suffix;
@@ -46,7 +51,8 @@ class StocktransferController extends Controller
         }
         else {
 
-           $voucher_type = voucher_type::where('voucher_type_name', 'Stock_Transfer')->first();
+           $voucher_type = voucher_type::where('firm_id', Auth::user()->firm_id)
+           ->where('voucher_type_name', 'Stock_Transfer')->first();
  
 
            $voucher_no=$voucher_type->numbring_start_from;
@@ -57,26 +63,30 @@ class StocktransferController extends Controller
  
        }
 
-       $godowns=godown::all();
-       $accountdata = account::where('account_name', 'Stock Transfer From')
+       $godowns=godown::where('firm_id', Auth::user()->firm_id)->get();
+       $accountdata = account::where('firm_id', Auth::user()->firm_id)
+       ->where('account_name', 'Stock Transfer From')
        ->orWhere('account_name', 'Stock Transfer To')
        ->get();
 
-       $itemdata = item::all();
+       $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
 
        return view('entery.stocktransfer.stocktransfer_create', compact('new_bill_no','new_voucher_no','accountdata','itemdata','godowns'));
 
     }
     public function store_to_stocktransfer($id)
     {
-        $account_from = account::where('account_name', 'Stock Transfer From')
+        $account_from = account::where('firm_id', Auth::user()->firm_id)
+        ->where('account_name', 'Stock Transfer From')
                 ->first();
-        $account_to = account::Where('account_name', 'Stock Transfer To')
+        $account_to = account::where('firm_id', Auth::user()->firm_id)
+        ->Where('account_name', 'Stock Transfer To')
         ->first();
 
 
 
-    $records=tempentry::where('user_id',$id)->get();
+    $records=tempentry::where('firm_id', Auth::user()->firm_id)
+    ->where('user_id',$id)->get();
    
     if($records->count()){
 
@@ -85,6 +95,7 @@ class StocktransferController extends Controller
     $net_voucher_amount=$records->sum('item_net_value');
     foreach ($records as $record) {
          $purchase=new inventory;
+         $purchase->firm_id= Auth::user()->firm_id;
          $purchase->entry_date=$record->entry_date;
          $purchase->voucher_no=$record->voucher_no;
          $purchase->voucher_date=$record->voucher_date;
@@ -109,6 +120,7 @@ class StocktransferController extends Controller
  
          $purchase->save();
         $purchase=new inventory;
+        $purchase->firm_id= Auth::user()->firm_id;
         $purchase->entry_date=$record->entry_date;
         $purchase->voucher_no=$record->voucher_no;
         $purchase->voucher_date=$record->voucher_date;
@@ -134,7 +146,8 @@ class StocktransferController extends Controller
 
     }
     $this->store_to_voucher($id);
-    $tempkots_delete=tempentry::where('user_id',$id);
+    $tempkots_delete=tempentry::where('firm_id', Auth::user()->firm_id)
+    ->where('user_id',$id);
     $tempkots_delete->delete();        
     return back()->with('message', 'Records Save Success Fully  ');
     }
@@ -147,8 +160,10 @@ class StocktransferController extends Controller
     }
     public function store_to_voucher($id)
     {
-    $record=tempentry::where('user_id',$id)->where('voucher_type','Stock_Transfer')->get();
-    $first_record=tempentry::where('user_id',$id)->where('voucher_type','Stock_Transfer')->first();
+    $record=tempentry::where('firm_id', Auth::user()->firm_id)
+    ->where('user_id',$id)->where('voucher_type','Stock_Transfer')->get();
+    $first_record=tempentry::where('firm_id', Auth::user()->firm_id)
+    ->where('user_id',$id)->where('voucher_type','Stock_Transfer')->first();
     if($record->count()){
 
     $totalQty = $record->sum('qty');
@@ -158,6 +173,7 @@ class StocktransferController extends Controller
     $total_discount=$record->sum->sum('total_discount');
 
          $voucher=new voucher;
+         $voucher->firm_id=Auth::user()->firm_id;
          $voucher->entry_date=$first_record->entry_date;
          $voucher->voucher_no=$first_record->voucher_no;
          $voucher->voucher_date=$first_record->voucher_date;
@@ -212,6 +228,7 @@ class StocktransferController extends Controller
              $formatted_voucher_date = $parsed_date->format('Y-m-d');
              //storing data 
             $tempkot = new tempentry;
+            $tempkot->firm_id=Auth::user()->firm_id;
             $tempkot->user_id = $request->user_id;
             $tempkot->user_name=$request->user_name;
             $tempkot->entry_date=now();  
@@ -298,8 +315,10 @@ class StocktransferController extends Controller
     {
         // Find all room check-in records with the given voucher_no $id is voucehr no 
       
-        $voucher = voucher::where('voucher_no', $id)->where('voucher_type','Stock_Transfer');
-        $inventory=inventory::where('voucher_no', $id)->where('voucher_type','Stock_Transfer');
+        $voucher = voucher::where('firm_id', Auth::user()->firm_id)
+        ->where('voucher_no', $id)->where('voucher_type','Stock_Transfer');
+        $inventory=inventory::where('firm_id', Auth::user()->firm_id)
+        ->where('voucher_no', $id)->where('voucher_type','Stock_Transfer');
 
       
 

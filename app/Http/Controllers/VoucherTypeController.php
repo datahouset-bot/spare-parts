@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\voucher_type;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 
 
 class VoucherTypeController extends CustomBaseController
@@ -15,7 +16,7 @@ class VoucherTypeController extends CustomBaseController
      */
     public function index()
     {
-        $record=voucher_type::all();
+        $record=voucher_type::where('firm_id',Auth::user()->firm_id)->get();
         return view('room_master.voucher_type.voucher_type',['data'=>$record]); 
         //  return view('room_master.voucher_type.voucher_type'); 
  
@@ -35,6 +36,7 @@ class VoucherTypeController extends CustomBaseController
             ]);
             if ($validator->passes()) {
                 $voucher_type = new voucher_type;
+                $voucher_type->firm_id=Auth::user()->firm_id;
                 $voucher_type->voucher_type_name = $request->voucher_type_name;
                 $voucher_type->numbring_start_from=$request->numbring_start_from;
                 $voucher_type->voucher_prefix=$request->voucher_prefix;
@@ -65,7 +67,7 @@ class VoucherTypeController extends CustomBaseController
      */
     public function edit(string $id)
     {
-        $voucher_type = voucher_type::findOrFail($id);
+        $voucher_type = voucher_type::where('firm_id',Auth::user()->firm_id)->findOrFail($id);
         return view('room_master.voucher_type.voucher_type_edit', compact('voucher_type'));
     
     }
@@ -87,7 +89,7 @@ class VoucherTypeController extends CustomBaseController
   
         ]);
 
-        $voucher_type = voucher_type::findOrFail($id);
+        $voucher_type = voucher_type::where('firm_id',Auth::user()->firm_id)->findOrFail($id);
         $voucher_type->update($request->all());
 
         return redirect()->route('voucher_types.index')->with('message', 'Voucher Type Updated successfully.');

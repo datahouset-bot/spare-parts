@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Lead;
 use App\Models\Followup;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+
 class LeadController extends CustomBaseController
 {
     public function index()
@@ -29,6 +31,7 @@ class LeadController extends CustomBaseController
             if ($validator->passes()) {
 
                 $lead = new Lead;
+                $lead->firm_id=Auth::user()->firm_id;
                 $lead->lead_title =$request->lead_title;
                 $lead->lead_name = $request->lead_name;
                 $lead->lead_mobile = $request->lead_mobile;
@@ -46,6 +49,7 @@ class LeadController extends CustomBaseController
                  // Get current date
                  $followup->followup_date = date('Y-m-d H:i:s');
                  $followup->followup_remark = '0';
+                 $followup->firm_id=Auth::user()->firm_id;
              
                  // Save the followup
                  $followup->save();
@@ -60,7 +64,7 @@ class LeadController extends CustomBaseController
     }
  public function addfollowup($id)
     {
-        $record= Followup::query()->where('lead_id', '=', $id)
+        $record= Followup::query()->where('firm_id',Auth::user()->firm_id)->where('lead_id', '=', $id)
         ->orderByDesc('followup_date')
         ->get();
  
@@ -91,7 +95,7 @@ class LeadController extends CustomBaseController
 
 
                  $followup = new Followup;
-
+                $followup->firm_id=Auth::user()->firm_id;
 
 
                  // Assign lead_id after saving the lead
@@ -108,7 +112,7 @@ class LeadController extends CustomBaseController
                  // Save the followup
                  $followup->save();
 
-                 $lead=Lead::find($request->lead_id) ;
+                 $lead=Lead::where('firm_id',Auth::user()->firm_id)->find($request->lead_id) ;
                  //insertion of don=12 and cancal =1 otherwise 0 
                  $af1=$request->lead_af1;
                  $af2=$request->lead_af2;
@@ -176,6 +180,7 @@ class LeadController extends CustomBaseController
        $record = Followup::getRecordsWithHighestIdForEachLead()
        ->whereDate('followup_date', $currentDate)
        ->orderBy('followup_date')
+       ->where('firm_id',Auth::user()->firm_id)
        ->get();
  
         // Pass data to the view
@@ -209,8 +214,9 @@ class LeadController extends CustomBaseController
          $record = Followup::getRecordsWithHighestIdForEachLead()
           ->whereBetween('followup_date', [$new_from_date, $new_to_date])
           ->orderBy('followup_date')
+          ->where('firm_id',Auth::user()->firm_id)
           ->get();
-            $lead=Lead::all();
+            $lead=Lead::where('firm_id',Auth::user()->firm_id)->get();
         return view('callmanagement.followup_list',['data'=>$record,
         'lead'=> $lead
         ]);

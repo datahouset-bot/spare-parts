@@ -4,7 +4,9 @@
 
     <div class="container mt-5">
         <a href="{{ url('roles') }}" class="btn btn-primary mx-1">Roles</a>
+        @if (auth()->check() && (auth()->user()->email === 'datahouset@gmail.com' || auth()->user()->email === Auth::user()->firm_id.'@gmail.com'))
         <a href="{{ url('permissions') }}" class="btn btn-info mx-1">Permissions</a>
+        @endif
         <a href="{{ url('users') }}" class="btn btn-warning mx-1">Users</a>
     </div>
 

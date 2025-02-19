@@ -29,23 +29,24 @@
                                             @method('PUT')
                                             <div class="row mb-3 align-items-center">
                                                 <div class="col-md-4">
+                                              
                                                     <select name="option_type" class="form-select">
-                                                        <option disabled {{ !isset($optionlist->option_type) ? 'selected' : '' }}>Select Option Type</option>
-                                                        <option value="state" {{ isset($optionlist->option_type) && $optionlist->option_type == 'state' ? 'selected' : '' }}>State</option>
-                                                        <option value="country" {{ isset($optionlist->option_type) && $optionlist->option_type == 'country' ? 'selected' : '' }}>Country</option>
-                                                        <option value="nationality" {{ isset($optionlist->option_type) && $optionlist->option_type == 'nationality' ? 'selected' : '' }}>Nationality</option>
-                                                        <option value="document_name" {{ isset($optionlist->option_type) && $optionlist->option_type == 'document_name' ? 'selected' : '' }}>Document Name</option>
-                                                        <option value="agent_name" {{ isset($optionlist->option_type) && $optionlist->option_type == 'agent_name' ? 'selected' : '' }}>Agent Name</option>
+                                                        <option selected disabled>Select Option Type</option>
+                                                        @foreach ($vouchertype as $record)
+                                                        <option value="{{$record->voucher_type_name}}">{{$record->voucher_type_name}}</option>
+                                                            
+                                                        @endforeach
+  
                                                     </select>
-                                                    
                                                     <span class="text-danger"> 
                                                         @error('option_type')
                                                         {{$message}}
                                                             
                                                         @enderror
                                                       </span>
+  
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-2">
                                                     <input type="text" name="option_name" class="form-control" value="{{$optionlist->option_name}}">
                                                     <span class="text-danger"> 
                                                         @error('option_name')
@@ -54,8 +55,17 @@
                                                         @enderror
                                                       </span>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <button type="submit" class="btn btn-primary w-100">Submit</button>
+                                                <div class="col-md-2">
+                                                    <input type="text" name="format_name" class="form-control" value="{{$optionlist->format_name}}">
+                                                    <span class="text-danger"> 
+                                                        @error('format_name')
+                                                        {{$message}}
+                                                            
+                                                        @enderror
+                                                      </span>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button type="submit" class="btn btn-primary ">Submit</button>
                                                 </div>
                                             </div>
                                         </form>

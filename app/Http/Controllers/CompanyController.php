@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+
 class CompanyController extends CustomBaseController
 { 
     //    public function __construct()
@@ -21,7 +23,7 @@ class CompanyController extends CustomBaseController
      */
     public function index()
     {
-        $record=company::all();
+        $record=company::where('firm_id',Auth::user()->firm_id)->get();
         return view('master.companylist',['data'=>$record]);
         //
     }
@@ -31,25 +33,27 @@ class CompanyController extends CustomBaseController
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function store(Request $request)
     {
-        //comapny data insert to table 
-        //        echo"<pre>";
-        // print_r($request->all());
+
            
          $validator= validator::make($request->all(),[
-            'comp_name' => 'required|unique:companies',
+            'comp_name' => [
+        'required',
+        'unique:companies,comp_name,NULL,id,firm_id,' . auth()->user()->firm_id,
+    ],
              'comp_dis' => 'numeric', // Assuming you meant "float", you can use numeric instead.
             ]);
             if ($validator->passes()) {
                 $company = new Company;
+                $company->firm_id=Auth::user()->firm_id;
                 $company->comp_name = $request->comp_name;
                 $company->comp_dis = $request->comp_dis;
                 $company->save();
         
-                return redirect()->route('company')->with('message', 'Company created successfully!');
+                return redirect('company')->with('message', 'Company created successfully!');
             } else {
-                return redirect('/savecompany')->withInput()->withErrors($validator);
+                return redirect('company')->withInput()->withErrors($validator);
             }
  
 
@@ -66,9 +70,10 @@ class CompanyController extends CustomBaseController
     {
         try {
             // Attempt to delete the record
-            $deleted = Company::destroy($id);
-    
-            // Check if the deletion was successful
+            $deleted = Company::where('firm_id',Auth::user()->firm_id)
+            ->where('id',$id)
+            ->delete();
+             // Check if the deletion was successful
             if ($deleted) {
                 return redirect('company')->with('message', 'Record deleted successfully.');
             } else {
@@ -84,7 +89,7 @@ class CompanyController extends CustomBaseController
 
     public function show_company_form_edit($id)
     {      
-        $record= company::find($id);
+        $record= company::where('firm_id',Auth::user()->firm_id)->find($id);
 
         return view('master.companyedit',['data'=>$record]);
 
@@ -101,7 +106,7 @@ class CompanyController extends CustomBaseController
               // Assuming you meant "float", you can use numeric instead.
             ]);
             if ($validator->passes()) {
-                $company = Company::find($request->id);
+                $company = Company::where('firm_id',Auth::user()->firm_id)->find($request->id);
                 $company->comp_name = $request->comp_name;
                 $company->comp_dis = $request->comp_dis;
                 $company->update();

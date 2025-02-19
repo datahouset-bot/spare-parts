@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('othercharges', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->string('charge_name');
             $table->string('charge_type');
             $table->string('input_type');

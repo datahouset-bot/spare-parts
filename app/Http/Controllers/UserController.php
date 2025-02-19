@@ -5,6 +5,7 @@ namespace  App\Http\Controllers;
 use  App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -15,14 +16,27 @@ class UserController extends Controller
         $this->middleware('permission:create user', ['only' => ['create','store']]);
         $this->middleware('permission:update user', ['only' => ['update','edit']]);
         $this->middleware('permission:delete user', ['only' => ['destroy']]);
+
+        
     }
 
-    public function index()
-    {
+public function index()
+{   
+    if (Auth::user()->email === 'datahouset@gmail.com') {
         $users = User::where('email', '!=', 'datahouset@gmail.com')
+        
         ->get();
-        return view('role-permission.user.index', ['users' => $users]);
+    } else {
+        $users = User::where('email', '!=', 'datahouset@gmail.com')
+            ->where('email','!=',Auth::user()->firm_id.'@gmail.com')
+
+            ->where('firm_id', Auth::user()->firm_id)
+            ->get();
     }
+
+    return view('role-permission.user.index', ['users' => $users]);
+}
+
 
     public function create()
     {
@@ -40,6 +54,7 @@ class UserController extends Controller
         ]);
 
         $user = User::create([
+                         'firm_id'=>Auth::user()->firm_id,   
                         'name' => $request->name,
                         'email' => $request->email,
                         'password' => Hash::make($request->password),
@@ -55,6 +70,7 @@ class UserController extends Controller
         $roles = Role::pluck('name','name')->all();
         $userRoles = $user->roles->pluck('name','name')->all();
         return view('role-permission.user.edit', [
+            'firm_id'=>Auth::user()->firm_id,
             'user' => $user,
             'roles' => $roles,
             'userRoles' => $userRoles
@@ -88,7 +104,7 @@ class UserController extends Controller
 
     public function destroy($userId)
     {   
-        $user = User::findOrFail($userId);
+        $user = User::where('firm_id',Auth::user()->firm_id)->findOrFail($userId);
        $useremail=$user->email;
 
        if($useremail!=='datahouset@gmail.com'){

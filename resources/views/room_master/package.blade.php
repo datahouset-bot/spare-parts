@@ -71,7 +71,7 @@
                           </div>  
                           <div>
 
-                            Other  <input type="text" name ="other_name"class="form-control" placeholder="Other">
+                            Amount  <input type="text" name ="other_name"class="form-control" placeholder="Enter Charge (Only Numeric)">
                             <span class="text-danger"> 
                               @error('other_name')
                               {{$message}}
@@ -112,7 +112,7 @@
                     <th scope="col">S.No</th>
                     <th scope="col"> Package  </th>
                     <th scope="col"> Plan </th>
-                    <th scope="col"> Other </th>
+                    <th scope="col"> Amount </th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                   </tr>

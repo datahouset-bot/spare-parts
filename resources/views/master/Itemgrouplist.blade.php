@@ -56,7 +56,7 @@
                             @csrf
                             <div>
 
-                            Item Group Name  <input type="text" name ="item_group"class="form-control" placeholder="Item Group / Category">
+                            Item Group Name  <input type="text" name ="item_group"class="form-control" placeholder="Item Group / Category" autocomplete="off">
                             <span class="text-danger"> 
                               @error('item_group')
                               {{$message}}
@@ -74,6 +74,7 @@
                                 <option value="Restaurant_Item">Restaurant_Item</option>
                                 <option value="Raw_Material">Raw_Material</option>       
                                 <option value="Non_Consumable">Non_Consumable</option>
+                                <option value="Consumable">Consumable</option>
                                 <option value="Laundry">Laundry</option>  
                                 <option value="Other">Other</option>
 

@@ -10,6 +10,7 @@ use App\Models\account;
 use App\Models\foodbill;
 use App\Models\voucher_type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class TableController extends CustomBaseController
@@ -19,7 +20,7 @@ class TableController extends CustomBaseController
      */
     public function index()
     {
-        $record=table::all();
+        $record=table::where('firm_id',Auth::user()->firm_id)->get();
         return view('entery.restaurant.table',['data'=>$record]); 
         // 
 
@@ -45,6 +46,7 @@ class TableController extends CustomBaseController
             ]);
             if ($validator->passes()) {
                 $table = new table;
+                $table->firm_id=Auth::user()->firm_id;
                 $table->table_name = $request->table_name;
                 
                 $table->save();
@@ -60,8 +62,8 @@ class TableController extends CustomBaseController
      */
     public function table_dashboard()
     { 
-        $data=table::orderBy('table_name','asc')->get();
-        $kotlist=kot::orderBy('service_id','asc')->where('status','0')->get();
+        $data=table::where('firm_id',Auth::user()->firm_id)->orderByRaw('CAST(id AS UNSIGNED) asc')->get();
+        $kotlist=kot::where('firm_id',Auth::user()->firm_id)->orderBy('service_id','asc')->where('status','0')->where('voucher_type','RKot')->get();
  
         return view('entery.restaurant.table_dashboard',compact('data','kotlist'));
     }
@@ -73,7 +75,7 @@ class TableController extends CustomBaseController
      */
     public function edit(string $id)
     {
-        $table = table::findOrFail($id);
+        $table = table::where('firm_id',Auth::user()->firm_id)->findOrFail($id);
         return view('entery.restaurant.table_edit', compact('table'));
  
     }
@@ -86,7 +88,7 @@ class TableController extends CustomBaseController
             'table_name' => 'required',
                ]);
 
-        $table = table::findOrFail($id);
+        $table = table::where('firm_id',Auth::user()->firm_id)->findOrFail($id);
         $table->update($request->all());
 
         return redirect()->route('tables.index')->with('message', 'Table updated successfully.');
@@ -98,7 +100,7 @@ class TableController extends CustomBaseController
      */
     public function destroy(string $id)
     {
-        $table = table::find($id);
+        $table = table::where('firm_id',Auth::user()->firm_id)->find($id);
 
         // Check if the package exists
         if ($table) {

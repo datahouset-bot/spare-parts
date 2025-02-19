@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('ledgers', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->string('voucher_no');
             $table->string('reciept_no');
             $table->date('entry_date'); // Corrected 'entery_date' to 'entry_date'

@@ -75,12 +75,14 @@
                             value =  "{{ Auth::user()->name }}">
                             <input type="hidden" class="form-control" id="voucher_no" name="voucher_no"
                             value={{ $new_voucher_no }}>
-                            <input type="hidden" class="form-control" id="voucher_type" name="voucher_type" value="Kot">
+                            <input type="hidden" class="form-control" id="voucher_type" name="voucher_type" value="RKot">
                     {{-- hidden input close  --}}
 
                     <div class="col-md-2 col-4  text-center">
                         <label for="voucher_date">Date</label>
                         <input type="text" class="form-control date" id ="voucher_date" name="voucher_date">
+                        <input class="form-control" id="checkin_time" type="time"
+                        name="checkin_time" value="{{ date('Y-m-d') }}" />
                     </div>
 
 
@@ -88,10 +90,10 @@
                         <label for="kot_no">KOT No</label>
                         <input type="text" class="form-control" id ="kot_no"name="kot_no" value="{{ $new_bill_no }}">
                     </div>
-                    <div class="col-md-2 col-4  text-center">
+                    {{-- <div class="col-md-2 col-4  text-center">
                         <label for="waiter_name">Waiter Name</label>
                         <input type="text" id="waiter_name" class="form-control" name="waiter_name" value="sandeep">
-                    </div>
+                    </div> --}}
                     <div class="col-md-2 col-4  text-center">
                         <label for="service_type">Service Type</label>
                         <select name="service_type" id="service_type" class="form-select">
@@ -308,6 +310,7 @@
                     'waiter_name': $('#waiter_name').val(),
                     'service_type': $('#service_type').val(),
                     'service_id': $('#service_id').val(),
+                    'checkin_time':$('#checkin_time').val(),
                 };
                 console.log("Data being sent:", data);
                 $("#additem").prop("disabled", true);
@@ -354,8 +357,13 @@
         });
     </script>
 
+    
+
     {{-- fetching records --}}
     <script>
+        
+
+
         $(document).ready(function() {
             function fetchAndDisplayRecords(user_id) {
                 $.ajax({
@@ -384,8 +392,10 @@
                                     <td>${record.qty}</td>
                                     <td>${record.rate}</td>
                                     <td>${amount}</td>
-                                    <td><button class="btn btn-primary btn-sm">Edit</button></td>
-                                    <td><button class="btn btn-danger btn-sm" id="item_delete">Delete</button></td>
+                                    <td><span class="btn btn-danger btn-sm" id="deletetemp_${record.id}">
+                                        X
+                                        <input type="hidden" id="record_no${record.id}" value="${record.id}">
+                                    </span></td>
                                 </tr>
                             `);
                             });
@@ -402,6 +412,34 @@
                     }
                 });
             }
+
+            $(document).on('click', 'span.btn-danger', function() {
+            var recordValue = $(this).find('input[type="hidden"]').val();
+            console.log(recordValue); // Print the input value to the console
+            $.ajax({
+                url: '/delete_kot_temprecord/' + recordValue,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                    var initialUserId = $("#user_id").val();
+
+                    if (initialUserId) {
+                        fetchAndDisplayRecords(initialUserId);
+                    }
+
+
+
+                }
+
+
+            });
+
+
+
+
+
+        });
 
             var initialUserId = $("#user_id").val();
 
@@ -462,6 +500,7 @@
 
 
 
+            
 
             console.log("fetching record function");
         });

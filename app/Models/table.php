@@ -9,6 +9,7 @@ class table extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'firm_id',
         'table_name',
         // Add other fields here as necessary
     ];

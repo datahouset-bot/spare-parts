@@ -82,16 +82,21 @@
                         <label for="voucher_date">Date</label>
                         <input type="text" class="form-control date" id ="voucher_date" name="voucher_date">
                     </div>
+                    <div class="col-md-2 col-4  text-center">
+                        <label for="checkin_time">time</label>
+                        <input class="form-control" id="checkin_time" type="time"
+                        name="checkin_time" value="{{ date('Y-m-d') }}" />
+                    </div>
 
 
                     <div class="col-md-2 col-4  text-center">
                         <label for="kot_no">KOT No</label>
                         <input type="text" class="form-control" id ="kot_no"name="kot_no" value="{{ $new_bill_no }}">
                     </div>
-                    <div class="col-md-2 col-4  text-center">
+                    {{-- <div class="col-md-2 col-4  text-center">
                         <label for="waiter_name">Waiter Name</label>
                         <input type="text" id="waiter_name" class="form-control" name="waiter_name" value="sandeep">
-                    </div>
+                    </div> --}}
                     <div class="col-md-2 col-4  text-center">
                         <label for="service_type">Service Type</label>
                         <select name="service_type" id="service_type" class="form-select">
@@ -103,20 +108,27 @@
                         </select>
 
                     </div>
-                    <div class="col-md-2 col-4  text-center">
-                        <label for="kot_on">Select Room</label>
-                        <select name="service_id" id="service_id" class="form-select">
-                            <option selected disabled>Select Room No </option>
-                            @foreach ($checkinlists as $checkinlist)
-                                <option value="{{ $checkinlist->voucher_no }}">{{ $checkinlist->room_nos }} ||{{ $checkinlist->guest_name }}
-                                    </option>
-                            @endforeach
-
-
-                        </select>
-
-                    </div>
+                    @php
+                    $id = request()->route('id'); // Retrieve 'id' from the route
+                @endphp
+                
+                <div class="col-md-4 col-4 text-center">
+                    <label for="kot_on">Select Room</label>
+                    <select name="service_id" id="service_id" class="form-select">
+                        <option disabled {{ $id ? '' : 'selected' }}>Select Room No</option>
+                        @foreach ($checkinlists as $checkinlist)
+                            <option 
+                                value="{{ $checkinlist->voucher_no }}" 
+                                {{ $id == $checkinlist->voucher_no ? 'selected' : '' }}
+                            >
+                                {{ $checkinlist->room_nos }} || {{ $checkinlist->guest_name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
+                
+
+                
                 <div class="row my-2" name="itementery">
                     <div class="col-md-3 mt-4 mx-2 ">
                         <div class="input-group">
@@ -252,6 +264,7 @@
 
                         if (response.item_info) {
                             $('#rate').val(response.item_info.sale_rate);
+                            $('#qty').val();
                             $('#display_rate').text(response.item_info.sale_rate);
                         } else {
                             $('#rate').val('');
@@ -308,6 +321,7 @@
                     'waiter_name': $('#waiter_name').val(),
                     'service_type': $('#service_type').val(),
                     'service_id': $('#service_id').val(),
+                    'checkin_time':$('#checkin_time').val(), //storing time on kot 
                 };
                 console.log("Data being sent:", data);
                 $("#additem").prop("disabled", true);
@@ -384,8 +398,11 @@
                                     <td>${record.qty}</td>
                                     <td>${record.rate}</td>
                                     <td>${amount}</td>
-                                    <td><button class="btn btn-primary btn-sm">Edit</button></td>
-                                    <td><button class="btn btn-danger btn-sm" id="item_delete">Delete</button></td>
+
+                                    <td><span class="btn btn-danger btn-sm" id="deletetemp_${record.id}">
+                                        X
+                                        <input type="hidden" id="record_no${record.id}" value="${record.id}">
+                                    </span></td>
                                 </tr>
                             `);
                             });
@@ -402,6 +419,34 @@
                     }
                 });
             }
+
+            $(document).on('click', 'span.btn-danger', function() {
+            var recordValue = $(this).find('input[type="hidden"]').val();
+            console.log(recordValue); // Print the input value to the console
+            $.ajax({
+                url: '/delete_kot_temprecord/' + recordValue,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                    var initialUserId = $("#user_id").val();
+
+                    if (initialUserId) {
+                        fetchAndDisplayRecords(initialUserId);
+                    }
+
+
+
+                }
+
+
+            });
+
+
+
+
+
+        });
 
             var initialUserId = $("#user_id").val();
 
@@ -466,14 +511,111 @@
             console.log("fetching record function");
         });
     </script>
-    {{-- <script>
-        $(document).ready(function() {
-            $('#item_delete').submit(function(e) {
-                e.preventDefault();
-                console.log("ready to delete ");
-            });
 
-           
+<script type="text/javascript">
+    $(document).ready(function() {
+        function recalculate() {
+            var deletetemp_record = $('#deletetemp_record').val();
+            var checkin_date = $('#checkin_date').val();
+            var checkin_time = $('#checkin_time1').val();
+            var checkout_date = $('#checkout_date').val();
+            var checkout_time = $('#check_out_time').val();
+            var per_day_tariff = $('#per_day_tariff').val();
+
+            console.log(calculation_type);
+            console.log(checkin_date);
+            console.log(checkin_time);
+            console.log(checkout_date);
+            console.log(checkout_time);
+            console.log(per_day_tariff);
+
+            $.ajax({
+                url: '/roomcheckouts/' + calculation_type,
+                type: 'GET',
+                data: {
+                    checkin_date: checkin_date,
+                    checkin_time: checkin_time,
+                    checkout_date: checkout_date,
+                    checkout_time: checkout_time,
+                    per_day_tariff: per_day_tariff
+                },
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                    var food_bill_amt = parseFloat($('#total_food_bill_amount').val()) || 0;
+                    var kot_amt = parseFloat($('#kotamount_total').val()) || 0;
+                    var total_food_amt = food_bill_amt + kot_amt;
+                    var gst_percent = parseFloat($('#gst_id').val()) || 0;
+                    $('#food_amount').val(total_food_amt);
+                    $('#total_food_amt').val(total_food_amt);
+                    $('#no_of_days').val(response.no_of_days);
+                    $('#total_room_rent').val(response.total_rent);
+                    $('#final_room_rent').val(response.total_rent);
+                    var add_other = parseFloat($('#add_other').val()) || 0;
+                    var less_discount = parseFloat($('#less_discount').val()) || 0;
+                    var total_advance = parseFloat($('#total_advance').val()) || 0;
+                    var final_room_rent = parseFloat($('#final_room_rent').val()) || 0;
+                    var total_receipt_amt = parseFloat($('#total_receipt_amt').val()) || 0;
+                    var amt_post_credit_amt = parseFloat($('#amt_post_credit_amt').val()) || 0;
+                    var total_receipt_amt = parseFloat($('#total_receipt_amt').val()) || 0;
+                    var gst_total = (gst_percent * final_room_rent) / 100;
+                   $('#gst_total').val(gst_total.toFixed(2));
+
+                    var bill_amount = final_room_rent + total_food_amt + gst_total + add_other -
+                        less_discount;
+                    $('#bill_amount').val(bill_amount.toFixed(2));
+
+                    var balance_to_pay = bill_amount + total_advance;
+                    $('#balance_to_pay').val(balance_to_pay.toFixed(2));
+
+                    var balance_amt = balance_to_pay - total_receipt_amt - amt_post_credit_amt;
+
+                    // var balance_amt = $('#balance_to_pay').val();
+                    $('#balance_amt').val(balance_amt.toFixed(2));
+
+                    // Clear the table before appending new rows
+                    $('#rent_diplay tbody').empty();
+
+                    // Append the calculated values as rows to the table
+                    response.day_entries.forEach(function(entry, index) {
+                        $('#rent_diplay tbody').append(
+                            '<tr>' +
+                            '<td>' + (index + 1) + '</td>' +
+                            '<td>' + entry.checkin_date + '</td>' +
+                            '<td>' + entry.checkout_date + '</td>' +
+                            '<td>' + entry.day_count + '</td>' +
+                            '<td>' + entry.rent + '</td>' +
+                            '<td>' + entry.total + '</td>' +
+                            '</tr>'
+                        );
+                    });
+                }
+            });
+        }
+
+        $('#recalculate').on('click', function(e) {
+            e.preventDefault();
+            recalculate();
         });
-    </script> --}}
+
+
+});
+
+
+
+</script>
+<script>
+    $(document).ready(function() {
+    // Attach a click event listener to all span elements with the "btn-secondary" class
+    $(document).on('click', 'span.btn-secondary', function() {
+        // Find the hidden input within the same <td> and get its value
+        var recordValue = $(this).find('input[type="hidden"]').val();
+        
+        // Print the value to the console
+        console.log(recordValue);
+    });
+});
+</script>
+    
+
 @endsection

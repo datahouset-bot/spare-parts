@@ -29,8 +29,8 @@ return new class extends Migration
             $table->decimal('purchase_rate', 8, 2)->default(0)->nullable();
             $table->string('item_barcode')->nullable()->default(0);
             $table->string('item_image')->nullable()->default(Null);
-            $table->string('item_unit')->nullable()->default(Null);
-            $table->timestamps();
+            // $table->string('item_unit')->nullable()->default(Null);
+            // $table->timestamps();
            
         });
     }

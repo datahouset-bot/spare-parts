@@ -294,7 +294,14 @@ align-content: :flex-end;
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="td_detail">{{ $roombooking->room_no }}</td>
+                        <td class="td_detail">
+   
+                            @foreach ($roomnos as $roomrecords )
+                                    {{$roomrecords->room_nos}}                            
+                            @endforeach
+
+                    </td>
+
                         <td class="td_detail">total rooms</td>
                         <td class="td_detail">{{ $roombooking->no_of_guest }}</td>
                         <td class="td_detail">{{ $roombooking->commited_days }}</td>

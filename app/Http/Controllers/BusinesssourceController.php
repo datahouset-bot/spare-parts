@@ -1,18 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
 use App\Models\businesssource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StorebusinesssourceRequest;
 use App\Http\Requests\UpdatebusinesssourceRequest;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
 
 class BusinesssourceController extends CustomBaseController
 {
    
     public function index()
     {
-        $record=businesssource::all();
+        $record=businesssource::where('firm_id',Auth::user()->firm_id)->get();
         return view('room_master.business_source.business_source',['data'=>$record]); 
         // return view('room_master.business_source.business_source'); 
  
@@ -27,6 +28,7 @@ class BusinesssourceController extends CustomBaseController
             ]);
             if ($validator->passes()) {
                 $businesssource = new businesssource;
+                $businesssource->firm_id=Auth::user()->firm_id;
                 $businesssource->business_source_name = $request->business_source_name;
                 $businesssource->buiness_source_remark=$request->buiness_source_remark;
 
@@ -42,7 +44,7 @@ class BusinesssourceController extends CustomBaseController
 
     public function edit(string $id)
     {
-        $businesssource = businesssource::findOrFail($id);
+        $businesssource = businesssource::where('firm_id',Auth::user()->firm_id)->findOrFail($id);
         return view('room_master.business_source.business_source_edit', compact('businesssource'));
     
     }
@@ -64,7 +66,7 @@ class BusinesssourceController extends CustomBaseController
 
     public function destroy(string $id)
     {
-        $businesssource = businesssource::find($id);
+        $businesssource = businesssource::where('firm_id',Auth::user()->firm_id)->find($id);
 
         // Check if the package exists
         if ($businesssource) {

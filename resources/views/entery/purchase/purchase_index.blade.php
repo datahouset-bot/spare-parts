@@ -16,7 +16,7 @@
    
   });
 </script> --}}
-<div class="container ">
+<div class="container-flud mx-3 ">
   @if(session('message'))
     <div class="alert alert-primary">
         {{ session('message') }}
@@ -24,7 +24,7 @@
 @endif
 
 
-    <div class="card my-3">
+    <div class="">
         <div class="card-header">
         <h4>Purchase <h4>       </div>
        <div class="row my-2">
@@ -55,6 +55,7 @@
                     <th scope="col">Total Discount </th>
                     <th scope="col">Tax Amt </th>
                     <th scope="col"> Bill Amount  </th>
+                    <th scope="col"> Terms  </th>
   
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -85,6 +86,7 @@
                      <td>{{$record['total_disc_item_amount']}}</td>
                      <td>{{$record['total_gst_amount']}}</td>
                      <td>{{$record['total_net_amount']}}</td>
+                     <td>{{$record['voucher_terms']}}</td>
 
                     
                      <td>
@@ -95,7 +97,7 @@
                   
 
                      <td>
-                      <a href="{{ url('purchase_view', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
+                      <a href="{{route('purchases.show', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
                   </td> 
                   <td>
                       <a href="{{ route('purchases.edit', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>

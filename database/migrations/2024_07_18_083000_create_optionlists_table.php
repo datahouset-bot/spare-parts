@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('optionlists', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->string('option_type');
             $table->string('option_name');
 

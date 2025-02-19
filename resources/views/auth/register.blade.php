@@ -28,6 +28,27 @@
                                                  <div class="row mb-3">
                                                 <div class="col-md-12">
                                                     <div class="form-floating mb-3 mb-md-0">
+                                                        <input id="firm_id"  type="text" class="form-control @error('firm_id') is-invalid @enderror" name="firm_id" value="{{ old('firm_id') }}" required autocomplete="firm_id" autofocus>
+
+                                                        @error('firm_id')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+
+
+
+
+
+                                                        {{-- <input class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name" /> --}}
+                                                        <label for="firm_id">Firm Id  </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <div class="form-floating mb-3 mb-md-0">
                                                         <input id="inputFirstName"  type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
                                                         @error('name')
@@ -45,6 +66,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+  
                                             <div class="form-floating mb-3">
                                                 <input id="inputEmail" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
 

@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Models\accountgroup;
+use App\Models\primarygroup;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
 use App\Http\Requests\StoreaccountgroupRequest;
 use App\Http\Requests\UpdateaccountgroupRequest;
-use App\Models\primarygroup;
 
 class AccountgroupController extends CustomBaseController
 {
@@ -15,8 +18,10 @@ class AccountgroupController extends CustomBaseController
      */
     public function index()
     {
-         $primarygroups=primarygroup::all();
-         $data = AccountGroup::with('primarygroup')->get();
+         $primarygroups=primarygroup::where('firm_id',Auth::user()->firm_id)->get();
+         $data = AccountGroup::with('primarygroup')
+         ->where('firm_id',Auth::user()->firm_id)
+         ->get();
   
         return view('master.account_group.account_group',['primarygroups'=>$primarygroups,'data'=>$data]); 
     }
@@ -43,6 +48,7 @@ class AccountgroupController extends CustomBaseController
 
                     if ($validator->passes()) {
                 $accountgroup = new accountgroup;
+                $accountgroup->firm_id=Auth::user()->firm_id;
                 $accountgroup->account_group_name= $request->account_group_name;
                 $accountgroup->primary_group_id= $request->primary_group_id;
                 $accountgroup->save();
@@ -68,8 +74,10 @@ class AccountgroupController extends CustomBaseController
      */
     public function edit(string $id)
     {
-        $accountgroup = accountgroup::findOrFail($id);
-        $primarygroups=primarygroup::all();
+        $accountgroup = accountgroup::where('firm_id',Auth::user()->firm_id)
+        ->findOrFail($id);
+        $primarygroups=primarygroup::where('firm_id',Auth::user()->firm_id)
+        ->get();
         return view('master.account_group.account_group_edit', compact('accountgroup','primarygroups'));
  
     }
@@ -80,13 +88,23 @@ class AccountgroupController extends CustomBaseController
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'account_group_name' => 'required|unique:accountgroups',
-            'primary_group_id' => 'required',
-      ]);
 
-        $accountgroup = accountgroup::findOrFail($id);
-        $accountgroup->update($request->all());
+
+
+        $request->validate([
+            'account_group_name' => [
+                'required',
+                Rule::unique('accountgroups')->where(fn($query) => $query->where('firm_id', Auth::user()->firm_id)),
+            ],
+            'primary_group_id' => 'required',
+        ]);
+        
+        
+
+        $accountgroup = accountgroup::where('firm_id',Auth::user()->firm_id)->findOrFail($id);
+        $accountgroup->account_group_name= $request->account_group_name;
+       
+        $accountgroup->update();
 
         return redirect()->route('accountgroups.index')->with('message', 'Account Group updated successfully.');
     }
@@ -96,7 +114,7 @@ class AccountgroupController extends CustomBaseController
      */
     public function destroy(string $id)
     {
-        $accountgroup = accountgroup::find($id);
+        $accountgroup = accountgroup::where('firm_id',Auth::user()->firm_id)->find($id);
 
         // Check if the package exists
         if ($accountgroup) {

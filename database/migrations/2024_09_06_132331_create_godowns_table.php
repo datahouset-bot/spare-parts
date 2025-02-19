@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('godowns', function (Blueprint $table) {
             $table->id();
+            $table->string('firm_id',100);
             $table->string('godown_name');
             $table->string('godown_address')->nullable();
             $table->string('godown_af1')->nullable();

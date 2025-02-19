@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 use App\Models\account;
 use App\Models\othercharge;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class OtherchargeController extends CustomBaseController
 {
@@ -12,8 +13,8 @@ class OtherchargeController extends CustomBaseController
      * Display a listing of the resource.
      */
     public function index()
-    {   $account=account::all();
-        $othercharge=othercharge::with('account')->get();
+    {   $account=account::where('firm_id',Auth::user()->firm_id)->get();
+        $othercharge=othercharge::where('firm_id',Auth::user()->firm_id)->with('account')->get();
         return view ('master.other_charge.other_charge',compact('account','othercharge'));
     }
 
@@ -42,6 +43,7 @@ class OtherchargeController extends CustomBaseController
 
         if ($validator->passes()) {
             $othercharge = new othercharge;
+            $othercharge->firm_id =Auth::user()->firm_id;
             $othercharge->charge_name=$request->charge_name;
             $othercharge->charge_type=$request->charge_type;
             $othercharge->input_type=$request->input_type;

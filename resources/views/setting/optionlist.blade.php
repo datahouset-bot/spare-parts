@@ -27,15 +27,15 @@
                                         <form action="{{route('optionlists.store')}}" method="POST">
                                             @csrf
                                             <div class="row mb-3 align-items-center">
-                                                <div class="col-md-4">
+                                                <div class="col-md-2">
 
                                                     <select name="option_type" class="form-select">
                                                         <option selected disabled>Select Option Type</option>
-                                                        <option value="state">State</option>
-                                                        <option value="country">Country</option>
-                                                        <option value="nationality">Nationality</option>
-                                                        <option value="document_name">Document Name</option>
-                                                        <option value="agent_name">Agent Name</option>
+                                                        @foreach ($vouchertype as $record)
+                                                        <option value="{{$record->voucher_type_name}}">{{$record->voucher_type_name}}</option>
+                                                            
+                                                        @endforeach
+  
                                                     </select>
                                                     <span class="text-danger"> 
                                                         @error('option_type')
@@ -44,7 +44,7 @@
                                                         @enderror
                                                       </span>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-2">
                                                     <input type="text" name="option_name" class="form-control" placeholder="Enter Option Name">
                                                     <span class="text-danger"> 
                                                         @error('option_name')
@@ -53,8 +53,18 @@
                                                         @enderror
                                                       </span>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <button type="submit" class="btn btn-primary w-100">Submit</button>
+                                                <div class="col-md-2">
+                                                    <input type="text" name="format_name" class="form-control" placeholder="Format Name">
+                                                    <span class="text-danger"> 
+                                                        @error('format_name')
+                                                        {{$message}}
+                                                            
+                                                        @enderror
+                                                      </span>
+                                                </div> 
+
+                                                <div class="col-md-1">
+                                                    <button type="submit" class="btn btn-primary ">Submit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -65,6 +75,8 @@
                                                         <th>S.No</th>
                                                         <th>Option Type</th>
                                                         <th>Option Name </th>
+                                                        <th>Format Name </th>
+                                                        <th></th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
@@ -77,8 +89,16 @@
                                             <td>{{$r1+=1}}</td>
                                             <td>{{$record->option_type}}</td>
                                             <td>{{$record->option_name}}</td>
+                                            <td>{{$record->format_name}}</td>
                                             <td>
                                                 <a href="{{ route('optionlists.edit', $record['id']) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
+                                            </td>
+                                            <td>
+                                                <form action="{{ route('optionlists.destroy', $record['id']) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn  btn-sm" onclick="return confirm('Are you sure you want to delete this  Format?')"><i class="fa fa-trash" style="font-size:20px;color:OrangeRed"></i></button>
+                                                </form>
                                             </td>
                                         </tr>
                                             
