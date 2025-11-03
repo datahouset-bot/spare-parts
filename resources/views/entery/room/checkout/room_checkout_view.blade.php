@@ -12,7 +12,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Room Booking Slip </title>
-        
+
         <style>
             @page {
                 size: auto;
@@ -273,7 +273,10 @@
         <div class="page">
 
             <div class= "voucher_head">
-                <div class= "gst_no"> GST NO:{{ $componyinfo->cominfo_gst_no }}</div>
+                @if (!empty($componyinfo->cominfo_gst_no))
+                    <div class="gst_no">GST NO: {{ $componyinfo->cominfo_gst_no }}</div>
+                @endif
+
                 <div class="bill_head">INVOICE</div>
 
 
@@ -289,8 +292,10 @@
                     <span>Email:{{ $componyinfo->cominfo_email }} Phone &nbsp;{{ $componyinfo->cominfo_phone }}
                         Mobile&nbsp;{{ $componyinfo->cominfo_mobile }} </span>
                 </div>
-                <div class="logo2"><img src="{{ asset('storage\app\public\image\\' . $pic->brand) }}" alt="qr_code"
-                        width="80px"></div>
+<div class="logo2">
+    <img src="{{ asset('storage/image/' . $pic->brand) }}" alt="qr_code" width="80px" onerror="this.style.display='none'">
+</div>
+
             </div>
 
 
@@ -305,17 +310,22 @@
                         <span>Mob:{{ $guest_detail->mobile }}</span><br>
 
                         <span>Email:{{ $guest_detail->email }}</span><br>
-                        <span>GST NO:{{ $guest_detail->gst_no }}</span><br>
+@if(!empty($guest_detail->gst_no))
+    <span>GST NO: {{ $guest_detail->gst_no }}</span><br>
+@endif
+
 
 
                     </div>
                     <div class="voucher_info">
                         <span class="heading">Detail</span><br>
                         <span>Invoice No : {{ $roomcheckouts->check_out_no }}</span><br>
-                        <span>Check In Date: {{ \Carbon\Carbon::parse($roomcheckouts->checkin_date)->format('d-m-y') }}</span><br>
+                        <span>Check In Date:
+                            {{ \Carbon\Carbon::parse($roomcheckouts->checkin_date)->format('d-m-y') }}</span><br>
 
                         <span>Check In Time:{{ $roomcheckouts->checkin_time }}</span><br>
-                        <span>Check Out Date: {{ \Carbon\Carbon::parse($roomcheckouts->checkout_date)->format('d-m-y') }}</span><br>
+                        <span>Check Out Date:
+                            {{ \Carbon\Carbon::parse($roomcheckouts->checkout_date)->format('d-m-y') }}</span><br>
 
                         <span>Check Out Time:{{ $roomcheckouts->check_out_time }}</span><br>
                         <span>Total Day :{{ $roomcheckouts->no_of_days }}</span><br>
@@ -350,12 +360,15 @@
                             <td class="td_detail">{{ $roomcheckouts->total_room_rent }}</td>
 
                         </tr>
-                        <tr>
-                            <td class="td_detail"></td>
-                            <td class="td_detail">GST % </td>
-                            <td class="td_detail"></td>
-                            <td class="td_detail">{{ $roomcheckouts->gst_total }}</td>
-                        </tr>
+                        @if (!empty($roomcheckouts->gst_total) && $roomcheckouts->gst_total > 0)
+                            <tr>
+                                <td class="td_detail"></td>
+                                <td class="td_detail">GST % </td>
+                                <td class="td_detail"></td>
+                                <td class="td_detail">{{ $roomcheckouts->gst_total }}</td>
+                            </tr>
+                        @endif
+
                         <tr>
                             <td class="td_detail"></td>
                             <td class="td_detail">Total Room Tariff</td>
@@ -400,7 +413,7 @@
 
                         <tr>
                             <td class="td_detail"></td>
-                            <td class="td_detail">Net Payeble Amount</td>
+                            <td class="td_detail">Net Payable Amount</td>
                             <td class="td_detail"></td>
                             <td class="td_detail">{{ $roomcheckouts->balance_to_pay }}</td>
                         </tr>
@@ -421,22 +434,26 @@
                 <div class="for_companyname"style="background-color:#e6ecff"><span>For
                         {{ $componyinfo->cominfo_firm_name }}</span><br></div>
                 <div class="bank_detail"style="background-color:#e6ecff">
-                    <span>Bank Name:{{ $compinfofooter->bank_name }}</span><br>
-                    <span>Bank A/C No :{{ $compinfofooter->bank_ac_no }}</span><br>
-                    <span>Bank IFSC:{{ $compinfofooter->bank_ifsc }}</span><br>
-                    <span>Bank Branch:{{ $compinfofooter->bank_branch }}</span><br>
+                    @if(!empty($compinfofooter->bank_ac_no))
+    <span>Bank Name: {{ $compinfofooter->bank_name }}</span><br>
+    <span>Bank A/C No: {{ $compinfofooter->bank_ac_no }}</span><br>
+    <span>Bank IFSC: {{ $compinfofooter->bank_ifsc }}</span><br>
+    <span>Bank Branch: {{ $compinfofooter->bank_branch }}</span><br>
+@endif
+
                 </div>
                 <div class="qr_code"style="background-color:#e6ecff">
-                    <span>Bank Name:{{ $compinfofooter->upiid }}</span><br>
-                    &nbsp;<img src="{{ asset('storage\app\public\image\\' . $pic->qrcode) }}" alt="qr_code"
-                        width="80px">
-                    {{-- <img src="/storage/image/qr.jpeg" alt="qr_code" width="80px">  this is abal to print image --}}
+                    <span>UPI ID:{{ $compinfofooter->upiid }}</span><br>
+                    &nbsp;
+                        <img src="{{ asset('storage\app\public\image\\' . $pic->qrcode) }}" alt="qr_code"
+                            width="80px " onerror="this.style.display='none'">
+                        {{-- <img src="/storage/image/qr.jpeg" alt="qr_code" width="80px">  this is abal to print image --}}
 
 
                 </div>
                 <div class="comp_sign"style="background-color:#e6ecff">
 
-                    &nbsp;<img src="{{ asset('storage\app\public\image\\' . $pic->seal) }}" alt="qr_code" width="80px">
+                    &nbsp;<img src="{{ asset('storage\app\public\image\\' . $pic->seal) }}"  width="80px" onerror="this.style.display='none'">
                 </div>
 
 
@@ -452,9 +469,12 @@
 
             <div class="button-container my-2">
                 <button class="btn btn-dark btn-lg mx-2" onclick="printInvoice()">Print</button>
-                <a href="{{ url('room_checkout_view2', $roomcheckouts->voucher_no) }}" class="btn  btn-primary btn-lg" >Format 2</a>
-                <a href="{{ url('room_checkout_view3', $roomcheckouts->voucher_no) }}" class="btn  btn-success btn-lg mx-2" >Format 3</a>
-                <a href="{{ url('room_checkout_view4', $roomcheckouts->voucher_no) }}" class="btn  btn-warning btn-lg mx-2" >Format 4(A5)</a>
+                <a href="{{ url('room_checkout_view2', $roomcheckouts->voucher_no) }}"
+                    class="btn  btn-primary btn-lg">Format 2</a>
+                <a href="{{ url('room_checkout_view3', $roomcheckouts->voucher_no) }}"
+                    class="btn  btn-success btn-lg mx-2">Format 3</a>
+                <a href="{{ url('room_checkout_view4', $roomcheckouts->voucher_no) }}"
+                    class="btn  btn-warning btn-lg mx-2">Format 4(A5)</a>
 
             </div>
 

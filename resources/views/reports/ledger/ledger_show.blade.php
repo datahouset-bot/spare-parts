@@ -246,7 +246,10 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td>{{$opening_balanceDisplay}}</td>
+                                <td>{{ sprintf('%.2f', (float) $opening_balanceDisplay) }}
+                                
+                                
+                                </td>
 
                             </tr>
 

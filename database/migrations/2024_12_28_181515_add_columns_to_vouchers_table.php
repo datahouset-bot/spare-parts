@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations — add columns to vouchers table.
      */
     public function up()
     {
@@ -34,10 +34,12 @@ return new class extends Migration
             $table->string('vehicle_no')->nullable();
             $table->string('station')->nullable();
             $table->string('fright')->nullable();
-
         });
     }
-    
+
+    /**
+     * Reverse the migrations — remove added columns.
+     */
     public function down()
     {
         Schema::table('vouchers', function (Blueprint $table) {
@@ -54,8 +56,17 @@ return new class extends Migration
                 'voucher_af8',
                 'voucher_af9',
                 'voucher_af10',
+                'voucher_af11',
+                'voucher_af12',
+                'voucher_af13',
+                'voucher_af14',
+                'voucher_af15',
+                'transport',
+                'gr_no',
+                'vehicle_no',
+                'station',
+                'fright',
             ]);
         });
     }
-    
 };

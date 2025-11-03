@@ -93,6 +93,7 @@ class UserRolePermissionSeeder extends Seeder
             'Month Wise Sale',
             'B2B Sale',
             'B2C Sale',
+            'Rate_Hide_On_Kot',
         ];
 
         foreach ($permissions as $permission) {

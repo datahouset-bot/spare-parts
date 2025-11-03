@@ -3,9 +3,10 @@
 namespace  App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -21,7 +22,12 @@ class RoleController extends Controller
 
     public function index()
     {
-        $roles = Role::get();
+$roles = Role::where(function ($q) {
+        $q->where('firm_id', Auth::user()->firm_id)
+          ->orWhereNull('firm_id');
+    })
+    ->get();
+
 
         return view('role-permission.role.index', ['roles' => $roles]);
     }
@@ -40,10 +46,21 @@ class RoleController extends Controller
                 'unique:roles,name'
             ]
         ]);
+           $firm_id =Auth::user()->firm_id;
+           if ($firm_id == 'DATA0001') {
+    Role::create([
+        'name' => $request->name,
+    ]);
+} else {
+    Role::create([
+        'name' => $request->name,
+        'firm_id' => Auth::user()->firm_id,
+    ]);
+}
 
-        Role::create([
-            'name' => $request->name
-        ]);
+
+
+
 
         return redirect('roles')->with('status','Role Created Successfully');
     }

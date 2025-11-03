@@ -49,6 +49,7 @@ class ComonvariableMiddleware
             'softwarecompinfo' => $softwarecompinfo,
         ]);
 
+
         return $next($request);
     }
 }

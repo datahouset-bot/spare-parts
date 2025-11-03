@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\item;
 use App\Models\inventory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreinventoryRequest;
 use App\Http\Requests\UpdateinventoryRequest;
 use Symfony\Component\HttpFoundation\Request;
 
-class InventoryController extends Controller
+class InventoryController extends CustomBaseController
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +19,7 @@ class InventoryController extends Controller
     {
 
 
-        $closing_stock = Inventory::select('item_id', 'item_name')
+        $closing_stock = Inventory::withinFY('entry_date')->select('item_id', 'item_name')
             ->where('firm_id', Auth::user()->firm_id)
             ->selectRaw('COALESCE(SUM(stock_in), 0) as total_stock_in')
             ->selectRaw('COALESCE(SUM(stock_out), 0) as total_stock_out')
@@ -31,6 +32,53 @@ class InventoryController extends Controller
 
     }
 
+  
+
+    public function liqour_stock_brand_wise() 
+{
+    $closing_stock = DB::table('inventories')
+    ->withinFY('entry_date')
+    ->join('items', 'inventories.item_id', '=', 'items.id')
+    ->join('companies', 'items.company_id', '=', 'companies.id')
+    ->join('itemgroups', 'items.group_id', '=', 'itemgroups.id')
+    ->join('units', 'items.unit_id', '=', 'units.id') // Join with units table
+    ->where('inventories.firm_id', Auth::user()->firm_id)
+    ->select(
+        'inventories.item_id',
+        'items.item_name',
+        'items.company_id',
+        'companies.comp_name as company_name',
+        'items.group_id',
+        'itemgroups.item_group as group_name',
+        'units.primary_unit_name',
+        'units.conversion',
+        'units.alternate_unit_name',
+        DB::raw('SUM(COALESCE(inventories.stock_in, 0)) as total_stock_in'),
+        DB::raw('SUM(COALESCE(inventories.stock_out, 0)) as total_stock_out'),
+        DB::raw('SUM(COALESCE(inventories.stock_in, 0) - COALESCE(inventories.stock_out, 0)) as total_stock')
+    )
+    ->groupBy(
+        'inventories.item_id',
+        'items.item_name',
+        'items.company_id',
+        'companies.comp_name',
+        'items.group_id',
+        'itemgroups.item_group',
+        'units.primary_unit_name',
+        'units.conversion',
+        'units.alternate_unit_name'
+    )
+    ->get();
+
+
+    
+
+
+    return view("reports.stock.stockstatus_liqour_brandwise", compact("closing_stock"));
+}
+
+
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -52,7 +100,7 @@ class InventoryController extends Controller
      */
     public function show()
     {
-        $closing_stock = Inventory::where('firm_id', Auth::user()->firm_id)->with('godown')->select('item_id', 'item_name', 'godown_id')
+        $closing_stock = Inventory::withinFY('entry_date')->where('firm_id', Auth::user()->firm_id)->with('godown')->select('item_id', 'item_name', 'godown_id')
             ->selectRaw('COALESCE(SUM(stock_in), 0) as total_stock_in')
             ->selectRaw('COALESCE(SUM(stock_out), 0) as total_stock_out')
             ->selectRaw('COALESCE(SUM(stock_in), 0) - COALESCE(SUM(stock_out), 0) as total_stock')
@@ -110,7 +158,7 @@ class InventoryController extends Controller
             $one_day_before = $parsed_date->subDay(); // Subtract one day
             $formatted_from_date_onedaybefore = $one_day_before->format('Y-m-d');
 
-            $stock_before_fromdate = inventory::where('firm_id', Auth::user()->firm_id)->first()
+            $stock_before_fromdate = inventory::withinFY('entry_date')->where('firm_id', Auth::user()->firm_id)->first()
                 ->where('item_id', $item_id)
                 ->where('entry_date', '<=', $formatted_from_date_onedaybefore)
                 ->get();

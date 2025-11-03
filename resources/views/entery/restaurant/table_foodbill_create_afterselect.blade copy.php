@@ -26,6 +26,12 @@
             padding-right: 1px;
             padding-left: 1px;
         }
+
+        #credit_account_id {
+
+            width: 200px;
+
+        }
     </style>
 
     <script>
@@ -50,7 +56,7 @@
 
         <div class="card my-3">
             <div class="card-header">
-                Restaurant  Bill 
+                Restaurant Bill
             </div>
             <div class="row my-2">
                 <div class="col-md-12 text-center">
@@ -58,10 +64,16 @@
                     data-bs-target="#myModal">
                     Add New KOT
                 </button> --}}
-                <a href="{{ url('temp_item_delete/' . Auth::user()->id) }}" class="btn btn-success">Add New</a>
-                <form id ="saveForm" action="{{ url('table_foodbills_store') }}" method="POST" style="display:inline;">
-                    @csrf
-                    <button id="saveButton" type="submit" class="btn btn-primary">Save & Print</button>
+                    <a href="{{ url('temp_item_delete/' . Auth::user()->id) }}" class="btn btn-success">Add New</a>
+                    <form id ="saveForm" action="{{ url('table_foodbills_store') }}" method="POST" style="display:inline;">
+                        @csrf
+
+                        <input type="checkbox" name="approval" value="true" id="flexCheckDefault">
+
+                        Print Approval
+
+
+                        <button id="saveButton" type="submit" class="btn btn-primary">Save & Print</button>
 
 
 
@@ -84,7 +96,8 @@
                     <input type="hidden" class="form-control" id="voucher_no" name="voucher_no"
                         value={{ $new_voucher_no }}>
 
-                    <input type="hidden" class="form-control" id="voucher_type" name="voucher_type" value="Restaurant_food_bill">
+                    <input type="hidden" class="form-control" id="voucher_type" name="voucher_type"
+                        value="Restaurant_food_bill">
                     <div class="col-md-2 col-4  text-center">
                         <label for="food_bill_no">Bill No </label>
                         <input type="text" class="form-control" id ="food_bill_no"name="food_bill_no"
@@ -94,9 +107,9 @@
                     <div class="col-md-2 col-4  text-center">
                         <label for="service_type">Service Type</label>
                         <select name="service_type" id="service_type" class="form-select">
- 
+
                             <option selected value="table_service">Table Service</option>
- 
+
 
                         </select>
 
@@ -104,7 +117,7 @@
                     <div class="col-md-2 col-4  text-center">
                         <label for="kot_on">Selected Table</label>
                         <select name="service_id" id="service_id" class="form-select">
-                            <option value="{{$service_id}}">{{$service_id}}</option>
+                            <option value="{{ $service_id }}">{{ $table->table_name }}</option>
 
 
 
@@ -112,6 +125,9 @@
                         </select>
 
                     </div>
+
+
+
                     <div class="col-md-2 col-4  text-center">
                         <label for="kot_no">KOT No</label>
                         <input type="text" class="form-control" id ="kot_no"name="kot_no" value="{{ $vouchers }}">
@@ -127,19 +143,20 @@
                     </div>
                     <div class="col-md-4 col-4  text-center">
                         <label for="customer_name">Name</label>
-                        <input type="text" class="form-control" id ="customer_name"name="customer_name" autocomplete="off" >
+                        <input type="text" class="form-control" id ="customer_name"name="customer_name"
+                            autocomplete="off">
                     </div>
-                                        <div class="col-md-2 col-4  text-center">
+                    <div class="col-md-2 col-4  text-center">
                         <label for="address">Address</label>
                         <input type="text" class="form-control" id ="address"name="address" autocomplete="off">
                     </div>
                     <div class="col-md-2 col-4  text-center">
                         <label for="mobile">Mobile</label>
-                        <input type="text" class="form-control" id ="mobile"name="mobile" autocomplete="off" >
+                        <input type="text" class="form-control" id ="mobile"name="mobile" autocomplete="off">
                     </div>
                     <div class="col-md-2 col-4  text-center">
                         <label for="remark">Remark</label>
-                        <input type="text" class="form-control" id ="remark"name="remark"  autocomplete="off">
+                        <input type="text" class="form-control" id ="remark"name="remark" autocomplete="off">
                     </div>
 
                 </div>
@@ -273,113 +290,121 @@
                 <div class="row">
 
                     <div class="row my-2" name="kot_header">
-                 <div class="col-md-2 col-4  text-center">
-                    <label for="net_bill_amount">Amount </label>
-                    <input type="text" class="form-control" id ="net_bill_amount"name="net_bill_amount"
-                        value="">
-                </div>
-                <div class="col-md-2 col-4  text-center">
-                    <label for="round_off">Round Off</label>
-                    <input type="text" class="form-control" id ="round_off"name="round_off"
-                        value="">
-                </div>
+                        <div class="col-md-2 col-4  text-center">
+                            <label for="net_bill_amount">Amount </label>
+                            <input type="text" class="form-control" id ="net_bill_amount"name="net_bill_amount"
+                                value="">
+                        </div>
+                        <div class="col-md-2 col-4  text-center">
+                            <label for="round_off">Round Off</label>
+                            <input type="text" class="form-control" id ="round_off"name="round_off" value="">
+                        </div>
 
-                <div class="col-md-2 col-4  text-center">
-                    <label for="total_bill_value">Net Bill Amount </label>
-                    <input type="text" class="form-control" id ="total_bill_value"name="total_bill_value"
-                        value="">
-                </div>
-                <div class="col-md-2 col-4  text-center">
-                    <label for="amt_in_words">Amount In Words </label>
-                    <input type="text" class="form-control" id ="amt_in_words"name="amt_in_words" value="">
-                </div>
-
-                <div class="col-md-2">
-                    <label for="settle_payment">Settle to Payment</label>
-                    <select id="settle_payment" name="settle_payment" class="form-select">
-                        <option value="Cash">Settle To Cash</option>
-                        <option value="yes">Settle To Payment</option>
-                    </select>
-                </div>
-
-                {{-- <div class="col-md-2 col-4 text-center ">
-                    <label for="posting_acc_id">Select Mode </label>
-                    <select name="posting_acc_id" id="posting_acc_id" class="form-select">
+                        <div class="col-md-2 col-4  text-center">
+                            <label for="total_bill_value">Net Bill Amount </label>
+                            <input type="text" class="form-control" id ="total_bill_value"name="total_bill_value"
+                                value="">
+                        </div>
 
 
-                            @foreach ($paymentmodes as $paymentmode)
-                                <option value="{{ $paymentmode->id }}" 
-                                    @if ($paymentmode->id == 5) selected @endif>
-                                    {{ $paymentmode->account_name }}
-                                </option>
-                            @endforeach
+                        <div class="col-md-2">
+                            <label for="settle_payment">Settle to Payment</label>
+                            <select id="settle_payment" name="settle_payment" class="form-select">
+                                <option value="Cash">Settle To Cash</option>
+                                <option value="yes">Settle To Payment</option>
+                                <option value="Credit">Settle To Credit</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4" id="room_selection_box" style="display: none;">
+                            <table id="room_selection" class="table table-striped table-responsive room_selection">
+                                <thead>
+                                    <tr>
+                                        <th>Mode</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($paymentmodes as $index => $paymentmode)
+                                        <tr>
+                                            <td>
+                                                <input type="text" class="form-control"
+                                                    name="payment_data[{{ $index }}][name]"
+                                                    value="{{ $paymentmode->account_name }}" readonly>
+                                                <input type="hidden" name="payment_data[{{ $index }}][id]"
+                                                    value="{{ $paymentmode->id }}">
+                                            </td>
+                                            <td>
+                                                <input type="number" class="form-control payment-amount"
+                                                    name="payment_data[{{ $index }}][amount]"
+                                                    placeholder="Enter amount" min="0" autocomplete="off">
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                        <div id="credit_details_box" style="display: none;" class="col-md-2 col-4  text-center">
 
 
 
-                    </select>
-                </div> --}}
-                <div class="col-md-4" id="room_selection_box" style="display: none;">
-                    <table id="room_selection" class="table table-striped table-responsive room_selection">
-                        <thead>
-                            <tr>
-                                <th>Mode</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($paymentmodes as $index => $paymentmode)
-                                <tr>
-                                    <td>
-                                        <input type="text" class="form-control"
-                                            name="payment_data[{{ $index }}][name]"
-                                            value="{{ $paymentmode->account_name }}" readonly>
-                                        <input type="hidden" 
-                                            name="payment_data[{{ $index }}][id]" 
-                                            value="{{ $paymentmode->id }}">
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control payment-amount"
-                                            name="payment_data[{{ $index }}][amount]"
-                                            placeholder="Enter amount" min="0" autocomplete="off">
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                
 
-                <div class="col-md-2 col-4  text-center">
-                    <label for="net_food_bill_amount">Amount To Post      </label>
-                    <input type="text" class="form-control" id ="net_food_bill_amount"name="net_food_bill_amount"
-                        value=" " readonly>
-                </div>
-                <div class="col-md-2 col-4  text-center">
-                    <label for="payment_remark">Payment Remark </label>
-                    <input type="text" class="form-control" id ="payment_remark"name="payment_remark"
-                        value="">
-                </div>
-                <div class="col-md-2 col-4  text-center">
-                    <label for="food_bill_remark">Remark </label>
-                    <input type="text" class="form-control" id ="food_bill_remark"name="food_bill_remark"
-                        value="">
-                </div>
+
+                            <select id="credit_account_id" name="credit_account_id">
+                                <option value="Null"disabled selected>Select account</option>
+                                @foreach ($creditaccounts as $record)
+                                    <option value="{{ $record->id }}">{{ $record->account_name }}</option>
+                                @endforeach
+                            </select>
+
+
+
+                        </div>
 
 
 
 
 
 
-                </div>
-                <div class="col-3">
-                    <input type="hidden" name="total_item" id="total_item" value ="">
-                    <input type="hidden" name="total_qty" id="total_qty" value="">
-                   
-                    <input type="hidden" name="total_base_amount" id="total_base_amount" value="">
-                    <input type="hidden" name="total_discount_amount"  id="total_discount_amount" value="">
-                    <input type="hidden" name="total_gst_amount"  id="total_gst_amount" value="">
 
-                </div>
+                        <div class="col-md-2 col-4  text-center">
+                            <label for="net_food_bill_amount">Amount To Post </label>
+                            <input type="text" class="form-control"
+                                id ="net_food_bill_amount"name="net_food_bill_amount" value=" " readonly>
+                        </div>
+                        <div class="col-md-2 col-4  text-center">
+                            <label for="amt_in_words">Amount In Words </label>
+                            <input type="text" class="form-control" id ="amt_in_words"name="amt_in_words"
+                                value="">
+                        </div>
+                        <div class="col-md-2 col-4  text-center">
+                            <label for="payment_remark">Payment Remark </label>
+                            <input type="text" class="form-control" id ="payment_remark"name="payment_remark"
+                                value="">
+                        </div>
+                        <div class="col-md-2 col-4  text-center">
+                            <label for="food_bill_remark">Remark </label>
+                            <input type="text" class="form-control" id ="food_bill_remark"name="food_bill_remark"
+                                value="">
+                        </div>
+
+
+
+
+
+
+                    </div>
+                    <div class="col-3">
+                        <input type="hidden" name="total_item" id="total_item" value ="">
+                        <input type="hidden" name="total_qty" id="total_qty" value="">
+
+                        <input type="hidden" name="total_base_amount" id="total_base_amount" value="">
+                        <input type="hidden" name="total_discount_amount" id="total_discount_amount" value="">
+                        <input type="hidden" name="total_gst_amount" id="total_gst_amount" value="">
+
+                    </div>
 
 
 
@@ -408,7 +433,7 @@
     <!-- Select2 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script>
-        $("#item_id").select2({
+        $("#credit_account_id").select2({
             placeholder: "Select Item",
             allowClear: true
         });
@@ -434,16 +459,16 @@
                             var totalQty = 0;
                             var totalAmount = 0;
                             var itemdiscountamt = 0;
-                            var itemvalue=0;
-                            var itemtaxable=0;
-                            var gstpercent=0;
-                            var itemgstamt=0;
-                             var itemnetvalue=0;
-                             var totalgstamt=0;
-                            var totalitemtaxable=0;
-                             var totalnetvalue=0;
-                             var totalitemdiscount=0;
-                            
+                            var itemvalue = 0;
+                            var itemtaxable = 0;
+                            var gstpercent = 0;
+                            var itemgstamt = 0;
+                            var itemnetvalue = 0;
+                            var totalgstamt = 0;
+                            var totalitemtaxable = 0;
+                            var totalnetvalue = 0;
+                            var totalitemdiscount = 0;
+
 
 
                             $('#sold_item_record tbody').empty(); // Clear previous records
@@ -452,18 +477,19 @@
                                 var amount = record.qty * record.rate;
                                 totalQty += parseFloat(record.qty);
 
-                                gstpercent=record.item.gstmaster.igst;
+                                gstpercent = record.item.gstmaster.igst;
                                 totalAmount += amount;
                                 dis_percant = $('#dis_percant').val();
                                 dis_amt_roundoff = $('#dis_amt_roundoff').val();
-                                itemdiscountamt=((record.qty * record.rate)*dis_percant)/100;
-                                totalitemdiscount+=itemdiscountamt;
-                                itemtaxable=amount-itemdiscountamt;
-                                totalitemtaxable+=itemtaxable;
-                                itemgstamt=((amount-itemdiscountamt)*gstpercent)/100;
-                                totalgstamt+=itemgstamt;
-                                itemnetvalue =itemtaxable+itemgstamt; 
-                                totalnetvalue +=itemnetvalue;
+                                itemdiscountamt = ((record.qty * record.rate) * dis_percant) /
+                                    100;
+                                totalitemdiscount += itemdiscountamt;
+                                itemtaxable = amount - itemdiscountamt;
+                                totalitemtaxable += itemtaxable;
+                                itemgstamt = ((amount - itemdiscountamt) * gstpercent) / 100;
+                                totalgstamt += itemgstamt;
+                                itemnetvalue = itemtaxable + itemgstamt;
+                                totalnetvalue += itemnetvalue;
 
 
                                 $('#sold_item_record tbody').append(`
@@ -500,13 +526,13 @@
                             $('#net_bill_amount').val(totalnetvalue.toFixed(2));
                             var roundoff = totalnetvalue - Math.round(totalnetvalue) - dis_amt_roundoff;
                             $('#round_off').val(roundoff.toFixed(
-                            2)); // Set the rounded value with 2 decimal places
+                                2)); // Set the rounded value with 2 decimal places
 
 
                             $('#net_food_bill_amount').val(Math.round(totalnetvalue -
-                            dis_amt_roundoff));
+                                dis_amt_roundoff));
                             $('#total_bill_value').val(Math.round(totalnetvalue - dis_amt_roundoff));
-                           $('#total_discount_amount').val(totalitemdiscount);
+                            $('#total_discount_amount').val(totalitemdiscount);
 
 
                         } else {
@@ -550,53 +576,53 @@
         });
     </script>
     <script>
-  $(document).ready(function () {
-        $('#saveForm').on('submit', function () {
-            // Disable the submit button and show loading spinner
-            $('#saveButton')
-                .prop('disabled', true)
-                .html('<i class="fa fa-spinner fa-spin"></i> Please wait...');
+        $(document).ready(function() {
+            $('#saveForm').on('submit', function() {
+                // Disable the submit button and show loading spinner
+                $('#saveButton')
+                    .prop('disabled', true)
+                    .html('<i class="fa fa-spinner fa-spin"></i> Please wait...');
+            });
         });
-    });
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const settlePaymentSelect = document.getElementById('settle_payment');
             const roomSelectionBox = document.getElementById('room_selection_box');
             const submitButton = document.getElementById('saveButton');
             const netFoodBillAmountInput = document.getElementById('net_food_bill_amount');
             const saveForm = document.getElementById('saveForm');
-    
+
             // Track submission state to prevent double submission
             let isSubmitting = false;
-    
+
             // Show or hide the room selection box based on dropdown selection
-            settlePaymentSelect.addEventListener('change', function () {
+            settlePaymentSelect.addEventListener('change', function() {
                 if (this.value === 'yes') {
                     roomSelectionBox.style.display = 'block'; // Show the section
                 } else {
                     roomSelectionBox.style.display = 'none'; // Hide the section
                 }
             });
-    
+
             // Validate and submit the form
-            submitButton.addEventListener('click', function (event) {
+            submitButton.addEventListener('click', function(event) {
                 // Prevent form submission by default
                 event.preventDefault();
-    
+
                 // Check if the form is already being submitted
                 if (isSubmitting) {
                     alert('Form is already being submitted. Please wait.');
                     return;
                 }
-    
+
                 // Check if settle_payment is set to "yes"
                 if (settlePaymentSelect.value === 'yes') {
                     // Calculate total amount from payment data
                     const paymentAmounts = document.querySelectorAll('.payment-amount');
                     let totalAmount = 0;
                     let hasEntry = false;
-    
+
                     paymentAmounts.forEach(input => {
                         const value = parseFloat(input.value) || 0;
                         if (value > 0) {
@@ -604,30 +630,166 @@
                         }
                         totalAmount += value;
                     });
-    
+
                     // Get the net food bill amount
                     const netFoodBillAmount = parseFloat(netFoodBillAmountInput.value) || 0;
-    
+
                     // Validate the payment amounts
                     if (!hasEntry) {
                         alert('Please enter at least one payment amount.');
                         return; // Stop submission
                     }
-    
+
                     if (totalAmount !== netFoodBillAmount) {
                         alert('Posting amount should equal to net amount.');
                         return; // Stop submission
                     }
                 }
-    
+
                 // Set submission flag to true and disable the submit button
                 isSubmitting = true;
                 submitButton.disabled = true;
                 submitButton.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Please wait...';
-    
+
                 // Submit the form
                 saveForm.submit();
             });
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const settlePaymentSelect = document.getElementById('settle_payment');
+            const creditDetailsBox = document.getElementById('credit_details_box'); // Container for credit fields
+            const submitButton = document.getElementById('saveButton');
+            const netFoodBillAmountInput = document.getElementById('net_food_bill_amount');
+            const saveForm = document.getElementById('saveForm');
+
+            let isSubmitting = false;
+
+            // Show/hide credit details box based on selection
+            settlePaymentSelect.addEventListener('change', function() {
+                if (this.value === 'Credit') {
+                    creditDetailsBox.style.display = 'block'; // Show credit section
+                } else {
+                    creditDetailsBox.style.display = 'none'; // Hide credit section
+                }
+            });
+
+            // Handle form submission for Credit settlement
+            submitButton.addEventListener('click', function(event) {
+                event.preventDefault();
+
+                if (isSubmitting) {
+                    alert('Form is already being submitted. Please wait.');
+                    return;
+                }
+
+                if (settlePaymentSelect.value === 'Credit') {
+                    // Validate credit-related inputs
+                    const creditCustomer = document.getElementById('credit_customer');
+                    const creditAmount = parseFloat(document.getElementById('credit_amount').value) || 0;
+                    const netFoodBillAmount = parseFloat(netFoodBillAmountInput.value) || 0;
+
+                    if (!creditCustomer.value.trim()) {
+                        alert('Please enter a credit customer name.');
+                        return;
+                    }
+
+                    if (creditAmount <= 0 || creditAmount !== netFoodBillAmount) {
+                        alert('Credit amount should be equal to the net amount.');
+                        return;
+                    }
+                }
+
+                // Set submission flag to true
+                isSubmitting = true;
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Please wait...';
+
+                // Submit the form
+                saveForm.submit();
+            });
+        });
+    </script>
+    {{-- for alert massage credit  account  --}}
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const settlePaymentSelect = document.getElementById('settle_payment');
+            const creditDetailsBox = document.getElementById('credit_details_box');
+            const creditAccountField = document.getElementById('credit_account_id');
+            const submitButton = document.getElementById('saveButton');
+            const saveForm = document.getElementById('saveForm');
+
+            // Show or hide credit account selection based on payment type
+            settlePaymentSelect.addEventListener('change', function() {
+                if (this.value === 'Credit') {
+                    creditDetailsBox.style.display = 'block'; // Show credit section
+                } else {
+                    creditDetailsBox.style.display = 'none'; // Hide credit section
+                }
+            });
+
+            // Handle form submission
+            submitButton.addEventListener('click', function(event) {
+                if (settlePaymentSelect.value === 'Credit') {
+                    if (!creditAccountField.value || creditAccountField.value === "Null") {
+                        event.preventDefault(); // Prevent form submission
+                        confirm(
+                        'Credit Account ID is required.\nClick "OK" to select or "Cancel" to exit.');
+                        creditAccountField.focus(); // Focus the field for user
+                        return;
+                    }
+                }
+
+                // If all validations pass, allow form submission
+                saveForm.submit();
+            });
+        });
+    </script>
+
+
+
+    <script>
+        $(document).ready(function() {
+            $('#saveButton').click(function(event) {
+                var settlePayment = $('#settle_payment').val();
+                var creditAccountId = $('#credit_account_id').val();
+
+                // Reset previous error messages
+                $('.error-message').remove();
+
+                if (settlePayment === 'Credit' && (!creditAccountId || creditAccountId === "Null")) {
+                    event.preventDefault(); // Prevent form submission
+                    $('#credit_account_id').after(
+                        '<span class="error-message text-danger">Please select a Credit Account.</span>'
+                        );
+                }
+            });
+
+            // Show/hide fields based on settle_payment selection
+            $('#settle_payment').change(function() {
+                var selectedOption = $(this).val();
+
+                if (selectedOption === 'Credit') {
+                    $('#credit_details_box').show();
+                } else {
+                    $('#credit_details_box').hide();
+                    $('#credit_account_id').val('Null'); // Reset selection
+                }
+            });
+        });
+    </script>
+
+    <!-- Select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script>
+        $("#credit_customer").select2({
+            placeholder: "Select Account",
+            allowClear: true
         });
     </script>
 @endsection

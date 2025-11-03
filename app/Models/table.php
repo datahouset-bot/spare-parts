@@ -11,6 +11,7 @@ class table extends Model
     protected $fillable = [
         'firm_id',
         'table_name',
+        'table_group',
         // Add other fields here as necessary
     ];
 }

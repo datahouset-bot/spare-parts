@@ -66,8 +66,12 @@ public function index()
     }
 
     public function edit(User $user)
-    {
-        $roles = Role::pluck('name','name')->all();
+    {  
+$roles = Role::where('firm_id', Auth::user()->firm_id)
+    ->orWhereNull('firm_id')
+    ->pluck('name', 'name')
+    ->all();
+
         $userRoles = $user->roles->pluck('name','name')->all();
         return view('role-permission.user.edit', [
             'firm_id'=>Auth::user()->firm_id,

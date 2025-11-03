@@ -153,5 +153,66 @@ class PicController extends CustomBaseController
 
     } 
 
+        public function comp_pic_af1(Request $request)
+    {      
+        $comppic = pic::where('firm_id',Auth::user()->firm_id)->first();
+        $image=$request->comp_pic_af1;
+        $name=$image->getClientOriginalName();
+        $image->storeAS('public\image',$name);
+        $comppic->pic_af1=$name;
+        $comppic->update();
+
+       return view('setting.comp_pic_form',['comppic' =>$comppic]);
+
+    } 
+     public function comp_pic_af2(Request $request)
+    {      
+        $comppic = pic::where('firm_id',Auth::user()->firm_id)->first();
+        $image=$request->comp_pic_af2;
+        $name=$image->getClientOriginalName();
+        $image->storeAS('public\image',$name);
+        $comppic->pic_af2=$name;
+        $comppic->update();
+
+       return view('setting.comp_pic_form',['comppic' =>$comppic]);
+
+    } 
+         public function comp_pic_af3(Request $request)
+    {      
+        $comppic = pic::where('firm_id',Auth::user()->firm_id)->first();
+        $image=$request->comp_pic_af3;
+        $name=$image->getClientOriginalName();
+        $image->storeAS('public\image',$name);
+        $comppic->pic_af3=$name;
+        $comppic->update();
+
+       return view('setting.comp_pic_form',['comppic' =>$comppic]);
+
+    } 
+      public function comp_pic_af4(Request $request)
+    {      
+        $comppic = pic::where('firm_id',Auth::user()->firm_id)->first();
+        $image=$request->comp_pic_af4;
+        $name=$image->getClientOriginalName();
+        $image->storeAS('public\image',$name);
+        $comppic->pic_af4=$name;
+        $comppic->update();
+
+       return view('setting.comp_pic_form',['comppic' =>$comppic]);
+
+    } 
+          public function comp_pic_af5(Request $request)
+    {      
+        $comppic = pic::where('firm_id',Auth::user()->firm_id)->first();
+        $image=$request->comp_pic_af5;
+        $name=$image->getClientOriginalName();
+        $image->storeAS('public\image',$name);
+        $comppic->pic_af5=$name;
+        $comppic->update();
+
+       return view('setting.comp_pic_form',['comppic' =>$comppic]);
+
+    } 
+
    
 }

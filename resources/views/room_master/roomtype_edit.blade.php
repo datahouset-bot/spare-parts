@@ -81,6 +81,96 @@
                                 @enderror
                             </span>
                         </div>
+                            <div   style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
+
+                             Room Code   <input type="text" name ="room_type_af1"class="form-control" value={{ $record2->room_type_af1 }}>
+                            <span class="text-danger"> 
+                              @error('room_type_af1')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span> 
+                          </div>  
+                        <div   style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
+
+                             Room Rate Code Single    <input type="text" name ="room_type_af2"class="form-control" value={{ $record2->room_type_af2 }}>
+                            <span class="text-danger"> 
+                              @error('room_type_af2')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span> 
+                          </div> 
+                    <div   style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
+
+                             Room Rate Single    <input type="text" name ="room_type_af3"class="form-control" value={{ $record2->room_type_af3 }}>
+                            <span class="text-danger"> 
+                              @error('room_type_af3')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span> 
+                          </div> 
+                             <div   style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
+
+                             Room Rate Code Double    <input type="text" name ="room_type_af4"class="form-control" value={{ $record2->room_type_af4 }}>
+                            <span class="text-danger"> 
+                              @error('room_type_af4')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span> 
+                          </div> 
+                      <div   style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
+
+                             Room Rate Double    <input type="text" name ="room_type_af5"class="form-control" value={{ $record2->room_type_af5 }}>
+                            <span class="text-danger"> 
+                              @error('room_type_af5')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span> 
+                          </div> 
+                         <div   style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
+
+                             Room Rate Code Tripale    <input type="text" name ="room_type_af6"class="form-control" value={{ $record2->room_type_af6 }}>
+                            <span class="text-danger"> 
+                              @error('room_type_af6')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span> 
+                          </div>  
+                     <div   style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
+
+                             Room Rate  Tripale    <input type="text" name ="room_type_af7"class="form-control" value={{ $record2->room_type_af7 }}>
+                            <span class="text-danger"> 
+                              @error('room_type_af7')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span> 
+                          </div>  
+                          <div   style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
+
+                             Room Rate Code Qued    <input type="text" name ="room_type_af8"class="form-control" value={{ $record2->room_type_af8 }}>
+                            <span class="text-danger"> 
+                              @error('room_type_af8')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span> 
+                          </div> 
+                   <div   style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
+
+                             Room Rate  Qued    <input type="text" name ="room_type_af9"class="form-control" value={{ $record2->room_type_af9 }}>
+                            <span class="text-danger"> 
+                              @error('room_type_af9')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span> 
+                          </div> 
                         <button type="submit" class="btn btn-primary btn-sm my-2">Update</button>
                     </form>
                 </div>

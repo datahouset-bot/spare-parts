@@ -13,22 +13,33 @@ use App\Models\othercharge;
 use App\Models\roombooking;
 use App\Models\accountgroup;
 use App\Models\voucher_type;
+use App\Models\WhatsappSms;
+use App\Models\componyinfo;
 use Illuminate\Http\Request;
 use App\Models\businesssource;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 use App\Http\Requests\StoreroombookingRequest;
 use App\Http\Requests\UpdateroombookingRequest;
+use App\Models\softwarecompany;
 
 class RoombookingController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware(['auth']);
 
-    // }
+    public function __construct()
+    {
+        
+        $this->middleware('permission:view role', ['only' => ['index']]);
+        $this->middleware('permission:create role', ['only' => ['create', 'store', 'addPermissionToRole', 'givePermissionToRole']]);
+        $this->middleware('permission:update role', ['only' => ['update', 'edit']]);
+        $this->middleware('permission:delete role', ['only' => ['destroy']]);
+
+     
+
+    }   
     /**
      * Display a listing of the resource.
      */
@@ -55,6 +66,7 @@ class RoombookingController extends Controller
         return view('entery.room.room_booking_register', compact('roombooking'));
 
     }
+    
 
     public function create()
     {
@@ -103,131 +115,6 @@ class RoombookingController extends Controller
 
     }
 
-
-    //this is old function 
-    // public function show_rooms_available_for_booking(Request $request)
-    // {
-    //     $checkinDate = $request->checkin_date;
-    //     $checkoutDate = $request->checkout_date;
-    //     $checkin_time=$request->checkin_time;
-    //     $checkout_time=$request->checkout_time;
-    //     $package_id=$request->package_id;
-    //     $package=package::where('firm_id', Auth::user()->firm_id)->where('id',$package_id)->first();
-    //     $package_charge=$package->other_name;   //this is package charge 
-
-
-    //     // Parse check-in date
-    //     $parsed_checkinDate = Carbon::createFromFormat('d-m-Y', $checkinDate);
-    //     $formatted_checkinDate = $parsed_checkinDate->format('Y-m-d');
-
-    //     // Parse check-out date
-    //     $parsed_checkoutDate = Carbon::createFromFormat('d-m-Y', $checkoutDate);
-    //     $formatted_checkoutDate = $parsed_checkoutDate->format('Y-m-d');
-
-
-    //     $checkinDate = Carbon::createFromFormat('d-m-Y', $checkinDate)->format('Y-m-d');
-    //     $checkoutDate = Carbon::createFromFormat('d-m-Y', $checkoutDate)->format('Y-m-d');
-
-    //     $rooms = Room::with(['roomtype.gstmaster', 'roomtype.package'])
-    //     ->leftJoin('roombookings', function ($join) use ($checkinDate, $checkoutDate, $checkin_time, $checkout_time) {
-    //         $join->on('rooms.id', '=', 'roombookings.room_id')
-    //             ->where(function ($query) use ($checkinDate, $checkoutDate, $checkin_time, $checkout_time) {
-    //                 $query->where(function ($q) use ($checkinDate, $checkoutDate) {
-    //                     // Check for date overlaps
-    //                     $q->whereBetween('roombookings.checkin_date', [$checkinDate, $checkoutDate])
-    //                       ->orWhereBetween('roombookings.checkout_date', [$checkinDate, $checkoutDate])
-    //                       ->orWhere(function ($q2) use ($checkinDate, $checkoutDate) {
-    //                           $q2->where('roombookings.checkin_date', '<=', $checkinDate)
-    //                              ->where('roombookings.checkout_date', '>=', $checkoutDate);
-    //                       });
-    //                 })->orWhere(function ($q) use ($checkinDate, $checkin_time) {
-    //                     // Exclude rooms where the checkout overlaps the desired check-in
-    //                     $q->where('roombookings.checkout_date', '=', $checkinDate)
-    //                       ->where(function ($q2) use ($checkin_time) {
-    //                           $q2->where('roombookings.checkout_time', '>=', $checkin_time)
-    //                              ->orWhere('roombookings.checkout_time', '>', $checkin_time); // Adjust logic to exclude overlapping bookings
-    //                       });
-    //                 })->orWhere(function ($q) use ($checkoutDate, $checkout_time) {
-    //                     // Exclude rooms where the check-in overlaps the desired check-out
-    //                     $q->where('roombookings.checkin_date', '=', $checkoutDate)
-    //                       ->where('roombookings.checkin_time', '<=', $checkout_time);
-    //                 });
-    //             });
-    //     })
-    //     ->whereNull('roombookings.room_id')  // Only rooms not booked
-    //     ->where('rooms.firm_id', Auth::user()->firm_id)
-    //     ->select('rooms.*')  // Select room fields
-    //     ->get();
-
-
-
-
-
-
-    //     // Return JSON response for testing
-    //     return response()->json([
-    //         'message' => 'We received the data successfully',
-    //         'checkinDate' => $checkinDate,
-    //         'checkoutDate' => $checkoutDate,
-    //         'checkin_time'=>$checkin_time,
-    //         'checkout_time'=>$checkout_time,
-    //         'formatted_checkinDate' => $formatted_checkinDate,
-    //         'formatted_checkoutDate' => $formatted_checkoutDate,
-    //         'rooms' => $rooms,
-    //         'package_charge'=>$package_charge,
-    //         'status' => 200, // Uncomment this line to see room data in the response
-    //     ], 200);
-    // }
-
-
-
-
-
-
-
-    // public function booking_by_guest_create($firm_id)
-    // {
-    //     //requierd setup
-
-
-    //     $businesssource = businesssource::where('firm_id', $firm_id)->get();
-    //     $package = package::where('firm_id', $firm_id)->get();
-    //     $paymentmodes = account::where('firm_id', $firm_id)
-    //         ->whereHas('accountGroup', function ($query) {
-    //             $query->whereIn('account_group_name', ['BANK ACCOUNT', 'Cash In Hand']);
-    //         })
-    //         ->get();
-
-    //     $roombooking_record = roombooking::where('firm_id', $firm_id)->count();
-    //     if ($roombooking_record > 0) {
-    //         $lastRecord = roombooking::where('firm_id', $firm_id)->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')->first();
-    //         $voucher_no = $lastRecord->voucher_no;
-    //         $new_voucher_no = $voucher_no + 1;
-    //         $voucher_type = voucher_type::where('firm_id', $firm_id)->where('voucher_type_name', 'Room_booking')->first();
-    //         $voucher_prefix = $voucher_type->voucher_prefix;
-    //         $voucher_suffix = $voucher_type->voucher_suffix;
-    //         $new_bill_no = $voucher_prefix . "" . $new_voucher_no . "" . $voucher_suffix;
-
-    //     } else {
-    //         $voucher_type = voucher_type::where('firm_id', $firm_id)->where('voucher_type_name', 'Room_booking')->first();
-
-    //         $voucher_no = $voucher_type->numbring_start_from;
-    //         $new_voucher_no = $voucher_no + 1;
-    //         $voucher_prefix = $voucher_type->voucher_prefix;
-    //         $voucher_suffix = $voucher_type->voucher_suffix;
-    //         $new_bill_no = $voucher_prefix . "" . $new_voucher_no . "" . $voucher_suffix;
-
-    //     }
-
-
-
-    //     $rooms = room::with(['roomtype.gstmaster', 'roomtype.package'])
-    //         ->where('room_status', 'vacant')
-    //         ->where('firm_id', $firm_id)->get();
-
-    //     return view('entery.room.room_booking_by_guest', compact('rooms', 'businesssource', 'package', 'new_bill_no', 'new_voucher_no', 'paymentmodes', 'firm_id'));
-
-    // }
 
 
     public function show_rooms_available_for_booking(Request $request)
@@ -733,16 +620,33 @@ class RoombookingController extends Controller
                 'checkout_date'
             )
             ->get();
+            $room_nos_string = '';
+if ($roomnos->isNotEmpty()) {
+    $room_nos_string = $roomnos->pluck('room_nos')->implode(', ');
+}
+
+
+
 
         $roombookingdata = roombooking::where('voucher_no', $request->voucher_no)
             ->where('checkin_voucher_no', '0')
             ->where('firm_id', Auth::user()->firm_id)
             ->get();
+            $uniqueRoomTypes = $roombookingdata->pluck('room.roomtype.roomtype_name')->unique();
+            $uniqueRoomTypesString = $roombookingdata
+    ->pluck('room.roomtype.roomtype_name')
+    ->unique()
+    ->implode(', ');
+
         $totalroom = $roombookingdata->count();
 
         $checkinDate = Carbon::parse($roombooking->checkin_date);
         $checkoutDate = Carbon::parse($roombooking->checkout_date);
         $totaldays = $checkinDate->diffInDays($checkoutDate);
+
+                $method_type = "Room_booking_store";
+        $voucher_no = $request->voucher_no;
+        $this->sendbookingWhatsapp($method_type, $voucher_no,$uniqueRoomTypesString,$room_nos_string);
 
         // $rooms = Room::with(['roomtype.gstmaster', 'roomtype.package'])->get();
         return view('entery.room.room_booking_view', compact('roombooking', 'totaldays', 'roomnos', 'totalroom', 'roombookingdata'));
@@ -919,6 +823,12 @@ class RoombookingController extends Controller
         $checkinDate = Carbon::parse($roombooking->checkin_date);
         $checkoutDate = Carbon::parse($roombooking->checkout_date);
         $totaldays = $checkinDate->diffInDays($checkoutDate);
+        $uniqueRoomTypesString="";
+        $room_nos_string="";
+
+        //        $method_type = "Room_booking_store_by_guest";
+        // $voucher_no = $request->voucher_no;  //firm id ka issue aa raha hai 
+        // $this->sendbookingWhatsapp($method_type, $voucher_no,$uniqueRoomTypesString,$room_nos_string);
 
         // dd($roomnos);
 
@@ -1383,7 +1293,7 @@ class RoombookingController extends Controller
                 'checkout_date'
             )
             ->get();
-        $roombookingdata = roombooking::where('voucher_no', $id)
+        $roombookingdata = roombooking::where('voucher_no', $id)->where('firm_id', Auth::user()->firm_id)
             ->get();
         $totalroom = $roombookingdata->count();
 
@@ -1433,6 +1343,7 @@ class RoombookingController extends Controller
 
 
         $roombooking = roombooking::where('firm_id', Auth::user()->firm_id)
+        ->with('package')
             ->where('voucher_no', $id)->first();
         $checkinDate = Carbon::parse($roombooking->checkin_date);
         $checkoutDate = Carbon::parse($roombooking->checkout_date);
@@ -1509,6 +1420,264 @@ class RoombookingController extends Controller
 
     }
 
+// public function sendbookingWhatsapp($method_type, $voucher_no,$uniqueRoomTypesString,$room_nos_string)
+//     {
+
+//         $firmId = Auth::user()->firm_id;
+//         // Fetch WhatsApp Template
+//         $whatsapp = null;
+//         if (Schema::hasTable('whatsapp_sms')) {
+//             $whatsapp = WhatsappSms::where('firm_id', $firmId)
+//                 ->where('transection_type', $method_type)
+//                 ->where('wp_active', '1')
+//                 ->first();
+
+//             // Fetch software company info
+//             $software_companyInfo = softwarecompany::where('firm_id', $firmId)->first();
+
+//             // ✅ Validate: template exists and auth key is not 'af' or empty
+//             if ($whatsapp && $software_companyInfo && !empty($software_companyInfo->software_af4) && strtolower($software_companyInfo->software_af4) !== 'af') {
+
+//                 $wp_record = Roombooking::withinFY('checkin_date')->where('firm_id', $firmId)->where('voucher_no', $voucher_no)->first();
+
+//                 $componyinfo = Componyinfo::where('firm_id', $firmId)->first();
+
+//                 if ($wp_record || $componyinfo) {
+
+
+//                     // Replace placeholders
+//                     $template = $whatsapp->wp_message;
+//                     $name = Auth::user()->name;
+
+//                     $placeholders = [
+//                         '{firm_name}' => $componyinfo->cominfo_firm_name,
+//                         '{room_no}' => $room_nos_string,
+//                         '{room_type}'=>$uniqueRoomTypesString,
+//                         '{voucher_no}' => $wp_record->voucher_no,
+//                         '{booking_no}' => $wp_record->booking_no,
+
+//                         '{booking_date}' => date('d-m-Y', strtotime($wp_record->booking_date)),
+//                         '{checkin_date}' => date('d-m-Y', strtotime($wp_record->checkin_date)),
+//                         '{checkout_date}' => date('d-m-Y', strtotime($wp_record->checkout_date)),
+//                         '{total_amount}' => $wp_record->commited_days*$wp_record->room_tariff_perday,
+//                         '{room_tariff_perday}' => $wp_record->room_tariff_perday,
+//                         '{commited_days}' => $wp_record->commited_days,
+//                         '{booking_amount}'=>$wp_record->booking_amount,
+//                         '{guest_name}' => $wp_record->guest_name,
+//                         '{check_in_time}' => $wp_record->checkin_time,
+//                         '{check_out_time}' => $wp_record->checkout_time,
+                       
+//                        '{no_of_guest}' => $wp_record->no_of_guest,
+//                       '{refrance_no}' => $wp_record->refrance_no,
+//                       '{voucher_payment_remark}' => $wp_record->voucher_payment_remark,
+//                     '{agent}' => $wp_record->agent,
+
+//                         '{address1}' => $componyinfo->cominfo_address1,
+//                         '{address2}' => $componyinfo->cominfo_address2,
+//                         '{city}' => $componyinfo->cominfo_city,
+//                         '{pincode}' => $componyinfo->cominfo_pincode,
+//                         '{state}' => $componyinfo->cominfo_state,
+//                         '{email}' => $componyinfo->cominfo_email,
+//                         '{website}' => $componyinfo->cominfo_field2,
+//                         '{firm_id}' => $firmId,
+//                         '{phone}' => $componyinfo->cominfo_phone,
+//                         '{mobile}' => $componyinfo->cominfo_mobile,
+//                         '{name}' => $name,
+
+//                     ];
+
+//                     $message = str_replace(array_keys($placeholders), array_values($placeholders), $template);
+
+//                     // Send WhatsApp
+//                     $url = $software_companyInfo->software_af5;
+//                     $authentic_key = $software_companyInfo->software_af4;
+
+//                     // $validity_date = Carbon::parse($software_companyInfo->software_af6)->startOfDay(); // assume end of validity is the full day
+// // $current_date = now()->startOfDay(); // ignore time portion
+
+//                     // if ($current_date->greaterThan($validity_date)) {
+// //     return "WhatsApp validity has expired. Please recharge.";
+// // }
+
+//                     if ($method_type == "Room_booking_store") {
+//                         $mobile = $wp_record->guest_mobile;
+//                     } else {
+//                         $mobile = $componyinfo->cominfo_mobile;
+
+//                     }
+
+
+//                     $response = Http::get($url, [
+//                         'authentic-key' => $authentic_key,
+//                         'route' => 1,
+//                         'number' => $mobile,
+//                         'message' => $message,
+//                     ]);
+
+//                     // Handle response
+//                     $data = $response->json();
+
+
+//                 }
+
+//             }
+
+
+//         }
+
+//         // Fetch data
+
+
+//         if (isset($data['status']) && $data['status'] == 'success') {
+//             return back()->with('message', 'WhatsApp message sent successfully!');
+//         } else {
+//             return back()->with('error', 'Failed to send WhatsApp message.');
+//         }
+//     }
+public function sendbookingWhatsapp($method_type, $voucher_no, $uniqueRoomTypesString, $room_nos_string)
+{
+    $firmId = Auth::user()->firm_id;
+
+    // ✅ Check if table exists
+    if (!Schema::hasTable('whatsapp_sms')) {
+        return back()->with('error', 'WhatsApp template table missing.');
+    }
+
+    // ✅ Fetch WhatsApp Template
+    $whatsapp = WhatsappSms::where('firm_id', $firmId)
+        ->where('transection_type', $method_type)
+        ->where('wp_active', '1')
+        ->first();
+
+    // ✅ Fetch software company info
+    $software_companyInfo = softwarecompany::where('firm_id', $firmId)->first();
+
+    // ✅ Validate configuration
+    if (
+        !$whatsapp ||
+        !$software_companyInfo ||
+        empty($software_companyInfo->software_af4) ||
+        strtolower($software_companyInfo->software_af4) === 'af'
+    ) {
+        return back()->with('error', 'WhatsApp not configured or inactive.');
+    }
+
+    // ✅ Fetch booking and company info
+    $wp_record = Roombooking::withinFY('checkin_date')
+        ->where('firm_id', $firmId)
+        ->where('voucher_no', $voucher_no)
+        ->first();
+
+    $componyinfo = Componyinfo::where('firm_id', $firmId)->first();
+
+    if (!$wp_record || !$componyinfo) {
+        return back()->with('error', 'Booking record not found.');
+    }
+
+    // ✅ Owner & partner numbers (comma-separated)
+    $owner_and_partner_mobile = $componyinfo->componyinfo_af4;
+
+    // ✅ Replace placeholders
+    $template = $whatsapp->wp_message;
+    $name = Auth::user()->name;
+
+    $placeholders = [
+        '{firm_name}' => $componyinfo->cominfo_firm_name,
+        '{room_no}' => $room_nos_string,
+        '{room_type}' => $uniqueRoomTypesString,
+        '{voucher_no}' => $wp_record->voucher_no,
+        '{booking_no}' => $wp_record->booking_no,
+        '{booking_date}' => date('d-m-Y', strtotime($wp_record->booking_date)),
+        '{checkin_date}' => date('d-m-Y', strtotime($wp_record->checkin_date)),
+        '{checkout_date}' => date('d-m-Y', strtotime($wp_record->checkout_date)),
+        '{total_amount}' => $wp_record->commited_days * $wp_record->room_tariff_perday,
+        '{room_tariff_perday}' => $wp_record->room_tariff_perday,
+        '{commited_days}' => $wp_record->commited_days,
+        '{booking_amount}' => $wp_record->booking_amount,
+        '{guest_name}' => $wp_record->guest_name,
+        '{check_in_time}' => $wp_record->checkin_time,
+        '{check_out_time}' => $wp_record->checkout_time,
+        '{no_of_guest}' => $wp_record->no_of_guest,
+        '{refrance_no}' => $wp_record->refrance_no,
+        '{voucher_payment_remark}' => $wp_record->voucher_payment_remark,
+        '{agent}' => $wp_record->agent,
+        '{address1}' => $componyinfo->cominfo_address1,
+        '{address2}' => $componyinfo->cominfo_address2,
+        '{city}' => $componyinfo->cominfo_city,
+        '{pincode}' => $componyinfo->cominfo_pincode,
+        '{state}' => $componyinfo->cominfo_state,
+        '{email}' => $componyinfo->cominfo_email,
+        '{website}' => $componyinfo->cominfo_field2,
+        '{firm_id}' => $firmId,
+        '{phone}' => $componyinfo->cominfo_phone,
+        '{mobile}' => $componyinfo->cominfo_mobile,
+        '{name}' => $name,
+    ];
+
+    $message = str_replace(array_keys($placeholders), array_values($placeholders), $template);
+
+    // ✅ WhatsApp API details
+    $url = $software_companyInfo->software_af5;
+    $authentic_key = $software_companyInfo->software_af4;
+
+    // ✅ Validity check (optional)
+    $validity_date = Carbon::parse($software_companyInfo->software_af6)->startOfDay();
+    $current_date = now()->startOfDay();
+
+    if ($current_date->greaterThan($validity_date)) {
+        return "WhatsApp validity has expired. Please recharge.";
+    }
+
+    // ✅ Collect recipient numbers
+    $numbers = [];
+
+    // 🔸 Add guest number only for booking create
+    if ($method_type === 'Room_booking_store' && !empty($wp_record->guest_mobile )) {
+        $numbers[] = preg_replace('/\D/', '', trim($wp_record->guest_mobile));
+    }
+
+    // 🔸 Add owner and partner numbers
+    if (!empty($owner_and_partner_mobile)) {
+        $ownerNumbers = explode(',', $owner_and_partner_mobile);
+        foreach ($ownerNumbers as $num) {
+            $clean = preg_replace('/\D/', '', trim($num));
+            if (!empty($clean)) {
+                $numbers[] = $clean;
+            }
+        }
+    }
+
+    // ✅ Clean up and remove duplicates
+    $numbers = array_unique(array_filter(array_map('trim', $numbers)));
+
+    // ✅ Send message to all recipients
+    $success = 0;
+    $failed = 0;
+
+    foreach ($numbers as $mobile) {
+        $response = Http::get($url, [
+            'authentic-key' => $authentic_key,
+            'route' => 1,
+            'number' => $mobile,
+            'message' => $message,
+        ]);
+
+        $data = $response->json();
+
+        if (isset($data['status']) && $data['status'] === 'success') {
+            $success++;
+        } else {
+            $failed++;
+        }
+    }
+
+    // ✅ Final response
+    if ($success > 0) {
+        return back()->with('message', "WhatsApp message sent successfully to {$success} number(s).");
+    } else {
+        return back()->with('error', "Failed to send WhatsApp message.");
+    }
+}
 
 
 

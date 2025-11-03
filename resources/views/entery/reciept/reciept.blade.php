@@ -8,6 +8,10 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="jquery/master.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
+    <!-- Add these in your <head> or layout -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 
 
     <script>
@@ -84,7 +88,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <label for="payment_mode_id">Payment Mode </label>
-                                        <select id="" name="payment_mode_id"
+                                        <select id="payment_mode_id" name="payment_mode_id"
                                             class="form-control myitemgroup form-select">
                                             <option value="" disabled selected>Select Paymnt Mode</option>
                                             @foreach ($paymentmodes as $paymentmode)
@@ -100,11 +104,11 @@
                                     </div>
                                     <div class="col-md-12">
                                         <label for="account_id">Account</label>
-                                        <select id="" name="account_id"
+                                        <select id="account_id" name="account_id"
                                             class="form-control myitemgroup form-select">
                                             <option value="" disabled selected>Select Account</option>
                                             @foreach ($account_names as $record)
-                                                <option value="{{ $record->id }}">{{ $record->account_name }}</option>
+                                                <option value="{{ $record->id }}">{{ $record->account_name }}|| {{ $record->mobile }}</option>
                                             @endforeach
                                         </select>
                                         <span class="text-danger">
@@ -113,6 +117,7 @@
                                             @enderror
                                         </span>
                                     </div>
+
                                     <div class="col-md-12">
                                         <label for="reciept_amount">Amount </label>
                                         <input type="text" class ="form-control " placeholder=" Amount"
@@ -231,8 +236,11 @@
     </div>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> --}}
     <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+    <!-- Bootstrap 5 JS Bundle (with Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <script src="{{ global_asset('/general_assets\js\form.js') }}"></script>
     <script>
@@ -242,5 +250,23 @@
             $('[data-restrict="true"]').datepicker('destroy'); // Prevent calendar from appearing
         });
     </script>
+<script>
+    $(document).ready(function () {
+        let isSelect2Initialized = false;
+
+        $('#myModal').on('shown.bs.modal', function () {
+            if (!isSelect2Initialized) {
+                $('#account_id, #payment_mode_id').select2({
+                    dropdownParent: $('#myModal'),
+                    width: '100%',
+                    placeholder: "Select option"
+                });
+                isSelect2Initialized = true;
+            }
+        });
+    });
+</script>
+
+
 @endsection
 

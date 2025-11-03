@@ -28,7 +28,7 @@ class OptionlistController extends CustomBaseController
     {
         $validator= validator::make($request->all(),[
             'option_type' => 'required',
-             'option_name' => 'required|unique:optionlists'
+             'option_name' => 'required'
             ]);
             if ($validator->passes()) {
                 $optionlist = new optionlist;

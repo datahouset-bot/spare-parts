@@ -17,3 +17,14 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+
+Route::post('/inventory-push', function (Request $request) {
+    return response()->json([
+        'status' => 'success',
+        'received_data' => $request->all(),
+    ]);
+});
+
+Route::POST('/store_booking', [App\Http\Controllers\ChannelManagerController::class, 'store_roombookiking_api']);

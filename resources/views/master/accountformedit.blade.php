@@ -1,320 +1,419 @@
-
 @extends('layouts.blank')
 {{-- @include('layouts.blank') --}}
 @section('pagecontent')
-<div class="container ">
+    <div class="container ">
 
-    <body class="bg-primary">
-        <div id="layoutAuthentication">
-            <div id="layoutAuthentication_content">
-                <main>
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-12">
-                                <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Edit Account</h3></div>
-                                    <div class="card-body">
-                                        <form action="{{url('/editaccount')}}" method="POST" enctype="multipart/form-data">
-                                            @csrf
-                                            @method('PUT')
+        <body class="bg-primary">
+            <div id="layoutAuthentication">
+                <div id="layoutAuthentication_content">
+                    <main>
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-12">
+                                    <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                        <div class="card-header">
+                                            <h3 class="text-center font-weight-light my-4">Edit Account</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <form action="{{ url('/editaccount') }}" method="POST"
+                                                enctype="multipart/form-data">
+                                                @csrf
+                                                @method('PUT')
 
-                                            <div> <input type="hidden" value="{{ $data['id'] }}" name="id"></div>
-
-                                            <div class="row mb-3">
-                                                <div class="col-md-8">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="account_name" type="text" name="account_name" value="{{ $data['account_name'] }}" />
-                                                      <span class="text-danger"> 
-                                                        @error('account_name')
-                                                        {{$message}}
-                                                            
-                                                        @enderror
-                                                      </span>
-                                                        <label for="account_name">Account Name </label>
-                                                       
-                                                    </div>
+                                                <div> <input type="hidden" value="{{ $data['id'] }}" name="id">
                                                 </div>
 
-                                                <div class="col-md-6 mt-2">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <select name="account_group_id" id="account_group_id" class="form-select" aria-label="Default select example">
-                                                            <option selected disabled>Select Account Group</option>
-                                                            @foreach ($accountgroups as $accountgroup)
-                                                                <option value="{{ $accountgroup->id }}" 
-                                                                    {{ isset($data->account_group_id) && $data->account_group_id == $accountgroup->id ? 'selected' : '' }}>
-                                                                    {{ $accountgroup->account_group_name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <label for="account_group_id">Account Group</label>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-8">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="account_name" type="text"
+                                                                name="account_name" value="{{ $data['account_name'] }}" />
+                                                            <span class="text-danger">
+                                                                @error('account_name')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                            <label for="account_name">Account Name </label>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <select name="account_group_id" id="account_group_id"
+                                                                class="form-select" aria-label="Default select example">
+                                                                <option selected disabled>Select Account Group</option>
+                                                                @foreach ($accountgroups as $accountgroup)
+                                                                    <option value="{{ $accountgroup->id }}"
+                                                                        {{ isset($data->account_group_id) && $data->account_group_id == $accountgroup->id ? 'selected' : '' }}>
+                                                                        {{ $accountgroup->account_group_name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                            <label for="account_group_id">Account Group</label>
+
+                                                            <span class="text-danger">
+                                                                @error('account_group_id')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="op_balnce" type="text"
+                                                                name="op_balnce" value="{{ $data['op_balnce'] }}" />
+                                                            <span class="text-danger">
+                                                                @error('op_balnce')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                            <label for="op_balnce">Opning Balance </label>
+
+                                                        </div>
+
+                                                    </div>
+
+
+
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="balnce_type" type="text"
+                                                                name="balnce_type" value="{{ $data['balnce_type'] }}" />
+                                                            <span class="text-danger">
+                                                                @error('balnce_type')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                            <label for="balnce_type">Balance_Type</label>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="address" type="text"
+                                                                name="address" value="{{ $data['address'] }}" />
+                                                            <span class="text-danger">
+                                                                @error('address')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                            <label for="address">Address</label>
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="city" type="text"
+                                                                name="city" value="{{ $data['city'] }}" />
+                                                            <span class="text-danger">
+                                                                @error('city')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                            <label for="city">City</label>
+
+                                                        </div>
+
+                                                    </div>
+                                                                                                        <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="state" type="text"
+                                                                name="state" value="{{ $data['state'] }}" />
+                                                            <span class="text-danger">
+                                                                @error('state')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                            <label for="state">State</label>
+
+                                                        </div>
+
+                                                    </div>
                                                 
-                                                        <span class="text-danger">
-                                                            @error('account_group_id')
-                                                                {{ $message }}
-                                                            @enderror
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="col-md-6 mt-2">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="op_balnce" type="text" name="op_balnce" value="{{ $data['op_balnce'] }}" />
-                                                      <span class="text-danger"> 
-                                                        @error('op_balnce')
-                                                        {{$message}}
-                                                            
-                                                        @enderror
-                                                      </span>
-                                                        <label for="op_balnce">Opning Balance </label>
-                                                       
-                                                    </div>
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="phone" type="text"
+                                                                name="phone" value="{{ $data['phone'] }}" />
+                                                            <span class="text-danger">
+                                                                @error('phone')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                            <label for="phone">Phone</label>
 
-                                                </div>    
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="mobile" type="text"
+                                                                name="mobile" value="{{ $data['mobile'] }}" />
+                                                            <span class="text-danger">
+                                                                @error('mobile')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                            <label for="mobile">Mobile</label>
 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="emial" type="text"
+                                                                name="email" value="{{ $data['email'] }}" />
+                                                            <span class="text-danger">
+                                                                @error('email')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                            <label for="email">Email</label>
 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="person_name" type="text"
+                                                                name="person_name" value="{{ $data['person_name'] }}" />
+                                                            <span class="text-danger">
+                                                                @error('person_name')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                            <label for="person_name">Contact Person Name </label>
 
-                                                <div class="col-md-4 mt-2">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="balnce_type" type="text" name="balnce_type" value="{{ $data['balnce_type'] }}" />
-                                                      <span class="text-danger"> 
-                                                        @error('balnce_type')
-                                                        {{$message}}
-                                                            
-                                                        @enderror
-                                                      </span>
-                                                        <label for="balnce_type">Balance_Type</label>
-                                                       
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4 mt-2">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="address" type="text" name="address" value="{{ $data['address'] }}" />
-                                                      <span class="text-danger"> 
-                                                        @error('address')
-                                                        {{$message}}
-                                                            
-                                                        @enderror
-                                                      </span>
-                                                        <label for="address">Address</label>
-                                                       
-                                                    </div>
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="gst_no" type="text"
+                                                                name="gst_no" value="{{ $data['gst_no'] }}" />
+                                                            <span class="text-danger">
+                                                                @error('gst_no')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                            <label for="gst_no">GST No </label>
 
-                                                </div>  
-                                                <div class="col-md-4 mt-2">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="city" type="text" name="city" value="{{ $data['city'] }}" />
-                                                      <span class="text-danger"> 
-                                                        @error('city')
-                                                        {{$message}}
-                                                            
-                                                        @enderror
-                                                      </span>
-                                                        <label for="city">City</label>
-                                                       
+                                                        </div>
                                                     </div>
+                                                    <span id="part_b" class="btn btn-dark btn-sm">Show Part B</span>
+                                                    <div id="detail_b" class="row">
+                                                        <div class="col-md-4">
+                                                            <label for="">Root A/c</label>
+                                                            <input type="text" name ="account_af3"class="form-control"
+                                                                value="{{ $data['account_af3'] }}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="">Firm / Company</label>
+                                                            <input type="text" name ="account_af1"class="form-control"
+                                                                value="{{ $data['account_af1'] }}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="">Firm / Company Address </label>
+                                                            <input type="text" name ="account_af2"class="form-control"
+                                                                value="{{ $data['account_af2'] }}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="">Pincode</label>
+                                                            <input type="text" name="pincode"
+                                                                class="form-control"value="{{ $data['pincode'] }}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="">Nationality</label>
+                                                            <input type="text" name="nationality" class="form-control"
+                                                                value="{{ $data['nationality'] }}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="">Address 2</label>
+                                                            <input type="text" name="address2" class="form-control"
+                                                                value="{{ $data['address2'] }}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="">PAN Card</label>
+                                                            <input type="text" name="pen_card" class="form-control"
+                                                                value="{{ $data['pen_card'] }}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="">ID Proof Name</label>
+                                                            <input type="text" name="account_idproof_name"
+                                                                class="form-control"
+                                                                value="{{ $data['account_idproof_name'] }}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="">Id Proof No </label>
+                                                            <input type="text" name="account_idproof_no"
+                                                                class="form-control"
+                                                                value="{{ $data['account_idproof_no'] }}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for=""> Account Id Pic </label>
+                                                            <input type="file" name="account_id_pic"
+                                                                class="form-control">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="">Account Pic</label>
+                                                            <input type="file" name="account_pic1"
+                                                                class="form-control">
+                                                        </div>
 
-                                                </div>    
-                                                <div class="col-md-4 mt-2">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="phone" type="text" name="phone" value="{{ $data['phone'] }}" />
-                                                      <span class="text-danger"> 
-                                                        @error('phone')
-                                                        {{$message}}
-                                                            
-                                                        @enderror
-                                                      </span>
-                                                        <label for="phone">Phone</label>
-                                                       
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4 mt-2">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="mobile" type="text" name="mobile" value="{{ $data['mobile'] }}" />
-                                                      <span class="text-danger"> 
-                                                        @error('mobile')
-                                                        {{$message}}
-                                                            
-                                                        @enderror
-                                                      </span>
-                                                        <label for="mobile">Mobile</label>
-                                                       
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 mt-2">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="emial" type="text" name="email" value="{{ $data['email'] }}" />
-                                                      <span class="text-danger"> 
-                                                        @error('email')
-                                                        {{$message}}
-                                                            
-                                                        @enderror
-                                                      </span>
-                                                        <label for="email">Email</label>
-                                                       
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 mt-2">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="person_name" type="text" name="person_name" value="{{ $data['person_name'] }}" />
-                                                      <span class="text-danger"> 
-                                                        @error('person_name')
-                                                        {{$message}}
-                                                            
-                                                        @enderror
-                                                      </span>
-                                                        <label for="person_name">Contact Person Name </label>
-                                                       
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 mt-2">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="gst_no" type="text" name="gst_no" value="{{ $data['gst_no'] }}" />
-                                                      <span class="text-danger"> 
-                                                        @error('gst_no')
-                                                        {{$message}}
-                                                            
-                                                        @enderror
-                                                      </span>
-                                                        <label for="gst_no">GST No </label>
-                                                       
-                                                    </div>
-                                                </div>
-                                                <span id="part_b" class="btn btn-dark btn-sm">Show Part B</span>            
-                                                <div id="detail_b" class="row">
-                                                    <div class="col-md-4">
-                                                        <label for="">Root A/c</label>
-                                                        <input type="text"  name ="account_af3"class="form-control"  value="{{ $data['account_af3'] }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="">Firm / Company</label>
-                                                        <input type="text"  name ="account_af1"class="form-control" value="{{ $data['account_af1'] }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="">Firm / Company Address </label>
-                                                        <input type="text"  name ="account_af2"class="form-control" value="{{ $data['account_af2'] }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="">Pincode</label>
-                                                        <input type="text" name="pincode" class="form-control"value="{{ $data['pincode'] }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="">Nationality</label>
-                                                        <input type="text" name="nationality" class="form-control" value="{{ $data['nationality'] }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="">Address 2</label>
-                                                        <input type="text" name="address2" class="form-control" value="{{ $data['address2'] }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="">PAN Card</label>
-                                                        <input type="text" name="pen_card" class="form-control" value="{{ $data['pen_card'] }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="">ID Proof Name</label>
-                                                        <input type="text" name="account_idproof_name" class="form-control" value="{{ $data['account_idproof_name'] }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="">Id Proof No </label>
-                                                        <input type="text" name="account_idproof_no" class="form-control" value="{{ $data['account_idproof_no'] }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for=""> Account Id Pic </label>
-                                                        <input type="file" name="account_id_pic" class="form-control">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="">Account Pic</label>
-                                                        <input type="file" name="account_pic1" class="form-control">
-                                                    </div>
-                                    
-                                                </div>
-                                                <span id="part_c" class="btn btn-dark btn-sm">Show Part C </span>
-                                                <div id="detail_c" class="row">
-                                                    <div class="col-md-4">
-                                                        <label for="">Birthday</label>
-                                                        <input type="text" name="account_birthday" class="form-control date" value="{{ $data['account_birthday'] }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="">Anniversary</label>
-                                                        <input type="text" name="account_anniversary" class="form-control dat" value="{{ $data['account_anniversary'] }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="">Gst Code</label>
-                                                        <input type="text" name="gst_code" class="form-control" value="{{ $data['gst_code'] }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="">Account Code</label>
-                                                        <input type="text" name ="account_code"class="form-control" value="{{ $data['account_code'] }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="">Credit Days</label>
-                                                        <input type="text" name ="account_cr_days"class="form-control" value="{{ $data['account_cr_days'] }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="">Salesman</label>
-                                                        <input type="text" name ="account_salsman"class="form-control" value="{{ $data['account_salsman'] }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="">Account Route</label>
-                                                        <input type="text" name ="account_route"class="form-control" value="{{ $data['account_route'] }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="">Attachment</label>
-                                                        <input type="text"  name ="account_attachment1"class="form-control" value="{{ $data['account_attachment1'] }}">
-                                                    </div>      
-
-                                                
-                                                
-                                                        
-                                            </div>
-                                                
+                                                    <span id="part_c" class="btn btn-dark btn-sm">Show Part C </span>
+                                                    <div id="detail_c" class="row">
+                                                        <div class="col-md-4">
+                                                            <label for="">Birthday</label>
+                                                            <input type="text" name="account_birthday"
+                                                                class="form-control date"
+                                                                value="{{ $data['account_birthday'] }}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="">Anniversary</label>
+                                                            <input type="text" name="account_anniversary"
+                                                                class="form-control dat"
+                                                                value="{{ $data['account_anniversary'] }}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="">Gst Code</label>
+                                                            <input type="text" name="gst_code" class="form-control"
+                                                                value="{{ $data['gst_code'] }}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="">Account Code</label>
+                                                            <input type="text" name ="account_code"class="form-control"
+                                                                value="{{ $data['account_code'] }}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="">Credit Days</label>
+                                                            <input type="text"
+                                                                name ="account_cr_days"class="form-control"
+                                                                value="{{ $data['account_cr_days'] }}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="">Salesman</label>
+                                                            <input type="text"
+                                                                name ="account_salsman"class="form-control"
+                                                                value="{{ $data['account_salsman'] }}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="">Account Route</label>
+                                                            <input type="text"
+                                                                name ="account_route"class="form-control"
+                                                                value="{{ $data['account_route'] }}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="">Attachment</label>
+                                                            <input type="text"
+                                                                name ="account_attachment1"class="form-control"
+                                                                value="{{ $data['account_attachment1'] }}">
+                                                        </div>
 
 
 
 
-                                            
-                                            <div class="mt-4 mb-0">
-                                                <div class="d-grid">
-                                                    <button type="submit"class="btn btn-primary btn-block">Save</button>
                                                     </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="card-footer text-center py-3">
-                                        <div class="small"><a  class= "btn btn-dark  "href={{url('account')}}>Back</a></div>
+
+
+
+
+
+
+                                                    <div class="mt-4 mb-0">
+                                                        <div class="d-grid">
+                                                            <button
+                                                                type="submit"class="btn btn-primary btn-block">Save</button>
+                                                        </div>
+                                                    </div>
+                                            </form>
+                                        </div>
+                                        <div class="card-footer text-center py-3">
+                                            <div class="small"><a
+                                                    class= "btn btn-dark  "href={{ url('account') }}>Back</a></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </main>
+                    </main>
+                </div>
             </div>
-        </div>
 
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
-        <link rel="stylesheet" href="/resources/demos/style.css">
-        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-        <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-        
-        <script src="{{ global_asset('/general_assets/js/form.js') }}"></script>
-        <script>
-            $(document).ready(function() {
-        
-                $('#detail_b,#detail_c').hide();
-                $('#part_b').click(function() {
-                    $('#detail_c').hide();
+            <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+            <link rel="stylesheet" href="/resources/demos/style.css">
+            <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+            <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+
+            <script src="{{ global_asset('/general_assets/js/form.js') }}"></script>
+            <script>
+                $(document).ready(function() {
+
+                    $('#detail_b,#detail_c').hide();
+                    $('#part_b').click(function() {
+                        $('#detail_c').hide();
+                    });
+                    $('#part_b').click(function() {
+                        $('#detail_b').show(); // Always show #detail_c
+                    });
+                    $('#part_c').click(function() {
+                        $('#detail_c').show(); // Always show #detail_c
+                    });
+
+
                 });
-                $('#part_b').click(function() {
-                  $('#detail_b').show();  // Always show #detail_c
-                });
-                $('#part_c').click(function() {
-                  $('#detail_c').show();  // Always show #detail_c
-                });
-        
-        
+            </script>
+
+
+           <script type="text/javascript">
+    $(document).ready(function () {
+        var contactNumber = $('#mobile').val(); // Get the value on page load
+        if (contactNumber) {
+            $.ajax({
+                url: '/searchcustomer_check_in_pending/' + contactNumber,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+
+                    if (response.status == 200) {
+                        alert("यह गेस्ट पहले से रूम चेक-इन में लंबित है।\nकृपया पहले चेक-इन डिलीट करें, तभी मोबाइल नंबर बदल सकते हैं।\n\nGuest check-in is already pending.\nPlease delete the check-in first to change the mobile number.");
+          $('#mobile').val(response.customer_info.guest_mobile).prop('readonly', true);
+                    } else {
+                        $('#mobile').prop('readonly', false);
+                    }
+                },
+                error: function () {
+                    $('#search_results').html('<p>An error occurred while searching for the customer.</p>');
+                }
             });
-        </script>
+        }
 
+        // Also keep existing blur event (if needed)
+        $('#mobile').blur(function () {
+            var contactNumber = $(this).val();
+            console.log(contactNumber);
 
+            $.ajax({
+                url: '/searchcustomer_check_in_pending/' + contactNumber,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
 
+                    if (response.status == 200) {
+                        alert(
+                            "पिछले से गेस्ट की डिटेल मौजूदा है।\nयदि आप गेस्ट की जानकारी बदलना चाहते हैं,\nतो कृपया मोबाइल नंबर भी बदलें।\n\nGuest record found in database.\nIf you want to enter different guest details, please change the mobile number."
+                        );
+                        $('#mobile').val(response.customer_info.guest_mobile).prop('readonly', true);
+                    } else {
+                        $('#mobile').prop('readonly', false);
+                    }
+                },
+                error: function () {
+                    $('#search_results').html('<p>An error occurred while searching for the customer.</p>');
+                }
+            });
+        });
+    });
+</script>
 
-@endsection
+        @endsection

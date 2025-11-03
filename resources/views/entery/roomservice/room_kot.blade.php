@@ -59,7 +59,7 @@
                     Add New KOT
                 </button> --}}
                     <a href="{{ url('temp_item_delete/' . Auth::user()->id) }}" class="btn btn-success">Add New</a>
-                    <a href="{{ url('store_toKot/' . Auth::user()->id) }}" class="btn btn-primary">Save</a>
+                    <a href="{{ url('store_toKot/' . Auth::user()->id). '/' . $new_voucher_no }}" class="btn btn-primary">Save</a>
                     <a href="{{ url('store_and_print/' . Auth::user()->id) . '/' . $new_voucher_no }}"
                         class="btn btn-dark">Save & Print</a>
 
@@ -82,7 +82,7 @@
                         <label for="voucher_date">Date</label>
                         <input type="text" class="form-control date" id ="voucher_date" name="voucher_date">
                     </div>
-                    <div class="col-md-2 col-4  text-center">
+                    <div class="col-md-1 col-4  text-center">
                         <label for="checkin_time">time</label>
                         <input class="form-control" id="checkin_time" type="time"
                         name="checkin_time" value="{{ date('Y-m-d') }}" />
@@ -97,7 +97,7 @@
                         <label for="waiter_name">Waiter Name</label>
                         <input type="text" id="waiter_name" class="form-control" name="waiter_name" value="sandeep">
                     </div> --}}
-                    <div class="col-md-2 col-4  text-center">
+                    <div class="col-md-1 col-4  text-center">
                         <label for="service_type">Service Type</label>
                         <select name="service_type" id="service_type" class="form-select">
 
@@ -112,7 +112,7 @@
                     $id = request()->route('id'); // Retrieve 'id' from the route
                 @endphp
                 
-                <div class="col-md-4 col-4 text-center">
+                <div class="col-md-3 col-4 text-center">
                     <label for="kot_on">Select Room</label>
                     <select name="service_id" id="service_id" class="form-select">
                         <option disabled {{ $id ? '' : 'selected' }}>Select Room No</option>
@@ -125,8 +125,12 @@
                             </option>
                         @endforeach
                     </select>
+                    
                 </div>
-                
+                    <div class="col-md-2 col-4  text-center">
+                        <label for="kot_remark">KOT Remark</label>
+                        <input type="text" class="form-control" id ="kot_remark"name="kot_remark" >
+                    </div>                
 
                 
                 <div class="row my-2" name="itementery">
@@ -321,6 +325,7 @@
                     'waiter_name': $('#waiter_name').val(),
                     'service_type': $('#service_type').val(),
                     'service_id': $('#service_id').val(),
+                    'kot_remark': $('#kot_remark').val(),
                     'checkin_time':$('#checkin_time').val(), //storing time on kot 
                 };
                 console.log("Data being sent:", data);
@@ -346,6 +351,9 @@
                             $('#amount').val('');
                             $('#item_id').focus();
                             $("#additem").prop("disabled", false);
+
+
+                            
                         }
                     },
                     error: function(xhr, status, error) {

@@ -302,14 +302,37 @@
                             <div class="col-lg-12">
                                 <div class="card  mt-1">
                                     <div class="card-header">
-                                        <h5 class="text-center font-weight-light my-1">New Room CheckIn Entry </h5>
+                                        <h5 class="text-center font-weight-light my-1">New Room CheckIn Entry  </h5>
                                     </div>
                                     <div class="card-body">
 
 
                                         <div class="row">
                                             <!-- Room Booking -->
+<div class="col-md-3 mt-4">
+    <label for="searchCustomer">Select Room Booking</label>
+    <div id="searchCustomer">
+        <form action="{{ url('/show_roombooking') }}" method="POST" class="form-inline" id="select_roombooking">
+            @csrf
+            <div class="input-group">
+                <select name="roombooking_voucher_no" id="roombooking_voucher_no" class="form-select"
+                    aria-label="Default select example">
+                    <option selected disabled>Select Room Booking</option>
+                    @foreach ($roombookings as $roombookings)
+                        <option value="{{ $roombookings->voucher_no }}">
+                            {{ $roombookings->guest_name }} -
+                            {{ \Carbon\Carbon::parse($roombookings->checkin_date)->format('d-m-y') }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
+            <span id="message"></span>
+        </form>
+    </div>
+</div>
+
+                                            {{-- 
                                             <div class="col-md-3 mt-4">
                                                 <label for="searchCustomer">Select Room Booking</label>
                                                 <div id="searchCustomer">
@@ -343,7 +366,7 @@
                                                         <span id="message"></span>
                                                     </form>
                                                 </div>
-                                            </div>
+                                            </div> --}}
 
                                             <!-- Room Booking Client Picture -->
                                             <div class="col-md-3 mt-1">
@@ -427,7 +450,7 @@
                                                 <div class="col-md-8">
                                                     <div class="row form-group">
                                                         <div class="col-md-3">
-                                                            <label for="label1">Check In No<span
+                                                            <label for="label1"> No<span
                                                                     class="requierdfield">*</span> </label>
                                                             <input type="text" name="check_in_no"class=" form-control"
                                                                 id="" class="" value="{{ $new_bill_no }}"
@@ -438,7 +461,7 @@
 
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <label for="checkin_date">Check In Date<span
+                                                            <label for="checkin_date"> Date<span
                                                                     class="requierdfield">*</span></label>
                                                             <input class="form-control date" id="checkin_date"
                                                                 type="text" name="checkin_date"
@@ -450,7 +473,7 @@
                                                             </span>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <label for="checkin_time">Check In Time<span
+                                                            <label for="checkin_time"> Time<span
                                                                     class="requierdfield">*</span></label>
                                                             <input class="form-control" id="checkin_time" type="time"
                                                                 name="checkin_time" value="{{ date('Y-m-d') }}" />
@@ -460,6 +483,37 @@
                                                                 @enderror
                                                             </span>
                                                         </div>
+
+                                                            @if(!is_null($componyinfo->componyinfo_af1))
+                                                            <div class="col-md-3">
+                                                            <label for="checkin_date">Expected Check-Out Date<span
+                                                                    class="requierdfield"></span></label>
+                                                            <input class="form-control date" id="checkout_date"
+                                                                type="text" name="checkout_date"
+                                                                value="{{ date('Y-m-d') }}" />
+                                                            <span class="text-danger">
+                                                                @error('checkout_date')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="checkin_time">Expected Check-Out Time<span
+                                                                    class="requierdfield"></span></label>
+                                                            <input class="form-control" id="checkout_time" type="time"
+                                                                name="checkout_time" value="{{ date('Y-m-d') }}" />
+                                                            <span class="text-danger">
+                                                                @error('checkout_time')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                        </div>
+
+                                                       
+                                                       @endif
+
+                                                        
+                                                        
                                                         <div class="col-md-3">
                                                             <label for="commited_days">No Of Days <span
                                                                     class="requierdfield">*</span></label>
@@ -473,7 +527,7 @@
                                                             </span>
 
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        {{-- <div class="col-md-3">
                                                             <label for="no_of_guest">No Of Guest <span
                                                                     class="requierdfield">*</span></label>
                                                             <input class="form-control" id="no_of_guest" type="text"
@@ -484,8 +538,8 @@
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
-                                                        <div class="col-md-3">
+                                                        </div> --}}
+                                                        {{-- <div class="col-md-3">
                                                             <span class="requierdfield">*</span>
                                                             <label for="business_source">Business Source</label>
                                                             <select name="business_source_id" id="business_source_id"
@@ -505,7 +559,7 @@
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="col-md-6"><span class="requierdfield">*</span>
                                                             <label for="package">Package</label>
                                                             <select name="package_id" id="package_id" class="form-select"
@@ -622,12 +676,62 @@
                                                 <div class="col-md-8">
                                                     <div class="row form-group">
                                                         <div class="col-md-6"><span class="requierdfield">*</span>
-                                                            <label for="guest_name">Guest Name </label>
+                                                            <label for="guest_name">Customer Name </label>
                                                             <input class="form-control" id="guest_name" type="text"
                                                                 name="guest_name" value="{{ old('guest_name') }}"
                                                                 autocomplete="none" />
                                                             <span class="text-danger">
                                                                 @error('guest_name')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+
+
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="guest_father_name">Guest Father Name </label>
+                                                            <input class="form-control" id="guest_father_name" type="text"
+                                                                name="guest_father_name" value="{{ old('guest_father_name') }}"
+                                                                autocomplete="none" />
+                                                            <span class="text-danger">
+                                                                @error('guest_father_name')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+
+
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="guest_age">Guest Age </label>
+                                                            <input class="form-control" id="guest_age" type="text"
+                                                                name="guest_age" value="{{ old('guest_age') }}"
+                                                                autocomplete="none" />
+                                                            <span class="text-danger">
+                                                                @error('guest_age')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+
+
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="guest_gender">Guest Gender </label>
+<select class="form-control" id="guest_gender" name="guest_gender">
+    <option value="">-- Select Gender --</option>
+    <option value="Male" {{ old('guest_gender') == 'Male' ? 'selected' : '' }}>Male</option>
+    <option value="Female" {{ old('guest_gender') == 'Female' ? 'selected' : '' }}>Female</option>
+    <option value="Other" {{ old('guest_gender') == 'Other' ? 'selected' : '' }}>Other</option>
+</select>
+
+
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="account_birthday">DOB </label>
+                                                            <input class="form-control" id="account_birthday" type="date"
+                                                                name="account_birthday" value="{{ old('account_birthday') }}"
+                                                                autocomplete="none" />
+                                                            <span class="text-danger">
+                                                                @error('account_birthday')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
@@ -747,6 +851,24 @@
                                                             <input type="text" class=" form-control"id=""
                                                                 name="agent" class=""
                                                                 value="{{ old('agent') }}">
+                                                        </div>
+                                                           <div class="col-md-3 ">
+                                                            <label for="label1">Purpose Of Visit</label>
+                                                            <input type="text" class=" form-control"id=""
+                                                                name="purpose_of_visit" class=""
+                                                                value="{{ old('purpose_of_visit') }}">
+                                                        </div>
+                                                                                                                  <div class="col-md-3 ">
+                                                            <label for="label1">Comming From</label>
+                                                            <input type="text" class=" form-control"id=""
+                                                                name="comming_from" class=""
+                                                                value="{{ old('comming_from') }}">
+                                                        </div>
+                                                                  <div class="col-md-3 ">
+                                                            <label for="label1">GOING TO</label>
+                                                            <input type="text" class=" form-control"id=""
+                                                                name="going_to" class=""
+                                                                value="{{ old('going_to') }}">
                                                         </div>
                                                         <div class="col-md-3">
                                                             <label for="guest_idproof">Document Name </label>
@@ -1163,6 +1285,28 @@
                                                         </span>
 
                                                     </div>
+                                                    <div class="col-md-3">
+                                                        <label for="second_guest_id_name"> 2nd Guest Id Name  </label>
+                                                        <input class="form-control" id="second_guest_id_name" type="text"
+                                                            name="second_guest_id_name" value="{{ old('second_guest_id_name') }}" />
+                                                        <span class="text-danger">
+                                                            @error('second_guest_id_name')
+                                                                {{ $message }}
+                                                            @enderror
+                                                        </span>
+
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="second_guest_id_no"> 2nd Guest Id No  </label>
+                                                        <input class="form-control" id="second_guest_id_no" type="text"
+                                                            name="second_guest_id_no" value="{{ old('second_guest_id_no') }}" />
+                                                        <span class="text-danger">
+                                                            @error('second_guest_id_no')
+                                                                {{ $message }}
+                                                            @enderror
+                                                        </span>
+
+                                                    </div>
 
                                                         <!--second guest image -->
                                                         <div class="col-md-3">
@@ -1316,6 +1460,28 @@
                                                                 name="third_guest_name" value="{{ old('third_guest_name') }}" />
                                                             <span class="text-danger">
                                                                 @error('third_guest_name')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+    
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="third_guest_id_name">3rd Guest  Id Name  </label>
+                                                            <input class="form-control" id="third_guest_id_name" type="text"
+                                                                name="third_guest_id_name" value="{{ old('third_guest_id_name') }}" />
+                                                            <span class="text-danger">
+                                                                @error('third_guest_id_name')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+    
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="third_guest_id_no">3rd Guest  Id No  </label>
+                                                            <input class="form-control" id="third_guest_id_no" type="text"
+                                                                name="third_guest_id_no" value="{{ old('third_guest_id_no') }}" />
+                                                            <span class="text-danger">
+                                                                @error('third_guest_id_no')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
@@ -1761,7 +1927,7 @@
 
 
 
-
+                                                        @can('Save')
 
                                                         <div class="card-footer text-center py-3">
                                                             <div class="small">
@@ -1771,7 +1937,7 @@
                                                                     class= "btn btn-dark  "href={{ url('amclist') }}>Back</a>
                                                             </div>
                                                         </div>
-
+                                                       @endcan
 
 
 
@@ -1928,9 +2094,8 @@
     {{-- Ajex for Account Detail --}}
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#search_acccount').submit(function(event) {
-                event.preventDefault(); // Prevent the form from submitting via the browser
-                var contactNumber = $('#searchinput').val();
+           $('#guest_mobile').blur(function () {
+    var contactNumber = $(this).val();
                 console.log(contactNumber);
 
                 $.ajax({
@@ -1941,58 +2106,60 @@
                         console.log(response);
 
                         if (response.customer_info) {
-                            $('#guest_name').val(response.customer_info.account_name);
+                            $('#guest_name').val(response.customer_info.account_name).prop('readonly', true);
                         } else {
-                            $('#guest_name').val('');
+                            $('#guest_name').prop('readonly', false);
                         }
                         if (response.customer_info) {
-                            $('#guest_email').val(response.customer_info.email);
+                            $('#guest_email').val(response.customer_info.email).prop('readonly', true);
                         } else {
-                            $('#guest_email').val('');
+                          $('#guest_email').prop('readonly', false);
                         }
                         if (response.customer_info) {
                             $('#guest_mobile').val(response.customer_info.mobile);
                         } else {
-                            $('#guest_mobile').val('');
+                     $('#guest_mobile').prop('readonly', false);
                         }
                         if (response.customer_info) {
-                            $('#guest_address').val(response.customer_info.address);
+                            $('#guest_address').val(response.customer_info.address).prop('readonly', true);
                         } else {
-                            $('#guest_address').val('');
+                   $('#guest_address').prop('readonly', false); 
                         }
                         if (response.customer_info) {
-                            $('#guest_city').val(response.customer_info.city);
+                            $('#guest_city').val(response.customer_info.city).prop('readonly', true);
                         } else {
-                            $('#guest_city').val('');
+                           $('#guest_city').prop('readonly', false);
                         }
                         if (response.customer_info) {
-                            $('#guest_state').val(response.customer_info.state);
+                            $('#guest_state').val(response.customer_info.state).prop('readonly', true);
                         } else {
-                            $('#guest_state').val('');
+                             $('#guest_state').prop('readonly', false);
+                         
                         }
                         if (response.customer_info) {
-                            $('#guest_contery').val(response.customer_info.nationality);
+                            $('#guest_contery').val(response.customer_info.nationality).prop('readonly', true);
                         } else {
-                            $('#guest_contery').val('');
+                            
                         }
                         if (response.customer_info) {
                             $('#guest_idproof').val(response.customer_info
-                                .account_idproof_name);
+                                .account_idproof_name).prop('readonly', true);
                         } else {
-                            $('#guest_idproof').val('');
+                          $('#guest_idproof').prop('readonly', false);  
                         }
                         if (response.customer_info) {
                             $('#guest_idproof_no').val(response.customer_info
-                                .account_idproof_no);
+                                .account_idproof_no).prop('readonly', true);
                         } else {
-                            $('#guest_idproof_no').val('');
+                            $('#guest_idproof_no').prop('readonly', false);  
+                            
                         }
 
 
                         if (response.customer_info) {
                             $('#guest_pic_response1').val(response.customer_info.account_pic1);
                         } else {
-                            $('#guest_pic_response1').val('');
+                            
                         }
                         if (response.customer_info) {
                             const imageUrl =
@@ -2021,12 +2188,16 @@
                         if (response.customer_info) {
                             $('#gst_no').val(response.customer_info.gst_no);
                         } else {
-                            $('#gst_no').val('');
-                        }
 
-                        if (response.message) {
-                            $('#message').html('  ' + response.message + '');
-                        } else {
+                            
+                                      }
+
+                        if (response.customer_info.mobile) {
+alert("पिछले से गेस्ट की डिटेल मौजूदा है।\nयदि आप गेस्ट की जानकारी बदलना चाहते हैं,\nतो कृपया मोबाइल नंबर भी बदलें।\n\nGuest record found in database.\nIf you want to enter different guest details, please change the mobile number.");
+
+
+}
+ else {
                             $('#search_results').html(
                                 '<p>No customer found with this contact number.</p>');
                         }
@@ -2302,7 +2473,7 @@
 
 
                         if (response.customer_info) {
-                            $('#guest_name').val(response.customer_info.account_name);
+                            $('#guest_name').val(response.customer_info.account_name).prop('readonly', true);
                         } else {
                             $('#guest_name').val('');
                         }
@@ -2312,7 +2483,7 @@
                             $('#guest_email').val('');
                         }
                         if (response.customer_info) {
-                            $('#guest_mobile').val(response.customer_info.mobile);
+                            $('#guest_mobile').val(response.customer_info.mobile).prop('readonly', true);
                         } else {
                             $('#guest_mobile').val('');
                         }
@@ -2523,4 +2694,23 @@
             allowClear: true
         });
     </script>
+
+    <script>
+    $(document).ready(function() {
+        // Initialize Select2
+        $('#roombooking_voucher_no').select2({
+            placeholder: "Select Room Booking",
+            allowClear: true,
+            width: '100%' // Makes it fit the form width
+        });
+
+        // Redirect on selection
+        $('#roombooking_voucher_no').on('change', function() {
+            var voucherNo = $(this).val();
+            if (voucherNo) {
+                window.location.href = '/show_booking/' + voucherNo;
+            }
+        });
+    });
+</script>
 @endsection

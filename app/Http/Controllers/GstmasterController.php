@@ -57,6 +57,8 @@ class GstmasterController extends CustomBaseController
                 $gstmaster->tax3 = $request->tax3;
                 $gstmaster->tax4 = $request->tax4;
                 $gstmaster->tax5 = $request->tax5;
+                $gstmaster->hsn_no = $request->hsn_no;
+                
 
 
                 $gstmaster->save();

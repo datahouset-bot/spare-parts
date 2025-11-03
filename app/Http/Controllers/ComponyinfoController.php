@@ -49,7 +49,13 @@ class ComponyinfoController extends CustomBaseController
               $companyInfo->cominfo_pencard=null;
                $companyInfo->cominfo_field1=null;
               $companyInfo->cominfo_field2=null;
-            // Set other fields to null or default values
+              $companyInfo->gst_notapplicable=null;
+              $companyInfo->make_all_bill_local_gst=null;
+              $companyInfo->componyinfo_af1=null;  //use for aspected checkoutdate option  on room checkin
+              
+              //5 additional field is empty 
+
+            // Set other fields to null or default values 
             // Example: $companyInfo->field_name = null;
             $companyInfo->save();
         } 
@@ -70,9 +76,7 @@ class ComponyinfoController extends CustomBaseController
      */
     public function store(Request $request)
     {
-    // echo "<pre>";
-    // print_r($request->all());
-   
+
     $validator= validator::make($request->all(),[
         'cominfo_firm_name' => 'required',
         
@@ -97,6 +101,14 @@ class ComponyinfoController extends CustomBaseController
                $companyInfo->cominfo_pencard=$request->cominfo_pencard;
                $companyInfo->cominfo_field1=$request->cominfo_field1;
                $companyInfo->cominfo_field2=$request->cominfo_website;
+               $companyInfo->gst_notapplicable=$request->gst_notapplicable;
+              $companyInfo->make_all_bill_local_gst=$request->make_all_bill_local_gst;
+              $companyInfo->componyinfo_af1=$request->requierd_aspedted_checkout;  
+              $companyInfo->componyinfo_af10=$request->componyinfo_af10;   // hoptel code 
+             $companyInfo->componyinfo_af2=$request->componyinfo_af2; //Enable Channel Manager  
+             $companyInfo->componyinfo_af3=$request->componyinfo_af3; //channel manager hotel code 
+             $companyInfo->componyinfo_af4=$request->componyinfo_af4; //Owner Mobile No For Getting Whatsapp  
+
                
                $companyInfo->update();
             return view('setting.company_info_form',['companyInfo' => $companyInfo])->with('message', 'Record Upaded Successfully!');

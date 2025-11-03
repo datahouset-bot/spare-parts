@@ -127,15 +127,15 @@
             <div class="col-md-6 mt-1">
                 <div class="colour_code">
                     <button style="background-color: mintcream">Vacant</button>
-                    <button style="background-color:orange">Booked</button>
-                    <button style="background-color: green">Check</button>
-                    <button style="background-color: red">Dirty</button>&nbsp;&nbsp;
+                    {{-- <button style="background-color:orange">Booked</button> --}}
+                    <button style="background-color: green">on Working</button>
+                    <button style="background-color: red">ready to out</button>&nbsp;&nbsp;
                     @can('Vacant_All_Room')
                         <button style="background-color: mintcream" onclick="confirmAction()">Vacant All</button>
                     @endcan
 
                     <button style="background-color: red"
-                        onclick="window.location.href='{{ url('/mark_room_dirty') }}'">Mark Room Dirty</button>
+                        onclick="window.location.href='{{ url('/mark_room_dirty') }}'">pending vehicles</button>
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -165,7 +165,7 @@
 
             </div>
             <div class="col-md-6 mt-1">
-                <label for="">Check Advance Booked Room......Select Date </label>
+                <label for="">Check Advance Booked vehicles......Select Date </label>
                 <div class="form-floating mb-3 mb-md-0">
                     <form class="form-inline" action="{{ url('room_dashboard') }}" method="POST">
                         @csrf
@@ -235,12 +235,10 @@
                             {{ $room->roomtype->roomtype_name }}&nbsp;||&nbsp;{{ $room->roomtype->room_tariff }}
                             Facilities: {{ $room->room_facilities }} </p>
                         <div class="links">
-                            <a href="{{ url('roombookings/create') }}" title="Create a new room booking">
+                            <a href="{{ url('roombookings/create') }}" title="Book a slot">
                                 <div class="linkitem">
                                     <button class="buttonlink">
-
                                         <i class="fa fa-phone" style="font-size:20px;color:orange"></i>
-
 
                                     </button>
 
@@ -248,9 +246,9 @@
                                 </div>
                             </a>
                             @if ($voucherNo)
-                            <a href="{{ url('#') }}" title="Create a new room CheckIn">    
+                            <a href="{{ url('#') }}" title="Job card">    
                             @else
-                            <a href="{{ url('roomcheckins/create') }}" title="Create a new room CheckIn">
+                            <a href="{{ url('roomcheckins/create') }}" title="Job card">
 
                                 
                             @endif
@@ -259,7 +257,7 @@
                                 <div class="linkitem">
                                     <button class="buttonlink {{ $button_background }}">
 
-                                        <i class="fa fa-bed" style="font-size:20px;color:green"></i>
+                                        <i class="fa fa-car" style="font-size:20px;color:green"></i>
 
 
                                     </button>
@@ -267,7 +265,7 @@
 
                                 </div>
                             </a>
-                            <a href="{{ url('/kots/create/' . $voucherNo) }}" title="Create A New KOT">
+                            <a href="{{ url('/kots/create/' . $voucherNo) }}" title="stock issue">
 
                                 <div class="linkitem">
 
@@ -283,7 +281,7 @@
 
                                 </div>
                             </a>
-                            <a href="{{ url('facthkot_records/' . $voucherNo) }}" title="Create a New Food Bill">
+                            <a href="{{ url('facthkot_records/' . $voucherNo) }}" title="Make invoice">
                                 <div class="linkitem">
                                     <button class="buttonlink">
 
@@ -298,7 +296,7 @@
 
                             @if (!empty($voucherNo))
                                 <!-- If voucherNo exists -->
-                                <a href="{{ url('show_checkin/' . $voucherNo) }}" title="Create a new room CheckOut">
+                                <a href="{{ url('show_checkin/' . $voucherNo) }}" title="Gate pass">
                                     <div class="linkitem">
                                         <button class="buttonlink">
                                             <i class="fa fa-walking" style="font-size:20px;color:rgb(39, 6, 248)"></i>
@@ -307,7 +305,7 @@
                                 </a>
                             @else
                                 <!-- If voucherNo is not available -->
-                                <a href="{{ url('roomcheckouts/create') }}" title="Create a new room CheckOut">
+                                <a href="{{ url('roomcheckouts/create') }}" title="Gate pass">
                                     <div class="linkitem">
                                         <button class="buttonlink">
                                             <i class="fa fa-walking" style="font-size:20px;color:rgb(39, 6, 248)"></i>
@@ -315,7 +313,7 @@
                                     </div>
                                 </a>
                             @endif
-
+{{-- 
                             @if ($voucherNo)
                             <a href="" title="Clear Dirty Room">
                             @else
@@ -328,7 +326,7 @@
                                         <i class="fa fa-broom" style="font-size:20px;color:red"></i>
                                     </button>
                                 </div>
-                            </a>
+                            </a> --}}
 
                             <script>
                                 function confirmAndRedirect(url) {
@@ -389,4 +387,5 @@
             }
         }
     </script>
+
 @endsection

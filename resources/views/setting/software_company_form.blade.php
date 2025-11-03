@@ -17,8 +17,97 @@
                             <div class="col-lg-12">
                                 <div class="card shadow-lg border-0 rounded-lg mt-1">
                                     <div class="card-header">
-                                        <h3 class="text-center font-weight-light my-4">Software Company Details</h3>
-                                    </div>
+                                        <h3 class="text-center font-weight-light my-1">Software Company Details</h3>
+                                         {{-- <a class="btn btn-danger" href="{{ url('/room_transection_delete',Auth::user()->firm_id) }}">Delete All Transection</a> --}}
+                                    {{-- <a class="btn btn-danger" id="deleteAllBtn">Delete All Transactions</a> --}}
+
+<!-- Modal (for confirmation) -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="deleteConfirmModalLabel">⚠️ Confirm Deletion</h5>
+      </div>
+      <div class="modal-body">
+        <p><strong>Warning:</strong> If you continue, <span class="text-danger">ALL transactions will be permanently deleted</span> and <u>cannot be recovered</u>.</p>
+
+        <p>Please type the code below to confirm:</p>
+        <h4 id="captchaCode" class="text-center fw-bold text-primary"></h4>
+
+        <input type="text" id="captchaInput" class="form-control mt-2" placeholder="Enter above code to confirm">
+
+        <p class="mt-3 text-danger"><strong>Wait 5 minutes before you can confirm deletion.</strong></p>
+        <div class="text-center fw-bold fs-5" id="countdownTimer">05:00</div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a id="finalDeleteLink" href="{{ url('/room_transection_delete', Auth::user()->firm_id) }}" class="btn btn-danger disabled">Confirm Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JS Section -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const deleteBtn = document.getElementById('deleteAllBtn');
+    const captchaCodeEl = document.getElementById('captchaCode');
+    const captchaInput = document.getElementById('captchaInput');
+    const finalDeleteLink = document.getElementById('finalDeleteLink');
+    const countdownEl = document.getElementById('countdownTimer');
+
+    let captchaCode = '';
+
+    function generateCaptcha(length = 10) {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return result;
+    }
+
+    function startCountdown(minutes = 5) {
+        let time = minutes * 60;
+        const timer = setInterval(() => {
+            const m = String(Math.floor(time / 60)).padStart(2, '0');
+            const s = String(time % 60).padStart(2, '0');
+            countdownEl.textContent = `${m}:${s}`;
+            time--;
+
+            if (time < 0) {
+                clearInterval(timer);
+                countdownEl.textContent = "You can now confirm deletion!";
+                finalDeleteLink.classList.remove('disabled');
+            }
+        }, 1000);
+    }
+
+    deleteBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        captchaCode = generateCaptcha();
+        captchaCodeEl.textContent = captchaCode;
+        captchaInput.value = '';
+        finalDeleteLink.classList.add('disabled');
+        countdownEl.textContent = '05:00';
+        startCountdown(5);
+        new bootstrap.Modal(document.getElementById('deleteConfirmModal')).show();
+    });
+
+    captchaInput.addEventListener('input', function() {
+        if (captchaInput.value === captchaCode && !finalDeleteLink.classList.contains('disabled')) {
+            finalDeleteLink.classList.remove('disabled');
+        } else {
+            finalDeleteLink.classList.add('disabled');
+        }
+    });
+});
+</script>
+
+                                    
+                                    
+                                        </div>
                                     <div class="card-body">
                                         <form action="{{ route('softwarecompanies.store') }}" method="POST">
                                             @csrf
@@ -101,14 +190,66 @@
 
                                             <!-- Additional Fields (software_af1 to software_af10) -->
                                             <div class="row">
-                                                @foreach (range(1, 10) as $index)
                                                     <div class="col-md-4 mt-2">
                                                         <div class="form-floating mb-3 mb-md-0">
-                                                            <input class="form-control" id="software_af{{ $index }}" type="text" name="software_af{{ $index }}" value="{{ old('software_af' . $index, $software_companyInfo->{'software_af' . $index} ?? '') }}" />
-                                                            <label for="software_af{{ $index }}">Software AF{{ $index }}</label>
+                                                            <input class="form-control" id="software_af1" type="text" name="software_af1" value="{{ $software_companyInfo->software_af1  }}" />
+                                                            <label for="software_af1">Business </label>
                                                         </div>
                                                     </div>
-                                                @endforeach
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="software_af2" type="text" name="software_af2" value="{{ $software_companyInfo->software_af2  }}" />
+                                                            <label for="software_af2">Map Longnitute </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="software_af3" type="text" name="software_af3" value="{{ $software_companyInfo->software_af3  }}" />
+                                                            <label for="software_af3"> Map Latitute </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="software_af4" type="text" name="software_af4" value="{{ $software_companyInfo->software_af4  }}" />
+                                                            <label for="software_af4">Whatsapp Authantication  Key  </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="software_af5" type="text" name="software_af5" value="{{ $software_companyInfo->software_af5  }}" />
+                                                            <label for="software_af5">Whatsapp Api  </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="software_af6" type="date" name="software_af6" value="{{ $software_companyInfo->software_af6  }}" />
+                                                            <label for="software_af6">WhatsApp Validity  </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="software_af7" type="text" name="software_af7" value="{{ $software_companyInfo->software_af7  }}" />
+                                                            <label for="software_af7">af7 </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="software_af8" type="text" name="software_af8" value="{{ $software_companyInfo->software_af8  }}" />
+                                                            <label for="software_af8">af8 </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="software_af9" type="text" name="software_af9" value="{{ $software_companyInfo->software_af9  }}" />
+                                                            <label for="software_af9">Af9 </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="software_af10" type="text" name="software_af10" value="{{ $software_companyInfo->software_af10  }}" />
+                                                            <label for="software_af1">Af10 </label>
+                                                        </div>
+                                                    </div>
                                             </div>
 
                                             <div class="mt-4 mb-0">
@@ -122,7 +263,9 @@
                                     <div class="card-footer text-center py-3">
                                         <div class="small">
                                             <a class="btn btn-dark" href="{{ url()->previous() }}">Back</a>
+                                         
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>

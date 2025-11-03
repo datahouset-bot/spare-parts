@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KotController;
 use App\Http\Controllers\PicController;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\HelpController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SaleController;
@@ -10,8 +11,8 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\RestaController;
-use App\Http\Controllers\TableController;
 
+use App\Http\Controllers\TableController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\GodownController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\FollowupController;
 use App\Http\Controllers\FoodbillController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RoomtypeController;
+use App\Http\Controllers\WhatsAppController;
 use App\Http\Controllers\GstmasterController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemgroupController;
@@ -36,15 +38,18 @@ use App\Http\Controllers\RoombookingController;
 use App\Http\Controllers\RoomcheckinController;
 use App\Http\Controllers\RoomserviceController;
 use App\Http\Controllers\VoucherTypeController;
+use App\Http\Controllers\WhatsappSmsController;
 use App\Http\Controllers\AccountgroupController;
 use App\Http\Controllers\PrimarygroupController;
 use App\Http\Controllers\RoomcheckoutController;
+use App\Http\Controllers\FinancialyearController;
 use App\Http\Controllers\StocktransferController;
 use App\Http\Controllers\SuperCompListController;
 use App\Http\Controllers\BusinesssourceController;
 use App\Http\Controllers\CompinfofooterController;
 use App\Http\Controllers\BusinesssettingController;
 use App\Http\Controllers\SoftwarecompanyController;
+use App\Http\Controllers\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,6 +61,19 @@ use App\Http\Controllers\SoftwarecompanyController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
+Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+
+    // Optional: Also rebuild config cache (optional but common)
+    // Artisan::call('config:cache');
+
+    return '✅ All Laravel caches (config, route, view, app) have been cleared.';
+});
 
 
 Route::get('/admin', function () {
@@ -74,7 +92,8 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', [LandingpageController::class, 'show_secondindexpage'])->name('second_index');
-
+Route::get('/mantinace_mode', [App\Http\Controllers\MaintenancemodeController::class, 'index']);
+Route::post('/maintenancemode/update', [App\Http\Controllers\MaintenancemodeController::class, 'update'])->name('maintenancemode.update');
 
 // profile Route--------------------------------------------------
 //Route::get('/userprofilelist', [App\Http\Controllers\userprofileController::class, 'show'])->name('userprofilelist');
@@ -93,7 +112,9 @@ Route::post('/modify', [App\Http\Controllers\userprofileController::class, 'modi
 Route::get('itemgroups', [App\Http\Controllers\ItemgroupController::class, 'index']);
 Route::Post('itemgroups', [App\Http\Controllers\ItemgroupController::class, 'store']);
 Route::get('deleteitemgroups/{id}', [App\Http\Controllers\ItemgroupController::class, 'destroy']);
-Route::get('howediteditemgroups/{id}', [App\Http\Controllers\ItemgroupController::class, 'show']);
+Route::get('showediteditemgroups/{id}', [App\Http\Controllers\ItemgroupController::class, 'show']);
+Route::put('/itemgroups/{id}', [ItemGroupController::class, 'update']);
+
 
 Route::resource('units', UnitController::class);
 Route::resource('super_comp_lists', SuperCompListController::class);
@@ -146,6 +167,7 @@ Route::post('account_import', [App\Http\Controllers\AccountController::class, 'i
 Route::post('downloadExcel', [App\Http\Controllers\AccountController::class, 'downloadExcel']);
 Route::post('downloadExcel_todo', [App\Http\Controllers\AccountController::class, 'downloadExcel_todo']);
 Route::get('/searchcustomer/{contactNumber}', [AccountController::class, 'searchCustomer']);
+Route::get('/searchcustomer_check_in_pending/{contactNumber}', [AccountController::class, 'searchcustomer_check_in_pending']);
 Route::get('/searchCustomer_by_id/{id}', [AccountController::class, 'searchCustomer_by_id']);
 
 
@@ -207,6 +229,17 @@ route::put('comp_pic_qrstore', [App\Http\Controllers\PicController::class, 'comp
 route::put('comp_pic_sealstore', [App\Http\Controllers\PicController::class, 'comp_pic_sealstore']);
 route::put('comp_pic_signaturestore', [App\Http\Controllers\PicController::class, 'comp_pic_signaturestore']);
 route::put('comp_pic_brandstore', [App\Http\Controllers\PicController::class, 'comp_pic_brandstore']);
+route::put('comp_pic_af1', [App\Http\Controllers\PicController::class, 'comp_pic_af1']);
+route::put('comp_pic_af2', [App\Http\Controllers\PicController::class, 'comp_pic_af2']);
+route::put('comp_pic_af3', [App\Http\Controllers\PicController::class, 'comp_pic_af3']);
+route::put('comp_pic_af4', [App\Http\Controllers\PicController::class, 'comp_pic_af4']);
+route::put('comp_pic_af5', [App\Http\Controllers\PicController::class, 'comp_pic_af5']);
+route::put('comp_pic_af6', [App\Http\Controllers\PicController::class, 'comp_pic_af6']);
+route::put('comp_pic_af7', [App\Http\Controllers\PicController::class, 'comp_pic_af7']);
+route::put('comp_pic_af8', [App\Http\Controllers\PicController::class, 'comp_pic_af8']);
+route::put('comp_pic_af9', [App\Http\Controllers\PicController::class, 'comp_pic_af9']);
+route::put('comp_pic_af10', [App\Http\Controllers\PicController::class, 'comp_pic_af10']);
+
 route::get('comp_info_footer', [App\Http\Controllers\CompinfofooterController::class, 'index']);
 route::put('comp_info_footer', [App\Http\Controllers\CompinfofooterController::class, 'store']);
 Route::get('sql_query', [CompinfofooterController::class, 'sql_query'])->name('sql_query');
@@ -264,6 +297,10 @@ Route::resource('softwarecompanies', SoftwarecompanyController::class)
 route::get('mark_room_dirty', [App\Http\Controllers\RoomController::class, 'mark_room_dirty']);
 route::POST('change_status_dirty', [App\Http\Controllers\RoomController::class, 'change_status_dirty']);
 
+//-----------------------------channel Manager------------------
+Route::get('pushInventory', [App\Http\Controllers\ChannelManagerController::class, 'pushInventory']);
+Route::POST('pushrate', [App\Http\Controllers\ChannelManagerController::class, 'pushrate']);
+
 //--------------------------roomdashboard------------------------
 Route::get('room_dashboard', [App\Http\Controllers\roomdashboardcontroller::class, 'room_dashboard']);
 Route::post('room_dashboard', [App\Http\Controllers\roomdashboardcontroller::class, 'room_dashboard_datewise']);
@@ -300,6 +337,8 @@ route::Put('roomcheckin_update', [App\Http\Controllers\RoomcheckinController::cl
 //-----------------roomcheckout--------------------------
 Route::resource('roomcheckouts', RoomcheckoutController::class);
 route::get('roomcheckout_register', [App\Http\Controllers\RoomcheckoutController::class, 'register']);
+route::post('roomcheckout_register', [App\Http\Controllers\RoomcheckoutController::class, 'register']);
+route::get('guestlog', [App\Http\Controllers\RoomcheckoutController::class, 'guestlog']);
 
 route::post('show_checkin', [App\Http\Controllers\RoomcheckoutController::class, 'show_checkin']);
 route::get('My_Check_out', [App\Http\Controllers\RoomcheckoutController::class, 'My_Check_out']);
@@ -315,6 +354,8 @@ route::get('room_checkout_view3/{id}', [App\Http\Controllers\RoomcheckoutControl
 route::get('room_checkout_view4/{id}', [App\Http\Controllers\RoomcheckoutController::class, 'room_checkout_view4']);
 route::get('room_checkout_view5/{id}', [App\Http\Controllers\RoomcheckoutController::class, 'room_checkout_view5']);
 route::get('room_checkout_view6/{id}', [App\Http\Controllers\RoomcheckoutController::class, 'room_checkout_view6']);
+route::get('room_checkout_view7/{id}', [App\Http\Controllers\RoomcheckoutController::class, 'room_checkout_view7']);
+route::get('room_checkout_view8/{id}', [App\Http\Controllers\RoomcheckoutController::class, 'room_checkout_view8']);
 
 //------------------------Voucher Type--------------------
 Route::resource('voucher_types', VoucherTypeController::class);
@@ -348,15 +389,27 @@ Route::POST('readytoserve', [App\Http\Controllers\RoomserviceController::class, 
 Route::resource('kots', KotController::class);
 Route::get('/kots/create/{id}', [App\Http\Controllers\KotController::class, 'create']);
 
-Route::get('store_toKot/{id}', [App\Http\Controllers\KotController::class, 'store_toKot']);
+Route::get('store_toKot/{id}/{voucher_no}', [App\Http\Controllers\KotController::class, 'store_toKot']);
+Route::get('kot_edit/{voucher_no}', [App\Http\Controllers\KotController::class, 'kot_edit']);
 
 
 
 Route::get('store_and_print/{id}/{voucher_no}', [App\Http\Controllers\KotController::class, 'store_and_print']);
-Route::get('kots_cleared', [App\Http\Controllers\KotController::class, 'kots_cleared']);
+Route::get('kot_update_print/{id}/{voucher_no}', [App\Http\Controllers\KotController::class, 'kot_update_print']);
+Route::get('kot_update/{id}', [App\Http\Controllers\KotController::class, 'kot_update']);
+Route::get('kots_cleared/{kot_type}', [App\Http\Controllers\KotController::class, 'kots_cleared']);
+//-------------------------------whtsapp controller -------------
+Route::get('/send-whatsapp', [App\Http\Controllers\WhatsAppController::class, 'sendFromFrontend']);
+Route::resource('whatsapp_sms', WhatsappSmsController::class);
+Route::get('send_promotional_whatsapp', [App\Http\Controllers\WhatsappSmsController::class, 'send_promotional_whatsapp']);
+Route::POST('start_wp_promotion', [App\Http\Controllers\WhatsappSmsController::class, 'start_wp_promotion']);
+Route::get('/get_guest_mobile_numbers', [App\Http\Controllers\WhatsappSmsController::class, 'getGuestMobileNumbers']);
+
+Route::post('/upload-image', [App\Http\Controllers\WhatsappSmsController::class, 'upload'])->name('whatsapp.upload');
 //---------------------foodbill-----------------
 Route::get('kot_print/{id}/{voucher_no}', [App\Http\Controllers\KotController::class, 'kot_print']);
 Route::get('kot_print_view/{id}/{voucher_no}', [App\Http\Controllers\KotController::class, 'kot_print_view']);
+
 Route::get('facthitem_records/{id}', [App\Http\Controllers\KotController::class, 'fetchItemRecords']);
 Route::get('temp_item_delete/{id}', [App\Http\Controllers\KotController::class, 'temp_item_delete']);
 Route::get('delete_kot_temprecord/{recordValue}', [App\Http\Controllers\KotController::class, 'delete_kot_temprecord']);
@@ -365,25 +418,46 @@ Route::get('facthkot_records/{id}', [App\Http\Controllers\FoodbillController::cl
 Route::get('item_wise_sale_report_view', [App\Http\Controllers\FoodbillController::class, 'item_wise_sale_report_view']);
 Route::POST('item_wise_sale_report', [App\Http\Controllers\FoodbillController::class, 'item_wise_sale_report']);
 Route::get('fetchkot/{id}', [App\Http\Controllers\FoodbillController::class, 'fetchkot']);
+Route::get('fetchkot_foodbilledit/{id}', [App\Http\Controllers\FoodbillController::class, 'fetchkot_foodbilledit']);
 
 Route::get('foodbill_print_view/{voucher_no}', [App\Http\Controllers\FoodbillController::class, 'foodbill_print_view']);
 //-----------------------------option list --------------
 Route::resource('optionlists', OptionlistController::class);
 Route::get('report_dashboard', [App\Http\Controllers\OptionlistController::class, 'report_dashboard']);
 Route::resource('businesssettings', BusinesssettingController::class);
+Route::resource('businesssettings', BusinesssettingController::class);
+//-------------------------help -----------
+Route::resource('helps', HelpController::class);
 //-------------------------table and Restaurent -----------
 Route::resource('tables', TableController::class);
-
+//------------------------financialyears----------------------------
+Route::resource('financialyears', FinancialyearController::class);
 Route::get('restaurant_kot', [App\Http\Controllers\RestaController::class, 'restaurant_kot']);
+Route::get('nckot_register', [App\Http\Controllers\RestaController::class, 'nckot_register']);
+Route::post('rest_foodbill_index_register', [App\Http\Controllers\RestaController::class, 'rest_foodbill_index_register']);
+Route::post('/rkot_cancel', [App\Http\Controllers\KotController::class, 'cancel_rkot'])->name('rkot.cancel');
 Route::get('rkot_destroy/{voucher_no}', [App\Http\Controllers\RestaController::class, 'rkot_destroy']);
+Route::get('rkot_edit/{voucher_no}', [App\Http\Controllers\RestaController::class, 'rkot_edit']);
+Route::get('rkot_update/{id}', [App\Http\Controllers\RestaController::class, 'rkot_update']);
+Route::get('rkot_update_print/{voucher_no}/{id}', [App\Http\Controllers\RestaController::class, 'rkot_update_print']);
+Route::get('Rkot_print_view/{id}/{voucher_no}', [App\Http\Controllers\RestaController::class, 'Rkot_print_view']);
+Route::get('Rkot_print/{id}/{voucher_no}', [App\Http\Controllers\RestaController::class, 'Rkot_print']);
+
 Route::get('table_dashboard', [App\Http\Controllers\TableController::class, 'table_dashboard']);
+Route::get('showShiftTableForm', [App\Http\Controllers\TableController::class, 'showShiftTableForm']);
+Route::post('shift_table_action', [App\Http\Controllers\TableController::class, 'shiftTableAction']);
 Route::get('table_kot_create/{tableid}', [App\Http\Controllers\RestaController::class, 'table_kot_create']);
 Route::get('table_foodbill_create/{tableid}', [App\Http\Controllers\RestaController::class, 'table_foodbill_create']);
 Route::get('resta_fetchkot/{id}', [App\Http\Controllers\RestaController::class, 'resta_fetchkot']);
 Route::get('resta_fetchkot_edit/{voucher_no}/{id}', [App\Http\Controllers\RestaController::class, 'resta_fetchkot_edit']);
+Route::get('table_wise_item', [App\Http\Controllers\RestaController::class, 'table_wise_item']);
+Route::get('table_wise_item_result/{table_id}', [App\Http\Controllers\RestaController::class, 'table_wise_item_result']);
+Route::get('kot_register_pageshow', [App\Http\Controllers\RestaController::class, 'kot_register_pageshow']);
+Route::POST('kot_register_result', [App\Http\Controllers\RestaController::class, 'kot_register_result']);
+
 
 Route::get('table_facthkot_records/{id}', [App\Http\Controllers\RestaController::class, 'fetchkotRecords']);
-Route::get('table_facthkot_records_edit/{voucher_no}/{id}', [App\Http\Controllers\RestaController::class, 'fetchkotRecords_edit']);
+Route::get('table_facthkot_records_edit/{voucher_no}/{id}/{settel_only}', [App\Http\Controllers\RestaController::class, 'fetchkotRecords_edit']);
 Route::get('delete_foodbill/{voucher_no}', [App\Http\Controllers\RestaController::class, 'destroy']);
 Route::POST('table_foodbills_store', [App\Http\Controllers\RestaController::class, 'store']);
 Route::POST('table_foodbills_update', [App\Http\Controllers\RestaController::class, 'update']);
@@ -391,7 +465,7 @@ Route::POST('table_foodbills_update', [App\Http\Controllers\RestaController::cla
 Route::get('table_foodbills_edit/{voucher_no}/{table_no}', [App\Http\Controllers\RestaController::class, 'edit']);
 Route::get('table_foodbills', [App\Http\Controllers\RestaController::class, 'index']);
 Route::get('table_foodbill_print_view/{voucher_no}', [App\Http\Controllers\RestaController::class, 'table_foodbill_print_view']);
-
+Route::get('table_foodbill_settle/{voucher_no}/{id}/{settel_only}', [App\Http\Controllers\RestaController::class, 'settle_show']);
 Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
     Route::resource('permissions', App\Http\Controllers\PermissionController::class);
@@ -408,6 +482,14 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
 });
 //---------------------------report------------
+Route::get('payment_register_pageshow', [App\Http\Controllers\ReportController::class, 'payment_register_pageshow']);
+Route::post('payment_register_result', [App\Http\Controllers\ReportController::class, 'payment_register_result']);
+Route::get('reciept_register_pageshow', [App\Http\Controllers\ReportController::class, 'reciept_register_pageshow']);
+Route::post('reciept_register_result', [App\Http\Controllers\ReportController::class, 'reciept_register_result']);
+Route::get('restaurant_pageshow', [App\Http\Controllers\ReportController::class, 'restaurant_pageshow']);
+Route::get('fnbrerport_pageshow', [App\Http\Controllers\ReportController::class, 'fnbrerport_pageshow']);
+Route::post('fnb_result', [App\Http\Controllers\ReportController::class, 'fnb_result']);
+Route::post('restaurant_report', [App\Http\Controllers\ReportController::class, 'restaurant_report']);
 Route::get('roomsales_report_pageshow', [App\Http\Controllers\ReportController::class, 'roomsales_report_pageshow']);
 Route::post('roomsales_report_result', [App\Http\Controllers\ReportController::class, 'roomsales_report_result']);
 Route::get('room_food_gstreport_pageshow', [App\Http\Controllers\ReportController::class, 'room_food_gstreport_pageshow']);
@@ -424,13 +506,20 @@ route::get('handover_report_pageshow', [App\Http\Controllers\ReportController::c
 route::post('handover_report', [App\Http\Controllers\ReportController::class, 'handover_report']);
 Route::get('/handover_view', [App\Http\Controllers\ReportController::class, 'handover_view']);
 Route::post('/handover', [App\Http\Controllers\ReportController::class, 'handover']);
+Route::get('/dayend_datewise', [App\Http\Controllers\ReportController::class, 'dayend_datewise']);
+Route::post('/datewisedayend', [App\Http\Controllers\ReportController::class, 'datewisedayend']);
 route::get('roomcheckin_guest_profile_print/{voucher_no}', [App\Http\Controllers\ReportController::class, 'roomcheckin_guest_profile_print']);
+//----------------attendance-----------------
+Route::get('/attendance_index', [AttendanceController::class, 'index'])->name('attendance.index');
+Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+Route::get('/attendance_report', [AttendanceController::class, 'report'])->name('attendance.report');
+Route::post('/attendance_report', [AttendanceController::class, 'reportShow'])->name('attendance.report.show');
 
 //----------------------------purchase- sales invetory  stock managment -------------------------
 Route::resource('purchases', PurchaseController::class);
 Route::resource('inventories', InventoryController::class);
 Route::resource('stocktransfers', StocktransferController::class);
-
+Route::get('liqour_stock_brand_wise', [App\Http\Controllers\InventoryController::class, 'liqour_stock_brand_wise']);
 Route::get('store_to_stocktransfer/{id}', [App\Http\Controllers\StocktransferController::class, 'store_to_stocktransfer']);
 Route::get('store_to_purchase/{id}', [App\Http\Controllers\PurchaseController::class, 'store_to_purchase']);
 Route::get('store_to_modify_purchase/{id}', [App\Http\Controllers\PurchaseController::class, 'store_to_modify_purchase']);
@@ -465,6 +554,5 @@ route::get('/hotel_room/{firm_id}', [App\Http\Controllers\HotelfrontController::
 route::get('/hotel_gallery/{firm_id}', [App\Http\Controllers\HotelfrontController::class, 'gallery']);
 route::get('/hotel_blog/{firm_id}', [App\Http\Controllers\HotelfrontController::class, 'blog']);
 route::get('/hotel_contact/{firm_id}', [App\Http\Controllers\HotelfrontController::class, 'contact']);
-
 
 

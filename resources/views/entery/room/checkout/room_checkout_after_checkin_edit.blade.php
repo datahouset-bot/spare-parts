@@ -229,9 +229,15 @@
                                                 </div>
 
                                             </div>
-                                            <div class="col-md-4 mt-4">
+                                            <div class="col-md-4">
                                                     <span class="btn btn-danger btn-sm"
                                                     id="my_checkout">My Checkout </span> 
+                                                    <h4>Last Payment Detail:</h4>
+                                                    @foreach ($lastpayment as $record )
+                                                    <span style="color: red; font-weight: 600;  font-style:bold; background-color: yellow;">{{ \Carbon\Carbon::parse($record->entry_date)->format('d-m-y') }}
+-{{$record->payment_mode_name}}-Amount: {{$record->credit}}, </span><br>                                                        
+                                                    @endforeach
+
 
 
 

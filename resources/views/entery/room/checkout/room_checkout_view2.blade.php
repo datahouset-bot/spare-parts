@@ -67,6 +67,7 @@
                 box-sizing: border-box;
                 text-align: left;
             }
+
             .item {
                 padding: 30px;
                 margin-left: 10ch;
@@ -74,8 +75,9 @@
                 border: 1px solid;
 
             }
-            .table_hader td{
-            border: 1px solid;
+
+            .table_hader td {
+                border: 1px solid;
 
             }
 
@@ -88,19 +90,21 @@
                 font-size: 15px;
 
             }
-            .row1{
+
+            .row1 {
                 width: 100%
             }
-            .tfooter_amount{
-text-align: left;
+
+            .tfooter_amount {
+                text-align: left;
 
 
             }
 
-            .row1 td{
-    border: solid 1px;
-    
-}
+            .row1 td {
+                border: solid 1px;
+
+            }
 
 
             td,
@@ -109,7 +113,7 @@ text-align: left;
             }
 
             .detail {
-                background-color:white;
+                background-color: white;
                 width: 100%;
                 text-align: right;
             }
@@ -123,21 +127,25 @@ text-align: left;
                 width: 100%;
                 padding: 5px;
             }
-            .table_hader{
+
+            .table_hader {
                 background-color: white;
                 width: 100%;
                 padding: 5px;
             }
-            .table_footer{
+
+            .table_footer {
                 background-color: white;
                 width: 100%;
                 padding: 5px;
             }
-            .table_hader td{
- border: 0px;
+
+            .table_hader td {
+                border: 0px;
             }
-            .table_footer td{
- border: 0px;
+
+            .table_footer td {
+                border: 0px;
             }
 
 
@@ -201,7 +209,7 @@ text-align: left;
             .logo1 {}
 
             .firm_detail {
-                text-align:left;
+                text-align: left;
 
             }
 
@@ -332,14 +340,17 @@ text-align: left;
                         width="80px"></div>
                 <div class="firm_detail">
                     <h4>{{ $componyinfo->cominfo_firm_name }}</h4>
-                    
+
                 </div>
                 <div class="firm_detail">
-                     <span>{{ $componyinfo->cominfo_address1 }}&nbsp;{{ $componyinfo->cominfo_address2 }}</span><br>
+                    <span>{{ $componyinfo->cominfo_address1 }}&nbsp;{{ $componyinfo->cominfo_address2 }}</span><br>
                     <span>{{ $componyinfo->cominfo_city }}&nbsp;{{ $componyinfo->cominfo_state }}
                         &nbsp;{{ $componyinfo->cominfo_pincode }}&nbsp;<br>{{ $compinfofooter->country }}</span>
                     <span>Email:{{ $componyinfo->cominfo_email }} Phone &nbsp;{{ $componyinfo->cominfo_phone }}
-                        Mobile&nbsp;{{ $componyinfo->cominfo_mobile }} </span>
+                        Mobile&nbsp;{{ $componyinfo->cominfo_mobile }} &nbsp;@if (!empty($componyinfo->cominfo_gst_no))
+                            <h5>GST NO :&nbsp;{{ $componyinfo->cominfo_gst_no }}</h5>
+                        @endif
+                    </span>
                 </div>
 
             </div>
@@ -367,17 +378,17 @@ text-align: left;
                             <td>Room Tariff</td>
                             <td>Room Type-</td>
                             <td>Nationality</td>
-                            
+
                         </tr>
 
 
                     </thead>
                     <tbody>
-                            <td>{{ $roomcheckouts->room_no }}</td>
-                            <td>{{ $roomcheckouts->guest_name }}</td>
-                            <td>{{ $roomcheckouts->per_day_tariff }}</td>
-                            <td>{{$roomcheckins->room->roomtype->roomtype_name}}</td>
-                            <td>{{ $roomcheckouts->account->nationality }}</td>
+                        <td>{{ $roomcheckouts->room_no }}</td>
+                        <td>{{ $roomcheckouts->guest_name }}</td>
+                        <td>{{ $roomcheckouts->per_day_tariff }}</td>
+                        <td>{{ $roomcheckins->room->roomtype->roomtype_name }}</td>
+                        <td>{{ $roomcheckouts->account->nationality }}</td>
 
                     </tbody>
                 </table>
@@ -386,20 +397,21 @@ text-align: left;
                         <tr>
                             <td>Address</td>
                             <td>Arrival Date & Time </td>
-                            <td>Deparcher Date And Time </td>
- 
-                            
+                            <td>Departure Date And Time </td>
+
+
                         </tr>
 
 
                     </thead>
                     <tbody>
-                            <td>{{ $guest_detail->address }}&nbsp;{{ $guest_detail->_city }} &nbsp;{{ $guest_detail->state }}</td>
-                            <td>{{ \Carbon\Carbon::parse($roomcheckouts->checkin_date)->format('d-m-y') }}
-                                &nbsp; {{ $roomcheckouts->checkin_time }}</td>
-                            <td>{{ \Carbon\Carbon::parse($roomcheckouts->checkout_date)->format('d-m-y') }}
-                                &nbsp;{{ $roomcheckouts->check_out_time }}</td>
-                            
+                        <td>{{ $guest_detail->address }}&nbsp;{{ $guest_detail->_city }} &nbsp;{{ $guest_detail->state }}
+                        </td>
+                        <td>{{ \Carbon\Carbon::parse($roomcheckouts->checkin_date)->format('d-m-y') }}
+                            &nbsp; {{ $roomcheckouts->checkin_time }}</td>
+                        <td>{{ \Carbon\Carbon::parse($roomcheckouts->checkout_date)->format('d-m-y') }}
+                            &nbsp;{{ $roomcheckouts->check_out_time }}</td>
+
 
                     </tbody>
                 </table>
@@ -411,8 +423,8 @@ text-align: left;
                             <td>Email</td>
                             <td>Plan & Package </td>
 
- 
-                            
+
+
                         </tr>
 
 
@@ -421,14 +433,16 @@ text-align: left;
                         <td>{{ $guest_detail->gst_no }}</td>
                         <td> {{ $guest_detail->mobile }}</td>
                         <td>{{ $guest_detail->email }}</td>
-                        <td>{{$roomcheckins->package->package_name}}|| &nbsp;{{$roomcheckins->package->plan_name}}||&nbsp;{{$roomcheckins->package->other_name}} </td>
-                             
+                        <td>{{ $roomcheckins->package->package_name }}||
+                            &nbsp;{{ $roomcheckins->package->plan_name }}||&nbsp;{{ $roomcheckins->package->other_name }}
+                        </td>
+
 
                     </tbody>
                 </table>
             </div>
 
-           
+
 
 
             <div class="detail">
@@ -449,29 +463,30 @@ text-align: left;
                     <tbody>
 
                         @for ($i = 0; $i < $totaldays; $i++)
-                        @php
-    
-                $checkindate = \Carbon\Carbon::parse($roomcheckouts->checkin_date)->addDays($i)->format('Y-m-d');
-    
-    
-                            $roomTariff = $roomcheckouts->per_day_tariff;
-                            //  $foodBill = $foodBills->get($checkindate)->total_amount ?? 0;
-                            //  $totalForDay = $roomTariff + $foodBill;
-                        @endphp
-        
-                        <tr class="item">
-                            
-                            <td>{{ \Carbon\Carbon::parse($checkindate)->format('d-m-y') }}
-                            </td>
-                           <td>996311</td>
-                           <td>Room Charge</td>
-                             <td>{{$roomTariff}}</td>
-                            {{-- <td>{{$foodBill}}</td> --}}
-                            {{-- <td>{{ number_format($totalForDay, 2) }}</td> --}}
-    
-    
-                        </tr>
-                    @endfor
+                            @php
+
+                                $checkindate = \Carbon\Carbon::parse($roomcheckouts->checkin_date)
+                                    ->addDays($i)
+                                    ->format('Y-m-d');
+
+                                $roomTariff = $roomcheckouts->per_day_tariff;
+                                //  $foodBill = $foodBills->get($checkindate)->total_amount ?? 0;
+                                //  $totalForDay = $roomTariff + $foodBill;
+                            @endphp
+
+                            <tr class="item">
+
+                                <td>{{ \Carbon\Carbon::parse($checkindate)->format('d-m-y') }}
+                                </td>
+                                <td>996311</td>
+                                <td>Room Charge</td>
+                                <td>{{ $roomTariff }}</td>
+                                {{-- <td>{{$foodBill}}</td> --}}
+                                {{-- <td>{{ number_format($totalForDay, 2) }}</td> --}}
+
+
+                            </tr>
+                        @endfor
 
 
 
@@ -494,21 +509,21 @@ text-align: left;
                             <td></td>
                             <td class="">Total Room Tariff</td>
                             <td class="tfooter_amount">{{ $roomcheckouts->total_room_rent }}</td>
- 
+
                         </tr>
                         <tr>
                             <td></td>
                             <td></td>
                             <td class="">SGST</td>
                             <td class="tfooter_amount">{{ $roomcheckouts->sgst }}</td>
- 
+
                         </tr>
                         <tr>
                             <td></td>
                             <td></td>
                             <td class="">CGST</td>
                             <td class="tfooter_amount">{{ $roomcheckouts->cgst }}</td>
- 
+
                         </tr>
                         <tr>
                             <td></td>
@@ -517,28 +532,28 @@ text-align: left;
                             <td class="tfooter_amount">{{ $roomcheckouts->igst }}
 
                             </td>
- 
+
                         </tr>
                         <tr>
                             <td></td>
                             <td></td>
                             <td class="">Add Other Charge</td>
                             <td class="tfooter_amount">{{ $roomcheckouts->other_charge }}</td>
-    
+
                         </tr>
                         <tr>
                             <td></td>
                             <td></td>
                             <td class="">Total Food Amount</td>
                             <td class="tfooter_amount">{{ $roomcheckouts->total_food_amt }}</td>
-    
+
                         </tr>
                         <tr>
                             <td></td>
                             <td></td>
                             <td class="">Less Discount</td>
                             <td class="">{{ $roomcheckouts->discount }}</td>
-                           
+
                         </tr>
                         <tr>
                             <td></td>
@@ -560,13 +575,17 @@ text-align: left;
                         <tr>
                             <td></td>
                             <td></td>
-                            <td class=""><h5>Net Payable Amount</h5></td>
-                            <td class="tfooter_amount"><h5>{{ $roomcheckouts->balance_to_pay }}</h5></td>
-   
+                            <td class="">
+                                <h5>Net Payable Amount</h5>
+                            </td>
+                            <td class="tfooter_amount">
+                                <h5>{{ $roomcheckouts->balance_to_pay }}</h5>
+                            </td>
+
                         </tr>
                     </tbody>
                 </table>
-                
+
 
 
             </div>
@@ -610,11 +629,15 @@ text-align: left;
 
 
             <div class="button-container my-2">
-                <a href="{{ url('roomcheckouts') }}" class="btn  btn-danger btn-lg" ><i class="fa fa-home" style="font-size:36px"></i></a>
+                <a href="{{ url('roomcheckouts') }}" class="btn  btn-danger btn-lg"><i class="fa fa-home"
+                        style="font-size:36px"></i></a>
                 <button class="btn btn-dark btn-lg mx-2" onclick="printInvoice()">Print</button>
-                <a href="{{ url('room_checkout_view2', $roomcheckouts->voucher_no) }}" class="btn  btn-primary btn-lg" >Format 2</a>
-                <a href="{{ url('room_checkout_view3', $roomcheckouts->voucher_no) }}" class="btn  btn-success btn-lg mx-2" >Format 3</a>
-                <a href="{{ url('room_checkout_view4', $roomcheckouts->voucher_no) }}" class="btn  btn-warning btn-lg mx-2" >Format 4(A5)</a>
+                <a href="{{ url('room_checkout_view2', $roomcheckouts->voucher_no) }}"
+                    class="btn  btn-primary btn-lg">Format 2</a>
+                <a href="{{ url('room_checkout_view3', $roomcheckouts->voucher_no) }}"
+                    class="btn  btn-success btn-lg mx-2">Format 3</a>
+                <a href="{{ url('room_checkout_view4', $roomcheckouts->voucher_no) }}"
+                    class="btn  btn-warning btn-lg mx-2">Format 4(A5)</a>
 
             </div>
 

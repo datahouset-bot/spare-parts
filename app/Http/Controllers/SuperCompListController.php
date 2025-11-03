@@ -33,10 +33,25 @@ class SuperCompListController extends Controller
 {
     public function index()
     {
-        $record = super_comp_list::orderBy('created_at', 'desc')->get();
+        // $record = super_comp_list::orderBy('created_at', 'desc')->get();
+      
+
+
+        $record = \DB::table('super_comp_lists as s')
+    ->leftJoin('roomcheckouts as r', 's.firm_id', '=', 'r.firm_id')
+    ->select(
+        's.*',
+        \DB::raw('COUNT(r.id) as total_roomcheckouts')
+    )
+    ->groupBy(
+        's.id', 's.firm_id', 's.firm_name', 's.firm_mobile', 's.firm_dealer',
+        's.activation_date', 's.expiry_date', 's.billing_amt', 
+        's.created_at', 's.updated_at' // include all fields from super_comp_lists table
+    )
+    ->orderBy('s.created_at', 'desc')
+    ->get();
 
         return view('super.supercom', ['data' => $record]);
-
 
 
     }
@@ -52,6 +67,7 @@ class SuperCompListController extends Controller
 
     public function store_softwarecompny_firmid(Request $request)
     {
+        // dd($request);
         $validator = Validator::make($request->all(), [
             'software_firm_name' => 'required',
             'customer_firm_name' => 'required',
@@ -460,7 +476,7 @@ class SuperCompListController extends Controller
                 'software_af2' => 'af',
                 'software_af3' => 'af',
                 'software_af4' => 'af',
-                'software_af5' => 'af',
+                'software_af5' => 'https://wapp.powerstext.in/http-tokenkeyapi.php',
                 'software_af6' => 'af',
                 'software_af7' => 'af',
                 'software_af8' => 'af',
@@ -479,9 +495,9 @@ class SuperCompListController extends Controller
             [
                 'firm_id' => $request->firm_id,
                 'voucher_type_name' => 'Check_In',
-                'numbring_start_from' => 50,
+                'numbring_start_from' => 1,
                 'voucher_prefix' => 'SR/',
-                'voucher_suffix' => '/24-25',
+                'voucher_suffix' => '/25-26',
                 'voucher_numbring_style' => 'voucher_no_continue',
                 'voucher_print_name' => 'Check In',
                 'voucher_remark' => 'Check In',
@@ -489,9 +505,9 @@ class SuperCompListController extends Controller
             [
                 'firm_id' => $request->firm_id,
                 'voucher_type_name' => 'Check_out',
-                'numbring_start_from' => 100,
+                'numbring_start_from' => 0,
                 'voucher_prefix' => 'GSR/',
-                'voucher_suffix' => '/24-25',
+                'voucher_suffix' => '/25-26',
                 'voucher_numbring_style' => 'voucher_no_continue',
                 'voucher_print_name' => 'Tax Invoice',
                 'voucher_remark' => 'Check Out',
@@ -501,7 +517,7 @@ class SuperCompListController extends Controller
                 'voucher_type_name' => 'Receipts',
                 'numbring_start_from' => 1,
                 'voucher_prefix' => 'REC/',
-                'voucher_suffix' => '/24-25',
+                'voucher_suffix' => '/25-26',
                 'voucher_numbring_style' => 'voucher_no_continue',
                 'voucher_print_name' => 'Receipts',
                 'voucher_remark' => 'Payment Receipts',
@@ -511,7 +527,7 @@ class SuperCompListController extends Controller
                 'voucher_type_name' => 'Payments',
                 'numbring_start_from' => 1,
                 'voucher_prefix' => 'PAY/',
-                'voucher_suffix' => '/24-25',
+                'voucher_suffix' => '/25-26',
                 'voucher_numbring_style' => 'voucher_no_continue',
                 'voucher_print_name' => 'Payments',
                 'voucher_remark' => 'Payments',
@@ -521,7 +537,7 @@ class SuperCompListController extends Controller
                 'voucher_type_name' => 'Room_booking',
                 'numbring_start_from' => 1,
                 'voucher_prefix' => 'RM/',
-                'voucher_suffix' => '/24-25',
+                'voucher_suffix' => '/25-26',
                 'voucher_numbring_style' => 'voucher_no_continue',
                 'voucher_print_name' => 'Room Booking',
                 'voucher_remark' => 'Room Booking',
@@ -529,9 +545,9 @@ class SuperCompListController extends Controller
             [
                 'firm_id' => $request->firm_id,
                 'voucher_type_name' => 'Kot',
-                'numbring_start_from' => 100,
+                'numbring_start_from' => 1,
                 'voucher_prefix' => 'KOT/',
-                'voucher_suffix' => '/24-25',
+                'voucher_suffix' => '/25-26',
                 'voucher_numbring_style' => 'voucher_no_continue',
                 'voucher_print_name' => 'KOT',
                 'voucher_remark' => 'KOT',
@@ -539,9 +555,9 @@ class SuperCompListController extends Controller
             [
                 'firm_id' => $request->firm_id,
                 'voucher_type_name' => 'Foodbill',
-                'numbring_start_from' => 100,
-                'voucher_prefix' => 'SHRI/',
-                'voucher_suffix' => '/24-25',
+                'numbring_start_from' => 0,
+                'voucher_prefix' => 'F/',
+                'voucher_suffix' => '/25-26',
                 'voucher_numbring_style' => 'voucher_no_continue',
                 'voucher_print_name' => 'Food Bill',
                 'voucher_remark' => 'Food Bill',
@@ -571,7 +587,7 @@ class SuperCompListController extends Controller
                 'voucher_type_name' => 'Restaurant_food_bill',
                 'numbring_start_from' => 0,
                 'voucher_prefix' => 'Res/',
-                'voucher_suffix' => '/24-25',
+                'voucher_suffix' => '/25-26',
                 'voucher_numbring_style' => 'voucher_no_continue',
                 'voucher_print_name' => '1',
                 'voucher_remark' => 'Restaurant Food Bill',
@@ -581,7 +597,7 @@ class SuperCompListController extends Controller
                 'voucher_type_name' => 'Sale',
                 'numbring_start_from' => 1,
                 'voucher_prefix' => 'S/',
-                'voucher_suffix' => '/24-25',
+                'voucher_suffix' => '/25-26',
                 'voucher_numbring_style' => 'voucher_no_continue',
                 'voucher_print_name' => 'Sale',
                 'voucher_remark' => 'Sale',
@@ -591,7 +607,7 @@ class SuperCompListController extends Controller
                 'voucher_type_name' => 'Stock_Transfer',
                 'numbring_start_from' => 0,
                 'voucher_prefix' => 'ST/',
-                'voucher_suffix' => '/24-25',
+                'voucher_suffix' => '/25-26',
                 'voucher_numbring_style' => 'voucher_no_continue',
                 'voucher_print_name' => 'Stock_Transfer',
                 'voucher_remark' => 'Stock_Transfer',
@@ -601,7 +617,7 @@ class SuperCompListController extends Controller
                 'voucher_type_name' => 'My_Check_out',
                 'numbring_start_from' => 0,
                 'voucher_prefix' => 'MY/',
-                'voucher_suffix' => '/24-25',
+                'voucher_suffix' => '/25=26',
                 'voucher_numbring_style' => 'voucher_no_continue',
                 'voucher_print_name' => 'My Check Out',
                 'voucher_remark' => 'My Check Out',
@@ -757,8 +773,11 @@ class SuperCompListController extends Controller
             ['firm_id' => $request->firm_id, 'option_type' => 'Check_out', 'option_name' => 'room_checkout_view', 'format_name' => 'A4 General Invoice'],
             ['firm_id' => $request->firm_id, 'option_type' => 'Check_out', 'option_name' => 'room_checkout_view3', 'format_name' => 'A4 standard'],
             ['firm_id' => $request->firm_id, 'option_type' => 'Check_out', 'option_name' => 'room_checkout_view4', 'format_name' => 'a5/Half Page Format'],
+             ['firm_id' => $request->firm_id, 'option_type' => 'Check_out', 'option_name' => 'room_checkout_view7', 'format_name' => 'Only Room Bill'],
+            ['firm_id' => $request->firm_id, 'option_type' => 'Check_out', 'option_name' => 'room_checkout_view8', 'format_name' => 'Only Food Bill'],
             ['firm_id' => $request->firm_id, 'option_type' => 'Room_booking', 'option_name' => 'roombooking_view', 'format_name' => 'A4 Booking  Reciept'],
             ['firm_id' => $request->firm_id, 'option_type' => 'Room_booking', 'option_name' => 'roombooking_print2', 'format_name' => 'Room Booking Without  Room'],
+            
         ];
     
         foreach ($data as $item) {
@@ -1072,7 +1091,7 @@ class SuperCompListController extends Controller
                     [
                         'firm_id' => $firm_id,
                         'account_name' => 'Purchase',
-                        'account_group_id' => $purchase_id,
+                        'account_group_id' => $purchase_id->id,
                         'op_balnce' => 0,
                         'balnce_type' => 'Dr',
                         'address' => null,

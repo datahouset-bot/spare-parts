@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class RoomController extends Controller
+class RoomController extends CustomBaseController
 {
     /**
      * Display a listing of the resource.

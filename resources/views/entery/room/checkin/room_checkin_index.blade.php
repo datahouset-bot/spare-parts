@@ -53,8 +53,14 @@
                     <th scope="col"> Total Guest  </th>
                     <th scope="col"> Check in Date </th>
                     <th scope="col"> Check in Time  </th>
+                    @if(!is_null($componyinfo->componyinfo_af1))
+                    <th scope="col"> Expected Check-Out Date </th>
+                    <th scope="col"> Expected Check-Out Time  </th>
+                    @endif
+
                     <th scope="col"> Status  </th>
                     <th scope="col"></th>
+                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
  
@@ -73,10 +79,16 @@
                      <td>{{$record->check_in_no}}</td>
                      <td>{{$record->room_nos}}</td>
                      <td>{{$record->guest_name}}</td>
+
                      <td>{{$record->guest_mobile}}</td>
                      <td>{{$record->no_of_guest}}</td>
                       <td scope="col">{{ \Carbon\Carbon::parse($record->checkin_date)->format('d-m-y') }}</td>
                       <td scope="col">{{ $record->checkin_time }}</td>
+                      @if(!is_null($componyinfo->componyinfo_af1))
+                       <td scope="col">{{ \Carbon\Carbon::parse($record->checkinaf9)->format('d-m-y') }}</td>
+                      <td scope="col">{{ $record->checkinaf10 }}</td>
+                      
+                      @endif
 
 
                     
@@ -96,7 +108,9 @@
                   <td>
                       <a href="{{ route('roomcheckins.edit',  $record->voucher_no) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
                   </td>
-
+                  
+                  <td><a href="{{('showeditaccount/'.$record->account_id) }}" class="btn  btn-sm"       title="Edit Guest Info" ><i class="fa fa-book" style="font-size:20px;color:blue"></i></a></td>
+                  
 
                     <td>
                       <form action="{{ route('roomcheckins.destroy', $record->voucher_no) }}" method="POST" style="display:inline;">

@@ -81,9 +81,10 @@
                     <th scope="col">Guest Name</th>
                     <th scope="col">Address</th>
                     <th scope="col">City</th>
-                    <th scope="col">Mobile</th>
-                    <th scope="col">Email Id</th>
                     <th scope="col">State</th>
+                    <th scope="col">Mobile</th>
+                    <th scope="col">Firm Name </th>
+
                     <th scope="col">GST No</th>
                     <th scope="col">Check In Date</th>
                     <th scope="col">Invoice Date</th>
@@ -118,9 +119,11 @@
                                 <td>{{ $record['data']->guest_name }}</td>
                                 <td>{{ $record['data']->account->address }}</td>
                                 <td>{{ $record['data']->account->city }}</td>
-                                <td>{{ $record['data']->account->mobile }}</td>
-                                <td>{{ $record['data']->account->email }}</td>
                                 <td>{{ $record['data']->account->state }}</td>
+                                <td>{{ $record['data']->account->mobile }}</td>
+                                {{-- <td>{{ $record['data']->account->email }}</td> --}}
+                                <td>{{ $record['data']->account->account_af1 }}</td>
+  
                                 <td>{{ $record['data']->account->gst_no }}</td>
                                 <td>{{ \Carbon\Carbon::parse($record['data']->checkin_date)->format('d-m-Y') }}</td>
                                 <td>{{ \Carbon\Carbon::parse($record['data']->checkout_date)->format('d-m-Y') }}</td>
@@ -142,10 +145,11 @@
                                 <td>{{$record['data']->customer_name}}</td> <!-- No guest info for food bills -->
                                 <td>{{$record['data']->address}}</td>
                                 <td>{{$record['data']->remark}}</td>
+                                <td></td>
                                 <td>{{$record['data']->mobile}}</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>{{$record['data']->firm_name}}</td>
+                                <td>{{$record['data']->gst_no}}</td>
+                                
                                 <td> </td>
                                 <td>{{ \Carbon\Carbon::parse($record['data']->voucher_date)->format('d-m-Y') }}</td>
                                 <td> </td>
@@ -180,6 +184,25 @@
                 @endforeach
                 @endif
             </tbody>
+            <tfoot>
+    
+            <th colspan="13" style="text-align:right;">Total:</th>
+            <th></th> <!-- GST % -->
+            <th></th> <!-- SGST -->
+            <th></th> <!-- CGST -->
+            <th></th> <!-- IGST -->
+            <th></th> <!-- Taxable -->
+            <th></th> <!-- Total GST -->
+            <th></th> <!-- Bill Amount -->
+            <th></th> <!-- Advance -->
+            <th></th> <!-- Net Pay Amount -->
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </tfoot>
+    
+            
         </table>
         
 
@@ -196,7 +219,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
-
+{{-- 
 <script>
   $(document).ready(function () 
   {
@@ -213,11 +236,86 @@
   }
   );
  
-</script>
+</script> --}}
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
 <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 <script src="{{ global_asset('/general_assets\js\form.js') }}"></script>
 
+<script>
+    $(document).ready(function () {
+    let table = new DataTable('#remindtable', {
+        layout: {
+            topStart: {
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        text: '->',
+                        footer: true, // Enable footer export
+                        exportOptions: {
+                            columns: ':visible', // Export visible columns
+                            modifier: {
+                                page: 'all' // Export all pages
+                            }
+                        },
+                        customize: function (xlsx) {
+                            let sheet = xlsx.xl.worksheets['sheet1.xml'];
+                            $('row:last', sheet).after(
+                                '<row><c t="inlineStr"><is><t>Total</t></is></c>' +
+                                '<c></c><c></c><c></c><c></c><c></c>' +
+                                '<c t="n"><v>' + totalSGST + '</v></c>' +
+                                '<c t="n"><v>' + totalCGST + '</v></c>' +
+                                '<c t="n"><v>' + totalIGST + '</v></c>' +
+                                '<c t="n"><v>' + totalTaxable + '</v></c>' +
+                                '<c t="n"><v>' + totalGST + '</v></c>' +
+                                '<c t="n"><v>' + totalBillAmt + '</v></c>' +
+                                '<c t="n"><v>' + totalAdvance + '</v></c>' +
+                                '<c t="n"><v>' + totalNetPayAmt + '</v></c>'
+                            );
+                        }
+                    },
+                    'copy', 'csv','excel', 'pdf', 'print'
+                ]
+            }
+        },
+        footerCallback: function (row, data, start, end, display) {
+    let api = this.api();
 
+    // Function to sum values, handling empty or non-numeric values
+    let sumColumn = function (colIdx) {
+        return api
+            .column(colIdx, { page: 'all' })
+            .data()
+            .reduce((a, b) => {
+                let valA = parseFloat(a) || 0; // Convert 'a' to a number, default to 0
+                let valB = parseFloat(b) || 0; // Convert 'b' to a number, default to 0
+                return valA + valB;
+            }, 0);
+    };
+
+    // Calculate column totals
+    let totalSGST = sumColumn(15); // Update index as per your table
+    let totalCGST = sumColumn(16);
+    let totalIGST = sumColumn(17);
+    let totalTaxable = sumColumn(18);
+    let totalGST = sumColumn(19);
+    let totalBillAmt = sumColumn(20);
+    let totalAdvance = sumColumn(21);
+    let totalNetPayAmt = sumColumn(22);
+
+    // Update table footer
+    $(api.column(15).footer()).html(totalSGST.toFixed(2));
+    $(api.column(16).footer()).html(totalCGST.toFixed(2));
+    $(api.column(17).footer()).html(totalIGST.toFixed(2));
+    $(api.column(18).footer()).html(totalTaxable.toFixed(2));
+    $(api.column(19).footer()).html(totalGST.toFixed(2));
+    $(api.column(20).footer()).html(totalBillAmt.toFixed(2));
+    $(api.column(21).footer()).html(totalAdvance.toFixed(2));
+    $(api.column(22).footer()).html(totalNetPayAmt.toFixed(2));
+}
+
+    });
+});
+
+</script>
 @endsection

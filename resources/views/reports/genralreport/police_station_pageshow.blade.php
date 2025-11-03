@@ -21,7 +21,23 @@
         margin: 1px !important;
         padding: 1px !important;
       }
+      .btn-radio {
+        border: 2px solid #ddd;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+    .btn-radio input {
+        display: none;
+    }
+    .btn-radio.active {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
     </style>
+
     
 {{-- <script>
   $(document).ready(function () {
@@ -45,13 +61,59 @@
             @csrf
             <div class="row">
                 <div class="col-md-2 mb-3">
+                      <label for="from_date" class="form-label fw-bold">From</label>
                     <input type="text" class="form-control date" name="from_date" value="{{ date('Y-m-d') }}"
                         required>
                 </div>
                 <div class="col-md-2 mb-3">
+                   <label for="to_date" class="form-label fw-bold">To</label>
                     <input type="text" class="form-control date" name="to_date" value="{{ date('Y-m-d') }}"
                         required>
                 </div>
+                <div class="col-md-1">
+    <label for="guest_name_font" class="form-label fw-bold">Guest Name Font</label>
+    <select class="form-select" name="guest_name_font" id="guest_name_font">
+        @for($i = 7; $i <= 20; $i++)
+            <option value="{{ $i }}" {{ $i == 7 ? 'selected' : '' }}>
+                {{ $i }}
+            </option>
+        @endfor
+    </select>
+</div>
+                <div class="col-md-1">
+    <label for="guest_address_font" class="form-label fw-bold">Guest Address Font</label>
+    <select class="form-select" name="guest_address_font" id="guest_address_font">
+        @for($i = 7; $i <= 20; $i++)
+            <option value="{{ $i }}" {{ $i == 7 ? 'selected' : '' }}>
+                {{ $i }}
+            </option>
+        @endfor
+    </select>
+</div>
+          <div class="col-md-1">
+    <label for="guest_mobile_font" class="form-label fw-bold">Guest mobile Font</label>
+    <select class="form-select" name="guest_mobile_font" id="guest_mobile_font">
+        @for($i = 7; $i <= 20; $i++)
+            <option value="{{ $i }}" {{ $i == 7 ? 'selected' : '' }}>
+                {{ $i }}
+            </option>
+        @endfor
+    </select>
+</div>
+
+
+                <div class="col-md-3 mb-3">
+                  <label><strong>Select Format:</strong></label>
+                  <div class="form-check">
+                      <input class="form-check-input" type="radio" name="format" id="format1" value="1" checked>
+                      <label class="form-check-label" for="format1">Format 1</label>
+                  </div>
+                  <div class="form-check">
+                      <input class="form-check-input" type="radio" name="format" id="format2" value="2">
+                      <label class="form-check-label" for="format2">Format 2</label>
+                  </div>
+                
+
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-primary btn-block">OK</button>
 

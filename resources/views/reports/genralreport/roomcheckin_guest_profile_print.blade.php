@@ -235,18 +235,28 @@ align-content: :flex-end;
                 <div class="cust_info">
                     <span class="heading">Guest Detail</span><br>
                     <span>Guest Name:{{ $checkindata->guest_name }}</span><br>
-                    <span>Add Line1:{{ $checkindata->guest_address }}</span><br>
+                    <span>Father Name:{{ $checkindata->account_af4 }}</span><br>
+                    <span>DOB :{{ $checkindata->account_birthday }}</span><br>
+                    <span>Guest Age:{{ $checkindata->account_af5 }}</span><br>
+                    <span>Guest Gender:{{ $checkindata->account_af6 }}</span><br>
+
+                    <span>Add Line1:{{ $checkindata->address }}</span><br>
                     <span>Add Line2:{{ $checkindata->account->address2 }}</span><br>
-                    <span>city:{{ $checkindata->guest_city }}</span><br>
-                    <span>State:{{ $checkindata->guest_state }}</span><br>
+                    <span>city:{{ $checkindata->city }}</span><br>
+                    <span>State:{{ $checkindata->state }}</span><br>
                     <span>Mob:{{ $checkindata->guest_mobile }}</span><br>
   
                     <span>Email:{{ $checkindata->account->email }}</span><br>
                     <span>Document Name :{{ $checkindata->account->account_idproof_name }}</span><br>
                     <span>Document No :{{ $checkindata->account->account_idproof_no }}</span><br>
-                    <span>2nd Guest Name :{{ $checkindata->account_af1 }}</span><br>
-                    <span>3nd Guest Name :{{ $checkindata->account_af2 }}</span><br>
-                    <span>3nd Guest Name :{{ $checkindata->account_af3 }}</span><br>
+                    <span>2nd Guest Name :{{ $checkindata->checkinaf1 }}</span><br>
+                    <span>2nd Guest id Name :{{ $checkindata->checkinaf5 }}</span><br>
+                    <span>2nd Guest id No :{{ $checkindata->checkinaf6 }}</span><br>
+
+                    <span>3rd Guest Name :{{ $checkindata->checkinaf3 }}</span><br>
+
+                    <span>3rd Guest id Name :{{ $checkindata->checkinaf7 }}</span><br>
+                    <span>3rd Guest id No :{{ $checkindata->checkinaf8 }}</span><br>
                     
 
            
@@ -261,6 +271,9 @@ align-content: :flex-end;
                     <span>Comming From:{{ $checkindata->comming_from }}</span><br>
                     <span>Going To :{{ $checkindata->going_to }}</span><br>
                     <span>Agent:{{ $checkindata->agent }}</span><br>
+                     <span>Firm Name:{{ $checkindata->account_af1 }}</span><br>
+                    <span>Firm Address:{{ $checkindata->account_af2 }}</span><br>
+                    <span>Firm GST:{{ $checkindata->gst_no }}</span><br>
                     
                 </div>
             </div>

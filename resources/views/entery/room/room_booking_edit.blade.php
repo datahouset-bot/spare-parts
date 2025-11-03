@@ -453,7 +453,7 @@
                                                             <label for="checkin_remark1">Remark 1</label>
                                                             <input class="form-control" id="checkin_remark1"
                                                                 type="text" name="checkin_remark1"
-                                                                value="{{ $roombookings_first->booking_remark }}" />
+                                                                value="{{ $roombookings_first->bookingaf3 }}" />
                                                             <span class="text-danger">
                                                                 @error('checkin_remark1')
                                                                     {{ $message }}

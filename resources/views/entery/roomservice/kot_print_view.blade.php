@@ -307,6 +307,11 @@
 @else
     <span>Table No :&nbsp;{{$table_name}} </span><br>
 @endif
+@if(isset($kot_header->kot_remark))
+    <span>Remark: {{ $kot_header->kot_remark }}</span><br>
+@else
+    <span> </span><br>
+@endif
 
 @if(isset($guest_detail->voucher_no))
     <span>Check In No: {{ $guest_detail->voucher_no }}</span><br>
@@ -338,8 +343,13 @@
                             <th class="th_detail">S.no</th>
                             <th class="th_detail">Item Name</th>
                             <th class="th_detail">Qty</th>
-                            <th class="th_detail">Rate</th>
+                            @cannot('Rate_Hide_On_Kot')
+                                                        <th class="th_detail">Rate</th>
+                                
+
+
                             <th class="th_detail">Amount</th>
+                            @endcan
                         </tr>
                     </thead>
                     <tbody>
@@ -352,8 +362,10 @@
 
                                 <td>{{ $records->item_name }}</td>
                                 <td>{{ number_format($records->qty, 0) }}</td>
+                                  @cannot('Rate_Hide_On_Kot')
                                 <td>{{ number_format($records->rate, 1) }}</td>
                                 <td>{{ number_format($records->amount, 1) }}</td>
+                                @endcan
                             </tr>
                         @endforeach
 
@@ -366,14 +378,20 @@
             </div>
             <div class="qty_total">
                 Total Item  QTY={{ $kot_header->total_qty }}
+                 @cannot('Rate_Hide_On_Kot')
+
                 Total Amount ={{ $kot_header->total_amount }}
+                @endcan
             </div>
             <div style="background-color: white" class="my-1">&nbsp;</div>
 
 
             <div class="button-container my-2">
                 <button class="btn btn-primary btn-lg" onclick="printInvoice()">Print</button>
-                 <a href="{{url('/table_dashboard')}}" class ="btn btn-info btn-lg mx-2">Restaurent</a>
+                @can('Restaurant')
+                                     <a href="{{url('/table_dashboard')}}" class ="btn btn-info btn-lg mx-2">Restaurent</a>
+                @endcan
+
             </div>
 
 
@@ -385,6 +403,73 @@
                 window.print();
             }
         </script>
+
+
+    {{-- this code for direct print throw browser  --}}
+{{-- <div class="my-2">
+    <label><input type="radio" name="print_type" value="chrome" checked> Print via Chrome</label>
+    <label class="mx-3"><input type="radio" name="print_type" value="direct"> Print Direct (QZ Tray)</label>
+</div> --}}
+
+{{-- <div class="button-container my-2">
+    <button class="btn btn-primary btn-lg" onclick="printInvoice()">Print</button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/qz-tray/qz-tray.js"></script> --}}
+{{-- 
+<script>
+    const kotData = [
+        {
+            type: 'raw',
+            format: 'plain',
+            data: `KOT No: {{ $kot_header->bill_no }}
+Date: {{ $kot_header->voucher_date }}
+Time: {{ $kot_header->created_at->format('H:i') }}
+
+Items:
+@foreach($kot_to_print as $record)
+{{ $record->item_name }} x {{ number_format($record->qty, 0) }}
+@endforeach
+
+Total Qty: {{ $kot_header->total_qty }}
+Total Amt: {{ $kot_header->total_amount }}`
+        }
+    ];
+
+    function printInvoice() {
+        const printType = document.querySelector('input[name="print_type"]:checked').value;
+
+        if (printType === 'chrome') {
+            window.print(); // Uses Chrome print dialog
+        } else {
+            // Direct Print via QZ Tray
+            const printer1 = "Canon LBP2900";
+            const printer2 = "Microsoft Print to PDF"; // Replace with actual name
+
+            qz.websocket.connect().then(() => {
+                const config1 = qz.configs.create(printer1);
+                const config2 = qz.configs.create(printer2);
+
+                qz.print(config1, kotData).then(() => {
+                    console.log("Printed on " + printer1);
+                }).catch(err => {
+                    alert("Error printing on " + printer1 + ": " + err.message);
+                });
+
+                qz.print(config2, kotData).then(() => {
+                    console.log("Printed on " + printer2);
+                }).catch(err => {
+                    alert("Error printing on " + printer2 + ": " + err.message);
+                });
+
+            }).catch(err => {
+                alert("QZ Tray is not running. Please start it.");
+                console.error(err);
+            });
+        }
+    }
+</script> --}}
+
+
 
 
     </body>

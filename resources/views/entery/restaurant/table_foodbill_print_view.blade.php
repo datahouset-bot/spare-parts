@@ -20,12 +20,15 @@
 
             body {
                 margin: 0;
-               
+
             }
-            
-            button,.navbar-brand,.sb-topnav,{
-                    display: none;
-                }
+
+            button,
+            .navbar-brand,
+            .sb-topnav,
+            {
+            display: none;
+            }
 
             .page {
                 height: auto;
@@ -61,12 +64,13 @@
                 margin-right: 5px;
 
             }
-            #footer_total{
+
+            #footer_total {
                 width: 100%;
-                 font-size: 15px;
-                 padding: 2px; 
+                font-size: 15px;
+                padding: 2px;
             }
-                               
+
             .cust_info {
                 background-color: aquamarine;
                 width: 50%;
@@ -83,13 +87,16 @@
                 padding: 5px;
                 fon
             }
-            .qty_total{
+
+            .qty_total {
                 text-align: left;
             }
 
-            td,th{
-                    border: solid 1px;
-                }
+            td,
+            th {
+                border: solid 1px;
+            }
+
             .detail {
                 background-color: silver;
                 width: 100%;
@@ -98,7 +105,7 @@
 
 
             .table_detail {
-background-color:white;
+                background-color: white;
                 width: 100%;
                 padding: 2px;
             }
@@ -118,6 +125,7 @@ background-color:white;
             .row1 {
                 display: inline;
             }
+
             .button-container {
                 display: flex;
                 justify-content: center;
@@ -145,10 +153,11 @@ background-color:white;
                 margin-left: 0%;
                 font-size: x-large;
             }
-            .header_info{
+
+            .header_info {
                 width: 100%;
                 text-align: center;
-              
+
             }
 
             .company_info {
@@ -219,24 +228,27 @@ background-color:white;
                     display: block;
                     /* Displayed when printing */
                     height: auto;
-                /* Changed height to auto */
-                width: 190mm;
-                /* Width of A4 paper */
-                margin: 0px ;
-                margin-top: 0px;
-                padding: 0px;
-                border-radius: 2px;
-                width: 100%;
-                padding: 0in;
+                    /* Changed height to auto */
+                    width: 190mm;
+                    /* Width of A4 paper */
+                    margin: 0px;
+                    margin-top: 0px;
+                    padding: 0px;
+                    border-radius: 2px;
+                    width: 100%;
+                    padding: 0in;
 
                 }
-                td,th{
+
+                td,
+                th {
                     border: solid 1px;
                 }
-                
 
 
-                button,.navbar-brand {
+
+                button,
+                .navbar-brand {
                     display: none;
                 }
 
@@ -286,48 +298,65 @@ background-color:white;
                 </div>
                 <div class="firm_detail">
                     <h4>{{ $componyinfo->cominfo_firm_name }}</h4>
+                    @if (!empty($componyinfo->cominfo_gst_no))
+                        <h6>GST No: {{ $componyinfo->cominfo_gst_no }}</h6>
+                    @endif
+
                 </div>
                 <div class="logo2"><img src="{{ asset('storage\app\public\image\\' . $pic->qrcode) }}" alt="qr_code"
                         width="80px">
-               
+
                 </div>
             </div>
             <div class="header_info">
-                     {{ $componyinfo->cominfo_address1 }}&nbsp;{{ $componyinfo->cominfo_address2 }}&nbsp;
-                    {{ $componyinfo->cominfo_city }}&nbsp;{{ $componyinfo->cominfo_state }}
-                        &nbsp;{{ $componyinfo->cominfo_pincode }}&nbsp;{{ $compinfofooter->country }}&nbsp;
-                   Email:{{ $componyinfo->cominfo_email }} Phone &nbsp;{{ $componyinfo->cominfo_phone }}
-                        Mobile&nbsp;{{ $componyinfo->cominfo_mobile }} 
-                 
+                {{ $componyinfo->cominfo_address1 }}&nbsp;{{ $componyinfo->cominfo_address2 }}&nbsp;
+                {{ $componyinfo->cominfo_city }}&nbsp;{{ $componyinfo->cominfo_state }}
+                &nbsp;{{ $componyinfo->cominfo_pincode }}&nbsp;{{ $compinfofooter->country }}&nbsp;
+                Email:{{ $componyinfo->cominfo_email }} Phone &nbsp;{{ $componyinfo->cominfo_phone }}
+                Mobile&nbsp;{{ $componyinfo->cominfo_mobile }}
+
             </div>
 
 
             <div class="page_header">
                 <div class="info-container">
                     <div class="cust_info">
-                       @if(isset($foodbill_header->customer_name))
-                        <span>Guest Name: {{$foodbill_header->customer_name }}</span><br>
-                    @else
-                        <span>Guest Name:</span><br>
-                    @endif
-                     
-                    @if(isset($foodbill_header->address))
-                        <span>Adress: {{ $foodbill_header->room_nos }}</span><br>
-                    @else
-                        <span>Address:</span><br>
-                    @endif
-                    
-                    @if(isset($foodbill_header->mobile))
-                        <span>Mobile: {{ $foodbill_header->mobile }}</span><br>
-                    @else
-                        <span>Mobile: </span><br>
-                    @endif
-                    @if(isset($foodbill_header->remark))
-                    <span>Remark: {{ $foodbill_header->remark }}</span><br>
-                @else
-                    <span>Remark: </span><br>
-                @endif
-                    
+
+                       @if (isset($foodbill_header->firm_name))
+    <span>Firm Name: {{ $foodbill_header->firm_name }}</span><br>  
+@else
+    @if (isset($foodbill_header->customer_name))
+        <span>Guest Name: {{ $foodbill_header->customer_name }}</span><br>
+    @elseif(isset($guest_detail->guest_name))
+        <span>Guest Name: {{ $guest_detail->guest_name }}</span><br>
+    @else
+        <span>Guest Name :</span><br>
+    @endif
+@endif
+@isset($foodbill_header->gst_no)
+    <span>GST No: {{ $foodbill_header->gst_no }}</span><br>
+@endisset
+
+                        @if (isset($foodbill_header->address))
+                            <span>Adress: {{ $foodbill_header->room_nos }}</span><br>
+                        @else
+                            <span>Address:</span><br>
+                        @endif
+    
+
+                        @if (isset($foodbill_header->mobile))
+                            <span>Mobile: {{ $foodbill_header->mobile }}</span><br>
+                        @else
+                            <span>Mobile: </span><br>
+                        @endif
+                        @if (isset($guest_detail->room_nos))
+                            <span>Remark: room service bill by restaurant</span><br>
+                        @elseif(isset($foodbill_header->remark))
+                            <span>Remark: {{ $foodbill_header->remark }}</span><br>
+                        @else
+                            <span>Remark: </span><br>
+                        @endif
+
 
 
                     </div>
@@ -336,8 +365,13 @@ background-color:white;
                         <span>Invoice No : {{ $foodbill_header->food_bill_no }}</span><br>
                         <span>Date : {{ $foodbill_header->voucher_date }}</span><br>
                         {{-- <span>Time : {{ $foodbill_header->created_at->format('H:i') }}</span><br> --}}
-                         Time:<span id="current-time"></span> <br>
-                         <span>Table No : {{ $foodbill_header->table_name }}</span>
+                        Time:<span id="current-time"></span> <br>
+                        @if (isset($guest_detail->room_nos))
+                            <span>Room No : {{ $guest_detail->room_nos }}</span>
+                        @else
+                            <span>Table No : {{ $foodbill_header->table_name }}</span>
+                        @endif
+
 
                     </div>
                 </div>
@@ -364,21 +398,20 @@ background-color:white;
                     </thead>
                     <tbody>
                         @php
-                        $sno=0;
+                            $sno = 0;
                         @endphp
-                        @foreach ($foodbill_items as $records )
-                        <tr>
-                            <td>{{$sno=$sno+1}}</td>
-                          <td>{{$records->item_name}}</td>
-                          <td>{{ number_format($records->qty, 0) }}</td>
-                          <td>{{ number_format($records->rate,1)}}</td>
-                          <td>{{ number_format($records->gst_item_percent,1)}}</td>
+                        @foreach ($foodbill_items as $records)
+                            <tr>
+                                <td>{{ $sno = $sno + 1 }}</td>
+                                <td>{{ $records->item_name }}</td>
+                                <td>{{ number_format($records->qty, 0) }}</td>
+                                <td>{{ number_format($records->rate, 1) }}</td>
+                                <td>{{ number_format($records->gst_item_percent + $records->vat_percent, 1) }}</td>
 
-                          <td>{{ number_format($records->net_item_amount,1)}}</td>  
-                        </tr>
-                            
+                                <td>{{ number_format($records->net_item_amount, 1) }}</td>
+                            </tr>
                         @endforeach
-  
+
                 </table>
 
 
@@ -389,11 +422,11 @@ background-color:white;
             <div class="page_header">
                 <div class="info-container">
                     <div class="cust_info">
-                       
-                        <span>Total Item ={{$foodbill_header->total_item}}</span><br>
-                        <span>Total Qty ={{$foodbill_header->total_qty}}</span><br>
-                        <span> Kot Nos ={{$foodbill_header->kot_no}}</span><br>
-                       
+
+                        <span>Total Item ={{ $foodbill_header->total_item }}</span><br>
+                        <span>Total Qty ={{ $foodbill_header->total_qty }}</span><br>
+                        <span> Kot Nos ={{ $foodbill_header->kot_no }}</span><br>
+
                     </div>
                     <div class="voucher_info">
                         <table id="footer_total">
@@ -401,26 +434,56 @@ background-color:white;
                                 <td>Basic Amt:</td>
                                 <td>{{ $foodbill_header->total_base_amount }}</td>
                             </tr>
-                            <tr>
-                                <td>Dis {{ $foodbill_header->disc_percent}}% :</td>
-                                <td>{{ $foodbill_header->cash_discount }}</td>
-                            </tr>
 
-                            <tr>
-                                <td>SGST Amt:</td>
-                                <td>{{ $foodbill_header->total_sgst }}</td>
-                            </tr>
-                            <tr>
-                                <td>CGST Amt:</td>
-                                <td>{{ $foodbill_header->total_cgst }}</td>
-                            </tr>
+                            @if (!is_null($foodbill_header->cash_discount) && $foodbill_header->cash_discount != 0)
+                                <tr>
+                                    <td>Dis {{ $foodbill_header->disc_percent }}% :</td>
+                                    <td>{{ $foodbill_header->cash_discount }}</td>
+                                </tr>
+                            @endif
+
+
+                            @if (!is_null($foodbill_header->total_sgst) && $foodbill_header->total_sgst != 0)
+                                <tr>
+                                    <td>SGST Amt:</td>
+                                    <td>{{ $foodbill_header->total_sgst }}</td>
+                                </tr>
+                            @endif
+                            @if (!is_null($foodbill_header->total_cgst) && $foodbill_header->total_cgst != 0)
+                                <tr>
+                                    <td>CGST Amt:</td>
+                                    <td>{{ $foodbill_header->total_cgst }}</td>
+                                </tr>
+                            @endif
+                            @if (!is_null($foodbill_header->total_igst) && $foodbill_header->total_igst != 0)
+                                <tr>
+                                    <td>IGST Amt:</td>
+                                    <td>{{ $foodbill_header->total_igst }}</td>
+                                </tr>
+                            @endif
+
+                            @if (!is_null($foodbill_header->total_vat) && $foodbill_header->total_vat != 0)
+                                <tr>
+                                    <td>Vat Amt:</td>
+                                    <td>{{ $foodbill_header->total_vat }}</td>
+                                </tr>
+                            @endif
+
+                            @if (!is_null($foodbill_header->total_tax1) && $foodbill_header->total_vat != 0)
+                                <tr>
+                                    <td>Sur Amt:</td>
+                                    <td>{{ $foodbill_header->total_tax1 }}</td>
+                                </tr>
+                            @endif
                             <tr>
                                 <td>Round Off:</td>
                                 <td>{{ $foodbill_header->roundoff_amt }}</td>
                             </tr>
                             <tr>
                                 <td>Grand Total :</td>
-                                <td><h3>{{ $foodbill_header->net_food_bill_amount }}</h3></td>
+                                <td>
+                                    <h3>{{ $foodbill_header->net_food_bill_amount }}</h3>
+                                </td>
                             </tr>
                         </table>
 
@@ -472,8 +535,8 @@ background-color:white;
 
             <div class="button-container my-2">
                 <button class="btn btn-primary btn-lg" onclick="printInvoice()">Print</button>
-                <a href="{{url('/table_dashboard')}}" class ="btn btn-info btn-lg mx-2">Restaurent</a>
-               <a href="{{url('/room_dashboard')}}" class ="btn btn-dark btn-lg mx-2">Room Dashboard </a>
+                <a href="{{ url('/table_dashboard') }}" class ="btn btn-info btn-lg mx-2">Restaurent</a>
+                <a href="{{ url('/room_dashboard') }}" class ="btn btn-dark btn-lg mx-2">Room Dashboard </a>
             </div>
 
 
@@ -485,7 +548,7 @@ background-color:white;
                 window.print();
             }
         </script>
-           <script>
+        <script>
             // script for getting current time from browser pc 
             $(document).ready(function() {
                 function getCurrentTime() {
@@ -493,19 +556,19 @@ background-color:white;
                     var hours = currentDate.getHours();
                     var minutes = currentDate.getMinutes();
                     var seconds = currentDate.getSeconds();
-                    
+
                     // Add leading zeros to hours, minutes, and seconds
                     hours = (hours < 10) ? "0" + hours : hours;
                     minutes = (minutes < 10) ? "0" + minutes : minutes;
 
-                    
-                    var timeString = hours + ":" + minutes + "" ;
+
+                    var timeString = hours + ":" + minutes + "";
                     $('#current-time').text(timeString);
                 }
-        
+
                 // Call the function once to display the time initially
                 getCurrentTime();
-        
+
                 // Update the time every second
                 setInterval(getCurrentTime, 1000);
             });

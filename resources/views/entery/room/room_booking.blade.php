@@ -293,7 +293,7 @@
                             <div class="col-lg-12">
                                 <div class="card  mt-1">
                                     <div class="card-header">
-                                        <h5 class="text-center font-weight-light my-1">New Room Booking Entery </h5>
+                                        <h5 class="text-center font-weight-light my-1">New Room Booking Entry   </h5>
                                     </div>
                                     <div class="card-body">
 
@@ -453,6 +453,57 @@
                                                             </span>
 
                                                         </div>
+                                                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(function () {
+
+    function parseDateDMY(str) {
+        if (!str) return null;
+        const parts = str.split("-");
+        if (parts.length !== 3) return null;
+
+        let d  = parseInt(parts[0], 10);
+        let m  = parseInt(parts[1], 10);
+        let y  = parseInt(parts[2], 10);
+
+        // Handle 2-digit year → 2000+
+        if (y < 100) {
+            y = 2000 + y;
+        }
+
+        return new Date(y, m - 1, d);
+    }
+
+    function updateDays() {
+        const inDateStr  = $("#checkin_date").val();
+        const outDateStr = $("#checkout_date").val();
+
+        const inDate  = parseDateDMY(inDateStr);
+        const outDate = parseDateDMY(outDateStr);
+
+        if (!inDate || !outDate) {
+            $("#commited_days").val('');
+            return;
+        }
+
+        const msPerDay = 24 * 60 * 60 * 1000;
+        const diffDays = Math.floor((outDate - inDate) / msPerDay);
+
+        if (diffDays < 0) {
+            $("#commited_days").val('');
+            alert("Checkout date cannot be earlier than check-in date.");
+            return;
+        }
+
+        $("#commited_days").val(diffDays);
+    }
+
+    // Run ONLY when checkout_date changes
+    $("#checkout_date").on("change", updateDays);
+
+});
+</script>
+ {{-- script for calculate commited day auto matic  --}}
                                                         <div class="col-md-3"><span class="requierdfield">*</span>
                                                             <label for="no_of_guest">No Of Guest</label>
                                                             <input class="form-control" id="no_of_guest" type="text"

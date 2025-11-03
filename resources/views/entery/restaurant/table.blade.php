@@ -58,6 +58,24 @@
                               @enderror
                             </span>
                           </div>
+                           <div>
+                            Select Table Group
+
+                            <select name="table_group" id="table_group" class="form-select">
+                              <option value="" selected disabled>Select Group</option>
+                              <option value="NULL">General</option>
+                              <option value="Nc">NC</option>
+                              <option value="TakeAway">Take Away</option>
+                              <option value="SelfService">Self Service</option>
+                            </select>
+
+                            <span class="text-danger"> 
+                              @error('table_group')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span>
+                          </div>
                          
                         
                         <div class="modal-footer">
@@ -90,6 +108,7 @@
                   <tr>
                     <th scope="col">S.No</th>
                     <th scope="col"> Table Name  </th>
+                    <th scope="col"> Table Group  </th>
 
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -106,6 +125,12 @@
            
                     <th scope="row">{{$r1=$r1+1}}</th>
                     <td>{{$record['table_name']}}</td>
+                     <td>
+                      @if ($record['table_group'])
+                        {{$record['table_group']}}
+                      @else
+                        General
+                      @endif
 
                     
                   <td>

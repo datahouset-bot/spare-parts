@@ -19,10 +19,10 @@ class LedgerController extends CustomBaseController
      */
     public function reciepts()
     { 
-        $ledger_record = ledger::where('firm_id',Auth::user()->firm_id)
+        $ledger_record = ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
         ->where('transaction_type','Receipts')->count();
          if ($ledger_record > 0) {
-            $lastRecord = ledger::where('firm_id',Auth::user()->firm_id)
+            $lastRecord = ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
             ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
             ->where('transaction_type','Receipts')
             ->first();
@@ -60,7 +60,7 @@ class LedgerController extends CustomBaseController
         ->where('firm_id',Auth::user()->firm_id)
         ->groupBy('voucher_no');
     
-    $ledgers = Ledger::where('firm_id',Auth::user()->firm_id)
+    $ledgers = Ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
          ->whereIn('id', $subquery)
         ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
         ->get();
@@ -79,10 +79,10 @@ class LedgerController extends CustomBaseController
 
     public function payments()
     { 
-        $ledger_record = ledger::where('firm_id',Auth::user()->firm_id)
+        $ledger_record = ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
         ->where('transaction_type','Payments')->count();
          if ($ledger_record > 0) {
-            $lastRecord = ledger::where('firm_id',Auth::user()->firm_id)
+            $lastRecord = ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
             ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
             ->where('transaction_type','Payments')
             ->first();
@@ -116,7 +116,7 @@ class LedgerController extends CustomBaseController
         $account_names=account::where('firm_id',Auth::user()->firm_id)
         ->orderBy('account_name','asc')->get();
 
-        $ledgers = Ledger::whereIn('id', function ($query) {
+        $ledgers = Ledger::withinFY('entry_date')->whereIn('id', function ($query) {
             $query->select(DB::raw('MIN(id)'))
                   ->from('ledgers')
                   ->where('transaction_type', 'Payments')
@@ -138,6 +138,8 @@ class LedgerController extends CustomBaseController
     public function reciept_store(Request $request)
     { 
 
+
+        
         $validator= validator::make($request->all(),[
             'voucher_no' => 'required|string',
             'entry_date' => 'required|date',
@@ -151,6 +153,20 @@ class LedgerController extends CustomBaseController
             $date_variable=$request->entry_date;
             $parsed_date = \Carbon\Carbon::createFromFormat('d-m-Y', $date_variable);
              $formatted_entry_date = $parsed_date->format('Y-m-d');
+       
+
+              $fy_start_date = $this->fy_start_date;
+            $fy_end_date = $this->fy_end_date;
+            $financialyeardata = $this->financialyeardata;
+            if (
+                $financialyeardata &&
+                $formatted_entry_date < $fy_start_date ||
+                $formatted_entry_date > $fy_end_date
+            ) {
+
+                return view('error.checkdate_on_fy',compact('fy_start_date','fy_end_date'));
+
+            }
              $accountname = account::where('firm_id',Auth::user()->firm_id)
              ->with('accountgroup')
              ->where('id', $request->account_id)->first();
@@ -230,6 +246,18 @@ class LedgerController extends CustomBaseController
                     $date_variable=$request->entry_date;
                     $parsed_date = \Carbon\Carbon::createFromFormat('d-m-Y', $date_variable);
                      $formatted_entry_date = $parsed_date->format('Y-m-d');
+                       $fy_start_date = $this->fy_start_date;
+            $fy_end_date = $this->fy_end_date;
+            $financialyeardata = $this->financialyeardata;
+            if (
+                $financialyeardata &&
+                $formatted_entry_date < $fy_start_date ||
+                $formatted_entry_date > $fy_end_date
+            ) {
+
+                return view('error.checkdate_on_fy',compact('fy_start_date','fy_end_date'));
+
+            }
                      $accountname = account::where('firm_id',Auth::user()->firm_id)->with('accountgroup')
                      ->where('id', $request->account_id)->first();
                      $paymentmode=account::where('firm_id',Auth::user()->firm_id)->with('accountgroup')
@@ -324,9 +352,9 @@ class LedgerController extends CustomBaseController
      */
     public function advace_receipt()
     { 
-        $ledger_record = ledger::where('firm_id',Auth::user()->firm_id)->where('transaction_type','Advance_Receipt')->count();
+        $ledger_record = ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)->where('transaction_type','Advance_Receipt')->count();
          if ($ledger_record > 0) {
-            $lastRecord = ledger::where('firm_id',Auth::user()->firm_id)
+            $lastRecord = ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
             ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
             ->where('transaction_type','Advance_Receipt')
             ->first();
@@ -366,7 +394,7 @@ class LedgerController extends CustomBaseController
             return $group->first();
         });
     
-        // $ledgers = Ledger::whereIn('id', function($query) {
+        // $ledgers = Ledger::withinFY('entry_date')->whereIn('id', function($query) {
         //     $query->select(DB::raw('MIN(id)'))
         //         ->from('ledgers')
         //         ->groupBy('voucher_no');
@@ -374,7 +402,7 @@ class LedgerController extends CustomBaseController
         // ->where('transaction_type','Advance_Receipt')
         // ->orderBy('voucher_no','desc')
         // ->get();
-        $ledgers = Ledger::where('firm_id',Auth::user()->firm_id)
+        $ledgers = Ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
         ->where('transaction_type', 'Advance_Receipt')
         ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
         ->get()
@@ -410,6 +438,18 @@ class LedgerController extends CustomBaseController
             $date_variable=$request->entry_date;
             $parsed_date = \Carbon\Carbon::createFromFormat('d-m-Y', $date_variable);
              $formatted_entry_date = $parsed_date->format('Y-m-d');
+               $fy_start_date = $this->fy_start_date;
+            $fy_end_date = $this->fy_end_date;
+            $financialyeardata = $this->financialyeardata;
+            if (
+                $financialyeardata &&
+                $formatted_entry_date < $fy_start_date ||
+                $formatted_entry_date > $fy_end_date
+            ) {
+
+                return view('error.checkdate_on_fy',compact('fy_start_date','fy_end_date'));
+
+            }
              $accountname = account::where('firm_id',Auth::user()->firm_id)->with('accountgroup')
              ->where('id', $request->account_id)->first();
              $paymentmode=account::where('firm_id',Auth::user()->firm_id)->with('accountgroup')
@@ -469,7 +509,7 @@ class LedgerController extends CustomBaseController
     }    
     public function advace_receipt_print($id)
     { 
-        $advancereceipts = ledger::where('firm_id',Auth::user()->firm_id)
+        $advancereceipts = ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
         ->where('transaction_type','Advance_Receipt')
         ->where('voucher_no',$id)
         ->first();
@@ -502,7 +542,7 @@ class LedgerController extends CustomBaseController
        
         $from_date = $request->from_date;
         $to_date = $request->to_date;
-        $ledgers = Ledger::where('firm_id',Auth::user()->firm_id)
+        $ledgers = Ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
         ->where('account_id', $account_id)
         ->whereBetween('entry_date', [$formatted_from_date, $formatted_to_date])
         ->get();
@@ -518,7 +558,7 @@ class LedgerController extends CustomBaseController
             $one_day_before = $parsed_date->subDay(); // Subtract one day
             $formatted_from_date_onedaybefore = $one_day_before->format('Y-m-d');
 
-            $ledgers_before_fromdate = Ledger::where('firm_id',Auth::user()->firm_id)->first()
+            $ledgers_before_fromdate = Ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)->first()
         ->where('account_id', $account_id)
         ->where('entry_date', '<=', $formatted_from_date_onedaybefore)
         ->get();
@@ -533,7 +573,7 @@ class LedgerController extends CustomBaseController
             $formatted_from_date_onedaybefore = $one_day_before->format('Y-m-d');
                        
 
-            $ledgers_before_fromdate = Ledger::where('firm_id',Auth::user()->firm_id)
+            $ledgers_before_fromdate = Ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
             ->where('account_id', $account_id)
         ->where('entry_date', '<=', $formatted_from_date_onedaybefore)
         ->get();
@@ -572,7 +612,7 @@ class LedgerController extends CustomBaseController
     public function destroy($id)
     {
         
-        $ledger = ledger::where('firm_id',Auth::user()->firm_id)
+        $ledger = ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
         ->where('transaction_type','Receipts')
         ->where('voucher_no',$id);
 
@@ -591,7 +631,7 @@ class LedgerController extends CustomBaseController
     public function payment_delete($id)
     {
         
-        $ledger = ledger::where('firm_id',Auth::user()->firm_id)
+        $ledger = ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
         ->where('transaction_type','Payments')
         ->where('voucher_no',$id);
 
@@ -609,7 +649,7 @@ class LedgerController extends CustomBaseController
     public function advace_receipt_delete($id)
     {
         
-        $ledger = ledger::where('firm_id',Auth::user()->firm_id)
+        $ledger = ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
         ->where('transaction_type','Advance_Receipt')
         ->where('voucher_no',$id);
 
@@ -625,104 +665,124 @@ class LedgerController extends CustomBaseController
         }
     }
     
-    public function outstanding_receivable_result(Request $request)
-    {
-        $date_variable=$request->to_date;
-        $parsed_date = \Carbon\Carbon::createFromFormat('d-m-Y', $date_variable);
-        $formatted_to_date = $parsed_date->format('Y-m-d');
-       
+   public function outstanding_receivable_result(Request $request)
+{
+    $date_variable = $request->to_date;
+    $parsed_date = \Carbon\Carbon::createFromFormat('d-m-Y', $date_variable);
+    $formatted_to_date = $parsed_date->format('Y-m-d');
 
-        
-        $accounts = Account::select(
-                'accounts.id',
-                'accounts.firm_id',
-                'accounts.account_name',
-                'accounts.op_balnce',
-                'accounts.balnce_type',
-                'accounts.mobile',
-                DB::raw('SUM(ledgers.debit) as total_debit'),
-                DB::raw('SUM(ledgers.credit) as total_credit')
-            )
-            ->leftJoin('ledgers', 'accounts.id', '=', 'ledgers.account_id')
-            ->where('accounts.firm_id', Auth::user()->firm_id)
-            ->groupBy(
-                'accounts.id',
-                'accounts.firm_id',
-                'accounts.account_name',
-                'accounts.op_balnce',
-                'accounts.balnce_type',
-                'accounts.mobile'
-            )
-            ->get();
-        
-        // dd($accounts);
-    
-    $outstandingReceivables = $accounts->filter(function ($account) {
-    if($account->balnce_type === 'Dr'){
-        $balance = $account->op_balnce + $account->total_debit - $account->total_credit;
-        return $balance>0 ;
+    $firm_id = Auth::user()->firm_id;
+
+    // Get active Financial Year
+    $financialyear = \App\Models\financialyear::where('firm_id', $firm_id)
+        ->where('is_active_fy', 1)
+        ->first();
+
+    // Initialize optional date filter
+    $dateFilterStart = null;
+    $dateFilterEnd = null;
+
+    if ($financialyear) {
+        $dateFilterStart = $financialyear->financial_year_start;
+        $dateFilterEnd = $financialyear->financial_year_end;
     }
-    else{
-        $balance =  $account->total_debit-$account->op_balnce  - $account->total_credit;
-        return $balance>0 ;
+
+    // Build query
+    $accountsQuery = Account::select(
+        'accounts.id',
+        'accounts.firm_id',
+        'accounts.account_name',
+        'accounts.op_balnce',
+        'accounts.balnce_type',
+        'accounts.mobile',
+        DB::raw('SUM(CASE WHEN '.($dateFilterStart ? 'ledgers.entry_date BETWEEN "'.$dateFilterStart.'" AND "'.$dateFilterEnd.'"' : '1=1').' THEN ledgers.debit ELSE 0 END) as total_debit'),
+        DB::raw('SUM(CASE WHEN '.($dateFilterStart ? 'ledgers.entry_date BETWEEN "'.$dateFilterStart.'" AND "'.$dateFilterEnd.'"' : '1=1').' THEN ledgers.credit ELSE 0 END) as total_credit')
+    )
+    ->leftJoin('ledgers', 'accounts.id', '=', 'ledgers.account_id')
+    ->where('accounts.firm_id', $firm_id)
+    ->groupBy(
+        'accounts.id',
+        'accounts.firm_id',
+        'accounts.account_name',
+        'accounts.op_balnce',
+        'accounts.balnce_type',
+        'accounts.mobile'
+    );
+
+    $accounts = $accountsQuery->get();
+
+    // Filter only positive receivables
+    $outstandingReceivables = $accounts->filter(function ($account) {
+        if ($account->balnce_type === 'Dr') {
+            $balance = $account->op_balnce + $account->total_debit - $account->total_credit;
+            return $balance > 0;
+        } else {
+            $balance = $account->total_debit - $account->op_balnce - $account->total_credit;
+            return $balance > 0;
         }
     });
-  
-
-
-
 
     return view('reports.ledger.outstanding_receivable', compact('outstandingReceivables'));
-  
+}
+
+
+public function outstanding_payable_result(Request $request)
+{
+    // Parse and format to_date (optional for future use)
+    $date_variable = $request->to_date;
+    $parsed_date = \Carbon\Carbon::createFromFormat('d-m-Y', $date_variable);
+    $formatted_to_date = $parsed_date->format('Y-m-d');
+
+    $firm_id = Auth::user()->firm_id;
+
+    // Get active financial year
+    $financialyear = \App\Models\financialyear::where('firm_id', $firm_id)
+        ->where('is_active_fy', 1)
+        ->first();
+
+    // Initialize optional date filter
+    $dateFilterStart = null;
+    $dateFilterEnd = null;
+
+    if ($financialyear) {
+        $dateFilterStart = $financialyear->financial_year_start;
+        $dateFilterEnd = $financialyear->financial_year_end;
     }
-    public function outstanding_payable_result(Request $request)
-    {
-        $date_variable=$request->to_date;
-        $parsed_date = \Carbon\Carbon::createFromFormat('d-m-Y', $date_variable);
-        $formatted_to_date = $parsed_date->format('Y-m-d');
-       
-        
-        $accounts = Account::select(
-                'accounts.id',
-                'accounts.account_name',
-                'accounts.op_balnce',
-                'accounts.balnce_type',
-                'accounts.mobile',
-                DB::raw('SUM(ledgers.debit) as total_debit'),
-                DB::raw('SUM(ledgers.credit) as total_credit')
-            )
-            ->leftJoin('ledgers', 'accounts.id', '=', 'ledgers.account_id')
-            ->where('accounts.firm_id', Auth::user()->firm_id)
-            ->groupBy(
-                'accounts.id',
-                'accounts.account_name',
-                'accounts.op_balnce',
-                'accounts.balnce_type',
-                'accounts.mobile'
-            )
-            ->get();
-        
-        // dd($accounts);
-    
+
+    // Fetch accounts and sum ledger values conditionally
+    $accounts = Account::select(
+            'accounts.id',
+            'accounts.account_name',
+            'accounts.op_balnce',
+            'accounts.balnce_type',
+            'accounts.mobile',
+            DB::raw('SUM(CASE WHEN '.($dateFilterStart ? 'ledgers.entry_date BETWEEN "'.$dateFilterStart.'" AND "'.$dateFilterEnd.'"' : '1=1').' THEN ledgers.debit ELSE 0 END) as total_debit'),
+            DB::raw('SUM(CASE WHEN '.($dateFilterStart ? 'ledgers.entry_date BETWEEN "'.$dateFilterStart.'" AND "'.$dateFilterEnd.'"' : '1=1').' THEN ledgers.credit ELSE 0 END) as total_credit')
+        )
+        ->leftJoin('ledgers', 'accounts.id', '=', 'ledgers.account_id')
+        ->where('accounts.firm_id', $firm_id)
+        ->groupBy(
+            'accounts.id',
+            'accounts.account_name',
+            'accounts.op_balnce',
+            'accounts.balnce_type',
+            'accounts.mobile'
+        )
+        ->get();
+
+    // Filter for outstanding payables (negative balances)
     $outstandingPayables = $accounts->filter(function ($account) {
-    if($account->balnce_type === 'Dr'){
-        $balance = $account->op_balnce + $account->total_debit - $account->total_credit;
-        
-    }
-    else{
-        $balance =  $account->total_debit-$account->op_balnce  - $account->total_credit;
-        
+        if ($account->balnce_type === 'Dr') {
+            $balance = $account->op_balnce + $account->total_debit - $account->total_credit;
+        } else {
+            $balance = $account->total_debit - $account->op_balnce - $account->total_credit;
         }
-        return $balance<0 ;
+        return $balance < 0;
     });
-//   dd($outstandingPayables);
-
-
-
 
     return view('reports.ledger.outstanding_payable', compact('outstandingPayables'));
-  
-    }
+}
+
     public function dayend_report(Request $request)
 {
     
@@ -750,13 +810,13 @@ class LedgerController extends CustomBaseController
         $opening_balance_account = $account->op_balnce;
         $opning_balance_type = $account->balnce_type;
 
-        $ledgers = Ledger::where('firm_id',Auth::user()->firm_id)
+        $ledgers = Ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
         
         ->where('account_id', $account_id)
             ->whereBetween('entry_date', [$formatted_current_date, $formatted_current_date])
             ->get();
 
-        $ledgers_before_fromdate = Ledger::where('firm_id',Auth::user()->firm_id)
+        $ledgers_before_fromdate = Ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
             ->where('account_id', $account_id)
             ->where('entry_date', '<=', $formated_one_day_before)
             ->get();

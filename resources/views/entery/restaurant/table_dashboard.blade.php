@@ -1,3 +1,58 @@
+ {{-- @if($kot_Unprinted > 0 || $Rkot_Unprinted > 0)
+    <style>
+        .kot-alert-row {
+            background-color: #ffe6e6; /* Light red background for row */
+            color: #d60000;
+            font-weight: bold;
+        }
+
+        .blinking-bulb {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            margin-right: 8px;
+            background-color: red;
+            border-radius: 50%;
+            animation: blinker 1.2s linear infinite;
+            box-shadow: 0 0 6px red;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .kot-link {
+            text-decoration: none;
+            color: #d60000;
+            font-size: 16px;
+        }
+
+        .kot-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    @if($kot_Unprinted > 0)
+        <tr class="kot-alert-row">
+            <th>
+                <span class="blinking-bulb"></span>
+                <a href="{{ route('kots.index') }}" class="kot-link">Room Kot Unprinted - {{ $kot_Unprinted }}</a>
+            </th>
+        </tr>
+    @endif
+
+    @if($Rkot_Unprinted > 0)
+        <tr class="kot-alert-row">
+            <th>
+                <span class="blinking-bulb"></span>
+                <a href="{{ url('/restaurant_kot') }}" class="kot-link">Restaurant Kot Unprinted - {{ $Rkot_Unprinted }}</a>
+            </th>
+        </tr>
+    @endif
+@endif --}}
+
 @extends('layouts.blank')
 @section('pagecontent')
 <style>
@@ -83,12 +138,71 @@
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-6 mt-1">
-           <div class="colour_code">
+           <div class="colour_code col-md-6">
+<button class="btn btn-danger" onclick="window.location.href='{{ url('showShiftTableForm') }}'">Shift Table</button>
+
+           </div>
+           <div class="col-md-12">
+            @if($kot_Unprinted > 0 || $Rkot_Unprinted > 0)
+    <style>
+        .kot-alert-row {
+            background-color: #ffe6e6; /* Light red background for row */
+            color: #d60000;
+            font-weight: bold;
+        }
+
+        .blinking-bulb {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            margin-right: 8px;
+            background-color: red;
+            border-radius: 50%;
+            animation: blinker 1.2s linear infinite;
+            box-shadow: 0 0 6px red;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .kot-link {
+            text-decoration: none;
+            color: #d60000;
+            font-size: 16px;
+        }
+
+        .kot-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    @if($kot_Unprinted > 0)
+        <tr class="kot-alert-row">
+            <th>
+                <span class="blinking-bulb"></span>
+                <a href="{{ route('kots.index') }}" class="kot-link">Room Kot Unprinted - {{ $kot_Unprinted }}</a>
+            </th>
+        </tr>
+    @endif
+
+    @if($Rkot_Unprinted > 0)
+        <tr class="kot-alert-row">
+            <th>
+                <span class="blinking-bulb"></span>
+                <a href="{{ url('/restaurant_kot') }}" class="kot-link">Restaurant Kot Unprinted - {{ $Rkot_Unprinted }}</a>
+            </th>
+        </tr>
+    @endif
+@endif
            </div>
            @if(isset($message))
            <div class="alert alert-info">{{ $message }}</div>
            @endif
         </div>
+
         <div class="col-md-6 mt-1">
             <label for="">Select Date</label>
             <div class="form-floating mb-3 mb-md-0">
@@ -108,7 +222,7 @@
     </div>
 
     <div class="row ">
-        @foreach($data as $record)
+        {{-- @foreach($data as $record)
         <div class="col-lg-2 col-md-4 col-sm-6 col-6 mt-1">
             @php
                 // Determine the class for the room-box
@@ -141,7 +255,64 @@
                 </div>
             </div>
         </div>
-        @endforeach
+        @endforeach --}}
+        @php
+    // Group tables by `table_group`, treating NULL/empty as 'NULL'
+    $grouped = $data->groupBy(function($item) {
+        return $item->table_group ?: 'NULL';
+    });
+
+    // Desired display order
+    $groupOrder = ['NULL', 'TakeAway', 'Nc'];
+    $otherGroups = $grouped->keys()->diff($groupOrder);
+    $orderedGroups = collect($groupOrder)->merge($otherGroups);
+@endphp
+
+@foreach($orderedGroups as $group)
+    <div class="col-12 text-center" style="background-color: yellowgreen">
+        <span class="text-center" style="font-weight: 800px; font-size: large; color: black; text-align: center;">
+            {{ $group === 'NULL' ? 'General' : ucfirst($group) }}
+        </span>
+        
+    </div>
+
+    @foreach($grouped[$group] ?? [] as $record)
+        <div class="col-lg-2 col-md-4 col-sm-6 col-6 mt-1">
+            @php
+                $tableClass = 'vacant';
+                foreach($kotlist as $kot) {
+                    if ($kot->service_id == $record->id) {
+                        $tableClass = 'green';
+                        break;
+                    }
+                }
+            @endphp
+
+            <div class="room-box {{ $tableClass }}">
+                <h5 class="room-no" onclick="toggleRoomDetail(this)">Table {{ $record->table_name }}</h5>
+                <div class="links">
+                    <a href="{{ url('table_kot_create/'.$record->id) }}">
+                        <div class="linkitem">
+                            <button class="buttonlink">
+                                <i class="fas fa-bread-slice" style="font-size:20px;color:rgb(224, 20, 180)"></i>
+                            </button>
+                        </div>
+                    </a>
+                    <a href="{{ url('table_facthkot_records/'.$record->id) }}">
+                        <div class="linkitem">
+                            <button class="buttonlink">
+                                <i class="fas fa-calculator" style="font-size:20px;color:black"></i>
+                            </button>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+    @endforeach
+<hr>
+@endforeach
+
     </div>
 </div>
 

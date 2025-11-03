@@ -2,15 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\componyinfo;
 use Carbon\Carbon;
 use App\Models\amc;
+use App\Models\kot;
 use App\Models\room;
-use App\Models\softwarecompany;
 use App\Models\todo;
 use App\Models\Followup;
 use App\Models\roomcheckin;
 use Illuminate\Http\Request;
+use App\Models\financialyear;
+use App\Models\maintenancemode;
+use App\Models\softwarecompany;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\View;
 
 class HomeController extends CustomBaseController
 {
@@ -19,11 +26,7 @@ class HomeController extends CustomBaseController
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware(['auth','verified']);
-
-    }
+   
 
     /**
      * Show the application dashboard.
@@ -31,7 +34,12 @@ class HomeController extends CustomBaseController
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {
+    { 
+
+      $financialyear=financialyear::where('firm_id',Auth::user()->firm_id)->where('is_active_fy','1')->first();
+  
+     
+
 
         $amcCount = Amc::where('firm_id',Auth::user()->firm_id)->count(); // Count all AMC records
         $dueAmcCount = Amc::where('firm_id',Auth::user()->firm_id)
@@ -59,6 +67,26 @@ class HomeController extends CustomBaseController
         ->count();
         $dirtyroom=room::where('firm_id',Auth::user()->firm_id)->where("room_status" , 'dirty') 
         ->count();
+       $kot_Unprinted = kot::select('voucher_no')
+    ->where('status', '0')   
+    ->where('ready_to_serve', 'Unprinted')
+    ->where('firm_id', Auth::user()->firm_id)
+    ->where('voucher_type', 'kot')
+    ->groupBy('voucher_no')
+    ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
+    ->get()
+    ->count();
+      $Rkot_Unprinted = kot::select('voucher_no')
+      ->where('status', '0')
+    ->where('ready_to_serve', 'Unprinted')
+    ->where('firm_id', Auth::user()->firm_id)
+    ->where('voucher_type', 'Rkot')
+    ->groupBy('voucher_no')
+    ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
+    ->get()
+    ->count();
+
+
 
 
 
@@ -75,13 +103,21 @@ class HomeController extends CustomBaseController
         if ($user->email !== 'datahouset@gmail.com') {
 
         
+    $maintinacemode=maintenancemode::first();
+          $mode=$maintinacemode->maintenance_mode;
+          
 
+             if ($mode > 0) {
+                // Subscription has expired, show 'subscription_expired' view
+                return response()->view('maintancemode',compact('maintinacemode'));
+
+            } 
             if ($daysDifference < 0) { // Expiry date is in the past
                 return view('subscription_expired');
 
             }
             else{
-                return view('home', compact('roomcheckin','currentDate','vacantroom','occupiedroom' ,'dirtyroom','daysDifference','amcCount', 'dueAmcCount','pendingTask','todayFollowup' ));    
+                return view('home', compact('roomcheckin','currentDate','vacantroom','occupiedroom' ,'dirtyroom','daysDifference','amcCount', 'dueAmcCount','pendingTask','todayFollowup' ,'kot_Unprinted','Rkot_Unprinted','financialyear'));    
             }
         }
         else{
@@ -91,8 +127,8 @@ class HomeController extends CustomBaseController
             // $currentDate = Carbon::now();
             // $daysDifference = $currentDate->diffInDays($expiryDate, false); // false for signed difference
         
-
-                return view('home', compact('roomcheckin','currentDate','vacantroom','occupiedroom' ,'dirtyroom','daysDifference','amcCount', 'dueAmcCount','pendingTask','todayFollowup' ));    
+  $debugData="";
+                return view('home', compact('roomcheckin','currentDate','vacantroom','occupiedroom' ,'dirtyroom','daysDifference','amcCount', 'dueAmcCount','pendingTask','todayFollowup','kot_Unprinted','Rkot_Unprinted','financialyear','debugData' ));    
            
     }
     

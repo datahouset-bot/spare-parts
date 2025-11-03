@@ -32,6 +32,29 @@
     </span>
   </div>
 
+                     <div>
+                            Select Table Group
+
+<select name="table_group" id="table_group" class="form-select">
+ 
+<option value="Null" {{ old('table_group', $table->table_group) === null ? 'selected' : '' }}>General</option>
+
+
+  <option value="Nc" {{ old('table_group', $table->table_group) == 'Nc' ? 'selected' : '' }}>NC</option>
+  <option value="TakeAway" {{ old('table_group', $table->table_group) == 'TakeAway' ? 'selected' : '' }}>Take Away</option>
+  <option value="SelfService" {{ old('table_group', $table->table_group) == 'SelfService' ? 'selected' : '' }}>Self Service</option>
+</select>
+
+
+                            <span class="text-danger"> 
+                              @error('table_group')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span>
+                          </div>
+       
+
     <button type="submit" class="btn btn-primary btn-sm my-2">Update </button>
  
   </form>

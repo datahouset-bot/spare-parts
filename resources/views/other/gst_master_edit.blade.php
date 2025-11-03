@@ -33,6 +33,16 @@
   </div>
   <div>
 
+    HSN No <input type="text" name ="hsn_no"class="form-control" placeholder="hsn " value="{{ old('hsn_no', $gstmaster->hsn_no) }}">
+    <span class="text-danger"> 
+      @error('hsn_no')
+      {{$message}}
+          
+      @enderror
+    </span>
+  </div>
+  <div>
+
     SGST %  <input type="text" name ="sgst"class="form-control" value="{{ old('sgst', $gstmaster->sgst) }}">
     <span class="text-danger"> 
       @error('sgst')

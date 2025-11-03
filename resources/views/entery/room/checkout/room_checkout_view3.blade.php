@@ -646,7 +646,7 @@ text-align: center;
 
                             <td colspan="3"></td>
 
-                            <td colspan="2" class ="td_total"><h5>Net Payeble Amount</h5></td>
+                            <td colspan="2" class ="td_total"><h5>Net Payable Amount</h5></td>
                             <td class="td_detail"><h5>{{ $roomcheckouts->balance_to_pay }}</h5></td>
                         </tr>
 

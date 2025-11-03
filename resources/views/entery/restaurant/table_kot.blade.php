@@ -59,7 +59,7 @@
                     Add New KOT
                 </button> --}}
                     <a href="{{ url('temp_item_delete/' . Auth::user()->id) }}" class="btn btn-success">Add New</a>
-                    <a href="{{ url('store_toKot/' . Auth::user()->id) }}" class="btn btn-primary">Save</a>
+                    <a href="{{ url('store_toKot/' . Auth::user()->id). '/' . $new_voucher_no }}" class="btn btn-primary">Save</a>
                     <a href="{{ url('store_and_print/' . Auth::user()->id) . '/' . $new_voucher_no }}"
                         class="btn btn-dark">Save & Print</a>
 
@@ -117,6 +117,10 @@
 
                         </select>
 
+                    </div>
+                         <div class="col-md-2 col-4  text-center">
+                        <label for="kot_remark">KOT Remark</label>
+                        <input type="text" class="form-control" id ="kot_remark"name="kot_remark" >
                     </div>
                 </div>
                 <div class="row my-2" name="itementery">
@@ -289,6 +293,7 @@
     </script>
     {{-- script for saving record  --}}
     {{-- script for saving record --}}
+    {{--    this is old code -31-5-25
     <script type="text/javascript">
         $(document).ready(function() {
             // $('#item_entry').submit(function(e) {
@@ -310,6 +315,7 @@
                     'waiter_name': $('#waiter_name').val(),
                     'service_type': $('#service_type').val(),
                     'service_id': $('#service_id').val(),
+                    'kot_remark': $('#kot_remark').val(),
                     'checkin_time':$('#checkin_time').val(),
                 };
                 console.log("Data being sent:", data);
@@ -355,156 +361,194 @@
 
 
         });
-    </script>
+    </script> --}}
+<script type="text/javascript">
+    $(document).ready(function () {
+        let isSubmitting = false;
 
-    
+        function showSavingMessage() {
+            $("#additem").text("Saving...").prop("disabled", true);
+        }
 
-    {{-- fetching records --}}
-    <script>
-        
+        function resetButton() {
+            $("#additem").text("+").prop("disabled", false);
+        }
 
+        function fetchAndDisplayRecords(user_id) {
+            $.ajax({
+                url: '/facthitem_records/' + user_id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status === 200) {
+                        let itemRecords = response.itemrecords;
+                        let totalQty = 0;
+                        let totalAmount = 0;
 
-        $(document).ready(function() {
-            function fetchAndDisplayRecords(user_id) {
-                $.ajax({
-                    url: '/facthitem_records/' + user_id,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        console.log(response);
+                        $('#sold_item_record tbody').empty();
 
-                        if (response.status === 200) {
-                            var itemRecords = response.itemrecords;
-                            var totalQty = 0;
-                            var totalAmount = 0;
+                        itemRecords.forEach((record, index) => {
+                            let amount = record.qty * record.rate;
+                            totalQty += record.qty;
+                            totalAmount += amount;
 
-                            $('#sold_item_record tbody').empty(); // Clear previous records
-
-                            itemRecords.forEach(function(record, index) {
-                                var amount = record.qty * record.rate;
-                                totalQty += record.qty;
-                                totalAmount += amount;
-
-                                $('#sold_item_record tbody').append(`
+                            $('#sold_item_record tbody').append(`
                                 <tr>
                                     <td>${index + 1}</td>
                                     <td>${record.item_name}</td>
                                     <td>${record.qty}</td>
                                     <td>${record.rate}</td>
                                     <td>${amount}</td>
-                                    <td><span class="btn btn-danger btn-sm" id="deletetemp_${record.id}">
-                                        X
-                                        <input type="hidden" id="record_no${record.id}" value="${record.id}">
-                                    </span></td>
+                                    <td>
+                                        <span class="btn btn-danger btn-sm" id="deletetemp_${record.id}">
+                                            X
+                                            <input type="hidden" id="record_no${record.id}" value="${record.id}">
+                                        </span>
+                                    </td>
                                 </tr>
                             `);
-                            });
+                        });
 
-                            $('#total_records').text(itemRecords.length);
-                            $('#total_qty').text(totalQty);
-                            $('#total_amount').text(totalAmount);
-                        } else {
-                            alert('Failed to fetch records');
-                        }
-                    },
-                    error: function() {
-                        alert('Error fetching records');
+                        $('#total_records').text(itemRecords.length);
+                        $('#total_qty').text(totalQty);
+                        $('#total_amount').text(totalAmount);
+                    } else {
+                        alert('Failed to fetch records');
                     }
-                });
-            }
+                },
+                error: function () {
+                    alert('Error fetching records');
+                }
+            });
+        }
 
-            $(document).on('click', 'span.btn-danger', function() {
-            var recordValue = $(this).find('input[type="hidden"]').val();
-            console.log(recordValue); // Print the input value to the console
+        function itementry() {
+            if (isSubmitting) return;
+            isSubmitting = true;
+            showSavingMessage();
+
+            const data = {
+                'item_id': $('#item_id').val(),
+                'user_name': $('#user_name').val(),
+                'item_qty': $('#qty').val(),
+                'item_rate': $('#rate').val(),
+                'item_amount': $('#amount').val(),
+                'user_id': $('#user_id').val(),
+                'voucher_date': $('#voucher_date').val(),
+                'voucher_no': $('#voucher_no').val(),
+                'voucher_type': $('#voucher_type').val(),
+                'kot_no': $('#kot_no').val(),
+                'waiter_name': $('#waiter_name').val(),
+                'service_type': $('#service_type').val(),
+                'service_id': $('#service_id').val(),
+                'kot_remark': $('#kot_remark').val(),
+                'checkin_time': $('#checkin_time').val()
+            };
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            let fallbackTimeout = setTimeout(() => {
+                alert("The request is taking longer than expected. Please wait or try again.");
+                resetButton();
+                isSubmitting = false;
+            }, 10000);
+
             $.ajax({
-                url: '/delete_kot_temprecord/' + recordValue,
+                url: '/kots',
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                success: function (response) {
+                    clearTimeout(fallbackTimeout);
+
+                    if (response.status === 200) {
+                        $('#item_id, #qty, #rate, #amount').val('');
+                        $('#item_id').focus();
+                        const user_id = $('#user_id').val();
+                        if (user_id) {
+                            fetchAndDisplayRecords(user_id);
+                        }
+                    } else {
+                        alert("Something went wrong: " + response.message);
+                    }
+
+                    resetButton();
+                    isSubmitting = false;
+                },
+                error: function (xhr, status, error) {
+                    clearTimeout(fallbackTimeout);
+                    console.error("Error:", error);
+                    alert("An error occurred while saving. Please try again.");
+                    resetButton();
+                    isSubmitting = false;
+                }
+            });
+        }
+
+        // Submit form
+        $('#item_entry').submit(function (e) {
+            e.preventDefault();
+            itementry();
+        });
+
+        // Delete temporary record
+        $(document).on('click', 'span.btn-danger', function () {
+            const recordId = $(this).find('input[type="hidden"]').val();
+            $.ajax({
+                url: '/delete_kot_temprecord/' + recordId,
                 type: 'GET',
                 dataType: 'json',
-                success: function(response) {
-                    console.log(response);
-                    var initialUserId = $("#user_id").val();
-
-                    if (initialUserId) {
-                        fetchAndDisplayRecords(initialUserId);
+                success: function () {
+                    const user_id = $('#user_id').val();
+                    if (user_id) {
+                        fetchAndDisplayRecords(user_id);
                     }
-
-
-
                 }
-
-
             });
-
-
-
-
-
         });
 
-            var initialUserId = $("#user_id").val();
+        // Initial load
+        const initialUserId = $("#user_id").val();
+        if (initialUserId) {
+            fetchAndDisplayRecords(initialUserId);
+        }
 
-            if (initialUserId) {
-                fetchAndDisplayRecords(initialUserId);
+        // Extra bindings to trigger fetch on specific events
+        function bindFetchEvents(selector) {
+            $(selector).on('keypress blur', function (e) {
+                if (e.type === 'keypress' && e.which !== 13) return;
+                const user_id = $("#user_id").val();
+                if (user_id) {
+                    fetchAndDisplayRecords(user_id);
+                }
+            });
+        }
+
+        bindFetchEvents('#item_id, #qty, #rate');
+
+        // Observer to watch when add button gets enabled again
+        const observer = new MutationObserver(() => {
+            if (!$('#additem').prop('disabled')) {
+                const user_id = $("#user_id").val();
+                if (user_id) {
+                    fetchAndDisplayRecords(user_id);
+                }
             }
-            // Fetch records on button click
-            $('#additem').click(function() {
-                var user_id = $("#user_id").val();
-                console.log(user_id);
-
-                if (user_id) {
-                    fetchAndDisplayRecords(user_id);
-                } else {
-                    alert('User ID is required');
-                }
-            });
-
-            $('#additem').keypress(function() {
-                var user_id = $("#user_id").val();
-                console.log(user_id);
-
-                if (user_id) {
-                    fetchAndDisplayRecords(user_id);
-                } else {
-                    alert('User ID is required');
-                }
-            });
-
-            $('#additem').click(function() {
-                var user_id = $("#user_id").val();
-                console.log(user_id);
-                if (user_id) {
-                    fetchAndDisplayRecords(user_id);
-                } else {
-                    alert('User ID is required');
-                }
-
-
-            });
-
-            // Fetch records on Enter key press
-            $('#user_id').keyUp(function(event) {
-                var user_id = $("#user_id").val();
-                console.log(user_id);
-                if (user_id) {
-                    fetchAndDisplayRecords(user_id);
-                } else {
-                    alert('User ID is required');
-                }
-
-
-
-
-            });
-
-
-
-
-
-            
-
-            console.log("fetching record function");
         });
-    </script>
+
+        observer.observe(document.getElementById('additem'), {
+            attributes: true,
+            attributeFilter: ['disabled']
+        });
+
+        console.log("Script initialized");
+    });
+</script>
+
     {{-- <script>
         $(document).ready(function() {
             $('#item_delete').submit(function(e) {

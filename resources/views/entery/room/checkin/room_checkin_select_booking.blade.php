@@ -277,6 +277,34 @@ font-weight:800;
                                                 @enderror
                                               </span>
                                             </div>
+                                                                                                        @if(!is_null($componyinfo->componyinfo_af1))
+                                                            <div class="col-md-3">
+                                                            <label for="checkin_date">Expected Check-Out Date<span
+                                                                    class="requierdfield"></span></label>
+                                                            <input class="form-control date" id="checkout_date"
+                                                                type="text" name="checkout_date"
+                                                                value="{{ date('Y-m-d') }}" />
+                                                            <span class="text-danger">
+                                                                @error('checkout_date')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="checkin_time">Expected Check-Out Time<span
+                                                                    class="requierdfield"></span></label>
+                                                            <input class="form-control" id="checkout_time" type="time"
+                                                                name="checkout_time" value="{{ date('Y-m-d') }}" />
+                                                            <span class="text-danger">
+                                                                @error('checkout_time')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                        </div>
+
+                                                       
+                                                       @endif
+
                                             <div class="col-md-3"><span class="requierdfield">*</span>
                                               <label for="commited_days">No Of Days</label>
                                               <input class="form-control" id="commited_days" type="text" name="commited_days" value="{{$roombooking_firstrecord->commited_days}}"  autocomplete="off"/>
@@ -379,11 +407,11 @@ font-weight:800;
                                         <tbody>
 
                                           
-                                          @foreach ($roombookings as $roombooking)
+                                          {{-- @foreach ($roombookings as $roombooking)
                                           <tr>
                                               <td>
                                                   <label class="container_chekbox">
-                                                    <input type="checkbox" class="room-checkbox" checked="checked" disabled>
+                                                    <input type="checkbox" class="room-checkbox" checked="checked" >
                                                     <span class="checkmark"></span>
                                                     <input type="hidden" name="checkin_room_id[]" value="{{$roombooking->room_id}}">
                                                   </label> 
@@ -394,13 +422,122 @@ font-weight:800;
                                               <td>
                                                   <input type="text" name="checkin_roomtype" id="checkin_roomtype" value ="{{$roombooking->room->roomtype->roomtype_name}}" readonly>
                                               </td>
-                                              {{-- <td>
-                                                  <input type="text" name="checkin_room_tariff"id="checkin_room_tariff" class ="tariff"value ="{{$roombooking->room->roomtype->room_tariff}}" >
-                                              </td> --}}
+
 
                                           </tr>
 
-                                          @endforeach                                        
+                                          @endforeach                                         --}}
+                                          @foreach ($roombookings as $roombooking)
+<tr>
+    <td>
+        <label class="container_chekbox">
+            {{-- Make the checkbox hold the room ID and name the input array --}}
+            <input type="checkbox" class="room-checkbox" 
+                   name="checked_rooms_ids[]" 
+                   value="{{$roombooking->room_id}}" 
+                   data-room-no="{{$roombooking->room_no}}"
+                   data-room-type="{{$roombooking->room->roomtype->roomtype_name}}" 
+                   checked="checked"> {{-- Keep checked if it's from a booking, if that is the intent --}}
+            <span class="checkmark"></span>
+        </label> 
+    </td>
+    <td>
+        {{-- Display fields but don't use 'name' for form submission on these inputs --}}
+        <input type="text" id="checkin_room_no" value="{{$roombooking->room_no}}" readonly>
+    </td>
+    <td>
+        <input type="text" value="{{$roombooking->room->roomtype->roomtype_name}}" readonly>
+    </td>
+</tr>
+@endforeach
+
+           @foreach ($rooms as $room)
+<tr>
+    <td>
+        <label class="container_chekbox">
+            {{-- The name is the same array, but no 'checked' attribute by default --}}
+            <input type="checkbox" class="room-checkbox" 
+                   name="checked_rooms_ids[]" 
+                   value="{{$room->id}}"
+                   data-room-no="{{$room->room_no}}"
+                   data-room-type="{{$room->roomtype->roomtype_name}}"> 
+            <span class="checkmark"></span>
+        </label> 
+    </td>
+    <td>
+        <input type="text" id="checkin_room_no" value="{{ $room->room_no }}" readonly>
+    </td>
+    <td>
+        <input type="text" value ="{{$room->roomtype->roomtype_name}}" readonly>
+    </td>
+</tr>
+@endforeach
+<script>
+    $(document).ready(function() {
+        // Get a reference to your form
+        const $form = $('form[action="{{route('roomcheckins.store')}}"]');
+        
+        // Listen for the form submission event
+        $form.on('submit', function(e) {
+            // Prevent the default form submission for a moment
+            e.preventDefault();
+
+            // 1. Remove any previously created hidden inputs from a prior attempt
+            $form.find('.dynamic-room-input').remove();
+            
+            // 2. Iterate over all checked room checkboxes
+            $('.room-checkbox:checked').each(function() {
+                const $checkbox = $(this);
+                const roomId = $checkbox.val();
+                
+                // --- Create hidden inputs for the checked room's details ---
+
+                // Hidden input for the Room ID itself: checkin_room_id[]
+                $('<input>')
+                    .attr('type', 'hidden')
+                    .attr('name', 'checkin_room_id[]')
+                    .attr('value', roomId)
+                    .addClass('dynamic-room-input')
+                    .appendTo($form);
+
+                // You can similarly send other details if needed, e.g., room_no, room_type
+                // NOTE: This will create arrays for room_no[], room_type[] etc., 
+                // which you'll need to handle correctly in your Laravel controller.
+                // A better approach is usually to just send the ID and fetch details in the backend.
+
+                // Example of sending room_no, room_type (Optional, sending the ID is usually enough)
+                // $('<input>')
+                //     .attr('type', 'hidden')
+                //     .attr('name', 'checked_room_nos[]')
+                //     .attr('value', $checkbox.data('room-no'))
+                //     .addClass('dynamic-room-input')
+                //     .appendTo($form);
+                
+                // $('<input>')
+                //     .attr('type', 'hidden')
+                //     .attr('name', 'checked_room_types[]')
+                //     .attr('value', $checkbox.data('room-type'))
+                //     .addClass('dynamic-room-input')
+                //     .appendTo($form);
+            });
+            
+            // 3. Re-submit the form now that the correct hidden inputs are present
+            this.submit();
+        });
+
+        // Optional: Ensure only ONE room is checked at a time (if it's a single room check-in form)
+        // If multiple rooms can be checked, remove this block.
+        // $('.room-checkbox').on('change', function() {
+        //     if (this.checked) {
+        //         $('.room-checkbox').not(this).prop('checked', false);  
+        //     }
+        // });
+
+    });
+</script>
+
+
+
 
 
                                         </tbody>
@@ -653,7 +790,7 @@ font-weight:800;
                 <td>Per Day Room Tariff</td>
                 <td><input type="text" id="room_tariff_perday"
                         name="room_tariff_perday" class="amount_input" value="{{$booking_detail->room_tariff_perday}}"
-                        readonly></td>
+                        ></td>
             </tr>
             <tr>
               <td>Total Advance </td>

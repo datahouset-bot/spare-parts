@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Kolkata', // or your actual timezone
 
     /*
     |--------------------------------------------------------------------------

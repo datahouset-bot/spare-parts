@@ -213,7 +213,7 @@
                                                 <label for="searchCustomer">Selected Checkin Detail </label>
                                                 <div id="searchCustomer">
 
-             
+
                                                     <div class="input-group">
                                                         <input type="text" name="" id=""
                                                             class="form-control"
@@ -230,8 +230,7 @@
 
                                             </div>
                                             <div class="col-md-4 mt-4">
-                                                    <span class="btn btn-danger btn-sm"
-                                                    id="my_checkout">My Checkout </span> 
+                                                <span class="btn btn-danger btn-sm" id="my_checkout">My Checkout </span>
 
 
 
@@ -257,10 +256,9 @@
                                                             <input type="hidden" name="voucher_no"class=" form-control"
                                                                 id="voucher_no" name="voucher_no" class=""
                                                                 value="{{ $new_voucher_no }}" readonly>
-                                                            <input type="hidden" id="bill_type"name="bill_type"class=" form-control"
-                                                               
-                                                                value="{{$bill_type}}" readonly>
-                                                               
+                                                            <input type="hidden" id="bill_type"name="bill_type"
+                                                                class=" form-control" value="{{ $bill_type }}" readonly>
+
 
 
                                                         </div>
@@ -296,7 +294,8 @@
                                                             <label for="checkout_date">Check Out Date</label>
                                                             <input class="form-control date" id="checkout_date"
                                                                 type="text" name="checkout_date"
-                                                                value="{{ date('Y-m-d') }}" @cannot('Change_Date&Time')readonly data-restrict="true"  @endcannot>
+                                                                value="{{ date('Y-m-d') }}"
+                                                                @cannot('Change_Date&Time')readonly data-restrict="true"  @endcannot>
                                                             <span class="text-danger">
                                                                 @error('checkout_date')
                                                                     {{ $message }}
@@ -306,7 +305,8 @@
                                                         <div class="col-md-3">
                                                             <label for="check_out_time">Check Out Time</label>
                                                             <input class="form-control" id="check_out_time" type="time"
-                                                                name="check_out_time" value="" @cannot('Change_Date&Time')readonly data-restrict="true"  @endcannot/>
+                                                                name="check_out_time" value=""
+                                                                @cannot('Change_Date&Time')readonly data-restrict="true"  @endcannot />
                                                             <span class="text-danger">
                                                                 @error('check_out_time')
                                                                     {{ $message }}
@@ -338,12 +338,24 @@
                                                             </span>
 
                                                         </div>
+                                                        <div class="col-md-3">
+                                                            <label for="no_of_guest">No Of Guest</label>
+                                                            <input class="form-control" id="no_of_guest" type="text"
+                                                                name="no_of_guest" value="{{$roomcheckins->first()->no_of_guest}}" readonly />
+                                                            <span class="text-danger">
+                                                                @error('no_of_guest')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+
+                                                        </div>
 
                                                         <div class="col-md-3">
                                                             <label for="per_day_tariff">Per Day Tariff</label>
-                                                            <input class="form-control" id="per_day_tariff" type="text"
-                                                                name="per_day_tariff"
-                                                                value="{{ $data['room_tariff_perday'] }}" @cannot('Chang_Rent_Perday')
+                                                            <input class="form-control" id="per_day_tariff"
+                                                                type="text" name="per_day_tariff"
+                                                                value="{{ $data['room_tariff_perday'] }}"
+                                                                @cannot('Chang_Rent_Perday')
                                                                 readonly
                                                                     
                                                                 @endcannot />
@@ -366,12 +378,23 @@
                                                         </div>
 
 
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-6">
                                                             <label for="food_amount">Food Amount</label>
                                                             <input class="form-control" id="food_amount" type="text"
                                                                 name="food_amount" value="" readonly />
                                                             <span class="text-danger">
                                                                 @error('food_amount')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                        </div>
+                                                             <div class="col-md-4">
+                                                            <label for="package_name">Package Name</label>
+                                                            <input class="form-control" id="package_name"
+                                                                type="text" readonly name="package_name"
+                                                                value="{{ $package_name}}" />
+                                                            <span class="text-danger">
+                                                                @error('package_name')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
@@ -387,6 +410,7 @@
                                                                 @enderror
                                                             </span>
                                                         </div>
+                                                       
                                                         <div class="col-md-4 mb-1">
                                                             <label for="checkin_remark2">Checkout Remark </label>
                                                             <input class="form-control" id="checkin_remark2"
@@ -409,7 +433,7 @@
                                                             </span>
 
                                                         </div>
-                                                        <div class="col-md-6">
+                                                        <div class="col-md-8">
                                                             <label for="guest_name">Guest Name </label>
                                                             <input class="form-control" id="guest_name" type="text"
                                                                 name="guest_name" value="{{ $data['guest_name'] }}" />
@@ -478,7 +502,7 @@
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-4">
                                                             <label for="guest_pincode"> Pin Code </label>
                                                             <input class="form-control" id="guest_pincode" type="text"
                                                                 name="guest_pincode"
@@ -524,7 +548,7 @@
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-4">
                                                             <label for="guest_email">Email</label>
                                                             <input class="form-control" id="guest_email" type="text"
                                                                 name="guest_email"
@@ -636,7 +660,12 @@
 
                                                                             <span
                                                                                 style="display: none">{{ $total_food_bill_amount += $record['net_food_bill_amount'] }}</span>
-
+                                                                            <td>
+                                                                                <a href="{{ route('foodbills.edit', $record['voucher_no']) }}"
+                                                                                    class="btn  btn-sm"><i
+                                                                                        class="fa fa-edit"
+                                                                                        style="font-size:20px;color:SlateBlue"></i></a>
+                                                                            </td>
 
                                                                             <td>
                                                                                 <a href="{{ url('foodbill_print_view', $record['voucher_no']) }}"
@@ -663,7 +692,7 @@
                                                             </table>
                                                             <input type="text" class="input_id"
                                                                 id ="total_food_bill_amount"
-                                                                value =" {{ $total_food_bill_amount }}">
+                                                                value =" {{ $total_food_bill_amount }}" readonly>
 
 
 
@@ -671,6 +700,9 @@
 
                                                             </table>
                                                         </div>
+                                               
+
+    
                                                         {{-- rent display   --}}
                                                         <div class="col-md-4 my-1 " id ="foodkot_selection_box">
                                                             <h5>Day Wise Rent Report </h5>
@@ -764,18 +796,20 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td>Total Room Rent
-                                                                    <span class="btn btn-danger btn-sm" id="tax_inclusive" data-toggle="tooltip" title="Calculate Bill (Tax Inclusive)">
+                                                                    <span class="btn btn-danger btn-sm" id="tax_inclusive"
+                                                                        data-toggle="tooltip"
+                                                                        title="Calculate Bill (Tax Inclusive)">
                                                                         <i class="fa fa-calculator"></i>
                                                                     </span>
-                                                                    
-                                                                    
+
+
                                                                 </td>
                                                                 <td><input type="text" id="final_room_rent"
                                                                         name="final_room_rent" class="amount_input"
                                                                         readonly>
-                                                                    
-                                                                    
-                                                                    </td>
+
+
+                                                                </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>ADD GST % <select name="gst_id" id="gst_id">
@@ -787,6 +821,7 @@
 
 
                                                                 </td>
+
 
                                                                 <td><input type="text" id="gst_total" name="gst_total"
                                                                         class="amount_input" readonly></td>
@@ -1053,11 +1088,14 @@
 
 
                                         <div class="card-footer text-center py-3">
-                                            <div class="small">
-                                                <button type="submit"
-                                                    id="save_button"class="btn btn-primary btn-block">Save</button>
-                                                <a class= "btn btn-dark  "href={{ url('amclist') }}>Back</a>
-                                            </div>
+                                            @can('Save')
+                                                <div class="small">
+                                                    <button type="submit"
+                                                        id="save_button"class="btn btn-primary btn-block">Save</button>
+                                                    <a class= "btn btn-dark  "href={{ url('amclist') }}>Back</a>
+                                                </div>
+                                            @endcan
+                                            
                                         </div>
 
 
@@ -1115,7 +1153,7 @@
                             </select>
                         </td>
                         <td>
-                            <input type="text" class="amount_input" name="booking_amount[]" autocomplete="off">
+                            <input type="text" class="amount_input" name="booking_amount[]" autocomplete="off" required>
                         </td>
                     </tr>`;
 
@@ -1431,13 +1469,14 @@
                     var total_advance = parseFloat($('#total_advance').val()) || 0;
                     var final_room_rent = parseFloat($('#final_room_rent').val()) || 0;
                     var gst_total = (gst_percent * final_room_rent) / 100;
-                    $('#gst_total').val(gst_total);
+                   $('#gst_total').val(gst_total.toFixed(3));
                     var bill_amount = final_room_rent + total_food_amt + gst_total + add_other;
-                    $('#bill_amount').val(bill_amount);
+                    $('#bill_amount').val(Math.round(bill_amount));
+
 
                     var balance_to_pay = final_room_rent + total_advance + total_food_amt + gst_total -
                         less_discount;
-                    $('#balance_to_pay').val(balance_to_pay);
+                    $('#balance_to_pay').val(balance_to_pay.toFixed(3));
 
 
                     // Clear the table before appending new rows
@@ -1509,7 +1548,7 @@
                         var amt_post_credit_amt = parseFloat($('#amt_post_credit_amt').val()) || 0;
                         var total_receipt_amt = parseFloat($('#total_receipt_amt').val()) || 0;
                         var gst_total = (gst_percent * final_room_rent) / 100;
-                       $('#gst_total').val(gst_total.toFixed(2));
+                        $('#gst_total').val(gst_total.toFixed(2));
 
                         var bill_amount = final_room_rent + total_food_amt + gst_total + add_other -
                             less_discount;
@@ -1579,36 +1618,37 @@
                 recalculate();
             });
 
-            $('[data-toggle="tooltip"]').tooltip(); 
-    
-    $('#tax_inclusive').click(function() {
-        // Show confirmation alert
-        var userConfirmed = confirm("Do you want to Calculate This Bill Tax Inclusive?");
-        
-        if (userConfirmed) {
-            // Get values from #final_room_rent and #gst_id
-            var per_day_tariff = parseFloat($('#per_day_tariff').val()) || 0;
-            var gstPercent = parseFloat($('#gst_id').val()) || 0;
+            $('[data-toggle="tooltip"]').tooltip();
 
-            // Calculate tax-inclusive value
-            if (gstPercent > 0) {
-                var taxInclusiveValue = per_day_tariff / (1 + (gstPercent / 100));
-                var gstValue = per_day_tariff - taxInclusiveValue; // Calculate the GST value deducted
+            $('#tax_inclusive').click(function() {
+                // Show confirmation alert
+                var userConfirmed = confirm("Do you want to Calculate This Bill Tax Inclusive?");
 
-                // Update the input fields with the new values
-                $('#per_day_tariff').val(taxInclusiveValue.toFixed(2));
-                // $('#gst_total').val(gstValue.toFixed(2)); // Update #gst_total with the calculated GST value
+                if (userConfirmed) {
+                    // Get values from #final_room_rent and #gst_id
+                    var per_day_tariff = parseFloat($('#per_day_tariff').val()) || 0;
+                    var gstPercent = parseFloat($('#gst_id').val()) || 0;
 
-                alert("Taxable Value: " + taxInclusiveValue.toFixed(2) + 
-                      "\nGST /Tax  value : " + gstValue.toFixed(2));
-                      recalculate();
-                      $(this).addClass('disabled').css('pointer-events', 'none').css('opacity', '0.6');
+                    // Calculate tax-inclusive value
+                    if (gstPercent > 0) {
+                        var taxInclusiveValue = per_day_tariff / (1 + (gstPercent / 100));
+                        var gstValue = per_day_tariff -
+                        taxInclusiveValue; // Calculate the GST value deducted
 
-            } else {
-                alert("Invalid GST percentage. Please enter a valid value.");
-            }
-        }
-    });
+                        // Update the input fields with the new values
+                        $('#per_day_tariff').val(taxInclusiveValue.toFixed(2));
+                        // $('#gst_total').val(gstValue.toFixed(2)); // Update #gst_total with the calculated GST value
+
+                        alert("Taxable Value: " + taxInclusiveValue.toFixed(2) +
+                            "\nGST /Tax  value : " + gstValue.toFixed(2));
+                        recalculate();
+                        $(this).addClass('disabled').css('pointer-events', 'none').css('opacity', '0.6');
+
+                    } else {
+                        alert("Invalid GST percentage. Please enter a valid value.");
+                    }
+                }
+            });
 
 
         });
@@ -1658,55 +1698,53 @@
             });
         });
     </script>
-   
 
-   <script>
-    $(document).ready(function() {
-        // Trigger the AJAX request on click of #my_checkout
-        $('#my_checkout').click(function() {
-            // Show confirmation alert
-            var userConfirmed = confirm("Do you want to create a My Checkout Bill?");
 
-            if (userConfirmed) {
-                console.log('User confirmed checkout.');
-                
-                // Proceed with AJAX request if the user confirms
-                $.ajax({
-                    url: '/My_Check_out', // The route to your My_Check_out function
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        console.log('AJAX Success: ', response);
+    <script>
+        $(document).ready(function() {
+            // Trigger the AJAX request on click of #my_checkout
+            $('#my_checkout').click(function() {
+                // Show confirmation alert
+                var userConfirmed = confirm("Do you want to create a My Checkout Bill?");
 
-                        // Update the input fields with the response data
-                        $('#check_out_no').val(response.new_bill_no);
-                        $('#voucher_no').val(response.new_voucher_no);
-                        $('#bill_type').val(response.bill_type);
+                if (userConfirmed) {
+                    console.log('User confirmed checkout.');
 
-                        // Optional: Alert the user that the values have been updated
-                        alert('My Checkout Bill generated successfully!');
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('AJAX Error: ', error);
-                        console.log('Status: ', status);
-                        console.log('Response: ', xhr.responseText);
-                    }
-                });
-            } else {
-                console.log('User cancelled checkout.');
-            }
+                    // Proceed with AJAX request if the user confirms
+                    $.ajax({
+                        url: '/My_Check_out', // The route to your My_Check_out function
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log('AJAX Success: ', response);
+
+                            // Update the input fields with the response data
+                            $('#check_out_no').val(response.new_bill_no);
+                            $('#voucher_no').val(response.new_voucher_no);
+                            $('#bill_type').val(response.bill_type);
+
+                            // Optional: Alert the user that the values have been updated
+                            alert('My Checkout Bill generated successfully!');
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX Error: ', error);
+                            console.log('Status: ', status);
+                            console.log('Response: ', xhr.responseText);
+                        }
+                    });
+                } else {
+                    console.log('User cancelled checkout.');
+                }
+            });
         });
-    });
-</script>
-<script>
-    $(document).ready(function() {
-         
-        // Disable datepicker interaction if permission is restricted
-        $('[data-restrict="true"]').datepicker('destroy'); // Prevent calendar from appearing
-    });
-</script>
-        
-    
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            // Disable datepicker interaction if permission is restricted
+            $('[data-restrict="true"]').datepicker('destroy'); // Prevent calendar from appearing
+        });
+    </script>
 
 
 

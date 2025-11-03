@@ -116,7 +116,7 @@
                                             style="font-size:20px;color:SlateBlue"></i></a>
                                 </td>
                                 <td>
-                                    <a href="{{ route('roombookings.edit', $record['voucher_no']) }}"
+                                    <a href="{{ route('foodbills.edit', $record['voucher_no']) }}"
                                         class="btn  btn-sm"><i class="fa fa-edit"
                                             style="font-size:20px;color:SlateBlue"></i></a>
                                 </td>

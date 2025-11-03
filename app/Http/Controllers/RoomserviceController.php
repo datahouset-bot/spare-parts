@@ -45,27 +45,71 @@ class RoomserviceController extends CustomBaseController
     /**
      * display the kot  on kichen dashboard 
      */
-    public function kichen_dashboard()
-    {
-        $pending_kot_items = kot::where('firm_id', Auth::user()->firm_id)
-            ->where('status', '0') 
-            ->where('ready_to_serve', '0')
-            ->get()
-            ->groupBy('voucher_no');       
+    // public function kichen_dashboard()
+    // {
+    //     $pending_kot_items = kot::where('firm_id', Auth::user()->firm_id)
+    //         ->where('status', '0') 
+    //          ->where(function ($query) {
+    //     $query->where('ready_to_serve', '0')
+    //           ->orWhere('ready_to_serve', 'Unprinted');
+    // })
+    //         ->get()
+    //         ->groupBy('voucher_no');       
     
-        // Fetch the first roomcheckin record per service_id
-        $pending_kot_items_header = kot::where('kots.firm_id', Auth::user()->firm_id)
-            ->where('kots.status', '0')
-            ->where('kots.ready_to_serve', '0')
-            ->leftJoin('roomcheckins as r', function ($join) {
-                $join->on('kots.service_id', '=', 'r.voucher_no')
-                     ->whereRaw('r.id = (SELECT MIN(id) FROM roomcheckins WHERE roomcheckins.voucher_no = kots.service_id)');
-            })
-            ->select('kots.*', 'r.room_no', 'r.voucher_no') // Only required columns
-            ->first(); // Fetch only the first record
+    //     // Fetch the first roomcheckin record per service_id
+    //     $pending_kot_items_header = kot::where('kots.firm_id', Auth::user()->firm_id)
+    //         ->where('kots.status', '0')
+           
+    //            ->where(function ($query) {
+    //     $query->where('ready_to_serve', '0')
+    //           ->orWhere('ready_to_serve', 'Unprinted');
+    // })
+    //         ->leftJoin('roomcheckins as r', function ($join) {
+    //             $join->on('kots.service_id', '=', 'r.voucher_no')
+    //                  ->whereRaw('r.id = (SELECT MIN(id) FROM roomcheckins WHERE roomcheckins.voucher_no = kots.service_id)');
+    //         })
+    //         ->select('kots.*', 'r.room_no', 'r.voucher_no') // Only required columns
+    //         ->first(); // Fetch only the first record
     
-        return view('entery.roomservice.reports.kichen_dashboard', compact('pending_kot_items', 'pending_kot_items_header'));
-    }
+    //     return view('entery.roomservice.reports.kichen_dashboard', compact('pending_kot_items', 'pending_kot_items_header'));
+    // }
+
+public function kichen_dashboard()
+{
+    $pending_kot_items = kot::where('kots.firm_id', Auth::user()->firm_id)
+        ->where('kots.status', '0')
+        ->where('kots.voucher_type', 'kot')
+        ->where(function ($query) {
+            $query->where('ready_to_serve', '0')
+                  ->orWhere('ready_to_serve', 'Unprinted');
+        })
+        ->leftJoin('rooms', 'kots.service_id', '=', 'rooms.id')
+        // ->leftJoin('tables', 'kots.service_id', '=', 'tables.id')
+        ->select('kots.*', 'rooms.room_no')
+        ->get()
+        ->groupBy('voucher_no');
+
+
+
+           $pending_Rkot_items = kot::where('kots.firm_id', Auth::user()->firm_id)
+        ->where('kots.status', '0')
+        ->where('kots.voucher_type', 'Rkot')
+        ->where(function ($query) {
+            $query->where('ready_to_serve', '0')
+                  ->orWhere('ready_to_serve', 'Unprinted');
+        })
+        // ->leftJoin('rooms', 'kots.service_id', '=', 'rooms.id')
+        ->leftJoin('tables', 'kots.service_id', '=', 'tables.id')
+        ->select('kots.*', 'tables.table_name')
+        ->get()
+        ->groupBy('voucher_no');
+
+    return view('entery.roomservice.reports.kichen_dashboard', compact('pending_kot_items','pending_Rkot_items'));
+}
+
+
+
+
     
     public function readytoserve(Request $request)
     {     
@@ -77,7 +121,8 @@ class RoomserviceController extends CustomBaseController
         ->where('ready_to_serve','0')
         ->get()
         ->groupBy('voucher_no');
-       return view('entery.roomservice.reports.kichen_dashboard',compact('pending_kot_items'));
+
+        return redirect('/kichen_dashboard')->with('message', 'Records saved successfully.');
 
     }
     public function readytoserve_print(Request $request)

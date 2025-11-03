@@ -21,7 +21,7 @@ use App\Http\Requests\StoresaleRequest;
 use App\Http\Requests\UpdatesaleRequest;
 use Illuminate\Support\Facades\Validator;
 
-class SaleController extends Controller
+class SaleController extends CustomBaseController
 {
     /**
      * Display a listing of the resource.
@@ -29,7 +29,7 @@ class SaleController extends Controller
     public function index()
     {
         // $sales = voucher::with('account')->where('voucher_type','sale')->orderBy('voucher_no','desc')->get();
-        $sales = voucher::with('account')
+        $sales = voucher::withinFY('entry_date')->with('account')
         ->where('firm_id', Auth::user()->firm_id)
         ->where('voucher_type','Sale')->orderBy('voucher_no','desc')->get();
         
@@ -315,8 +315,11 @@ class SaleController extends Controller
 $salebill_header = voucher::with('account')
 ->where('firm_id',Auth::user()->firm_id)
 ->where('voucher_type','Sale')->orderBy('voucher_no','desc')->first();
-$salebill_items=inventory::where('firm_id',Auth::user()->firm_id)
-->where('voucher_no',$salebill_header->voucher_no)->get();
+$salebill_items=inventory::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
+->where('voucher_no',$salebill_header->voucher_no)
+->where('voucher_type','Sale')
+->get();
+
 
     return view('entery.sale.sale_print_view', compact( 'salebill_header', 'salebill_items'));        
     
@@ -330,8 +333,10 @@ $salebill_items=inventory::where('firm_id',Auth::user()->firm_id)
     }
 
    Public function print_sale_invoice($voucher_no){
-      $salebill_header = voucher:: where('firm_id',Auth::user()->firm_id)->with('account')->where('voucher_type','Sale')->where('voucher_no',$voucher_no)->first(); 
-   $salebill_items=inventory:: where('firm_id',Auth::user()->firm_id)->where('voucher_no',$salebill_header->voucher_no)->get();
+      $salebill_header = voucher::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->with('account')->where('voucher_type','Sale')->where('voucher_no',$voucher_no)->first(); 
+   $salebill_items=inventory::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->where('voucher_no',$salebill_header->voucher_no)
+   ->where('voucher_type','Sale')
+   ->get();
 
     return view('entery.sale.sale_print_view', compact( 'salebill_header', 'salebill_items'));        
 
@@ -363,9 +368,9 @@ $salebill_items=inventory::where('firm_id',Auth::user()->firm_id)
     {
         // Find all room check-in records with the given voucher_no $id is voucehr no 
       
-        $voucher = voucher:: where('firm_id',Auth::user()->firm_id)->where('voucher_no', $id)->where('voucher_type','Sale');
-        $inventory=inventory:: where('firm_id',Auth::user()->firm_id)->where('voucher_no', $id)->where('voucher_type','Sale');
-        $ledger = ledger:: where('firm_id',Auth::user()->firm_id)->where('firm_id', Auth::user()->firm_id)->where('transaction_type', 'sale');
+        $voucher = voucher::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->where('voucher_no', $id)->where('voucher_type','Sale');
+        $inventory=inventory::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->where('voucher_no', $id)->where('voucher_type','Sale');
+        $ledger = ledger::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->where('firm_id', Auth::user()->firm_id)->where('transaction_type', 'sale');
 
       
 

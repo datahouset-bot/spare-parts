@@ -8,7 +8,12 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="jquery/master.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
-    
+    <style>
+        .Unprinted{
+     background-color: rgb(1, 240, 1) !important;
+  }
+
+    </style>
     
 <script>
   $(document).ready(function () {
@@ -38,7 +43,7 @@
 
 
              <a href="{{url('/kots/create')}}" class="btn btn-success">New KOT</a>
-             <a href="{{url('/kots_cleared')}}" class="btn btn-primary">Cleared KOT List </a>
+             <a href="{{url('/kots_cleared/kot')}}" class="btn btn-primary">Cleared KOT List </a>
              <a href="{{url('/kichen_dashboard')}}" class="btn btn-warning">Kitchen Dashboard </a>
           </div>
        </div>
@@ -75,7 +80,7 @@
                   @endphp
                   @foreach ($kots as $record)
                     
-                  <tr>
+                  <tr class="{{$record->ready_to_serve}}">
            
                     <th scope="row">{{$r1=$r1+1}}</th>
                     <td scope="col">{{ \Carbon\Carbon::parse($record['voucher_date'])->format('d-m-y') }}</td>
@@ -100,7 +105,7 @@
                       <a href="{{ url('kot_print_view', [$record['user_id'], $record['voucher_no']]) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
                   </td> 
                   <td>
-                      <a href="{{ route('roombookings.edit', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
+                      <a href="{{ url('kot_edit', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
                   </td>
 
 

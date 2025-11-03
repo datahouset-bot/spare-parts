@@ -48,22 +48,19 @@
                                         <a class="nav-link" href="{{ url('/primarygroups') }}">Primary Group</a>
                                     </nav>
                                 </div>
-                                @can('Hotel Module')
-                                    
-                              
-
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#room" aria-expanded="false" aria-controls="room">
-                                    Room Master
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                @endcan
+                                {{-- @can('Hotel Module') --}}
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                        data-bs-target="#room" aria-expanded="false" aria-controls="room">
+                                        Vehicle Master
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                {{-- @endcan --}}
                                 <div class="collapse" id="room" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link" href="{{ url('/packages') }}">Package</a>
-                                        <a class="nav-link" href="{{ url('/roomtypes') }}">Room Type</a>
-                                        <a class="nav-link" href="{{ url('/rooms') }}">Room</a>
+                                        <a class="nav-link" href="{{ url('/roomtypes') }}">Type</a>
+                                        <a class="nav-link" href="{{ url('/rooms') }}">Slot</a>
                                     </nav>
                                 </div>
 
@@ -75,17 +72,15 @@
                                 <div class="collapse" id="gst" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                       @can('Restaurant Module')
-                                         
-
-                                        <a class="nav-link" href="{{ url('/tables') }}">Table</a>
-                                        @endcan 
+                                        @can('Restaurant Module')
+                                            <a class="nav-link" href="{{ url('/tables') }}">Table</a>
+                                        @endcan
                                         <a class="nav-link" href="{{ url('/godowns') }}">Godown (Store)</a>
                                         <a class="nav-link" href="{{ url('/account') }}">Locker</a>
                                         <a class="nav-link" href="{{ url('/gstmasters') }}">GST,TAX,VAT</a>
                                         @can('Restaurant Module')
-                                        <a class="nav-link" href="{{ url('/businesssources') }}">Business Source</a>
-                                        <a class="nav-link" href="{{ url('/othercharges') }}">Other Charge</a>
+                                            <a class="nav-link" href="{{ url('/businesssources') }}">Business Source</a>
+                                            <a class="nav-link" href="{{ url('/othercharges') }}">Other Charge</a>
                                         @endcan
                                         <a class="nav-link" href="{{ url('/voucher_types') }}">Voucher Type</a>
                                     </nav>
@@ -112,15 +107,15 @@
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                     data-bs-target="#pagesCollapseAuth" aria-expanded="false"
                                     aria-controls="pagesCollapseAuth">
-                                    Room
+                                    Vehicle
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href={{ url('roombooking_home') }}>Booking</a>
+                                        <a class="nav-link" href={{ url('roombooking_home') }}>Slot Book</a>
                                         <a class="nav-link" href={{ url('roomcheckins') }}>Check In</a>
-                                        <a class="nav-link" href={{ url('roomservices') }}>Room Service </a>
+                                        <a class="nav-link" href={{ url('roomservices') }}>Vehicle Service </a>
                                         <a class="nav-link" href={{ url('advace_receipt') }}>Advance Receipt </a>
                                         <a class="nav-link" href={{ url('roomcheckouts') }}>Check Out </a>
                                     </nav>
@@ -142,15 +137,15 @@
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                     data-bs-target="#pagesCollapseError" aria-expanded="false"
                                     aria-controls="pagesCollapseError">
-                                    Restaurant
+                                    Spare_parts
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="{{ url('/restaurant_kot') }}">Restaurant Kot </a>
-                                        <a class="nav-link" href="{{ url('/table_dashboard') }}">Restaurant </a>
-                                        <a class="nav-link" href="{{ url('/table_foodbills') }}">Restaurant Food Bill
+                                        <a class="nav-link" href="{{ url('/restaurant_kot') }}">Parts Kot </a>
+                                        <a class="nav-link" href="{{ url('/table_dashboard') }}">pendings </a>
+                                        <a class="nav-link" href="{{ url('/table_foodbills') }}">Parts Bill
                                         </a>
 
                                     </nav>
@@ -222,14 +217,11 @@
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                 @can('Hotel Module')
-                                    
-
-
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#room_reprt" aria-expanded="false" aria-controls="room_reprt">
-                                    Room Report
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                        data-bs-target="#room_reprt" aria-expanded="false" aria-controls="room_reprt">
+                                        Room Report
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
                                 @endcan
                                 <div class="collapse" id="room_reprt" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
@@ -243,22 +235,20 @@
                                     </nav>
                                 </div>
                                 @can('Restaurant Module')
-                                    
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                        data-bs-target="#reta_report" aria-expanded="false" aria-controls="reta_report">
+                                        Restaurant
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
 
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#reta_report" aria-expanded="false" aria-controls="reta_report">
-                                    Restaurant
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
+                                    <div class="collapse" id="reta_report" aria-labelledby="headingOne"
+                                        data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="{{ url('/table_foodbills') }}">Restaurant Register</a>
+                                            <a class="nav-link" href={{ url('kichen_dashboard') }}>Kichen Dashoard </a>
 
-                                <div class="collapse" id="reta_report" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="{{ url('/table_foodbills') }}">Restaurant Register</a>
-                                        <a class="nav-link" href={{ url('kichen_dashboard') }}>Kichen Dashoard </a>
-
-                                    </nav>
-                                </div>
+                                        </nav>
+                                    </div>
                                 @endcan
 
                                 {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#Banquet_report" aria-expanded="false" aria-controls="Banquet_report">
@@ -305,9 +295,7 @@
                                             Receivable</a>
                                         <a class="nav-link" href="{{ url('/outstanding_payable') }}">Oustanding
                                             Payable</a>
-                                       @can('Day End Report')
-                                           
-
+                                        @can('Day End Report')
                                             <a class="nav-link" href="{{ url('/dayend_report') }}">Day End Report</a>
                                         @endcan
 
@@ -384,22 +372,20 @@
                                 Services 
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a> --}}
-                            @can('Lead Module')
-                                
-
-                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="{{ url('/testshowform') }}">Test Form </a>
-                                        <a class="nav-link" href="#">Pending Service</a>
-                                        <a class="nav-link" href="#">New Enquiry</a>
-                                        <a class="nav-link" href="#">Follow Up</a>
-                                        <a class="nav-link" href="#">Demo List </a>
+                                @can('Lead Module')
+                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
+                                        data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="{{ url('/testshowform') }}">Test Form </a>
+                                            <a class="nav-link" href="#">Pending Service</a>
+                                            <a class="nav-link" href="#">New Enquiry</a>
+                                            <a class="nav-link" href="#">Follow Up</a>
+                                            <a class="nav-link" href="#">Demo List </a>
 
 
-                                    </nav>
-                                </div>
-                            @endcan
+                                        </nav>
+                                    </div>
+                                @endcan
                             </nav>
                         </div>
                     @endcan
@@ -434,82 +420,146 @@
                     @endcan
 
 
+
                     @can('Setting')
 
-                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                        data-bs-target="#collapsesetting" aria-expanded="false" aria-controls="collapsesetting">
-                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                        Setting
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                    <div class="collapse" id="collapsesetting" aria-labelledby="headingTwo"
-                        data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-                                aria-controls="pagesCollapseAuth">
-                                Company Setting
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
-                                data-bs-parent="#sidenavAccordionPages">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href={{ url('company_info_form') }}>Company Info </a>
-                                    <a class="nav-link" href={{ url('comp_pic_form') }}>Company Logo</a>
-                                    <a class="nav-link" href={{ url('comp_info_footer') }}>Other Details</a>
-                                    <a class="nav-link" href={{ url('optionlists') }}>Option List</a>
-                                    @can('Hotel Module')
-                                        
-
-                                    <a class="nav-link" href={{ route('businesssettings.create') }}>Business
-                                        Setting</a>
-                                    @endcan    
-
-                                    @if (auth()->check() && auth()->user()->email === 'datahouset@gmail.com')
-                                        @can('sql_query')
-                                            <a class="nav-link" href={{ url('sql_query') }}>Sql Query</a>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                            data-bs-target="#collapsesetting" aria-expanded="false" aria-controls="collapsesetting">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            Setting
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapsesetting" aria-labelledby="headingTwo"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#pagesCollapseAuth" aria-expanded="false"
+                                    aria-controls="pagesCollapseAuth">
+                                    Company Setting
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href={{ url('company_info_form') }}>Company Info </a>
+                                        <a class="nav-link" href={{ url('comp_pic_form') }}>Company Logo</a>
+                                        <a class="nav-link" href={{ url('comp_info_footer') }}>Other Details</a>
+                                        <a class="nav-link" href={{ url('optionlists') }}>Option List</a>
+                                        <a class="nav-link" href={{ url('whatsapp_sms') }}>Whats app & SMS </a>
+                                        @can('Hotel Module')
+                                            <a class="nav-link" href={{ route('businesssettings.create') }}>Business
+                                                Setting</a>
+                                            <a class="nav-link" href="{{ url('financialyears') }}">Finacial Year </a>
                                         @endcan
 
-                                        <a class="nav-link" href="{{ url('softwarecompanies') }}">Software
-                                            Companies</a>
-                                        <a class="nav-link" href="{{ url('super_comp_lists') }}">Super Compny List
-                                        </a>
-                                    @endif
+                                        @if (auth()->check() && auth()->user()->email === 'datahouset@gmail.com')
+                                            @can('sql_query')
+                                                <a class="nav-link" href={{ url('sql_query') }}>Sql Query</a>
+                                            @endcan
 
-                                    @if (auth()->check() && Auth::user()->email === Auth::user()->firm_id . '@gmail.com')
-                                    <a class="nav-link" href="{{ url('softwarecompanies') }}">Software Companies</a>
-                                @endif
-                                
+                                            <a class="nav-link" href="{{ url('softwarecompanies') }}">Software
+                                                Companies</a>
+
+                                            <a class="nav-link" href="{{ url('super_comp_lists') }}">Super Compny List
+                                            </a>
+
+                                            <a class="nav-link" href="{{ url('mantinace_mode') }}">Maintenancemode
+                                            </a>
+                                            
+                                            <a class="nav-link" href="{{ url('clear-cache') }}">Clear-Cache
+                                            </a>
+                                        @endif
+
+                                        @if (auth()->check() && Auth::user()->email === Auth::user()->firm_id . '@gmail.com')
+                                            <a class="nav-link" href="{{ url('softwarecompanies') }}">Software
+                                                Companies</a>
+                                        @endif
 
 
 
-                                </nav>
-                            </div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                data-bs-target="#usersetting" aria-expanded="false" aria-controls="usersetting">
-                                User Setting
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="usersetting" aria-labelledby="headingOne"
-                                data-bs-parent="#sidenavAccordionPages">
+
+                                    </nav>
+                                </div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#usersetting" aria-expanded="false" aria-controls="usersetting">
+                                    User Setting
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="usersetting" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="{{ url('/roles') }}">Roles & Permission </a>
+
+                                    </nav>
+                                </div>
+
+                                                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#attendance" aria-expanded="false" aria-controls="attendance">
+                                    Attendance
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="attendance" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="{{ url('/attendance_index') }}">Mark Attendance </a>
+
+                                    </nav>
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url('/roles') }}">Roles & Permission </a>
+                                        <a class="nav-link" href="{{ url('/attendance_report') }}">attendance_report </a>
 
-                                </nav>
-                            </div>
-                        </nav>
-                    </div>
+                                    </nav>
+                                </div>
+                            </nav>
+                        </div>
+                    @endcan
+                           
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                            data-bs-target="#collapsehelp" aria-expanded="false" aria-controls="collapsehelp">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                        Help
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapsehelp" aria-labelledby="headingTwo"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#pagesCollapseAuth" aria-expanded="false"
+                                    aria-controls="pagesCollapseAuth">
+                                   Software Training
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href={{ url('helps') }}>Video Help  </a>
+                                        <a class="nav-link" href={{ url('#') }}>Article</a>
+                                        <a class="nav-link" href={{ url('#') }}>On Call</a>
+                                        <a class="nav-link" href={{ url('#') }}>WhatsApp </a>
+                                        <a class="nav-link" href="https://dht.datahouseerp.com/todo_by_customer">Support Request</a>
+                                       
 
+                                       
+
+
+
+                                    </nav>
+                                </div>
+                            </nav>
+                        </div>
+  
                 </div>
 
 
 
             </div>
-            @endcan
+
+
+
             <div class="sb-sidenav-footer">
                 <div class="small">Logged in as:</div>
                 {{-- AMC Management Software  --}}
                 {{ $compinfofooter->ct2 }}
             </div>
+
         </nav>
     </div>

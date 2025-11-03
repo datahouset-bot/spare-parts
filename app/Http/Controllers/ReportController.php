@@ -37,6 +37,156 @@ class ReportController extends CustomBaseController
         $combinedData=[];
         return view('reports.genralreport.room_food_register',compact('roomcheckouts'));
     }
+        public function  fnbrerport_pageshow(){
+        $roomcheckouts = [];
+        $combinedData=[];
+        return view('reports.genralreport.fnbreport_pageshow',compact('roomcheckouts'));
+    }
+
+
+
+public function fnb_result(Request $request)
+{
+
+
+
+    $validator = Validator::make($request->all(), [
+        'from_date' => 'required|date_format:d-m-Y',
+        'to_date' => 'required|date_format:d-m-Y',
+    ]);
+
+    if ($validator->fails()) {
+        return back()->withErrors($validator)->withInput();
+    }
+
+    $from_date = Carbon::createFromFormat('d-m-Y', $request->from_date)->format('Y-m-d');
+    $to_date = Carbon::createFromFormat('d-m-Y', $request->to_date)->format('Y-m-d');
+
+    $firm_id = Auth::user()->firm_id ?? null;
+
+    if (!$firm_id) {
+        return back()->with('error', 'Firm ID not found.');
+    }
+    $bill_type=$request->bill_type;
+
+    // Fetch food bills
+    $foodbills = foodbill::select(
+        'voucher_type',
+        'food_bill_no',
+      'voucher_date',
+        'total_bill_value',
+        'total_qty',
+        'voucher_no',
+        'service_id',
+        'voucher_date',
+        'status',
+        'user_id',
+        'total_sgst',
+        'total_cgst',
+        'total_igst',
+        'total_vat',
+        'total_tax1',
+        'total_taxable_amount',
+        'customer_name',
+        'address',
+        'mobile',
+        'remark',
+        'cash_discount',
+        'total_gst_amount',
+        'foodbill_af1',
+        'foodbill_af2',
+        'foodbill_af3',
+        'foodbill_af4',
+        'foodbill_af5',
+        'customer_name',
+        'roundoff_amt',
+        'net_food_bill_amount',
+       
+
+
+        DB::raw('GROUP_CONCAT(voucher_no ORDER BY voucher_date SEPARATOR ",") as room_nos')
+    )
+    ->where('firm_id', $firm_id)
+    ->whereBetween('voucher_date', [$from_date, $to_date])
+     ->when(!empty($bill_type), function ($query) use ($bill_type) {
+        return $query->where('voucher_type', $bill_type);
+    })
+    ->groupBy(
+        'voucher_type',
+        'voucher_no',
+        'total_bill_value',
+        'total_qty',
+        'food_bill_no',
+        'voucher_date',
+        'service_id',
+        'status',
+        'user_id',
+        'voucher_date',
+        'total_sgst',
+        'total_cgst',
+        'total_igst',
+          'total_vat',
+        'total_tax1',
+        'total_taxable_amount',
+        'total_gst_amount',
+        'customer_name',
+        'address',
+        'mobile',
+        'cash_discount',
+        'remark',
+       'foodbill_af1',
+        'foodbill_af2',
+        'foodbill_af3',
+        'foodbill_af4',
+        'foodbill_af5',
+        'customer_name',
+        'roundoff_amt',
+        'net_food_bill_amount',
+       
+    )
+    ->orderBy('voucher_no', 'desc')
+
+    ->get();
+
+    // If you plan to fetch roomcheckouts later, you can build this logic
+    $roomcheckouts = []; // currently empty
+
+    // Combine and arrange data by date
+    $combinedData = [];
+
+    // Add food bills to combined data
+    foreach ($foodbills as $bill) {
+        $date = $bill->voucher_date;
+        $combinedData[$date][] = [
+            'type' => 'foodbill',
+            'data' => $bill,
+        ];
+    }
+
+    // Add room checkouts to combined data if needed
+    foreach ($roomcheckouts as $checkout) {
+        $date = $checkout->checkout_date;
+        $combinedData[$date][] = [
+            'type' => 'roomcheckout',
+            'data' => $checkout,
+        ];
+    }
+
+    // Sort combined data by date descending
+    krsort($combinedData);
+
+    if($request->view_type=="print"){
+            return view('reports.genralreport.fnbreport_print', compact('combinedData'));
+
+    }
+
+
+    return view('reports.genralreport.fnbreport_result', compact('combinedData'));
+}
+
+
+
+   
 
 //     public function roomfood_gstreport(Request $request){
 
@@ -108,13 +258,16 @@ public function roomfood_gstreport(Request $request) {
             'address',
             'mobile',
             'remark',
+            'firm_name',
+            'gst_no',
 
             'total_gst_amount',
             DB::raw('GROUP_CONCAT(voucher_no ORDER BY voucher_date SEPARATOR ",") as room_nos')
         )
-        ->groupBy('voucher_type', 'voucher_no', 'total_bill_value', 'total_qty', 'food_bill_no', 'service_id', 'status', 'user_id', 'voucher_date','total_sgst','total_cgst','total_igst','total_taxable_amount','total_gst_amount','customer_name','address','mobile','remark')
+        ->groupBy('voucher_type', 'voucher_no', 'total_bill_value', 'total_qty', 'food_bill_no', 'service_id', 'status', 'user_id', 'voucher_date','total_sgst','total_cgst','total_igst','total_taxable_amount','total_gst_amount','customer_name','address','mobile','remark', 'firm_name',
+            'gst_no',)
         ->orderBy('voucher_date', 'desc')
-        ->where('voucher_type', 'Foodbill')
+        // ->where('voucher_type', 'Foodbill')
         ->where('firm_id',Auth::user()->firm_id)
 
         ->whereBetween('voucher_date', [$from_date, $to_date])
@@ -123,9 +276,11 @@ public function roomfood_gstreport(Request $request) {
         // Fetch room checkouts
         $roomcheckouts = roomcheckout::with('account')
            ->where('firm_id',Auth::user()->firm_id)
+           ->where('bill_type', '!=', 'My_Check_out')
             ->whereBetween('checkout_date', [$from_date, $to_date])
             ->orderBy('checkout_date', 'desc')
             ->get();
+
 
         // Combine and arrange data by date
         $combinedData = [];
@@ -167,6 +322,8 @@ public function b2bsales_pageshow(){
         $roomcheckouts = [];
         return view('reports.genralreport.b2b_checkout_register',compact('roomcheckouts'));
     }
+
+
 
     public function b2bsales(Request $request){
 
@@ -566,12 +723,302 @@ public function handover(Request $request)
 
     return view('reports.genralreport.handover_report_result', compact('accounts', 'all_reports','formatted_current_date','user_name','formatted_from_date','formatted_to_date','formatted_from_date'));
 }
+public function dayend_datewise(Request $request){
+    
+$userlists=user::where('firm_id',Auth::user()->firm_id)->get();
+     return view('reports.genralreport.dayend_datewise_pageview',compact('userlists'));
+
+
+}
+public function datewisedayend(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'from_date' => 'required',
+        'to_date' => 'required',
+    ]);
+ 
+    $listofaccount = account::where('firm_id', Auth::user()->firm_id)
+    ->whereHas('accountGroup', function ($query) {
+        $query->whereIn('account_group_name', ['BANK ACCOUNT', 'Cash In Hand']);
+    })
+    ->get();
+
+    
+   
+     $date_variable = $request->from_date;
+    $parsed_date = Carbon::createFromFormat('d-m-Y', $date_variable);
+    $formatted_from_date = $parsed_date->format('Y-m-d');
+    // One day before from_date
+$one_day_before_from_date = $parsed_date->copy()->subDay()->format('Y-m-d');
+
+         $date_variable = $request->to_date;
+    $parsed_date = Carbon::createFromFormat('d-m-Y', $date_variable);
+    $formatted_to_date = $parsed_date->format('Y-m-d');
+
+
+    // $formatted_current_date = $current_date->format('Y-m-d');
+    //  $one_day_before=\Carbon\Carbon::now();
+    //  $one_day_before = now()->subDay(); // Get current date and subtract one day
+    // $formated_one_day_before = $one_day_before->format('Y-m-d');
+   
+
+    $from_date = $request->from_date;
+    $to_date = $request->to_date;
+
+    $all_reports = [];
+
+    foreach ($listofaccount as $account) {
+        $account_id = $account->id;
+        $account_name = $account->account_name;
+        $opening_balance_account = $account->op_balnce;
+        $opning_balance_type = $account->balnce_type;
+
+        $ledgers = Ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
+        
+        ->where('account_id', $account_id)
+            ->whereBetween('entry_date', [$formatted_from_date, $formatted_to_date])
+            ->get();
+
+        $ledgers_before_fromdate = Ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
+            ->where('account_id', $account_id)
+            ->where('entry_date', '<=', $one_day_before_from_date)
+            ->get();
+
+        $debit_total = 0;
+        $credit_total = 0;
+
+        foreach ($ledgers_before_fromdate as $record) {
+            $debit_total += $record->debit;
+            $credit_total += $record->credit;
+        }
+
+        $total_balance = $debit_total - $credit_total;
+        $final_opning_balance = ($opning_balance_type === 'Dr') ? $total_balance + $opening_balance_account : $total_balance - $opening_balance_account;
+
+        $all_reports[] = [
+            'account_name' => $account_name,
+            'ledgers' => $ledgers,
+            'from_date' => $from_date,
+            'to_date' => $to_date,
+            'final_opning_balance' => $final_opning_balance,
+        ];
+    }
+
+    $accounts = Account::where('firm_id',Auth::user()->firm_id)->orderBy('account_name', 'asc')->get();
+
+    
+
+
+    return view('reports.genralreport.datewise_end_report', compact(
+        'accounts',
+        'all_reports',
+      
+        
+        'from_date',
+        'to_date'
+    ));
+}
+
 
 
 public function roomcheckin_guest_profile_print($voucher_no){
-$checkindata=roomcheckin::where('voucher_no',$voucher_no)->where('firm_id',Auth::user()->firm_id)->first();
+$checkindata = Roomcheckin::join('accounts', function($join) {
+        $join->on('roomcheckins.account_id', '=', 'accounts.id')
+             ->whereColumn('roomcheckins.firm_id', 'accounts.firm_id');
+    })
+    ->where('roomcheckins.firm_id', Auth::user()->firm_id)
+    ->withinFY('roomcheckins.checkin_date') // your custom scope
+    ->where('roomcheckins.voucher_no', $voucher_no)
+    ->select('roomcheckins.*', 'accounts.*') // all columns from both tables
+    ->first();
 
+ 
  return view('reports.genralreport.roomcheckin_guest_profile_print',compact('checkindata'));
+}
+
+public function restaurant_pageshow(){
+
+    
+    $roomcheckouts = [];
+    $combinedData=[];
+    return view('reports.genralreport.restaurant_register',compact('roomcheckouts'));
+}
+
+public function restaurant_report(Request $request) {
+    $validator = validator::make($request->all(), [
+        'from_date' => 'required',
+        'to_date' => 'required',
+    ]);
+
+    if ($validator->passes()) {
+        $from_date = Carbon::createFromFormat('d-m-Y', $request->from_date)->format('Y-m-d');
+        $to_date = Carbon::createFromFormat('d-m-Y', $request->to_date)->format('Y-m-d');
+
+        // Fetch food bills
+        $foodbills = foodbill::select(
+            'voucher_type',
+            'food_bill_no', 
+            'total_bill_value', 
+            'total_qty', 
+            'voucher_no', 
+            'food_bill_no', 
+            'service_id', 
+            'voucher_date', 
+            'status', 
+            'user_id',
+            'total_sgst',
+            'total_cgst',
+            'total_igst',
+            'total_taxable_amount', 
+            'customer_name',
+            'address',
+            'mobile',
+            'remark',
+
+            'total_gst_amount',
+            DB::raw('GROUP_CONCAT(voucher_no ORDER BY voucher_date SEPARATOR ",") as room_nos')
+        )
+        ->groupBy('voucher_type', 'voucher_no', 'total_bill_value', 'total_qty', 'food_bill_no', 'service_id', 'status', 'user_id', 'voucher_date','total_sgst','total_cgst','total_igst','total_taxable_amount','total_gst_amount','customer_name','address','mobile','remark')
+        ->orderBy('voucher_date', 'desc')
+        ->where('voucher_type', 'Restaurant_food_bill')
+        ->where('firm_id',Auth::user()->firm_id)
+
+        ->whereBetween('voucher_date', [$from_date, $to_date])
+        ->get();
+
+        // Fetch room checkouts
+        $roomcheckouts = [];
+
+        // Combine and arrange data by date
+        $combinedData = [];
+        
+        // Add food bills to combined data
+        foreach ($foodbills as $bill) {
+            $date = $bill->voucher_date;
+            if (!isset($combinedData[$date])) {
+                $combinedData[$date] = [];
+            }
+            $combinedData[$date][] = [
+                'type' => 'foodbill',
+                'data' => $bill,
+            ];
+        }
+
+        // Add room checkouts to combined data
+        foreach ($roomcheckouts as $checkout) {
+            $date = $checkout->checkout_date;
+            if (!isset($combinedData[$date])) {
+                $combinedData[$date] = [];
+            }
+            $combinedData[$date][] = [
+                'type' => 'roomcheckout',
+                'data' => $checkout,
+            ];
+        }
+
+        // Sort combined data by date
+        krsort($combinedData);
+ 
+        return view('reports.genralreport.restaurant_result_register', compact('combinedData'));
+    }
+
+    return back()->withErrors($validator)->withInput();
+}
+
+
+public function payment_register_pageshow(){
+        $roomcheckouts = [];
+        return view('reports.genralreport.payment_pageshow',compact('roomcheckouts'));
+    }
+
+public function payment_register_result(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'from_date' => 'required',
+        'to_date' => 'required',
+    ]);
+    $from_date=$request->from_date;
+        $to_date=$request->to_date;
+
+    if ($validator->fails()) {
+        return back()->withErrors($validator)->withInput();
+    }
+
+    // Format from_date
+    $parsed_date = Carbon::createFromFormat('d-m-Y', $request->from_date);
+    $formatted_from_date = $parsed_date->format('Y-m-d');
+
+    // Format to_date
+    $parsed_date = Carbon::createFromFormat('d-m-Y', $request->to_date);
+    $formatted_to_date = $parsed_date->format('Y-m-d');
+
+    // Query ledgers
+    $ledgers = Ledger::withinFY('entry_date')
+        ->whereIn('id', function ($query) use ($formatted_from_date, $formatted_to_date) {
+            $query->select(DB::raw('MIN(id)'))
+                  ->from('ledgers')
+                  ->where('transaction_type', 'Payments')
+                  ->whereBetween('entry_date', [$formatted_from_date, $formatted_to_date])
+                  ->where('firm_id', Auth::user()->firm_id)
+                  ->groupBy('voucher_no');
+        })
+        ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
+        ->get();
+
+    // Return to correct view with correct variable
+    return view('reports.genralreport.payment_register', compact('ledgers','from_date','to_date'));
+}
+
+
+
+
+
+ 
+
+
+
+
+    
+public function reciept_register_pageshow(){
+        $roomcheckouts = [];
+         return view('reports.genralreport.reciept_pageshow',compact('roomcheckouts'));
+    }
+public function reciept_register_result(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'from_date' => 'required',
+        'to_date' => 'required',
+    ]);
+    $from_date=$request->from_date;
+        $to_date=$request->to_date;
+
+    if ($validator->fails()) {
+        return back()->withErrors($validator)->withInput();
+    }
+
+    // Format from_date
+    $parsed_date = Carbon::createFromFormat('d-m-Y', $request->from_date);
+    $formatted_from_date = $parsed_date->format('Y-m-d');
+
+    // Format to_date
+    $parsed_date = Carbon::createFromFormat('d-m-Y', $request->to_date);
+    $formatted_to_date = $parsed_date->format('Y-m-d');
+
+    // Query ledgers
+    $ledgers = Ledger::withinFY('entry_date')
+        ->whereIn('id', function ($query) use ($formatted_from_date, $formatted_to_date) {
+            $query->select(DB::raw('MIN(id)'))
+                  ->from('ledgers')
+                  ->where('transaction_type', 'Receipts')
+                  ->whereBetween('entry_date', [$formatted_from_date, $formatted_to_date])
+                  ->where('firm_id', Auth::user()->firm_id)
+                  ->groupBy('voucher_no');
+        })
+        ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
+        ->get();
+
+    // Return to correct view with correct variable
+    return view('reports.genralreport.reciept_register', compact('ledgers','from_date','to_date'));
 }
 
 

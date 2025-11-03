@@ -9,27 +9,33 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="jquery/master.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
-    <style>
-    .no-gutter ,.form-control{
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    .footer_input{
-        width: 100px;
-        padding: 0px;
-        margin: 0px;
+        <style>
 
-    }
-    td,th{
-        margin: 0px !important;
-        padding: 0px !important;
- border: 1px solid blue;
- text-align: left;
- padding-left: 10px !important;
-    }
-    .left-margin{
-        margin-left: 30px;
-    }
+        .no-gutter,
+        .form-control {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .footer_input {
+            width: 100px;
+            padding: 0px;
+            margin: 0px;
+
+        }
+
+        td,
+        th {
+            margin: 0px !important;
+            padding: 0px !important;
+            border: 1px solid blue;
+            text-align: left;
+            padding-left: 10px !important;
+        }
+
+        .left-margin {
+            margin-left: 30px;
+        }
 
         #display_rate {
             color: black;
@@ -47,7 +53,28 @@
             padding-right: 1px;
             padding-left: 1px;
         }
+
+
+        /* input css  */
+
+</style>
+
+<style>
+    /* This targets the actual dropdown menu */
+    .select2-container--default .select2-results > .select2-results__options {
+        max-width: 80vw !important; /* 80% of the viewport width */
+        min-width: 300px;
+        white-space: nowrap;
+        background: lightcyan;
+    }
+    
+    /* Optional: style the dropdown container */
+    .wide-dropdown .select2-dropdown {
+        width: 80vw !important;
+    }
     </style>
+    
+
 
     <script>
         $(document).ready(function() {
@@ -98,66 +125,72 @@
 
                     {{-- hidden input close  --}}
 
-                    <div class="col-md-2 col-4  text-center">
-                        <label for="voucher_date">Date</label>
-                        <input type="text" class="form-control date" id ="voucher_date" name="voucher_date">
+
+                    <div class="col-md-2 col-4 text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control date" id="voucher_date" name="voucher_date" required>
+                            <label class="floating-label" for="voucher_date">Date</label>
+                        </div>
                     </div>
-
-
-                    <div class="col-md-1 col-4  text-center">
-                        <label for="entery_no">Entry No </label>
-                        <input type="text" class="form-control" id ="entery_no"name="entery_no"
-                            value="{{ $new_voucher_no }}">
+                    
+                    <div class="col-md-1 col-4 text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="entery_no" name="entery_no" value="{{ $new_voucher_no }}" required>
+                            <label class="floating-label" for="entery_no">Entry No</label>
+                        </div>
                     </div>
-                    <div class="col-md-2 col-4  text-center">
-                        <label for="godown_id">Godown</label>
-
-                        <select id ="godown_id"name="godown_id" class="form-select">
-                            @foreach ($godowns as $godown)
-                            <option value="{{$godown->id}}" selected>{{$godown->godown_name}}</option>
-                            @endforeach
-
-
-                        </select>
-
+                    
+                    <div class="col-md-2 col-4 text-center">
+                        <div class="form-group">
+                            <select id="godown_id" name="godown_id" class="form-select" required>
+                                @foreach ($godowns as $godown)
+                                    <option value="{{ $godown->id }}" selected>{{ $godown->godown_name }}</option>
+                                @endforeach
+                            </select>
+                            <label class="floating-label" for="godown_id">Godown</label>
+                        </div>
                     </div>
-
-                    <div class="col-md-2 col-4  text-center">
-                        <label for="terms">Terms</label>
-                        <select name="terms" id="terms" class="form-select">
-
-                            <option value="Cash" selected>Cash</option>
-                            <option value="Credit" >Credit</option>
-
-
-
-                        </select>
-
+                    
+                    <div class="col-md-2 col-4 text-center">
+                        <div class="form-group">
+                            <select name="terms" id="terms" class="form-select" required>
+                                <option value="Cash" selected>Cash</option>
+                                <option value="Credit">Credit</option>
+                            </select>
+                            <label class="floating-label" for="terms">Terms</label>
+                        </div>
+                       
                     </div>
-                    <div class="col-md-2 col-4   text-center">
-                        <label for="kot_on">Account Name </label>
-                        <select name="account_id" id="account_id" class="form-select" required>
-                            <option selected disabled>Select Party</option>
-                            @foreach ($accountdata as $record)
-                                <option value="{{ $record->id }}">{{ $record->account_name }} </option>
-                            @endforeach
-
-
-
-                        </select>
-
+                    <div class="col-md-1 col-4 text-center ">
+                        <div class="form-group">
+                            <input type="text" id="purchase_bill_date" class="form-control date" name="purchase_bill_date" required>
+                            <label class="floating-label" for="purchase_bill_date">Bill Date</label>
+                        </div>
                     </div>
-                    <div class="col-md-1 col-4  text-center left-margin">
-                        <label for="purchase_bill_date">Bill Date</label>
-                        <input type="text" id="purchase_bill_date" class="form-control date" name="purchase_bill_date">
+                    
+                    <div class="col-md-1 col-4 text-center">
+                        <div class="form-group">
+                            <input type="text" id="voucher_bill_no" class="form-control" name="voucher_bill_no" value="{{ $new_bill_no }}" required>
+                            <label class="floating-label" for="voucher_bill_no">Bill No</label>
+                        </div>
                     </div>
-                    <div class="col-md-1 col-4  text-center">
-                        <label for="voucher_bill_no">Bill No</label>
-                        <input type="text" id="voucher_bill_no" class="form-control" name="voucher_bill_no" value="{{ $new_bill_no }}">
+                    
+                    <div class="col-md-3  text-center row ">
+                        {{-- <div class="form-group"> --}}
+                            <select name="account_id" id="account_id" class="form-select" required>
+                                <option selected disabled>Select Party</option>
+                                @foreach ($accountdata as $record)
+                                    <option value="{{ $record->id }}">{{ $record->account_name }}</option>
+                                @endforeach
+                            </select>
+                            {{-- <label class="floating-label" for="account_id">Account Name</label> --}}
+                        {{-- </div> --}}
                     </div>
+                    
                 </div>
                 <div class="row no-gutter" name="itementery">
-                    <div class="col-md-3 mt-4 mx-1 ">
+                <div class="row no-gutter" name="itementery">
+                    <div class="col-md-3   ">
                         <div class="input-group">
 
                             <select id="item_id" name="item_id" class="js-states form-control">
@@ -175,45 +208,69 @@
                         </span>
                     </div>
 
-                    <div class="col-md-1  col-3   text-center">
-                        <label for="qty">QTY </label>
-                        <input type="text" class ="form-control " id="qty" name="qty" autocomplete="off"
-                            required>
+                    <div class="col-md-1 col-3 text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="qty" name="qty" placeholder=" " required autocomplete="off">
+                            <label class="floating-label" for="qty">QTY</label>
+                        </div>
                     </div>
-                    <div class="col-md-2 col-3  text-center">
-                        <label for="rate">Rate&nbsp;&nbsp; </label><span id="display_rate"></span>
-                        <input type="text" class ="form-control " id ="rate" name="rate" required>
+                    <div class="col-md-2 col-3 text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="rate" name="rate" placeholder=" " required>
+                            <label class="floating-label" for="rate">Rate</label>
+                            <span id="display_rate" style="position: absolute; right: 5px; top: -10px; font-size: 12px; color: #666;"></span>
+                        </div>
                     </div>
-                    <div class="col-md-2 col-3  text-center">
-                        <label for="amount">Basic </label>
-                        <input type="text" class ="form-control " id="amount" name="amount" required readonly>
-                    </div>
-                    <div class="col-md-2 col-3  text-center">
-                        <label for="dis_p">Dis% </label>
-                        <input type="text" class ="form-control " id="dis_p" name="dis_p">
-                    </div>
-                    <div class="col-md-2 col-3  text-center">
-                        <label for="dis_amt">Dis Amt </label>
-                        <input type="text" class ="form-control " id="dis_amt" name="dis_amt">
-                    </div>
-                    <div class="col-md-2 col-3  text-center">
-                        <label for="total_item_dis_amt">Total Dis Amt </label>
-                        <input type="text" class ="form-control " id="total_item_dis_amt" name="total_item_dis_amt">
-                    </div>
-                    <div class="col-md-2 col-3  text-center">
-                        <label for="gst_p">GST % </label>
-                        <input type="text" class ="form-control " id="gst_p" name="gst_p" required readonly>
-                    </div>
-                        <input type="hidden" class ="form-control " id="gstmaster_id" name="gstmaster_id" required readonly>
                     
-                    <div class="col-md-2 col-3  text-center">
-                        <label for="gst_amt">GST Amt </label>
-                        <input type="text" class ="form-control " id="gst_amt" name="gst_amt" required readonly>
+                    <div class="col-md-2 col-3 text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="amount" name="amount" placeholder=" " required readonly>
+                            <label class="floating-label" for="amount">Basic</label>
+                        </div>
                     </div>
-                    <div class="col-md-2 col-3  text-center">
-                        <label for="net_item_amt">Net </label>
-                        <input type="text" class ="form-control " id="net_item_amt" name="net_item_amt" required
-                            readonly>
+                    
+                    <div class="col-md-1 col-3 text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="dis_p" name="dis_p" placeholder=" ">
+                            <label class="floating-label" for="dis_p">Dis%</label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-2 col-3 text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="dis_amt" name="dis_amt" placeholder=" ">
+                            <label class="floating-label" for="dis_amt">Dis Amt</label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-2 col-3 col-sm-2text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="total_item_dis_amt" name="total_item_dis_amt" placeholder=" ">
+                            <label class="floating-label" for="total_item_dis_amt">Dis Amt</label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-1 col-3 col-sm-2 text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="gst_p" name="gst_p" placeholder=" " required readonly>
+                            <label class="floating-label" for="gst_p">GST %</label>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" class="form-control" id="gstmaster_id" name="gstmaster_id" required readonly>
+                    
+                    <div class="col-md-2 col-3 text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="gst_amt" name="gst_amt" placeholder=" " required readonly>
+                            <label class="floating-label" for="gst_amt">GST Amt</label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-2 col-3 text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="net_item_amt" name="net_item_amt" placeholder=" " required readonly>
+                            <label class="floating-label" for="net_item_amt">Net</label>
+                        </div>
                     </div>
                     <div class="col-md-2  col-3  text-center">
 

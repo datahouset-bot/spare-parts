@@ -341,7 +341,7 @@ align-content: :flex-end;
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="td_detail">{{ $roombooking->room->roomtype->package->package_name }}</td>
+                        <td class="td_detail">{{ $roombooking->package->package_name }}</td>
                         <td class="td_detail">{{ $roombooking->booking_amount }}</td>
                         <td class="td_detail">{{ $roombooking->voucher_payment_remark}}</td>
                         <td class="td_detail">{{ $roombooking->refrance_no}}</td>

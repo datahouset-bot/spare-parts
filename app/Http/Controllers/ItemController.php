@@ -16,17 +16,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ItemController extends CustomBaseController
 {
-    public function __construct()
-    {
-        $this->middleware('permission:view role', ['only' => ['index']]);
-        $this->middleware('permission:create role', ['only' => ['create','store','addPermissionToRole','givePermissionToRole']]);
-        $this-> middleware('permission:update role', ['only' => ['update','edit']]);
-        $this-> middleware('permission:delete role', ['only' => ['destroy']]);
-
-
-        $this->middleware(['auth', 'verified']);
-    }
-
+ 
 
 
     public function index()

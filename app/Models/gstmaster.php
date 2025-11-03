@@ -10,6 +10,7 @@ class gstmaster extends Model
     use HasFactory;
     protected $fillable = [
         'taxname',
+        'hsn_no',
         'sgst',
         'csgst',
         'igst',

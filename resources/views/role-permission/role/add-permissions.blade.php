@@ -47,10 +47,10 @@
 
                             </div>
                             <div class="mb-3">
-                                @if (auth()->check() && (auth()->user()->email === 'datahouset@gmail.com' || auth()->user()->email === Auth::user()->firm_id.'@gmail.com'))
+                                {{-- @if (auth()->check() && (auth()->user()->email === 'datahouset@gmail.com' || auth()->user()->email === Auth::user()->firm_id.'@gmail.com')) --}}
 
                                 <button type="submit" class="btn btn-primary">Update</button>
-                                @endcan
+                                {{-- @endcan --}}
                             </div>
                         </form>
                     </div>

@@ -127,7 +127,7 @@ $validator = Validator::make($request->all(), [
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'primary_unit_name' => 'required|unique:units',
+            'primary_unit_name' => 'required',
             'conversion' => 'numeric|regex:/^\d+(\.\d{1,2})?$/',
         ]);
 

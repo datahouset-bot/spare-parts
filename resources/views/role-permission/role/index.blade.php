@@ -22,10 +22,10 @@
                         <h4>
                             Roles
                             {{-- @can('create role') --}}
-                            @if (auth()->check() && (auth()->user()->email === 'datahouset@gmail.com' || auth()->user()->email === Auth::user()->firm_id.'@gmail.com'))
+                            {{-- @if (auth()->check() && (auth()->user()->email === 'datahouset@gmail.com' || auth()->user()->email === Auth::user()->firm_id.'@gmail.com')) --}}
                             <a href="{{ url('roles/create') }}" class="btn btn-primary float-end">Add Role</a>
                             {{-- @endcan --}}
-                            @endif
+                            {{-- @endif --}}
                         </h4>
                     </div>
                     <div class="card-body">
@@ -43,10 +43,16 @@
                                 <tr>
                                     <td>{{ $role->id }}</td>
                                     <td>{{ $role->name }}</td>
+                                    <td>{{$role->firm_id}}</td>
                                     <td>
-                                        <a href="{{ url('roles/'.$role->id.'/give-permissions') }}" class="btn btn-warning">
-                                            Add / Edit Role Permission
-                                        </a>
+ 
+@if (!empty($role->firm_id) && $role->firm_id !== 'DATA0001')
+    <a href="{{ url('roles/'.$role->id.'/give-permissions') }}" class="btn btn-warning">
+        Add / Edit Role Permission
+    </a>
+   
+@endif
+
                                         @if (auth()->check() && (auth()->user()->email === 'datahouset@gmail.com' || auth()->user()->email === Auth::user()->firm_id.'@gmail.com'))
 
 

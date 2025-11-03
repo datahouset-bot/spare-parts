@@ -16,7 +16,17 @@ class roomtype extends Model
         'room_dis',
         'room_type_af1',
         'room_type_af2',
-        'room_type_af3'
+        'room_type_af3',
+        'room_type_af4',
+        'room_type_af5',
+        'room_type_af6',
+        'room_type_af7',
+        'room_type_af8',
+        'room_type_af9',
+        'room_type_af10',
+        'room_type_af11',
+        'room_type_af12',
+        'room_type_af13',
         // Add other fields here as necessary
     ];
     public function package()

@@ -7,14 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use illuminate\Support\Facades\Validator;
 
-class userprofileController extends Controller
+class userprofileController extends CustomBaseController
 {
     
-    public function __construct()
-    {
-        $this->middleware('auth');
-
-    }
 
 
     public function show()
@@ -29,10 +24,13 @@ class userprofileController extends Controller
         $record = User::where('email', '!=', 'datahouset@gmail.com')
         ->where('email','!=',Auth::user()->firm_id.'@gmail.com')
         ->where('firm_id',Auth::user()->firm_id)
+        ->orderBy('created_at', 'desc')
+
         ->get();
     }else{
         $record = User::where('email', '!=', 'datahouset@gmail.com')
-                ->get();
+                ->orderBy('id', 'desc')        
+        ->get();
     }
         return view('userprofile', ['data' => $record]);
          
@@ -56,7 +54,8 @@ class userprofileController extends Controller
         $record = User::where('email', '!=', 'datahouset@gmail.com')
                 ->get();
     }
-        return view('userprofile', ['data' => $record]);
+      return redirect('/userprofile')->with('data', $record);
+
 
     }
     

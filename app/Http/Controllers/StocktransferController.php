@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StorestocktransferRequest;
 use App\Http\Requests\UpdatestocktransferRequest;
 
-class StocktransferController extends Controller
+class StocktransferController extends CustomBaseController
 {
     /**
      * Display a listing of the resource.

@@ -10,11 +10,6 @@ use App\Http\Requests\UpdateitemgroupRequest;
 
 class ItemgroupController extends CustomBaseController
 {
-    public function __construct()
-    {
-        $this->middleware(['auth','verified']);
-
-    }
 
    
     /**
@@ -73,12 +68,12 @@ class ItemgroupController extends CustomBaseController
     /**
      * Display the specified resource.
      */
-    public function show(itemgroup $id)
-    {
-        $record= itemgroup::where('firm_id',Auth::user()->firm_id)->find($id);
+public function show($id)
+{
+    $record = itemgroup::findOrFail($id);
+    return view('master.Itemgroup_edit', compact('record'));
+}
 
-        return view('master.itemgrouplist',['data'=>$record]);
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -92,10 +87,20 @@ class ItemgroupController extends CustomBaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateitemgroupRequest $request, itemgroup $itemgroup)
-    {
-        //
-    }
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'item_group' => 'required|string|max:255',
+        'head_group' => 'required|string',
+    ]);
+
+    $record = itemgroup::findOrFail($id);
+    $record->item_group = $request->item_group;
+    $record->head_group = $request->head_group;
+    $record->save();
+
+    return redirect('/itemgroups')->with('message', 'Item group updated successfully.');
+}
 
     /**
      * Remove the specified resource from storage.

@@ -151,18 +151,26 @@ align-content: :flex-end;
             border: 1px solid black;
             margin-bottom: 0px;
         }
-        .terms{
-            grid-column: 1 / 3;
-            height: 100px;
-            text-align: center;
-        }
-        .bank_detail{
-            text-align: left;
-            height: 120px;
-            border-top: 1px solid;
-            padding: 1px;
-            font-size: 15px; 
-        }
+.terms {
+    grid-column: 1 / 3;
+    text-align: left;  /* better readability */
+    padding: 5px;
+    font-size: 14px;
+    line-height: 1.4;
+    height: auto;               /* ✅ remove fixed height */
+    overflow-wrap: break-word;  /* ✅ force wrapping */
+    word-break: break-word;
+}
+
+.bank_detail {
+    text-align: left;
+    border-top: 1px solid;
+    padding: 5px;
+    font-size: 15px;
+    height: auto;               /* ✅ remove fixed height */
+    overflow-wrap: break-word;  /* ✅ wrap long text */
+    word-break: break-word;
+}
         .comp_sign{
 
             border-left: 1px solid;
@@ -362,7 +370,8 @@ align-content: :flex-end;
         <div class="voucher_footer">
             <div class="terms "style="background-color:#e6ecff">
             <h5>Terms & Conditions</h5>
-            <span >{{$compinfofooter->terms}}</span>
+            <span>{{$compinfofooter->terms}}</span>
+            
             </div>
             <div class="for_companyname"style="background-color:#e6ecff"><span>For {{ $componyinfo->cominfo_firm_name }}</span><br></div>
             <div class="bank_detail"style="background-color:#e6ecff">

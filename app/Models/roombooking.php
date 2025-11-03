@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\HasFinancialYear;
 class roombooking extends Model
 {
     use HasFactory;
+    use HasFinancialYear;
 
     protected $fillable = [
         'booking_no',
@@ -50,5 +51,9 @@ class roombooking extends Model
     public function room()
     {
         return $this->belongsTo(room::class, 'room_id', 'id');
+    }
+    public function package()
+    {
+        return $this->belongsTo(package::class, 'package_id', 'id');
     }
 }

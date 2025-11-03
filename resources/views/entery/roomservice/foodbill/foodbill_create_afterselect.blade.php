@@ -100,6 +100,9 @@
                     <a href="{{ url('temp_item_delete/' . Auth::user()->id) }}" class="btn btn-success">Add New</a>
                     <form id="saveForm" action="{{ route('foodbills.store') }}" method="POST" style="display:inline;">
                         @csrf
+                        <input  type="checkbox" name="approval" value="true" id="flexCheckDefault">
+                            
+                             Print Approval
                         <button id="saveButton" type="submit" class="btn btn-primary">Save & Print</button>
 
 
@@ -186,6 +189,10 @@
                                     <td>Dis Amt</td>
                                     <td>Taxable</td>
                                     <td>GST%</td>
+                                    <td>VAT%</td>
+
+                                    <td>SUR%</td>
+
                                     <td>Value</td>
 
 
@@ -198,7 +205,7 @@
 
                             </tbody>
                             <tfoot class="table-dark">
-                                <tr>
+                                                              <tr>
                                     <td>Total </td>
                                     <td id="total_records"></td>
                                     <td id="total_qty1"></td>
@@ -208,9 +215,11 @@
                                     <td id="total_discount"></td>
                                     <td id="total_taxable"></td>
                                     <td id="total_gstamt"></td>
+                                    <td id="total_vatamt"></td>
+                                    <td id="total_tax1amt"></td>
+
                                     <td id="total_netvalue"></td>
                                 </tr>
-
                             </tfoot>
 
                         </table>
@@ -321,6 +330,8 @@
                         <input type="hidden" name="total_base_amount" id="total_base_amount" value="">
                         <input type="hidden" name="total_discount_amount" id="total_discount_amount" value="">
                         <input type="hidden" name="total_gst_amount" id="total_gst_amount" value="">
+                         <input type="hidden" name="total_vat_amount" id="total_vat_amount" value="">
+                        <input type="hidden" name="total_tax1_amount" id="total_tax1_amount" value="">
 
                     </div>
 
@@ -375,7 +386,7 @@
 
                         if (response.status === 200) {
                             var itemRecords = response.itemrecords;
-                            var totalQty = 0;
+                                                     var totalQty = 0;
                             var totalAmount = 0;
                             var itemdiscountamt = 0;
                             var itemvalue = 0;
@@ -384,6 +395,8 @@
                             var itemgstamt = 0;
                             var itemnetvalue = 0;
                             var totalgstamt = 0;
+                            var totalvatamt = 0;
+                            var totaltax1amt=0; 
                             var totalitemtaxable = 0;
                             var totalnetvalue = 0;
                             var totalitemdiscount = 0;
@@ -397,17 +410,29 @@
                                 totalQty += parseFloat(record.qty);
 
                                 gstpercent = record.item.gstmaster.igst;
+                                vatpercent = record.item.gstmaster.vat;
+                                tax1percent = record.item.gstmaster.tax1;
+
                                 totalAmount += amount;
                                 dis_percant = $('#dis_percant').val();
                                 dis_amt_roundoff = $('#dis_amt_roundoff').val();
-                                itemdiscountamt = ((record.qty * record.rate) * dis_percant) /
-                                    100;
+                                const excludedGroups = ['BAVRAGE', 'HARD DRINK', 'DESERT','LIQUOR'];
+                                if (!excludedGroups.includes(record.item.item_group.toUpperCase())) {
+    itemdiscountamt = ((record.qty * record.rate) * dis_percant) / 100;
+} else {
+    itemdiscountamt = 0;
+}
                                 totalitemdiscount += itemdiscountamt;
                                 itemtaxable = amount - itemdiscountamt;
                                 totalitemtaxable += itemtaxable;
                                 itemgstamt = (((amount - itemdiscountamt) * gstpercent) / 100);
                                 totalgstamt += itemgstamt;
-                                itemnetvalue = itemtaxable + itemgstamt;
+                                itemvatamt=((amount - itemdiscountamt) * vatpercent) / 100  ;
+                                totalvatamt +=itemvatamt;
+                                itemtax1amt= ((((amount - itemdiscountamt) * vatpercent) / 100)*10)/100 ;   
+                                totaltax1amt +=itemtax1amt; 
+
+                                itemnetvalue = itemtaxable + itemgstamt +itemvatamt+itemtax1amt;
                                 totalnetvalue += itemnetvalue;
 
 
@@ -418,12 +443,15 @@
                                         <td>${record.qty}</td>
                                         <td>${record.rate}</td>
                                         <td>${amount.toFixed(2)}</td>
-                                        <td>${dis_percant}</td>
-                                        
+                                       <td>${!excludedGroups.includes(record.item.item_group.toUpperCase()) ? dis_percant : ''}</td> 
+
 
                                         <td>${itemdiscountamt.toFixed(2)}</td>
                                         <td>${itemtaxable.toFixed(2)}</td>
                                         <td>${record.item.gstmaster.igst}</td>
+                                      <td>${parseFloat(record.item.gstmaster.vat).toFixed(2)}</td>
+                                      <td>${parseFloat(record.item.gstmaster.tax1).toFixed(2)}</td>
+
                                         <td>${itemnetvalue.toFixed(2)}</td>
                                              
 
@@ -445,6 +473,11 @@
                             $('#total_taxable').text(totalitemtaxable.toFixed(2));
                             $('#total_gstamt').text(totalgstamt.toFixed(2));
                             $('#total_gst_amount').val(totalgstamt.toFixed(2));
+                            $('#total_vatamt').text(totalvatamt.toFixed(2));
+                            $('#total_vat_amount').val(totalvatamt.toFixed(2));
+                            $('#total_tax1amt').text(totaltax1amt.toFixed(2));
+                            $('#total_tax1_amount').val(totaltax1amt.toFixed(2));
+
 
                             $('#total_netvalue').text(totalnetvalue.toFixed(2));
                             $('#net_bill_amount').val(totalnetvalue.toFixed(2));

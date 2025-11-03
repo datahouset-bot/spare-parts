@@ -232,9 +232,12 @@
                                                                 <option value="Indonesia"
                                                                     {{ old('country', $compinfofooter->country) == 'Indonesia' ? 'selected' : '' }}>
                                                                     Indonesia</option>
-                                                                <option value="Pakistan"
-                                                                    {{ old('country', $compinfofooter->country) == 'Pakistan' ? 'selected' : '' }}>
-                                                                    Pakistan</option>
+                                                                <option value="DR Congo"
+                                                                    {{ old('country', $compinfofooter->country) == 'DR Congo' ? 'selected' : '' }}>
+                                                                    DR Congo</option>
+                                                                <option value="Madagascar"
+                                                                    {{ old('country', $compinfofooter->country) == 'Madagascar' ? 'selected' : '' }}>
+                                                                    Madagascar</option>    
 
 
                                                             </select>
@@ -277,6 +280,9 @@
                                                                 <option value="SAR"
                                                                     {{ old('currency', $compinfofooter->currency) == 'SAR' ? 'selected' : '' }}>
                                                                     &#x0631;.&#x0633; Saudi Riyal (SAR)</option>
+                                                                <option value="MGA"
+                                                                    {{ old('currency', $compinfofooter->currency) == 'MGA' ? 'selected' : '' }}>
+                                                                     Malagasy Ariary (AR)</option>    
                                                             </select>
                                                             <span class="text-danger">
                                                                 @error('currency')
@@ -350,9 +356,48 @@
                                                       </div>
 
                                                   </div>
+                                                  <div class="col-md-4">
+                                                    <div class="form-floating mb-3 mb-md-0">
+                                                        <select class="form-select" id="ct7" name="ct7">
+                                                            <option value="GST"
+                                                                {{ old('ct7', $compinfofooter->ct7) == 'GST' ? 'selected' : '' }}>
+                                                                GST</option>
+                                                            <option value="VAT"
+                                                                {{ old('ct7', $compinfofooter->ct7) == 'VAT' ? 'selected' : '' }}>
+                                                                 VAT</option>
+    
+                                                        </select>
+                                                        <span class="text-danger">
+                                                            @error('tax_type')
+                                                                {{ $message }}
+                                                            @enderror
+                                                        </span>
+                                                        <label for="tax_type">Tax System</label>
+                                                    </div>
+
+                                                </div>
 
 
                                               </div>
+                                              
+                                              
+                                              <div class="row mb-3">
+                                                <div class="col-md-4">
+                                                    <div class="form-check mb-3 mb-md-0">
+                                                        <input class="form-check-input" type="checkbox" id="ct6" name="ct6" value="1" {{ old('ct6', $compinfofooter->ct6) == 1 ? 'checked' : '' }}>
+
+                                                        <label class="form-check-label" for="ct6">Restaurant & Room Food Bill Tax Inclusive </label>
+                                                        <br>
+                                                        <span class="text-danger">
+                                                            @error('ct6')
+                                                                {{ $message }}
+                                                            @enderror
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                                                                        
                                                 <div class="input-group mb-3 mb-md-0">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">Terms &amp; Conditions</span>

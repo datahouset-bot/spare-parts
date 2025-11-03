@@ -593,11 +593,14 @@
                                                                 @enderror
                                                             </span>
                                                         </div>
+                                                      <input class="form-control" id="account_id" type="hidden"
+                                                                name="account_id" value="{{ $romcheckins_first->account->id }}"
+                                                                autocomplete="none" />
                                                         <div class="col-md-3"><span class="requierdfield">*</span>
                                                             <label for="guest_mobile">Mobile</label>
                                                             <input class="form-control" id="guest_mobile" type="text"
                                                                 name="guest_mobile" value="{{ $romcheckins_first->account->mobile }}"
-                                                                autocomplete="none" />
+                                                                autocomplete="none" readonly />
                                                             <span class="text-danger">
                                                                 @error('guest_mobile')
                                                                     {{ $message }}

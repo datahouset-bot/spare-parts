@@ -1,17 +1,43 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <div id="layoutSidenav_content">
+   
     <main>
         <div class="container-fluid px-4">
 
             <div class="logo1">&nbsp;<img src="{{ asset('storage\app\public\image\\' . $pic->logo) }}" alt="qr_code"
                     width="80px">
                 <h1 class="mt-4"> {{ $componyinfo->cominfo_firm_name }} </h1>
+
             </div>
             <ol class="breadcrumb mb-4">
                 <li class="breadcrumb-item active">
-                    {{ $compinfofooter->ct2 }} Dashboard Date {{ now()->format('d-m-y') }} Time
-                    <span id="current-time"></span>
+                    {{ $compinfofooter->ct2 }} Dashboard Today Date  {{ now()->format('d-m-y') }} Time
+                    <span id="current-time"></span> 
+                    <span id="finacial_year" style="background-color: rgb(247, 164, 164); font-weight: 800px; color: rgb(8, 32, 243);">
+          @if ($financialyear)
+    FY From{{ \Carbon\Carbon::parse( $financialyear->financial_year_start)->format('d-m-y') }}  to   {{ \Carbon\Carbon::parse( $financialyear->financial_year_end)->format('d-m-y') }} 
+@endif
+
+  
+                    </span>
                     <br>Activation Date:&nbsp;{{ \Carbon\Carbon::parse($softwarecompinfo->activation_date)->format('d-m-y') }}  & Renew Date:&nbsp;{{ \Carbon\Carbon::parse($softwarecompinfo->expiry_date)->format('d-m-y') }} & Day Remaining:&nbsp;{{$daysDifference}}
+                                @if ($softwarecompinfo->software_af6 == 'af')
+                                  <span style="background-color: orange; font-weight: 800px; color: white;"> WhatsApp Not Active99 </span>  
+
+ @else
+    @php
+        $validity_date = \Carbon\Carbon::parse($softwarecompinfo->software_af6)->startOfDay();
+        $current_date = now()->startOfDay();
+    @endphp
+
+    @if ($current_date->greaterThan($validity_date))
+     <span style="background-color: red; font-weight: 800px; color: white;"> WhatsApp Validity Expired On {{ $validity_date->format('d-m-Y') }}</span>  
+    @else
+    <span style="background-color: green; font-weight: 800px; color: white;">WhatsApp Validity: {{ $validity_date->format('d-m-Y') }}</span>
+        
+    @endif
+@endif
+
 
 
 
@@ -25,23 +51,23 @@
 
 
 
-            <div class="row">
-                @can('Room_Dashboard')
+             <div class="row">
+                 @can('Room_Dashboard')
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
                         <a href="{{ url('/room_dashboard') }}" class="btn btn-success d-flex align-items-center justify-content-start">
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-home"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Room Dashboard</span>
+                            <span class="ms-2" style="width: 90%;"> Dashboard</span>
                         </a>
                     </div>
                 </div>
-                @endcan
+                @endcan 
 
 
 
-                @can('roombooking')
+                {{-- @can('roombooking')
                 <div class="col-xl-3 col-md-6">
                     
                     <div class="card bg-primary text-white mb-4">
@@ -56,8 +82,8 @@
 
                     </div>
                 </div>
-                @endcan 
-                @can('roomcheckin') 
+                @endcan  --}}
+                {{-- @can('roomcheckin') 
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
                         <a href="{{ url('/roomcheckins/create') }}" class="btn btn-info d-flex align-items-center justify-content-start">
@@ -92,8 +118,8 @@
                         </a>
                     </div>
                 </div>
-            @endcan
-            @can('foodbills')
+            @endcan --}}
+            {{-- @can('foodbills')
                 
 
                 <div class="col-xl-3 col-md-6">
@@ -118,7 +144,7 @@
                         </a>
                     </div>
                 </div>
-            @endcan
+            @endcan--}}
             @can('Lead Module')
             <div class="col-xl-3 col-md-6">
                 <div class="card bg-primary text-white mb-4">
@@ -237,7 +263,7 @@
                     </div>
                 </div>
             @endcan
-            @can('Restaurant')
+            {{-- @can('Restaurant')
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-info text-white mb-4">
 
@@ -245,11 +271,11 @@
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-store"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Restaurant</span>
+                            <span class="ms-2" style="width: 90%;">dashboard</span>
                         </a>
                     </div>
                 </div>
-                @endcan
+                @endcan --}}
             @can('purchase')
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
@@ -298,6 +324,21 @@
                         </a>
                     </div>
                 </div>
+            @endcan   
+          @can('Only_Whatsapp')
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{ url('/send_promotional_whatsapp') }}" class="btn btn-success d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fa fa-bullhorn"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;">Bulk Whatsapp </span>
+                        </a>
+                    </div>
+                </div>
+
+                  
+
             @endcan    
             </div>
             
@@ -347,7 +388,75 @@
                                 <td>{{ $dirtyroom }}</td>
 
                             </tr>
+
                         </tbody>
+
+                    </table>
+                                        <table >
+                        <thead>
+   @if($kot_Unprinted > 0 || $Rkot_Unprinted > 0)
+    <style>
+        .kot-alert-row {
+            background-color: #ffe6e6; /* Light red background for row */
+            color: #d60000;
+            font-weight: bold;
+        }
+
+        .blinking-bulb {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            margin-right: 8px;
+            background-color: red;
+            border-radius: 50%;
+            animation: blinker 1.2s linear infinite;
+            box-shadow: 0 0 6px red;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .kot-link {
+            text-decoration: none;
+            color: #d60000;
+            font-size: 16px;
+        }
+
+        .kot-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    @if($kot_Unprinted > 0)
+        <tr class="kot-alert-row">
+            <th>
+                <span class="blinking-bulb"></span>
+                <a href="{{ route('kots.index') }}" class="kot-link">Room Kot Unprinted - {{ $kot_Unprinted }}</a>
+            </th>
+        </tr>
+    @endif
+
+    @if($Rkot_Unprinted > 0)
+        <tr class="kot-alert-row">
+            <th>
+                <span class="blinking-bulb"></span>
+                <a href="{{ url('/restaurant_kot') }}" class="kot-link">Restaurant Kot Unprinted - {{ $Rkot_Unprinted }}</a>
+            </th>
+        </tr>
+    @endif
+@endif
+
+
+
+
+                      
+                            
+                            </tr>
+                        </thead>
+                    
 
                     </table>
                 </div>
@@ -374,6 +483,11 @@
                         <!-- Second Button: Send message to WhatsApp -->
                         <a href="{{ url('/') }}/{{ Auth::user()->firm_id }}" id="send-message" class="btn btn-danger mx-1">Visit Website</a>
                     </div>
+                     <div  style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}" class="col-md-2">
+                        <!-- Second Button: Send message to WhatsApp -->
+                        <a href="{{ url('/pushInventory') }}" id="send-message" class="btn btn-warning mx-1"> <i class="fas fa-cloud-upload-alt" style="font-size:18px;"></i> &nbsp;Push Room Inventory</a>
+                    </div>
+
                     @endcan
                 </div>
                 
@@ -437,3 +551,4 @@
             setInterval(getCurrentTime, 1000);
         });
     </script>
+

@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasFinancialYear;
 
 class roomcheckin extends Model
 {
     use HasFactory;
+    use HasFinancialYear;
     protected $fillable = [
         'token',
         'check_in_no',

@@ -77,15 +77,20 @@
             </ol>
             <div class="carousel-inner">
                <div class="carousel-item active">
-                  <img class="first-slide" src="{{global_asset('hotel_front_assets/images/banner1.jpg')}}" alt="First slide">
+
+<img class="first-slide" 
+     src="{{ asset('storage\app\public\image\\' . $firm_pic->pic_af1) }}" 
+     alt="First slide"
+     style="width:100%; height:70vh; object-fit:cover;">
+
                   <div class="container">
                   </div>
                </div>
                <div class="carousel-item">
-                  <img class="second-slide" src="{{global_asset('hotel_front_assets/images/banner2.jpg')}}" alt="Second slide">
+                  <img class="second-slide" src="{{ asset('storage\app\public\image\\' . $firm_pic->pic_af2) }}" alt="Second slide"      style="width:100%; height:70vh; object-fit:cover;">
                </div>
                <div class="carousel-item">
-                  <img class="third-slide" src="{{global_asset('hotel_front_assets/images/banner3.jpg')}}" alt="Third slide">
+                  <img class="third-slide" src="{{ asset('storage\app\public\image\\' . $firm_pic->pic_af3) }}" alt="Third slide"      style="width:100%; height:70vh; object-fit:cover;">
                </div>
             </div>
             <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
@@ -132,7 +137,7 @@
                </div>
                <div class="col-md-7">
                   <div class="about_img">
-                     <figure><img src={{global_asset('hotel_front_assets/images/about.png')}} alt="#"/></figure>
+                     <figure><img src="{{ asset('storage\app\public\image\\' . $firm_pic->pic_af4) }}" alt="#"/></figure>
                   </div>
                </div>
             </div>
@@ -169,25 +174,31 @@
                      </div>
                   </form>
                </div>
-               <div class="col-md-6">
-                  <div class="map_main">
-                     <?php 
-    $latitude = 17.595753; 
-    $longitude = 78.084418; 
-    
-?>
-<iframe 
-    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15248.404720891936!2d<?php echo $longitude; ?>!3d<?php echo $latitude; ?>!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z17°35'44.7%22N%2078°05'03.9%22E!5e0!3m2!1sen!2sin!4v1727515343852!5m2!1sen!2sin" 
-    width="600" 
-    height="450" 
-    style="border:0;" 
-    allowfullscreen="" 
-    loading="lazy" 
-    referrerpolicy="no-referrer-when-downgrade">
-</iframe>
+<div class="col-md-6">
 
-                  </div>
-               </div>
+    
+    @if(!empty($firm_cominfo->componyinfo_af10))
+        @php
+            $mapValue = $firm_cominfo->componyinfo_af10;
+
+            // If user mistakenly pasted full Google short link
+            if (Str::startsWith($mapValue, 'http')) {
+                $mapValue = null; // ignore short links
+            }
+        @endphp
+
+        @if($mapValue)
+            <iframe 
+                src="https://www.google.com/maps/embed?pb={{ $mapValue }}" 
+                width="600" height="450" 
+                style="border:0;" allowfullscreen 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        @endif
+    @endif
+</div>
+
             </div>
          </div>
       </div>

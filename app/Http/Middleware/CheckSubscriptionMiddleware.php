@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\maintenancemode;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,13 +28,29 @@ class CheckSubscriptionMiddleware
             $expiryDate = Carbon::parse($softwarecompinfo->expiry_date);
             $currentDate = Carbon::now();
             $daysDifference = $currentDate->diffInDays($expiryDate, false);
+           $maintinacemode=maintenancemode::first();
+          $mode=$maintinacemode->maintenance_mode;
+          
 
-            if ($daysDifference < 0) {
+             if ($mode > 0) {
+                // Subscription has expired, show 'subscription_expired' view
+                return response()->view('maintancemode',compact('maintinacemode'));
+
+            } 
+                        if ($daysDifference < 0) {
                 // Subscription has expired, show 'subscription_expired' view
                 return response()->view('subscription_expired');
             }
+
+
+
+
+             
+            
         }
 
         return $next($request);
     }
+    
+    
 }

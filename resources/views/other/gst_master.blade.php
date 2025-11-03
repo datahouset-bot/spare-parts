@@ -61,6 +61,17 @@
                             </div>
                             <div>
 
+                             HSN NO  <input type="text" name ="hsn_no"class="form-control" placeholder="HSN No ">
+                              <span class="text-danger"> 
+                                @error('hsn_no')
+                                {{$message}}
+                                    
+                                @enderror
+                              </span>
+                            </div>
+                            
+                            <div>
+
                             SGST % <input type="text" name ="sgst"class="form-control" placeholder="SGST ">
                             <span class="text-danger"> 
                               @error('sgst')
@@ -184,6 +195,7 @@
                   <tr>
                     <th scope="col">S.No</th>
                     <th scope="col"> NAME</th>
+                    <th scope="col"> HSN No</th>
                     <th scope="col"> SGST % </th>
                     <th scope="col"> CGST % </th>
                     <th scope="col"> IGST % </th>
@@ -209,6 +221,7 @@
            
                     <th scope="row">{{$r1=$r1+1}}</th>
                     <td>{{$record['taxname']}}</td>
+                    <td>{{$record['hsn_no']}}</td>
                     <td>{{$record['sgst']}}</td>
                     <td>{{$record['cgst']}}</td>
                     <td>{{$record['igst']}}</td>

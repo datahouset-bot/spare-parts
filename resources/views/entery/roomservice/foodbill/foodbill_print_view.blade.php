@@ -286,6 +286,10 @@ background-color:white;
                 </div>
                 <div class="firm_detail">
                     <h4>{{ $componyinfo->cominfo_firm_name }}</h4>
+                    @if(!empty($componyinfo->cominfo_gst_no))
+    <h6>GST No: {{ $componyinfo->cominfo_gst_no }}</h6>
+@endif
+
                 </div>
                 <div class="logo2"><img src="{{ asset('storage\app\public\image\\' . $pic->qrcode) }}" alt="qr_code"
                         width="80px">
@@ -398,19 +402,40 @@ background-color:white;
                                 <td>Basic Amt:</td>
                                 <td>{{ $foodbill_header->total_base_amount }}</td>
                             </tr>
+                           @if(!is_null($foodbill_header->cash_discount) && $foodbill_header->cash_discount != 0)
                             <tr>
                                 <td>Dis {{ $foodbill_header->disc_percent}}% :</td>
-                                <td>{{ $foodbill_header->cash_discount }}</td>
-                            </tr>
+                                <td>{{ $foodbill_header->cash_discount }}</td>                            </tr>
+                            @endif
+                        
 
+                            @if(!is_null($foodbill_header->total_sgst) && $foodbill_header->total_sgst != 0)
                             <tr>
                                 <td>SGST Amt:</td>
                                 <td>{{ $foodbill_header->total_sgst }}</td>
                             </tr>
+                            @endif
+                            @if(!is_null($foodbill_header->total_cgst) && $foodbill_header->total_cgst != 0)
                             <tr>
                                 <td>CGST Amt:</td>
                                 <td>{{ $foodbill_header->total_cgst }}</td>
                             </tr>
+                            @endif
+                        
+                           
+                            @if(!is_null($foodbill_header->total_vat) && $foodbill_header->total_vat != 0)
+                            <tr>
+                                <td>Vat Amt:</td>
+                                <td>{{ $foodbill_header->total_vat }}</td>
+                            </tr>
+                           
+                        
+                            <tr>
+                                <td>Sur Amt:</td>
+                                <td>{{ $foodbill_header->total_tax1 }}</td>
+                            </tr>
+                             @endif
+
                             <tr>
                                 <td>Round Off:</td>
                                 <td>{{ $foodbill_header->roundoff_amt }}</td>

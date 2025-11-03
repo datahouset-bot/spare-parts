@@ -26,7 +26,7 @@
 
     <div class="card my-3">
         <div class="card-header">
-        <h4>Purchase <h4>       </div>
+        <h4>Item Wise Stock  <h4>       </div>
        <div class="row my-2">
           <div class="col-md-12 text-center">
             <a href="{{url('purchases/create')}}" class="btn btn-primary">New Purchase  </a>

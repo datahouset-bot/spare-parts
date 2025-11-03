@@ -49,7 +49,10 @@
                   <tr>
                     <th scope="col">S.No</th>
                     <th scope="col"> Bill No    </th>
+                    <th scope="col"> CheckIn No   </th>
+                 
                     <th scope="col"> Room No   </th>
+                  
                     <th scope="col"> Guest Name </th>
                     <th scope="col"> Contact No </th>
                     <th scope="col"> Check in Date </th>
@@ -76,7 +79,11 @@
            
                     <td scope="row">{{$r1=$r1+1}}</td>
                      <td>{{$record['check_out_no']}}</td>
-                     <td>{{$record['room_no']}}</td>
+                     <td>{{$record->checkin_checkout_voucher_no }}</td>
+                    
+                    
+                     <td>{{$record->checkout_room_no}}</td>
+                     
                      <td>{{$record['guest_name']}}</td>
                      <td>{{$record['guest_mobile']}}</td>
                      <td scope="col">{{ \Carbon\Carbon::parse($record['checkin_date'])->format('d-m-y') }}</td>
@@ -87,26 +94,53 @@
 
                     
                      <td>
-                      <button class="btn btn-sm" onclick="printRoomBooking({{url('checkout_print_view', $record['voucher_no'])  }})">
+                      <button class="btn btn-sm" onclick="printRoomBooking({{url('checkout_vh_no', $record['checkout_voucher_no'])  }})">
                           <i class="fa fa-print" style="font-size:20px;color:SlateBlue"></i>
                       </button>
                   </td>
                   
 
                      <td>
-                      <a href="{{ url('checkout_print_view', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
+                      <a href="{{ url('checkout_print_view', $record['checkout_voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
                   </td> 
                   <td>
-                      <a href="{{ route('roomcheckouts.edit', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
-                  </td>
-                  <td><a href="https://wa.me/{{$record['guest_mobile']}}" ><i class="fa fa-bullhorn"style="font-size:20px;color:green"></i> </a></td>
+                      <a href="{{ url('roomcheckouts/' . $record['checkout_voucher_no'] . '/edit') }}" class="btn btn-sm">
+    <i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i>
+</a>
 
+                  </td>
+                  {{-- <td><a href="https://wa.me/{{$record['guest_mobile']}}" ><i class="fa fa-bullhorn"style="font-size:20px;color:green"></i> </a></td> --}}
+                  {{-- <td><a href="https://wapp.powerstext.in/http-tokenkeyapi.php?authentic-key=393444617461486f7573653130301747389187&route=1&number={{$record['guest_mobile']}}&message=Thanks For Stay With Us We Are testing whtsapp " ><i class="fa fa-bullhorn"style="font-size:20px;color:green"></i> </a></td> --}}
+
+<td>
+    <a href="#" onclick="sendWhatsApp('{{ $record['guest_mobile'] }}'); return false;">
+        <i class="fa fa-bullhorn" style="font-size:20px;color:green"></i>
+    </a>
+</td>
+
+<script>
+    function sendWhatsApp(mobile) {
+        fetch(`/send-whatsapp?number=${mobile}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("WhatsApp message sent");
+                } else {
+                    alert("Failed to send WhatsApp message");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Something went wrong");
+            });
+    }
+</script>
 
                     <td>
-                      <form action="{{ route('roomcheckouts.destroy', $record['voucher_no']) }}" method="POST" style="display:inline;">
-                          @csrf
+                      <form action="{{ url('roomcheckouts/' . $record['checkout_vh_no']) }}" method="POST" style="display:inline;">
+                         @csrf
                           @method('DELETE')
-                          <button type="submit" class="btn  btn-sm" onclick="return confirm('Are you sure you want to delete this  Room Checkin ?{{$record['voucher_no']}}')"><i class="fa fa-trash" style="font-size:20px;color:OrangeRed"></i></button>
+                          <button type="submit" class="btn  btn-sm" onclick="return confirm('Are you sure you want to delete this  Room Check Out ?{{$record['checkout_voucher_no']}}')"><i class="fa fa-trash" style="font-size:20px;color:OrangeRed"></i></button>
                       </form>
                   </td>
                   

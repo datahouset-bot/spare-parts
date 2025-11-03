@@ -57,6 +57,15 @@ class RoomtypeController extends CustomBaseController
                 $roomtype->gst_id=$request->gst_id;
                 $roomtype->room_tariff=$request->room_tariff;
                 $roomtype->room_dis=$request->room_dis;
+                $roomtype->room_type_af1=$request->room_type_af1; // room code given by channel manager 
+                $roomtype->room_type_af2=$request->room_type_af2; // room rate code  singale given by channel manager 
+                $roomtype->room_type_af3=$request->room_type_af3; // room rate rate sigle 
+                $roomtype->room_type_af4=$request->room_type_af4; // room rate code double given by channel manager 
+                $roomtype->room_type_af5=$request->room_type_af5; // room rate double  
+                $roomtype->room_type_af6=$request->room_type_af6; // room rate code tripale  given by channel manager 
+                $roomtype->room_type_af7=$request->room_type_af7; // room rate  tripale 
+                $roomtype->room_type_af8=$request->room_type_af8; // room rate code qued  given by channel manager 
+                $roomtype->room_type_af9=$request->room_type_af9; // room rate  qued  
 
                 $roomtype->save();
         

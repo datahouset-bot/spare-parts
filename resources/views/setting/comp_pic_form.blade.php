@@ -155,6 +155,121 @@
 </div></td></tr> </form>
 
 
+
+<tr>
+    <form action="{{ url('/comp_pic_af1') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+         @method('put') 
+
+    <th scope="row">6</th>
+    <td>Web Image 1</td>
+    <td><img src="{{ asset('storage\app\public\image\\' . $comppic->pic_af1) }}" alt="" width="130px"></td>
+
+<td><div class="form-floating mb-2 mb-md-2">
+<input class="form-control" id="comp_pic_af1" type="file" name="comp_pic_af1" value="" multiple />
+<span class="text-danger">
+@error('comp_pic_af1')
+{{ $message }}
+@enderror
+</span>
+</div>
+</td>
+<td> <div class="d-grid">
+<button type="submit" class="btn btn-primary btn-block">Upload web Image1</button>
+</div></td></tr> </form>
+
+
+<tr>
+    <form action="{{ url('/comp_pic_af2') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+         @method('put') 
+
+    <th scope="row">7</th>
+    <td>Web Image 2</td>
+    <td><img src="{{ asset('storage\app\public\image\\' . $comppic->pic_af2) }}" alt="" width="130px"></td>
+
+<td><div class="form-floating mb-2 mb-md-2">
+<input class="form-control" id="comp_pic_af2" type="file" name="comp_pic_af2" value="" multiple />
+<span class="text-danger">
+@error('comp_pic_af2')
+{{ $message }}
+@enderror
+</span>
+</div>
+</td>
+<td> <div class="d-grid">
+<button type="submit" class="btn btn-primary btn-block">Upload Web Image2</button>
+</div></td></tr> </form>
+
+<tr>
+    <form action="{{ url('/comp_pic_af3') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+         @method('put') 
+
+    <th scope="row">8</th>
+    <td>Web Image 3</td>
+    <td><img src="{{ asset('storage\app\public\image\\' . $comppic->pic_af3) }}" alt="" width="130px"></td>
+
+<td><div class="form-floating mb-2 mb-md-2">
+<input class="form-control" id="comp_pic_af3" type="file" name="comp_pic_af3" value="" multiple />
+<span class="text-danger">
+@error('comp_pic_af3')
+{{ $message }}
+@enderror
+</span>
+</div>
+</td>
+<td> <div class="d-grid">
+<button type="submit" class="btn btn-primary btn-block">Upload Webimage3</button>
+</div></td></tr> </form>
+
+<tr>
+    <form action="{{ url('/comp_pic_af4') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+         @method('put') 
+
+    <th scope="row">9</th>
+    <td>Web Image 4</td>
+    <td><img src="{{ asset('storage\app\public\image\\' . $comppic->pic_af4) }}" alt="" width="130px"></td>
+
+<td><div class="form-floating mb-2 mb-md-2">
+<input class="form-control" id="comp_pic_af4" type="file" name="comp_pic_af4" value="" multiple />
+<span class="text-danger">
+@error('comp_pic_af4')
+{{ $message }}
+@enderror
+</span>
+</div>
+</td>
+<td> <div class="d-grid">
+<button type="submit" class="btn btn-primary btn-block">Upload Web Image4</button>
+</div></td></tr> </form>
+
+<tr>
+    <form action="{{ url('/comp_pic_af5') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+         @method('put') 
+
+    <th scope="row">10</th>
+    <td>Google Map 5</td>
+    <td><img src="{{ asset('storage\app\public\image\\' . $comppic->pic_af5) }}" alt="" width="130px"></td>
+
+<td><div class="form-floating mb-2 mb-md-2">
+<input class="form-control" id="comp_pic_af5" type="file" name="comp_pic_af5" value="" multiple />
+<span class="text-danger">
+@error('comp_pic_af5')
+{{ $message }}
+@enderror
+</span>
+</div>
+</td>
+<td> <div class="d-grid">
+<button type="submit" class="btn btn-primary btn-block">Upload Google Map</button>
+</div></td></tr> </form>
+
+
+
+
                                                                                                       
                                                 </tbody>
                                             </table>

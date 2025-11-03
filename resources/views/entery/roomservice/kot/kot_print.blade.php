@@ -290,10 +290,28 @@ background-color:white;
                 <div class="info-container">
                     <div class="cust_info">
                         <span class="heading">Guest Detail</span><br>
-                       <span>Guest Name  :{{ $guest_detail->guest_name }}</span><br>
-                       <span>Guest Room No   :{{ $guest_detail->room_nos }}</span><br>
-                       <span>Check In No   :{{ $guest_detail->voucher_no }}</span><br>
-                    </div>
+                        @if(isset($guest_detail->guest_name))
+    <span>Guest Name: {{ $guest_detail->guest_name }}</span><br>
+@else
+    <span></span><br>
+@endif
+
+@if(isset($guest_detail->room_nos))
+    <span>Guest Room No: {{ $guest_detail->room_nos }}</span><br>
+@else
+    <span>Table No :&nbsp;{{$table_name}} </span><br>
+@endif
+@if(isset($kot_header->kot_remark))
+    <span>Remark: {{ $kot_header->kot_remark }}</span><br>
+@else
+    <span> </span><br>
+@endif
+
+@if(isset($guest_detail->voucher_no))
+    <span>Check In No: {{ $guest_detail->voucher_no }}</span><br>
+@else
+    <span> </span><br>
+@endif                    </div>
                     <div class="voucher_info">
 
                         <span>Kot No : {{ $kot_header->bill_no }}</span><br>

@@ -23,4 +23,8 @@ class package extends Model
     {
         return $this->hasMany(roomcheckin::class, 'package_id', 'id');
     }
+    public function roombooking()
+    {
+        return $this->hasMany(roombooking::class, 'package_id', 'id');
+    }
 }

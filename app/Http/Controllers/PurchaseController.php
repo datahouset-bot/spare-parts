@@ -106,9 +106,21 @@ class PurchaseController extends CustomBaseController
                 ->where('id', $request->item_id)->firstOrFail();
             $itemName = $item->item_name;
             // format entery date 
-            $date_variable = $request->voucher_date;
+            $date_variable = $request->purchase_bill_date;
             $parsed_date = Carbon::createFromFormat('d-m-Y', $date_variable);
             $formatted_voucher_date = $parsed_date->format('Y-m-d');
+               $fy_start_date = $this->fy_start_date;
+            $fy_end_date = $this->fy_end_date;
+            $financialyeardata = $this->financialyeardata;
+            if (
+                $financialyeardata &&
+                $formatted_voucher_date < $fy_start_date ||
+                $formatted_voucher_date > $fy_end_date
+            ) {
+
+                return view('error.checkdate_on_fy',compact('fy_start_date','fy_end_date'));
+
+            }
             //storing data 
             $tempkot = new tempentry;
             $tempkot->firm_id = Auth::user()->firm_id;
@@ -229,7 +241,7 @@ class PurchaseController extends CustomBaseController
                 $ledger->firm_id = Auth::user()->firm_id;
                 $ledger->voucher_no = $first_record->voucher_no;
                 $ledger->reciept_no = $first_record->bill_no;
-                $ledger->entry_date = $first_record->entry_date;
+                $ledger->entry_date = $first_record->voucher_date;
                 $ledger->transaction_type = 'Purchase';
                 $ledger->payment_mode_id = $posting_acc_id;
                 $ledger->payment_mode_name = $paymentmode->account_name;
@@ -254,7 +266,7 @@ class PurchaseController extends CustomBaseController
                 $ledger->firm_id = Auth::user()->firm_id;
                 $ledger->voucher_no = $first_record->voucher_no;
                 $ledger->reciept_no = $first_record->bill_no;
-                $ledger->entry_date = $first_record->entry_date;
+                $ledger->entry_date = $first_record->voucher_date;
                 $ledger->transaction_type = 'Purchase';
                 $ledger->payment_mode_id = $accountname->id;
                 $ledger->payment_mode_name = $accountname->account_name;
@@ -295,7 +307,7 @@ class PurchaseController extends CustomBaseController
                 $ledger->firm_id = Auth::user()->firm_id;
                 $ledger->voucher_no = $first_record->voucher_no;
                 $ledger->reciept_no = $first_record->bill_no;
-                $ledger->entry_date = $first_record->entry_date;
+                $ledger->entry_date = $first_record->voucher_date;
                 $ledger->transaction_type = 'Purchase';
                 $ledger->payment_mode_id = $posting_acc_id;
                 $ledger->payment_mode_name = $paymentmode->account_name;
@@ -320,7 +332,7 @@ class PurchaseController extends CustomBaseController
                 $ledger->firm_id = Auth::user()->firm_id;
                 $ledger->voucher_no = $first_record->voucher_no;
                 $ledger->reciept_no = $first_record->bill_no;
-                $ledger->entry_date = $first_record->entry_date;
+                $ledger->entry_date = $first_record->voucher_date;
                 $ledger->transaction_type = 'Purchase';
                 $ledger->payment_mode_id = $accountname->id;
                 $ledger->payment_mode_name = $accountname->account_name;
@@ -422,6 +434,8 @@ class PurchaseController extends CustomBaseController
 
         $voucher_items = inventory::where('voucher_no', $voucher_no)
         ->where('firm_id',Auth::user()->firm_id)
+        ->where('voucher_type','Purchase')
+
             ->get();
 
 

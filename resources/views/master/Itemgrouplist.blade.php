@@ -71,11 +71,11 @@
                               <select name="head_group" Id ="head_group"class="form-select" aria-label="Default select example">
                                 <option selected disabled>Select Head Group </option>
                                 
-                                <option value="Restaurant_Item">Restaurant_Item</option>
-                                <option value="Raw_Material">Raw_Material</option>       
-                                <option value="Non_Consumable">Non_Consumable</option>
-                                <option value="Consumable">Consumable</option>
-                                <option value="Laundry">Laundry</option>  
+                                <option value="Restaurant_Item">Spare_parts</option>
+                                <option value="Raw_Material">labour</option>       
+                                <option value="Non_Consumable">Bike</option>
+                                <option value="Consumable">Car</option>
+                                {{-- <option value="Laundry">Laundry</option>   --}}
                                 <option value="Other">Other</option>
 
 
@@ -140,7 +140,7 @@
                     <td>{{$record['head_group']}}</td>
 
 
-                    <td><a href="{{('showediteditemgroups/'.$record['id']) }}"   data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a></td>
+                    <td><a href="{{('showediteditemgroups/'.$record['id']) }}"   ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a></td>
                     <td><a href="{{('deleteitemgroups/'.$record['id']) }}"  ><i class="fa fa-trash" style="font-size:20px;color:OrangeRed"></i></a></td>
                   </tr>
                   @endforeach

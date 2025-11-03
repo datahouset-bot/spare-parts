@@ -156,6 +156,7 @@
                     <th scope="col"> Activation Date   </th>
                     <th scope="col"> Expiery Date  </th>
                     <th scope="col"> Billing Amount  </th>
+                    <th scope="col"> Total RoomCheckout  </th>
 
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -173,30 +174,32 @@
                   <tr>
            
                     <th scope="row">{{$r1=$r1+1}}</th>
-                    <td>{{$record['firm_id']}}</td>
-                    <td>{{$record['firm_name']}}</td>
-                    <td>{{$record['firm_mobile']}}</td>
-                    <td>{{$record['firm_dealer']}}</td>
-                    <td>{{ \Carbon\Carbon::parse($record['activation_date'])->format('d-m-Y') }}</td>
-                    <td>{{ \Carbon\Carbon::parse($record['expiry_date'])->format('d-m-Y') }}</td>
+                    <td>{{$record->firm_id}}</td>
+                    <td>{{$record->firm_name}}</td>
+                    <td>{{$record->firm_mobile}}</td>
+                    <td>{{$record->firm_dealer}}</td>
+                    <td>{{ \Carbon\Carbon::parse($record->activation_date)->format('d-m-Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($record->expiry_date)->format('d-m-Y') }}</td>
                     
-                    <td>{{$record['billing_amt']}}</td>
+                    <td>{{$record->billing_amt}}</td>
+                    <td>{{ $record->total_roomcheckouts }}</td>
+
 
 
                     
                   <td>
-                      <a href="{{ route('super_comp_lists.edit', $record['id']) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
+                      <a href="{{ route('super_comp_lists.edit', $record->id) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
                   </td>
                 <td>
-                    <a href="{{ url('/seed', $record['firm_id']) }}" class="btn  btn-sm" >Seed</a>
+                    <a href="{{ url('/seed', $record->firm_id) }}" class="btn  btn-sm" >Seed</a>
                 </td>
                 <td>
-                  <a href="{{ url('/trandelete', $record['firm_id']) }}" class="btn  btn-sm" >Trandelete</a>
+                  <a href="{{ url('/trandelete', $record->firm_id) }}" class="btn  btn-sm" >Trandelete</a>
               </td>
 
 
                     <td>
-                      <form action="{{ route('super_comp_lists.destroy', $record['id']) }}" method="POST" style="display:inline;">
+                      <form action="{{ route('super_comp_lists.destroy', $record->id) }}" method="POST" style="display:inline;">
                           @csrf
                           @method('DELETE')
                           <button type="submit" class="btn  btn-sm" onclick="return confirm('Are you sure you want to delete this Company?')"><i class="fa fa-trash" style="font-size:20px;color:OrangeRed"></i></button>

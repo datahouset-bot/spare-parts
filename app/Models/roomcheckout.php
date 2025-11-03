@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasFinancialYear;
+
 
 class roomcheckout extends Model
 {
     use HasFactory;
+    use HasFinancialYear;
     protected $fillable=[
         'voucher_no',
         'check_out_no',
