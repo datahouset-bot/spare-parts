@@ -39,7 +39,7 @@
                 @csrf
                 <div class="row">
                     <div class="col-md-4">
-                        <h4>Room Check Out Register</h4>
+                        <h4>Move Out Register</h4>
                     </div>
                     <div class="col-md-2">
                         <input type="text" class="form-control gdate" name="from_date"
@@ -60,9 +60,10 @@
             <table class="display" id="remindtable">
                 <thead>
                     <tr>
-                        <th>S.No</th><th>Bill No</th><th>Bill Date</th><th>Room No</th><th>Guest Name</th>
+                        <th>S.No</th><th>Bill No</th><th>Bill Date</th><th>Vehicle No</th><th>customer Name</th>
                         <th>Address</th><th>City</th><th>Mobile</th><th>Email</th><th>State</th><th>GST No</th>
-                        <th>Check in</th><th>Check Out</th><th>Days</th><th>Food Amt</th><th>GST %</th><th>SGST</th>
+                        <th>Check in</th><th>Check Out</th><th>Days</th><th>Food Amt</th>
+                        <th>GST %</th><th>SGST</th>
                         <th>CGST</th><th>IGST</th><th>Taxable</th><th>Total GST</th><th>Bill Amt</th>
                         <th>Advance</th><th>Net Pay</th><th></th><th></th>
                     </tr>
@@ -82,9 +83,9 @@
                         <td>{{ $record->account->email }}</td>
                         <td>{{ $record->account->state }}</td>
                         <td>{{ $record->account->gst_no }}</td>
-                        <td>{{ \Carbon\Carbon::parse($record->checkin_date)->format('d-m-y') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($record->checkout_date)->format('d-m-y') }}</td>
-                        <td>{{ $record->no_of_days }}</td>
+                        {{-- <td>{{ \Carbon\Carbon::parse($record->checkin_date)->format('d-m-y') }}</td> --}}
+                        {{-- <td>{{ \Carbon\Carbon::parse($record->checkout_date)->format('d-m-y') }}</td> --}}
+                        {{-- <td>{{ $record->no_of_days }}</td> --}}
                         <td>{{ $record->total_food_amt }}</td>
                         <td>{{ $record->gst_id }}</td>
                         <td>{{ $record->sgst }}</td>

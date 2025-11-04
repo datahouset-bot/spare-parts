@@ -302,7 +302,7 @@
                             <div class="col-lg-12">
                                 <div class="card  mt-1">
                                     <div class="card-header">
-                                        <h5 class="text-center font-weight-light my-1">New Room CheckIn Entry  </h5>
+                                        <h5 class="text-center font-weight-light my-1">JOB CARD  </h5>
                                     </div>
                                     <div class="card-body">
 
@@ -310,14 +310,14 @@
                                         <div class="row">
                                             <!-- Room Booking -->
 <div class="col-md-3 mt-4">
-    <label for="searchCustomer">Select Room Booking</label>
+    <label for="searchCustomer">Select slot Booking</label>
     <div id="searchCustomer">
         <form action="{{ url('/show_roombooking') }}" method="POST" class="form-inline" id="select_roombooking">
             @csrf
             <div class="input-group">
                 <select name="roombooking_voucher_no" id="roombooking_voucher_no" class="form-select"
                     aria-label="Default select example">
-                    <option selected disabled>Select Room Booking</option>
+                    <option selected disabled>Select slot Booking</option>
                     @foreach ($roombookings as $roombookings)
                         <option value="{{ $roombookings->voucher_no }}">
                             {{ $roombookings->guest_name }} -
@@ -407,7 +407,7 @@
 
                                                     <select id="guest_search_id" name="guest_search_id"
                                                         class="js-states form-control">
-                                                        <option disabled selected>Select Guest</option>
+                                                        <option disabled selected>Select customer</option>
                                                         @foreach ($guset_data as $record)
                                                             <option value={{ $record['id'] }}>
                                                                 {{ $record['account_name'] }}&nbsp;-
@@ -514,7 +514,7 @@
 
                                                         
                                                         
-                                                        <div class="col-md-3">
+                                                        {{-- <div class="col-md-3">
                                                             <label for="commited_days">No Of Days <span
                                                                     class="requierdfield">*</span></label>
                                                             <input class="form-control" id="commited_days" type="text"
@@ -526,7 +526,7 @@
                                                                 @enderror
                                                             </span>
 
-                                                        </div>
+                                                        </div> --}}
                                                         {{-- <div class="col-md-3">
                                                             <label for="no_of_guest">No Of Guest <span
                                                                     class="requierdfield">*</span></label>
@@ -614,8 +614,8 @@
                                                         <thead>
                                                             <tr>
                                                                 <th># </th>
-                                                                <th>Room No </th>
-                                                                <th>Room Type</th>
+                                                                <th>slot No </th>
+                                                                <th>Payment Type</th>
                                                                 <th>Tariff</th>
                                                             </tr>
                                                         </thead>
@@ -685,11 +685,10 @@
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-
-
                                                         </div>
+
                                                         <div class="col-md-6">
-                                                            <label for="guest_father_name">Guest Father Name </label>
+                                                            <label for="guest_father_name">Vehicle Name </label>
                                                             <input class="form-control" id="guest_father_name" type="text"
                                                                 name="guest_father_name" value="{{ old('guest_father_name') }}"
                                                                 autocomplete="none" />
@@ -698,10 +697,9 @@
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-
-
                                                         </div>
-                                                        <div class="col-md-3">
+
+                                                        {{-- <div class="col-md-3">
                                                             <label for="guest_age">Guest Age </label>
                                                             <input class="form-control" id="guest_age" type="text"
                                                                 name="guest_age" value="{{ old('guest_age') }}"
@@ -724,8 +722,8 @@
 </select>
 
 
-                                                        </div>
-                                                        <div class="col-md-3">
+                                                        </div> --}}
+                                                        {{-- <div class="col-md-3">
                                                             <label for="account_birthday">DOB </label>
                                                             <input class="form-control" id="account_birthday" type="date"
                                                                 name="account_birthday" value="{{ old('account_birthday') }}"
@@ -737,7 +735,7 @@
                                                             </span>
 
 
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="col-md-3">
                                                             <label for="guest_address">Address Line 1</label>
                                                             <input class="form-control" id="guest_address" type="text"
@@ -1274,7 +1272,7 @@
                                                                 });
                                                             });
                                                         </script>
-                                                    <div class="col-md-3">
+                                                    {{-- <div class="col-md-3">
                                                         <label for="second_guest_name">2nd Guest Name  </label>
                                                         <input class="form-control" id="second_guest_name" type="text"
                                                             name="second_guest_name" value="{{ old('second_guest_name') }}" />
@@ -1284,8 +1282,8 @@
                                                             @enderror
                                                         </span>
 
-                                                    </div>
-                                                    <div class="col-md-3">
+                                                    </div> --}}
+                                                    {{-- <div class="col-md-3">
                                                         <label for="second_guest_id_name"> 2nd Guest Id Name  </label>
                                                         <input class="form-control" id="second_guest_id_name" type="text"
                                                             name="second_guest_id_name" value="{{ old('second_guest_id_name') }}" />
@@ -1295,8 +1293,8 @@
                                                             @enderror
                                                         </span>
 
-                                                    </div>
-                                                    <div class="col-md-3">
+                                                    </div> --}}
+                                                    {{-- <div class="col-md-3">
                                                         <label for="second_guest_id_no"> 2nd Guest Id No  </label>
                                                         <input class="form-control" id="second_guest_id_no" type="text"
                                                             name="second_guest_id_no" value="{{ old('second_guest_id_no') }}" />
@@ -1306,10 +1304,10 @@
                                                             @enderror
                                                         </span>
 
-                                                    </div>
+                                                    </div> --}}
 
                                                         <!--second guest image -->
-                                                        <div class="col-md-3">
+                                                        {{-- <div class="col-md-3">
                                                             <label for="second_guest_id_pic_trigger">2nd Guest Document </label>
                                                             <input class="form-control" id="second_guest_id_pic_trigger" type="text" readonly
                                                                 placeholder="Click to upload or capture"
@@ -1320,7 +1318,7 @@
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        
+                                                         --}}
                                                         <!-- Modal -->
                                                         <div class="modal fade" id="secondFileUploadModal" tabindex="-1" aria-labelledby="secondFileUploadModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -1454,7 +1452,7 @@
 
                                                         <!----3rd guest documnt --->
 
-                                                        <div class="col-md-3">
+                                                        {{-- <div class="col-md-3">
                                                             <label for="third_guest_name">3rd Guest Name  </label>
                                                             <input class="form-control" id="third_guest_name" type="text"
                                                                 name="third_guest_name" value="{{ old('third_guest_name') }}" />
@@ -1498,7 +1496,7 @@
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        
+                                                         --}}
                                                         <!-- Modal -->
                                                         <div class="modal fade" id="thirdFileUploadModal" tabindex="-1" aria-labelledby="thirdFileUploadModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -1697,12 +1695,12 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody id="payment_mode_body">
-                                                            <tr>
+                                                            {{-- <tr>
                                                                 <td>Per Day Room Tariff</td>
                                                                 <td><input type="text" id="room_tariff_perday"
                                                                         name="room_tariff_perday" class="amount_input"
                                                                         readonly></td>
-                                                            </tr>
+                                                            </tr> --}}
                                                             <tr>
                                                                 <td>
                                                                     <select name="posting_acc_id[]"

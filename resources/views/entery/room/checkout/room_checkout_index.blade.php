@@ -29,9 +29,9 @@
         <h4>Room Check Out <h4>       </div>
        <div class="row my-2">
           <div class="col-md-12 text-center">
-            <a href="{{url('room_dashboard')}}" class="btn btn-warning">Room Dash Board</a>
-            <a href="{{url('roomcheckouts/create')}}" class="btn btn-primary">New Check Out </a>
-            <a href="{{url('roomcheckout_register')}}" class="btn btn-dark"> Roomcheckout Register </a>
+            <a href="{{url('room_dashboard')}}" class="btn btn-warning"> DashBoard</a>
+            <a href="{{url('roomcheckouts/create')}}" class="btn btn-primary">Ready to moveOut </a>
+            <a href="{{url('roomcheckout_register')}}" class="btn btn-dark"> moveout Register </a>
           </div>
        </div>
         
@@ -49,14 +49,12 @@
                   <tr>
                     <th scope="col">S.No</th>
                     <th scope="col"> Bill No    </th>
-                    <th scope="col"> CheckIn No   </th>
-                 
-                    <th scope="col"> Room No   </th>
-                  
-                    <th scope="col"> Guest Name </th>
+                    <th scope="col"> Vehicle No   </th>                 
+                    <th scope="col"> chaches No   </th>
+                    <th scope="col"> customer Name </th>
                     <th scope="col"> Contact No </th>
-                    <th scope="col"> Check in Date </th>
-                    <th scope="col"> Check Out Date  </th>
+                    {{-- <th scope="col"> Check in Date </th>
+                    <th scope="col"> Check Out Date  </th> --}}
                     <th scope="col"> Total Days  </th>
                     <th scope="col">  Bill Amount  </th>
                     <th scope="col"></th>

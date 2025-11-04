@@ -26,14 +26,14 @@
 
     <div class="card my-3">
         <div class="card-header">
-   Room Service 
+   Vehicle Service 
         </div>
        <div class="row my-2">
           <div class="col-md-12 text-center">
             <a href="{{route('kots.index')}}" class="btn btn-primary">KOT</a>
 
 
-             <a href="{{route('foodbills.index')}}" class="btn btn-warning">Food Bill</a> 
+             <a href="{{route('foodbills.index')}}" class="btn btn-warning">parts Bill</a> 
           </div>
        </div>
         

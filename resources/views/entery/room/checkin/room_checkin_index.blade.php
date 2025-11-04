@@ -26,11 +26,11 @@
 
     <div class="card my-3">
         <div class="card-header">
-        <h4>Room Check In <h4>       </div>
+        <h4>Vehilce move In <h4>       </div>
        <div class="row my-2">
           <div class="col-md-12 text-center">
-            <a href="{{url('room_dashboard')}}" class="btn btn-warning">Room Dash Board</a>
-            <a href="{{url('roomcheckins/create')}}" class="btn btn-primary">New Check In </a>
+            <a href="{{url('room_dashboard')}}" class="btn btn-warning"> DashBoard</a>
+            <a href="{{url('roomcheckins/create')}}" class="btn btn-primary">New Entry </a>
           </div>
        </div>
         
@@ -47,18 +47,18 @@
                   <tr>
                     <th scope="col">S.No</th>
                     <th scope="col"> Check In No    </th>
-                    <th scope="col"> Room No   </th>
-                    <th scope="col"> Guest Name </th>
+                    <th scope="col"> vehicle No   </th>
+                    <th scope="col"> customer Name </th>
                     <th scope="col"> Contact No </th>
-                    <th scope="col"> Total Guest  </th>
-                    <th scope="col"> Check in Date </th>
-                    <th scope="col"> Check in Time  </th>
-                    @if(!is_null($componyinfo->componyinfo_af1))
+                    <th scope="col"> Total Parts  </th>
+                    <th scope="col">  Date </th>
+                    <th scope="col"> Time  </th>
+                    {{-- @if(!is_null($componyinfo->componyinfo_af1))
                     <th scope="col"> Expected Check-Out Date </th>
                     <th scope="col"> Expected Check-Out Time  </th>
-                    @endif
+                    @endif --}}
 
-                    <th scope="col"> Status  </th>
+                    <th scope="col"> Status</th>
                     <th scope="col"></th>
                      <th scope="col"></th>
                     <th scope="col"></th>

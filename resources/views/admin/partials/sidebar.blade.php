@@ -114,10 +114,10 @@
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link" href={{ url('roombooking_home') }}>Slot Book</a>
-                                        <a class="nav-link" href={{ url('roomcheckins') }}>Check In</a>
-                                        <a class="nav-link" href={{ url('roomservices') }}>Vehicle Service </a>
-                                        <a class="nav-link" href={{ url('advace_receipt') }}>Advance Receipt </a>
-                                        <a class="nav-link" href={{ url('roomcheckouts') }}>Check Out </a>
+                                        <a class="nav-link" href={{ url('roomcheckins') }}>Job card</a>
+                                        <a class="nav-link" href={{ url('roomservices') }}>Stock issue </a>
+                                        <a class="nav-link" href={{ url('advace_receipt') }}>Invoice </a>
+                                        <a class="nav-link" href={{ url('roomcheckouts') }}>Gate pass </a>
                                     </nav>
                                 </div>
                                 {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#bed" aria-expanded="false" aria-controls="bed">

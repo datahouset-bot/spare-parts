@@ -26,14 +26,14 @@
 
     <div class="card my-3">
         <div class="card-header">
-        Room Booking
+        Slot Booking
         </div>
        <div class="row my-2">
           <div class="col-md-12 text-center">
-            <a href="{{url('room_dashboard')}}" class="btn btn-warning">Room Dash Board</a>
-            <a href="{{route('roombookings.create')}}" class="btn btn-primary">Book New Room</a>
-            <a href="{{url('pending_booking')}}" class="btn btn-danger">Unconfirmed Bookings</a>
-            <a href="{{url('/clear_booking')}}" class="btn btn-dark">Clear Booking</a>
+            <a href="{{url('room_dashboard')}}" class="btn btn-warning"> DashBoard</a>
+            <a href="{{route('roombookings.create')}}" class="btn btn-primary">New vehicle</a>
+            <a href="{{url('pending_booking')}}" class="btn btn-danger">Uncomplete Vehicle</a>
+            <a href="{{url('/clear_booking')}}" class="btn btn-dark">Moveout</a>
           </div>
        </div>
         
@@ -49,19 +49,19 @@
                 <thead>
                   <tr>
                     <th scope="col">S.No</th>
-                    <th scope="col"> Room No   </th>
-                    <th scope="col"> Bookig No    </th>
-                    <th scope="col"> Guest Name </th>
+                    <th scope="col"> slot No   </th>
+                    <th scope="col"> Vehicle No    </th>
+                    <th scope="col"> customer Name </th>
                     <th scope="col"> Contact No </th>
-                    <th scope="col"> Booking Date </th>
-                    <th scope="col"> Check in Date </th>
-                    <th scope="col"> Check in Time </th>
-                    <th scope="col"> Check Out Date  </th>
-                    <th scope="col"> Check Out Time  </th>
-                    <th scope="col"> No Of Day  </th>
-                    <th scope="col"> No Of Guest  </th>
-                    <th scope="col"> Per Day Tariff </th>
-                    <th scope="col"> Total Tariff </th>
+                    <th scope="col"> Date </th>
+                    {{-- <th scope="col"> Check in Date </th> --}}
+                    <th scope="col"> Time </th>
+                    {{-- <th scope="col"> Check Out Date  </th> --}}
+                    {{-- <th scope="col"> Check Out Time  </th> --}}
+                    {{-- <th scope="col"> No Of Day  </th> --}}
+                    {{-- <th scope="col"> No Of Guest  </th> --}}
+                    {{-- <th scope="col"> Per Day Tariff </th> --}}
+                    {{-- <th scope="col"> Total Tariff </th> --}}
                     <th scope="col"> Advance </th>
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -86,13 +86,13 @@
                      <td scope="col">{{ \Carbon\Carbon::parse($record->booking_date)->format('d-m-y') }}</td>
                      <td scope="col">{{ \Carbon\Carbon::parse($record->checkin_date)->format('d-m-y') }}</td>
                      <td scope="col">{{ $record->checkin_time }}</td>
-                     <td scope="col">{{ \Carbon\Carbon::parse($record->checkout_date)->format('d-m-y') }}</td>
+                     {{-- <td scope="col">{{ \Carbon\Carbon::parse($record->checkout_date)->format('d-m-y') }}</td>
                      <td scope="col">{{ $record->checkout_time }}</td>
                      <td scope="col">{{ $record->commited_days }}</td>
-                     <td scope="col">{{ $record->no_of_guest }}</td>
+                     <td scope="col">{{ $record->no_of_guest }}</td> --}}
 
-                     <td scope="col">{{ $record->room_tariff_perday }}</td>
-                     <td scope="col">{{ $record->room_tariff_perday*$record->commited_days }}</td>
+                     {{-- <td scope="col">{{ $record->room_tariff_perday }}</td> --}}
+                     {{-- <td scope="col">{{ $record->room_tariff_perday*$record->commited_days }}</td> --}}
                      <td scope="col">{{ $record->booking_amount ?? 0 }}</td>
 
 

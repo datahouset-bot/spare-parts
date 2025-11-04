@@ -142,7 +142,7 @@
 
                                 <th>Vacant -{{ $vacantroom }}</th>
                                 <th>Occupied-{{ $occupiedroom }}</th>
-                                <th>Dirty-{{ $dirtyroom }}</th>
+                                <th>Move out-{{ $dirtyroom }}</th>
                             </tr>
                         </thead>
                         <tbody>

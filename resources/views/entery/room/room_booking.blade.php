@@ -293,7 +293,7 @@
                             <div class="col-lg-12">
                                 <div class="card  mt-1">
                                     <div class="card-header">
-                                        <h5 class="text-center font-weight-light my-1">New Room Booking Entry   </h5>
+                                        <h5 class="text-center font-weight-light my-1">New slot Booking Entry   </h5>
                                     </div>
                                     <div class="card-body">
 
@@ -307,7 +307,6 @@
                                             </div>
 
                                             <!-- Room Booking Client Picture -->
-
 
                                             <!-- Search Customer -->
                                             <div class="col-md-3 mt-4">
@@ -334,7 +333,7 @@
                                             </div>
 
                                             <!-- Selected Customer Picture -->
-                                            <div class="col-md-6 mt-1">
+                                            {{-- <div class="col-md-6 mt-1">
                                                 <div id="selectedCustomerPic">
                                                     <!-- Image or content for selected customer picture -->
                                                     <img id="guest_pic_response"
@@ -346,7 +345,7 @@
                                                         alt="Uploaded ID pic" width="130PX">
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
                                         <form id ="saveForm" action="{{ route('roombookings.store') }}" method="POST"
                                             enctype="multipart/form-data">
@@ -356,7 +355,7 @@
                                                 <div class="col-md-8">
                                                     <div class="row form-group">
                                                         <div class="col-md-3"><span class="requierdfield">*</span>
-                                                            <label for="label1">Room Booking No </label>
+                                                            <label for="label1">Vehicle No </label>
                                                             <input type="text" name="booking_no"class=" form-control"
                                                                 id="" class="" value="{{ $new_bill_no }}"
                                                                 readonly>
@@ -366,7 +365,7 @@
 
                                                         </div>
                                                         <div class="col-md-3"><span class="requierdfield">*</span>
-                                                            <label for="booking_date">Booking Date</label>
+                                                            <label for="booking_date">Purchase Date</label>
                                                             <input class="form-control date" id="booking_date"
                                                                 type="text" name="booking_date"
                                                                 value="{{ date('Y-m-d') }}" />
@@ -378,7 +377,7 @@
                                                         </div>
 
                                                         <div class="col-md-3"><span class="requierdfield">*</span>
-                                                            <label for="booking_time">Booking Time</label>
+                                                            <label for="booking_time"> Time</label>
                                                             @php
                                                                 $currentTime = \Carbon\Carbon::now()->format('H:i');
                                                             @endphp
@@ -391,7 +390,7 @@
                                                             </span>
 
                                                         </div>
-                                                        <div class="col-md-3"><span class="requierdfield">*</span>
+                                                        {{-- <div class="col-md-3"><span class="requierdfield">*</span>
                                                             <label for="checkin_date">Check In Date</label>
                                                             <input class="form-control date" id="checkin_date"
                                                                 type="text" name="checkin_date"
@@ -401,10 +400,10 @@
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
+                                                        </div> --}}
 
 
-
+{{-- 
                                                         <div class="col-md-3"><span class="requierdfield">*</span>
                                                             <label for="checkin_time">Check In Time</label>
                                                             <input class="form-control" id="checkin_time" type="time"
@@ -502,9 +501,9 @@ $(function () {
     $("#checkout_date").on("change", updateDays);
 
 });
-</script>
+</script> --}}
  {{-- script for calculate commited day auto matic  --}}
-                                                        <div class="col-md-3"><span class="requierdfield">*</span>
+                                                        {{-- <div class="col-md-3"><span class="requierdfield">*</span>
                                                             <label for="no_of_guest">No Of Guest</label>
                                                             <input class="form-control" id="no_of_guest" type="text"
                                                                 name="no_of_guest" value="{{ old('no_of_guest') }}"
@@ -535,7 +534,7 @@ $(function () {
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
+                                                        </div> --}}
 
                                                         <div class="col-md-6"><span class="requierdfield">*</span>
                                                             <label for="package">Package</label>
@@ -572,7 +571,7 @@ $(function () {
 
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <label for="parking_no">Parking No </label>
+                                                            <label for="parking_no">SlotNo </label>
                                                             <input class="form-control" id="parking_no" type="text"
                                                                 name="parking_no" value="{{ old('parking_no') }}"
                                                                 autocomplete="off" />
@@ -606,10 +605,10 @@ $(function () {
                                                         class="table table-striped table-responsive room_selection">
                                                         <thead>
                                                             <tr>
-                                                                <th># </th>
-                                                                <th>Room No </th>
-                                                                <th>Room Type</th>
-                                                                <th>Tariff</th>
+                                                                <th>S.no. </th>
+                                                                <th>slot No </th>
+                                                                <th>Payment Type</th>
+                                                                <th>amount</th>
 
                                                             </tr>
                                                         </thead>
@@ -1031,7 +1030,7 @@ $(function () {
                                                             });
                                                         </script>
 
-                                                        <div class="col-md-3">
+                                                        {{-- <div class="col-md-3">
                                                             <label for="guest_pic_trigger">Guest Image</label>
                                                             <input class="form-control" id="guest_pic_trigger"
                                                                 type="text" readonly
@@ -1043,7 +1042,7 @@ $(function () {
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
+                                                        </div> --}}
 
                                                         <!-- Modal for Guest Image -->
                                                         <div class="modal fade" id="guestPicModal" tabindex="-1"
@@ -1220,7 +1219,7 @@ $(function () {
                                                         </thead>
                                                         <tbody id="payment_mode_body">
                                                             <tr>
-                                                                <td>Per Day Room Tariff</td>
+                                                                <td>labour charge</td>
                                                                 <td><input type="text" id="room_tariff_perday"
                                                                         name="room_tariff_perday" class="amount_input"
                                                                         readonly></td>

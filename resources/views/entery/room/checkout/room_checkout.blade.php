@@ -155,7 +155,7 @@
                             <div class="col-lg-12">
                                 <div class="card  mt-1">
                                     <div class="card-header">
-                                        <h5 class="text-center font-weight-light my-1">Select Checkin For Invoice </h5>
+                                        <h5 class="text-center font-weight-light my-1">Select slot For Invoice </h5>
                                     </div>
                                     <div class="card-body">
 
@@ -169,7 +169,7 @@
                                                     <div class="input-group">
                                                         <select name="roomcheckin_voucher_no" id="roomcheckin_voucher_no"
                                                             class="form-select" aria-label="Default select example">
-                                                            <option selected disabled>Select Checkin</option>
+                                                            <option selected disabled>Select Slot</option>
                                                             @foreach ($roomcheckins as $roomcheckin)
                                                                 <option value="{{ $roomcheckin->voucher_no }}">
                                                                     {{ $roomcheckin->guest_name }}||{{ $roomcheckin->guest_mobile }}||{{ $roomcheckin->room_nos }}||{{ $roomcheckin->check_in_no }}||

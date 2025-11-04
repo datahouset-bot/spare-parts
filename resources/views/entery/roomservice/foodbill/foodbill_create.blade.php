@@ -94,25 +94,25 @@
                         <input type="text" class="form-control" id ="kot_no"name="kot_no" value="{{ $new_bill_no }}">
                     </div>
                     <div class="col-md-2 col-4  text-center">
-                        <label for="waiter_name">Waiter Name</label>
+                        <label for="waiter_name">labour Name</label>
                         <input type="text" id="waiter_name" class="form-control" name="waiter_name" value="sandeep">
                     </div>
                     <div class="col-md-2 col-4  text-center">
                         <label for="service_type">Service Type</label>
                         <select name="service_type" id="service_type" class="form-select">
                            
-                            <option value="room_service" selected>Room Servic</option>
-                            <option value="table_service">Table Service</option>
-                            <option value="loundery">Loundery Service</option>
+                            <option value="room_service" selected>Servicing</option>
+                            <option value="table_service">Parts change</option>
+                            <option value="loundery">other ISSUE</option>
 
 
                         </select>
 
                     </div>
                     <div class="col-md-2 col-4  text-center">
-                        <label for="kot_on">Select Room</label>
+                        <label for="kot_on">Select slot</label>
                         <select name="service_id" id="service_id" class="form-select">
-                            <option selected disabled>Select Room No </option>
+                            <option selected disabled>Select Slot No </option>
                             @foreach ($checkinlists as $checkinlist)
                                 <option value="{{ $checkinlist->voucher_no }}">{{ $checkinlist->guest_name }}||
                                     {{ $checkinlist->room_nos }} </option>

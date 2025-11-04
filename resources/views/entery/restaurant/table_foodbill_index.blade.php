@@ -63,7 +63,7 @@
 
                     <div class="row ">
                         <div class="col-md-4 ">
-                            <h4>Restaurant Food Bill</h4>
+                            <h4>Spare parts Bill</h4>
                         </div>
                         <div class="col-md-2 ">
 
@@ -95,7 +95,7 @@
                         </div>
                         <div class="col-md-2">
 
-                            <a href="{{ route('foodbills.create') }}" class="btn btn-success">New Food Bill</a>
+                            <a href="{{ route('foodbills.create') }}" class="btn btn-success">New Parts Bill</a>
                         </div>
 
 
@@ -137,7 +137,7 @@
                         <th scope="col"> Date </th>
                         <th scope="col"> Bill No </th>
                         {{-- <th scope="col"> Service On </th> --}}
-                        <th scope="col">Guest Name</th>
+                        <th scope="col">Customer Name</th>
                         <th scope="col">Mobile</th>
                         <th scope="col"> Total Qty </th>
                         <th scope="col"> Total Amount </th>

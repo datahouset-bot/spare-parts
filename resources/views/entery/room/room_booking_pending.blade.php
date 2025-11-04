@@ -26,14 +26,14 @@
 
     <div class="card my-3">
         <div class="card-header">
-        Room Booking
+        Spare-Parts Booking
         </div>
        <div class="row my-2">
           <div class="col-md-12 text-center">
-            <a href="{{url('room_dashboard')}}" class="btn btn-warning">Room Dash Board</a>
-            <a href="{{route('roombookings.create')}}" class="btn btn-primary">Book New Room</a>
-            <a href="{{url('pending_booking')}}" class="btn btn-danger">Pending For Confirmation</a>
-            <a href="{{url('/clear_booking')}}" class="btn btn-dark">Clear Booking</a>
+            <a href="{{url('room_dashboard')}}" class="btn btn-warning">Dash Board</a>
+            <a href="{{route('roombookings.create')}}" class="btn btn-primary">Book New parts</a>
+            <a href="{{url('pending_booking')}}" class="btn btn-danger">waiting for parts</a>
+            <a href="{{url('/clear_booking')}}" class="btn btn-dark">Move out</a>
           </div>
        </div>
         
@@ -49,13 +49,13 @@
                 <thead>
                   <tr>
                     <th scope="col">S.No</th>
-                    <th scope="col"> Room No   </th>
-                    <th scope="col"> Bookig No    </th>
-                    <th scope="col"> Guest Name </th>
+                    <th scope="col"> Slot No   </th>
+                    <th scope="col"> Vehicle No    </th>
+                    <th scope="col"> Customer Name </th>
                     <th scope="col"> Contact No </th>
-                    <th scope="col"> Booking Date </th>
-                    <th scope="col"> Check in Date </th>
-                    <th scope="col"> Check Out Date  </th>
+                    <th scope="col">  Date </th>
+                    {{-- <th scope="col"> C </th>
+                    <th scope="col"> Check Out Date  </th> --}}
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>

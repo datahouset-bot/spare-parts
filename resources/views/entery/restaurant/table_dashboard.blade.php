@@ -289,7 +289,7 @@
             @endphp
 
             <div class="room-box {{ $tableClass }}">
-                <h5 class="room-no" onclick="toggleRoomDetail(this)">Table {{ $record->table_name }}</h5>
+                <h5 class="room-no" onclick="toggleRoomDetail(this)">Slot{{ $record->table_name }}</h5>
                 <div class="links">
                     <a href="{{ url('table_kot_create/'.$record->id) }}">
                         <div class="linkitem">
