@@ -302,7 +302,7 @@
                             <div class="col-lg-12">
                                 <div class="card  mt-1">
                                     <div class="card-header">
-                                        <h5 class="text-center font-weight-light my-1">JOB CARD  </h5>
+                                        <h5 class="text-center font-weight-light my-1">JOB CARD </h5>
                                     </div>
                                     <div class="card-body">
 
@@ -856,8 +856,8 @@
                                                                 name="purpose_of_visit" class=""
                                                                 value="{{ old('purpose_of_visit') }}">
                                                         </div>
-                                                                                                                  <div class="col-md-3 ">
-                                                            <label for="label1">Comming From</label>
+                                                                        {{-- <div class="col-md-3 "> --}}
+                                                            {{-- <label for="label1">Comming From</label>
                                                             <input type="text" class=" form-control"id=""
                                                                 name="comming_from" class=""
                                                                 value="{{ old('comming_from') }}">
@@ -867,7 +867,7 @@
                                                             <input type="text" class=" form-control"id=""
                                                                 name="going_to" class=""
                                                                 value="{{ old('going_to') }}">
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="col-md-3">
                                                             <label for="guest_idproof">Document Name </label>
                                                             <input class="form-control" id="guest_idproof" type="text"
@@ -1110,7 +1110,7 @@
                                                             });
                                                         </script>
 
-                                                        <div class="col-md-3">
+                                                        {{-- <div class="col-md-3">
                                                             <label for="guest_pic_trigger">Guest Image</label>
                                                             <input class="form-control" id="guest_pic_trigger"
                                                                 type="text" readonly
@@ -1122,7 +1122,7 @@
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
+                                                        </div> --}}
 
                                                         <!-- Modal for Guest Image -->
                                                         <div class="modal fade" id="guestPicModal" tabindex="-1"

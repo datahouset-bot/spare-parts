@@ -98,14 +98,13 @@
                             <a href="{{ route('foodbills.create') }}" class="btn btn-success">New Parts Bill</a>
                         </div>
 
-
-
                 </form>
 
 
 
             </div>
         </div>
+        
         <div class="row my-2">
 
         </div>
