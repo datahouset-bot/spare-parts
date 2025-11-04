@@ -124,7 +124,7 @@
 
     <div class="container mt-4">
         <div class="row justify-content-center">
-            <div class="col-md-6 mt-1">
+            <div class="col-md-12 mt-1">
                 <div class="colour_code">
                     <button style="background-color: mintcream">Vacant</button>
                     {{-- <button style="background-color:orange">Booked</button> --}}
@@ -164,7 +164,7 @@
 
 
             </div>
-            <div class="col-md-6 mt-1">
+            {{-- <div class="col-md-6 mt-1">
                 <label for="">Check Advance Booked vehicles......Select Date </label>
                 <div class="form-floating mb-3 mb-md-0">
                     <form class="form-inline" action="{{ url('room_dashboard') }}" method="POST">
@@ -185,7 +185,7 @@
 
                 </div>
 
-            </div>
+            </div> --}}
         </div>
 
         <div class="row">
