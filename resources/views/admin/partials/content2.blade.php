@@ -308,7 +308,7 @@
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-box-open"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Stock Issue</span>
+                            <span class="ms-2" style="width: 90%;">Sale invoice</span>
                         </a>
                     </div>
                 </div>
