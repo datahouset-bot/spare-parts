@@ -535,9 +535,9 @@
                                             {{-- <div class="position-relative border p-1 w-25" style="border-radius: 4px; ">
                                             <label for="myInput" class="position-absolute bg-white px-2" style="top: -10px; left: 10px; ">Your Label</label>
                                             <input type="text" class="form-control" id="myInput" placeholder="Enter text here" style="border: none">
-                                            </div>
-                                            
-        <br> --}}                            <div class="col-md-4" id ="room_selection_box">
+                                            </div>               
+        <br> --}}     {{--add rows and organize Job card--}}
+                            <div class="col-md-4" id ="room_selection_box">
                                                     <table id="room_selection"
                                                         class="table table-striped table-responsive">
                                                         <thead>
