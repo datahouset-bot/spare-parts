@@ -321,7 +321,7 @@ background-color:white;
                     
 
 
-                       <span>Mobile No:{{ $salebill_header->account->mobile }}</span><br>
+                       {{-- <span>Mobile No:{{ $salebill_header->account->mobile }}</span><br> --}}
                        <span>GSTIN  No:{{ $salebill_header->account->gst_no }}</span><br>
                       
                     </div>

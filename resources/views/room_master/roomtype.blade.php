@@ -26,14 +26,14 @@
 
 <div class="card my-3">
     <div class="card-header">
-       <span style="font-size: large; font-weight: 500;">Room Type</span> 
+       <span style="font-size: large; font-weight: 500;">Service Type</span> 
     
 
         <div class="d-inline-flex align-items-center justify-content-center flex-wrap gap-2">
 
             <!-- Add New Room Type Button -->
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-                Add New Room Type
+                Add New Service
             </button>
 
             <!-- Push Rate Form -->
@@ -61,7 +61,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Add Room Type</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Add Vehicle Type</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
@@ -70,8 +70,8 @@
                                     @csrf
                                     <div>
 
-                                        Room Type Name <input type="text" name ="roomtype_name"class="form-control"
-                                            placeholder="Room Type Name  ">
+                                        Service Type<input type="text" name ="roomtype_name"class="form-control"
+                                            placeholder="service type  ">
                                         <span class="text-danger">
                                             @error('roomtype_name')
                                                 {{ $message }}
@@ -115,8 +115,8 @@
                                     </div>
                                     <div>
 
-                                        Room Tariff <input type="text" name ="room_tariff"class="form-control"
-                                            placeholder="Room Charge">
+                                        labour charge <input type="text" name ="room_tariff"class="form-control"
+                                            placeholder="Service Charge">
                                         <span class="text-danger">
                                             @error('room_tariff')
                                                 {{ $message }}
@@ -125,8 +125,8 @@
                                     </div>
                                     <div>
 
-                                        Room Dis % <input type="text" name ="room_dis"class="form-control"
-                                            placeholder="Room dis On % only  ">
+                                        product Dis % <input type="text" name ="room_dis"class="form-control"
+                                            placeholder="Product dis On % only  ">
                                         <span class="text-danger">
                                             @error('room_dis')
                                                 {{ $message }}
@@ -136,8 +136,8 @@
 
                                     <div style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
 
-                                        Room Code <input type="text" name ="room_type_af1"class="form-control"
-                                            placeholder="Room Code Given By  CM">
+                                        Product Code <input type="text" name ="room_type_af1"class="form-control"
+                                            placeholder="Product Code Given By  CM">
                                         <span class="text-danger">
                                             @error('room_type_af1')
                                                 {{ $message }}
@@ -147,7 +147,7 @@
 
                                     <div style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
 
-                                        Room Rate Code Single <input type="text"
+                                        vehicle number <input type="text"
                                             name ="room_type_af2"class="form-control" placeholder="Room Rate Code Single">
                                         <span class="text-danger">
                                             @error('room_type_af2')
@@ -157,7 +157,7 @@
                                     </div>
                                     <div style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
 
-                                        Room Rate Code Double <input type="text"
+                                        Service charge<input type="text"
                                             name ="room_type_af3"class="form-control" placeholder="Room Rate Code Double">
                                         <span class="text-danger">
                                             @error('room_type_af3')
@@ -165,7 +165,7 @@
                                             @enderror
                                         </span>
                                     </div>
-                                    <div style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
+                                    {{-- <div style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
 
                                         Room Rate Code Triple <input type="text"
                                             name ="room_type_af4"class="form-control" placeholder="Room Rate Code Triple">
@@ -174,8 +174,8 @@
                                                 {{ $message }}
                                             @enderror
                                         </span>
-                                    </div>
-                                    <div style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
+                                    </div> --}}
+                                    {{-- <div style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
 
                                         Room Rate Code Qued <input type="text" name ="room_type_af5"class="form-control"
                                             placeholder="Room Rate Code Qued">
@@ -185,7 +185,7 @@
                                             @enderror
                                         </span>
                                     </div>
-
+ --}}
 
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
@@ -215,10 +215,10 @@
                     <thead>
                         <tr>
                             <th scope="col">S.No</th>
-                            <th scope="col"> Room Type </th>
+                            <th scope="col"> Service Type </th>
                             <th scope="col"> Pacakage </th>
                             <th scope="col"> GST % </th>
-                            <th scope="col"> Room Tariff </th>
+                            <th scope="col"> Labour charge </th>
                             <th scope="col"> Dis % </th>
                             <th style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">Room Type Code
                             </th>

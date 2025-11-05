@@ -313,6 +313,18 @@
                                     </div>
                                 </a>
                             @endif
+    
+                            @can('sale')
+                        <a href="{{ url('/sales') }}" title="bill">
+                                    <div class="linkitem">
+                                        <button class="buttonlink">
+                                            <i class="fa-solid fa-cart-plus" style="color: #f44336"></i>
+                                            {{-- <i class="fa fa-calculator" style="font-size:20px;color:rgb(39, 6, 248)"></i> --}}
+                                        </button>
+                                    </div>
+                                </a>
+            @endcan
+                            
 {{-- 
                             @if ($voucherNo)
                             <a href="" title="Clear Dirty Room">

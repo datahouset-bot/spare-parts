@@ -228,7 +228,7 @@
                             <label class="floating-label" for="amount">Basic</label>
                         </div>
                     </div>
-                    
+                
                     <div class="col-md-1 col-3 text-center">
                         <div class="form-group">
                             <input type="text" class="form-control" id="dis_p" name="dis_p" placeholder=" ">
@@ -236,13 +236,13 @@
                         </div>
                     </div>
                     
-                    <div class="col-md-2 col-3 text-center">
+                    {{-- <div class="col-md-2 col-3 text-center">
                         <div class="form-group">
                             <input type="text" class="form-control" id="dis_amt" name="dis_amt" placeholder=" ">
                             <label class="floating-label" for="dis_amt">Dis Amt</label>
                         </div>
                     </div>
-                    
+                     --}}
                     <div class="col-md-2 col-3 col-sm-2text-center">
                         <div class="form-group">
                             <input type="text" class="form-control" id="total_item_dis_amt" name="total_item_dis_amt" placeholder=" ">
