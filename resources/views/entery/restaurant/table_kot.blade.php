@@ -50,7 +50,7 @@
 
         <div class="card my-3">
             <div class="card-header">
-                ADD KOT
+                ADD PARTS
             </div>
             <div class="row my-2">
                 <div class="col-md-12 text-center">
@@ -78,53 +78,53 @@
                             <input type="hidden" class="form-control" id="voucher_type" name="voucher_type" value="RKot">
                     {{-- hidden input close  --}}
 
-                    <div class="col-md-2 col-4  text-center">
-                        <label for="voucher_date">Date</label>
-                        <input type="text" class="form-control date" id ="voucher_date" name="voucher_date">
-                        <input class="form-control" id="checkin_time" type="time"
-                        name="checkin_time" value="{{ date('Y-m-d') }}" />
-                    </div>
+                    <div class="col-md-3 col-3 mt-2">
+                    <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <label for="voucher_date"class="position-absolute bg-white  px-2" style="top: -12px; left: 10px;">Date</label>
+                        <input type="text" class="form-control date" id ="voucher_date" name="voucher_date" style="border: none">
+                        {{-- <input class="form-control" id="checkin_time" type="time"
+                        name="checkin_time" value="{{ date('Y-m-d') }}" style="border: none" /> --}}
+                    </div></div>
 
 
-                    <div class="col-md-2 col-4  text-center">
-                        <label for="kot_no">KOT No</label>
-                        <input type="text" class="form-control" id ="kot_no"name="kot_no" value="{{ $new_bill_no }}">
-                    </div>
+                    <div class="col-md-3 col-3 mt-2">
+                    <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <label for="kot_no"class="position-absolute bg-white  px-2" style="top: -12px; left: 10px;">Registration No</label>
+                        <input type="text" class="form-control" id ="kot_no"name="kot_no" value="{{ $new_bill_no }}" style="border: none">
+                    </div></div>
                     {{-- <div class="col-md-2 col-4  text-center">
                         <label for="waiter_name">Waiter Name</label>
                         <input type="text" id="waiter_name" class="form-control" name="waiter_name" value="sandeep">
                     </div> --}}
-                    <div class="col-md-2 col-4  text-center">
-                        <label for="service_type">Service Type</label>
+                     <div class="col-md-3 col-3 mt-2">
+                    <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <label for="service_type"class="position-absolute bg-white  px-2" style="top: -12px; left: 10px;">Repair Type</label>
                         <select name="service_type" id="service_type" class="form-select">
-
-                            <option value="room_service" selected>Table Service</option>
-    
-
-
+                            <option value="room_service" selected>Repair type</option>
                         </select>
-
-                    </div>
-                    <div class="col-md-2 col-4  text-center">
-                        <label for="kot_on">Selected Table</label>
+                    </div></div>
+                    <div class="col-md-3 col-3 mt-2">
+                    <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <label for="kot_on"class="position-absolute bg-white  px-2" style="top: -12px; left: 10px;">Selected Slot</label>
                         <select name="service_id" id="service_id" class="form-select">
                             <option  value="{{$tableid}}" >{{$table->table_name}} </option>
                             {{-- @foreach ($checkinlists as $checkinlist)
                                 <option value="{{ $checkinlist->voucher_no }}">{{ $checkinlist->room_nos }} ||{{ $checkinlist->guest_name }}
                                     </option>
                             @endforeach --}}
-
-
                         </select>
+                    </div></div>
 
-                    </div>
-                         <div class="col-md-2 col-4  text-center">
-                        <label for="kot_remark">KOT Remark</label>
+                        <div class="col-md-3 col-3 mt-3">
+                    <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <label for="kot_remark"class="position-absolute bg-white  px-2" style="top: -12px; left: 10px;">Parts Remark</label>
                         <input type="text" class="form-control" id ="kot_remark"name="kot_remark" >
                     </div>
                 </div>
-                <div class="row my-2" name="itementery">
-                    <div class="col-md-3 mt-4 mx-2 ">
+
+                
+                <div class="col-md-3 col-3 mt-2">
+                <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
                         <div class="input-group">
 
                             <select id="item_id" name="item_id" class="js-states form-control">
@@ -141,19 +141,22 @@
                             @enderror
                         </span>
                     </div>
-
-                    <div class="col-md-2  col-3   text-center">
-                        <label for="qty">QTY </label>
-                        <input type="text" class ="form-control " id="qty" name="qty"  autocomplete="off"  required>
-                    </div>
-                    <div class="col-md-2 col-3  text-center">
-                        <label for="rate">Rate&nbsp;&nbsp; </label><span id="display_rate"></span>
-                        <input type="text" class ="form-control " id ="rate" name="rate" required>
-                    </div>
-                    <div class="col-md-2 col-3  text-center">
-                        <label for="amount">amount </label>
+                </div>
+                    <div class="col-md-3 col-3 mt-2">
+                    <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <label for="qty"class="position-absolute bg-white  px-2" style="top: -12px; left: 10px;">QTY </label>
+                        <input type="text" class ="form-control " id="qty" name="qty"  autocomplete="off" style="border: none" required>
+                    </div></div>
+                    <div class="col-md-3 col-3 mt-3">
+                    <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <label for="rate"class="position-absolute bg-white  px-2" style="top: -12px; left: 10px;">Rate </label>
+                        <input type="text" class ="form-control " id ="rate" name="rate" style="border: none" required>
+                    </div></div>
+                    <div class="col-md-3 col-3 mt-3">
+                    <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <label for="amount"class="position-absolute bg-white  px-2" style="top: -12px; left: 10px;">Amount </label>
                         <input type="text" class ="form-control " id="amount" name="amount" required readonly>
-                    </div>
+                    </div></div>
                     <div class="col-md-2  col-3  text-center">
 
                         <button type="submit" name="additem" id ="additem"class="btn btn-success mt-4">+</button>

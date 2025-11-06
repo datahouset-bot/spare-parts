@@ -354,42 +354,46 @@
                                             <div class="row justify-content-centerm-3">
                                                 <div class="col-md-8">
                                                     <div class="row form-group">
-                                                        <div class="col-md-3"><span class="requierdfield">*</span>
-                                                            <label for="label1">Vehicle No </label>
+                                                    <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="label1"class="position-absolute px-2" style="top: -21px; left:4px;"><span class="requierdfield">*</span>Vehicle No </label>
                                                             <input type="text" name="booking_no"class=" form-control"
-                                                                id="" class="" value="{{ $new_bill_no }}"
+                                                                id="" class="" value="{{ $new_bill_no }}" style="border: none"
                                                                 readonly>
                                                             <input type="hidden" name="voucher_no"class=" form-control"
                                                                 id="" name="voucher_no" class=""
                                                                 value="{{ $new_voucher_no }}" readonly>
 
-                                                        </div>
-                                                        <div class="col-md-3"><span class="requierdfield">*</span>
-                                                            <label for="booking_date">Purchase Date</label>
+                                                        </div></div>
+
+                                                        <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="booking_date"class="position-absolute px-2" style="top: -21px; left:4px;"> <span class="requierdfield">*</span> Date</label>
                                                             <input class="form-control date" id="booking_date"
                                                                 type="text" name="booking_date"
-                                                                value="{{ date('Y-m-d') }}" />
+                                                                value="{{ date('Y-m-d') }}" style="border: none"/>
                                                             <span class="text-danger">
                                                                 @error('booking_date')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
+                                                        </div></div>
 
-                                                        <div class="col-md-3"><span class="requierdfield">*</span>
-                                                            <label for="booking_time"> Time</label>
+                                                         <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="booking_time" class="position-absolute px-2" style="top: -21px; left:4px;"><span class="requierdfield">*</span> Time</label>
                                                             @php
                                                                 $currentTime = \Carbon\Carbon::now()->format('H:i');
                                                             @endphp
                                                             <input class="form-control" id="booking_time" type="time"
-                                                                name="booking_time" value="{{ $currentTime }}" />
+                                                                name="booking_time" value="{{ $currentTime }}" style="border: none" />
                                                             <span class="text-danger">
                                                                 @error('booking_time')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
 
-                                                        </div>
+                                                        </div></div>
                                                         {{-- <div class="col-md-3"><span class="requierdfield">*</span>
                                                             <label for="checkin_date">Check In Date</label>
                                                             <input class="form-control date" id="checkin_date"
@@ -536,11 +540,12 @@ $(function () {
                                                             </span>
                                                         </div> --}}
 
-                                                        <div class="col-md-6"><span class="requierdfield">*</span>
-                                                            <label for="package">Package</label>
+                                                        <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="package"class="position-absolute  px-2" style="top: -22px; left: 4px;"><span class="requierdfield">*</span>Package</label>
                                                             <select name="package_id" id="package_id" class="form-select"
                                                                 aria-label="Default select example">
-                                                                <option disabled {{ old('package_id') ? '' : 'selected' }}>
+                                                                <option disabled {{ old('package_id') ? '' : 'selected' }} style="border:none">
                                                                     Select Package</option>
                                                                 @foreach ($package as $package)
                                                                     <option value="{{ $package->id }}"
@@ -556,44 +561,48 @@ $(function () {
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
+                                                        </div></div>
 
-                                                        <div class="col-md-3">
-                                                            <label for="vehicle_no">Vehicle No</label>
+                                                        <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+
+                                                            <label for="vehicle_no"class="position-absolute bg-white px-2" style="top: -10px; left: 4px;">Vehicle No</label>
                                                             <input class="form-control" id="vehicle_no" type="text"
                                                                 name="vehicle_no" value="{{ old('vehicle_no') }}"
-                                                                autocomplete="off" />
+                                                                autocomplete="off" style="border: none"/>
                                                             <span class="text-danger">
                                                                 @error('vehicle_no')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
 
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label for="parking_no">SlotNo </label>
+                                                        </div></div>
+                                                       <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="parking_no"class="position-absolute bg-white px-2" style="top: -10px; left: 4px;">SlotNo </label>
                                                             <input class="form-control" id="parking_no" type="text"
                                                                 name="parking_no" value="{{ old('parking_no') }}"
-                                                                autocomplete="off" />
+                                                                autocomplete="off" style="border: none"/>
                                                             <span class="text-danger">
                                                                 @error('parking_no')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
 
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label for="booking_remark">Booking Remark </label>
+                                                        </div></div>
+                                                        <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="booking_remark"class="position-absolute bg-white px-2" style="top: -10px; left: 4px;">Booking Remark </label>
                                                             <input class="form-control" id="booking_remark"
                                                                 type="text" name="booking_remark"
-                                                                value="{{ old('booking_remark') }}" autocomplete="off" />
+                                                                value="{{ old('booking_remark') }}" autocomplete="off"style="border: none" />
                                                             <span class="text-danger">
                                                                 @error('booking_remark')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
 
-                                                        </div>
+                                                        </div></div>
 
                                                     </div>
                                                 </div>
@@ -670,8 +679,9 @@ $(function () {
                                             <div class="row justify-content-centerm-3 my-3">
                                                 <div class="col-md-8">
                                                     <div class="row form-group">
-                                                        <div class="col-md-6"><span class="requierdfield">*</span>
-                                                            <label for="guest_name">Guest Name </label>
+                                                        <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="guest_name"class="position-absolute bg-white px-2" style="top: -18px; left: 10px;"> <span class="requierdfield">*</span>Customer Name </label>
                                                             <input class="form-control" id="guest_name" type="text"
                                                                 name="guest_name" value="{{ old('guest_name') }}"
                                                                 autocomplete="none" />
@@ -682,31 +692,34 @@ $(function () {
                                                             </span>
 
 
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label for="guest_address">Address Line 1</label>
+                                                        </div></div>
+                                                       <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="guest_address"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Address Line 1</label>
                                                             <input class="form-control" id="guest_address" type="text"
                                                                 name="guest_address"
-                                                                value="{{ old('guest_address') }}" />
+                                                                value="{{ old('guest_address') }}" style="border: none"/>
                                                             <span class="text-danger">
                                                                 @error('guest_address')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label for="guest_address2">Address Line 2</label>
+                                                        </div></div>
+                                                       <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="guest_address2"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Address Line 2</label>
                                                             <input class="form-control" id="guest_address2"
                                                                 type="text" name="guest_address2"
-                                                                value="{{ old('guest_address2') }}" />
+                                                                value="{{ old('guest_address2') }}" style="border: none" />
                                                             <span class="text-danger">
                                                                 @error('guest_address2')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label for="guest_city">City</label>
+                                                        </div></div>
+                                                       <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="guest_city"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">City</label>
                                                             <input class="form-control" id="guest_city" type="text"
                                                                 name="guest_city" value="{{ old('guest_city') }}" />
                                                             <span class="text-danger">
@@ -714,54 +727,59 @@ $(function () {
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label for="guest_state">State</label>
+                                                        </div></div>
+                                                        <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="guest_state"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">State</label>
                                                             <input class="form-control" id="guest_state" type="text"
-                                                                name="guest_state" value="{{ old('guest_state') }}" />
+                                                                name="guest_state" value="{{ old('guest_state') }}" style="border: none"/>
                                                             <span class="text-danger">
                                                                 @error('guest_state')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label for="guest_contery">Country</label>
+                                                        </div></div>
+                                                        <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="guest_contery"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Country</label>
                                                             <input class="form-control" id="guest_contery" type="text"
                                                                 name="guest_contery"
-                                                                value="{{ old('guest_countery', $compinfofooter->country) }}" />
+                                                                value="{{ old('guest_countery', $compinfofooter->country) }}" style="border: none" />
                                                             <span class="text-danger">
                                                                 @error('guest_contery')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label for="guest_pincode"> Pin Code </label>
+                                                        </div></div>
+                                                        <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="guest_pincode"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;"> Pin Code </label>
                                                             <input class="form-control" id="guest_pincode" type="text"
-                                                                name="guest_pincode" value="" />
+                                                                name="guest_pincode" value="" style="border: none"/>
                                                             <span class="text-danger">
                                                                 @error('guest_pincode')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label for="guest_nationality">Nationality</label>
+                                                        </div></div>
+                                                        <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="guest_nationality"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Nationality</label>
                                                             <input class="form-control" id="guest_nationality"
                                                                 type="text" name="guest_nationality"
-                                                                value="{{ old('guest_countery', $compinfofooter->country) }}" />
+                                                                value="{{ old('guest_countery', $compinfofooter->country) }}" style="border: none"/>
                                                             <span class="text-danger">
                                                                 @error('guest_nationality')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
-                                                        <div class="col-md-3"><span class="requierdfield">*</span>
-                                                            <label for="guest_mobile">Mobile</label>
+                                                        </div></div>
+                                                        <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="guest_mobile"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;"><span class="requierdfield">*</span>Mobile</label>
                                                             <input class="form-control" id="guest_mobile" type="text"
                                                                 name="guest_mobile" value="{{ old('guest_mobile') }}"
-                                                                autocomplete="none" />
+                                                                autocomplete="none" style="border: none" />
                                                             <span class="text-danger">
                                                                 @error('guest_mobile')
                                                                     {{ $message }}
@@ -770,46 +788,52 @@ $(function () {
 
 
                                                         </div>
-                                                        <div class="col-md-3">
-                                                            <label for="guest_phone">Phone</label>
+                                                        </div>
+                                                        <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="guest_phone"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Phone</label>
                                                             <input class="form-control" id="guest_phone" type="text"
                                                                 name="guest_phone" value="{{ old('guest_phone') }}"
-                                                                autocomplete="none" />
+                                                                autocomplete="none"style="border: none" />
                                                             <span class="text-danger">
                                                                 @error('guest_phone')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label for="guest_email">Email</label>
+                                                        </div></div>
+                                                        <div class="col-md-4 mt-4">
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="guest_email"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Email</label>
                                                             <input class="form-control" id="guest_email" type="text"
-                                                                name="guest_email" value="{{ old('guest_email') }}" />
+                                                                name="guest_email" value="{{ old('guest_email') }}" style="border: none" />
                                                             <span class="text-danger">
                                                                 @error('guest_email')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
-                                                        <div class="col-md-3 ">
-                                                            <label for="label1">Agent</label>
+                                                        </div></div>
+                                                        <div class="col-md-4 mt-4"> 
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="label1"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Agent</label>
                                                             <input type="text" class=" form-control"id=""
                                                                 name="agent" class=""
-                                                                value="{{ old('agent') }}">
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label for="guest_idproof">Document Name </label>
+                                                                value="{{ old('agent') }}" style="border: none">
+                                                        </div></div>
+                                                        <div class="col-md-4 mt-4">  
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="guest_idproof"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Document Name </label>
                                                             <input class="form-control" id="guest_idproof" type="text"
                                                                 name="guest_idproof"
-                                                                value="{{ old('guest_idproof') }}" />
+                                                                value="{{ old('guest_idproof') }}" style="border: none"/>
                                                             <span class="text-danger">
                                                                 @error('guest_idproof')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label for="guest_idproof_no">Document No </label>
+                                                        </div></div>
+                                                        <div class="col-md-4 mt-4">  
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="guest_idproof_no"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Document No </label>
                                                             <input class="form-control" id="guest_idproof_no"
                                                                 type="text" name="guest_idproof_no"
                                                                 value="{{ old('guest_idproof_no') }}" />
@@ -818,35 +842,38 @@ $(function () {
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
+                                                        </div></div>
 
-                                                        <div class="col-md-3">
-                                                            <label for="firm_name">Company Name</label>
+                                                        <div class="col-md-4 mt-4">  
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="firm_name"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Company Name</label>
                                                             <input class="form-control" id="firm_name" type="text"
-                                                                name="firm_name" value="{{ old('firm_name') }}" />
+                                                                name="firm_name" value="{{ old('firm_name') }}" style="border: none" />
                                                             <span class="text-danger">
                                                                 @error('firm_name')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
 
-                                                        </div>
+                                                        </div></div>
 
-                                                        <div class="col-md-3">
-                                                            <label for="firm_address">Company Address </label>
+                                                        <div class="col-md-4 mt-4">  
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="firm_address"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Company Address </label>
                                                             <input class="form-control" id="firm_address" type="text"
-                                                                name="firm_address" value="{{ old('firm_address') }}" />
+                                                                name="firm_address" value="{{ old('firm_address') }}" style="border: none"/>
                                                             <span class="text-danger">
                                                                 @error('firm_address')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
 
-                                                        </div>
+                                                        </div></div>
 
 
-                                                        <div class="col-md-3">
-                                                            <label for="gst_no">GST NO </label>
+                                                        <div class="col-md-4 mt-4">  
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="gst_no"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">GST NO </label>
                                                             <input class="form-control" id="gst_no" type="text"
                                                                 name="gst_no" value="{{ old('gst_no') }}" />
                                                             <span class="text-danger">
@@ -855,7 +882,7 @@ $(function () {
                                                                 @enderror
                                                             </span>
 
-                                                        </div>
+                                                        </div></div>
                                                         {{-- <div class="col-md-3">
                                                             <label for="guest_id_pic">Document Image </label>
                                                             <input class="form-control" id="guest_id_pic" type="file"
@@ -868,19 +895,20 @@ $(function () {
                                                         </div> --}}
                                                         <!-- Input that triggers the modal -->
                                                         <!-- Input that triggers the modal -->
-                                                        <div class="col-md-3">
-                                                            <label for="guest_id_pic_trigger">Document Image</label>
+                                                        <div class="col-md-4 mt-4">  
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="guest_id_pic_trigger"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Document Image</label>
                                                             <input class="form-control" id="guest_id_pic_trigger"
                                                                 type="text" readonly
                                                                 placeholder="Click to upload or capture"
                                                                 data-bs-toggle="modal"
-                                                                data-bs-target="#fileUploadModal" />
+                                                                data-bs-target="#fileUploadModal" style="border: none" />
                                                             <span class="text-danger">
                                                                 @error('guest_id_pic')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
+                                                        </div></div>
 
                                                         <!-- Modal -->
                                                         <div class="modal fade" id="fileUploadModal" tabindex="-1"

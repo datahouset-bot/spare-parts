@@ -272,7 +272,7 @@
         <div class="page">
 
             <div class= "voucher_head">
-                <div class="bill_head">KOT</div><br>
+                <div class="bill_head">Service parts Bill</div><br>
                 {{ $componyinfo->cominfo_firm_name }}
             </div>
 
@@ -295,17 +295,17 @@
             <div class="page_header">
                 <div class="info-container">
                     <div class="cust_info">
-                        <span class="heading">Guest Detail</span><br>
+                        <span class="heading">Customer Detail</span><br>
                         @if(isset($guest_detail->guest_name))
-    <span>Guest Name: {{ $guest_detail->guest_name }}</span><br>
+    <span>Customer Name: {{ $guest_detail->guest_name }}</span><br>
 @else
     <span></span><br>
 @endif
 
 @if(isset($guest_detail->room_nos))
-    <span>Guest Room No: {{ $guest_detail->room_nos }}</span><br>
+    <span>Vehicle slot No: {{ $guest_detail->room_nos }}</span><br>
 @else
-    <span>Table No :&nbsp;{{$table_name}} </span><br>
+    <span>Vehicle No :&nbsp;{{$table_name}} </span><br>
 @endif
 @if(isset($kot_header->kot_remark))
     <span>Remark: {{ $kot_header->kot_remark }}</span><br>
@@ -314,14 +314,14 @@
 @endif
 
 @if(isset($guest_detail->voucher_no))
-    <span>Check In No: {{ $guest_detail->voucher_no }}</span><br>
+    <span> Voucher No: {{ $guest_detail->voucher_no }}</span><br>
 @else
     <span> </span><br>
 @endif
                     </div>
                     <div class="voucher_info">
 
-                        <span>Kot No : {{ $kot_header->bill_no }}</span><br>
+                        <span>Vehicle No : {{ $kot_header->bill_no }}</span><br>
                         <span>Date : {{ $kot_header->voucher_date }}</span><br>
                         <span>Time : {{ $kot_header->created_at->format('H:i') }}</span><br>
                     </div>
@@ -389,7 +389,7 @@
             <div class="button-container my-2">
                 <button class="btn btn-primary btn-lg" onclick="printInvoice()">Print</button>
                 @can('Restaurant')
-                                     <a href="{{url('/table_dashboard')}}" class ="btn btn-info btn-lg mx-2">Restaurent</a>
+                                     <a href="{{url('/table_dashboard')}}" class ="btn btn-info btn-lg mx-2">book a slot</a>
                 @endcan
 
             </div>
