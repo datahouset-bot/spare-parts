@@ -265,7 +265,7 @@
 
                                 </div>
                             </a>
-                            <a href="{{ url('/kots/create/' . $voucherNo) }}" title="stock issue">
+                            <a href="{{ url('/kots/create/' . $voucherNo) }}" title="parts bill">
 
                                 <div class="linkitem">
 

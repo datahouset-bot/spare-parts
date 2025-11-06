@@ -183,7 +183,7 @@
         <tr class="kot-alert-row">
             <th>
                 <span class="blinking-bulb"></span>
-                <a href="{{ route('kots.index') }}" class="kot-link">Room Kot Unprinted - {{ $kot_Unprinted }}</a>
+                <a href="{{ route('kots.index') }}" class="kot-link">Service Bill Unprinted - {{ $kot_Unprinted }}</a>
             </th>
         </tr>
     @endif

@@ -50,7 +50,7 @@
 
         <div class="card my-3">
             <div class="card-header">
-                ADD KOT
+                SERVICE PARTS
             </div>
             <div class="row my-2">
                 <div class="col-md-12 text-center">
@@ -78,44 +78,44 @@
                             <input type="hidden" class="form-control" id="voucher_type" name="voucher_type" value="Kot">
                     {{-- hidden input close  --}}
 
-                    <div class="col-md-2 col-4  text-center">
-                        <label for="voucher_date">Date</label>
-                        <input type="text" class="form-control date" id ="voucher_date" name="voucher_date">
-                    </div>
-                    <div class="col-md-1 col-4  text-center">
-                        <label for="checkin_time">time</label>
+                        <div class="col-md-3 col-3 mt-2">
+                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <label for="voucher_date"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Date</label>
+                        <input type="text" class="form-control date" id ="voucher_date" name="voucher_date" style="border: none">
+                    </div></div>
+                    <div class="col-md-3 col-3  text-center mt-2">
+                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <label for="checkin_time"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">time</label>
                         <input class="form-control" id="checkin_time" type="time"
                         name="checkin_time" value="{{ date('Y-m-d') }}" />
-                    </div>
+                    </div></div>
 
 
-                    <div class="col-md-2 col-4  text-center">
-                        <label for="kot_no">KOT No</label>
+                    <div class="col-md-3 col-3 mt-2">
+                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <label for="kot_no"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Vehicle No</label>
                         <input type="text" class="form-control" id ="kot_no"name="kot_no" value="{{ $new_bill_no }}">
-                    </div>
+                    </div></div>
                     {{-- <div class="col-md-2 col-4  text-center">
                         <label for="waiter_name">Waiter Name</label>
                         <input type="text" id="waiter_name" class="form-control" name="waiter_name" value="sandeep">
                     </div> --}}
-                    <div class="col-md-1 col-4  text-center">
-                        <label for="service_type">Service Type</label>
+                    <div class="col-md-3 col-3 mt-2">
+                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <label for="service_type" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Repair Type</label>
                         <select name="service_type" id="service_type" class="form-select">
-
-                            <option value="room_service" selected>Room Servic</option>
-    
-
-
+                            <option value="room_service" selected>Type</option>
                         </select>
-
-                    </div>
+                    </div></div>
                     @php
                     $id = request()->route('id'); // Retrieve 'id' from the route
                 @endphp
                 
-                <div class="col-md-3 col-4 text-center">
-                    <label for="kot_on">Select Room</label>
+                <div class="col-md-3 col-3 mt-2">
+                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                    <label for="kot_on"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Select Slot</label>
                     <select name="service_id" id="service_id" class="form-select">
-                        <option disabled {{ $id ? '' : 'selected' }}>Select Room No</option>
+                        <option disabled {{ $id ? '' : 'selected' }} style="border: none">Select slot No</option>
                         @foreach ($checkinlists as $checkinlist)
                             <option 
                                 value="{{ $checkinlist->voucher_no }}" 
@@ -126,16 +126,18 @@
                         @endforeach
                     </select>
                     
-                </div>
-                    <div class="col-md-2 col-4  text-center">
-                        <label for="kot_remark">KOT Remark</label>
-                        <input type="text" class="form-control" id ="kot_remark"name="kot_remark" >
-                    </div>                
-
+                </div></div>
+                    <div class="col-md-3 col-3 mt-2">
+                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <label for="kot_remark"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Service Remark</label>
+                        <input type="text" class="form-control" id ="kot_remark"name="kot_remark" style="border: none" >
+                    </div></div>          
+{{-- 
                 
-                <div class="row my-2" name="itementery">
-                    <div class="col-md-3 mt-4 mx-2 ">
+                <div class="row my-2" name="itementery"> --}}
+                   <div class="col-md-3 col-3 mt-2">
                         <div class="input-group">
+                                <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
 
                             <select id="item_id" name="item_id" class="js-states form-control">
                                 <option disabled selected>Select Item</option>
@@ -150,20 +152,23 @@
                                 {{ $message }}
                             @enderror
                         </span>
-                    </div>
+                    </div></div>
 
-                    <div class="col-md-2  col-3   text-center">
-                        <label for="qty">QTY </label>
-                        <input type="text" class ="form-control " id="qty" name="qty"  autocomplete="off"  required>
-                    </div>
-                    <div class="col-md-2 col-3  text-center">
-                        <label for="rate">Rate&nbsp;&nbsp; </label><span id="display_rate"></span>
+                    <div class="col-md-3 col-3 mt-2">
+                    <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <label for="qty"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">QTY </label>
+                        <input type="text" class ="form-control " id="qty" name="qty"  autocomplete="off" style="border: none" required>
+                    </div></div>
+                    <div class="col-md-3 col-3 mt-2">
+                    <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <label for="rate"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Rate </label>
                         <input type="text" class ="form-control " id ="rate" name="rate" required>
-                    </div>
-                    <div class="col-md-2 col-3  text-center">
-                        <label for="amount">amount </label>
-                        <input type="text" class ="form-control " id="amount" name="amount" required readonly>
-                    </div>
+                    </div></div>
+                    <div class="col-md-3 col-3 mt-2">
+                    <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <label for="amount"class="position-absolute bg-transparent  px-2" style="top: -12px; left: 10px;">amount </label>
+                        <input type="text" class ="form-control " id="amount" name="amount" required readonly style="border: none">
+                    </div></div>
                     <div class="col-md-2  col-3  text-center">
 
                         <button type="submit" name="additem" id ="additem"class="btn btn-success mt-4">+</button>
