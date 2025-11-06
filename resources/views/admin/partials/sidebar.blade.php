@@ -51,15 +51,15 @@
                                 {{-- @can('Hotel Module') --}}
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                         data-bs-target="#room" aria-expanded="false" aria-controls="room">
-                                        Vehicle Master
+                                        Service Master
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
                                 {{-- @endcan --}}
                                 <div class="collapse" id="room" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="{{ url('/packages') }}">Package</a>
-                                        <a class="nav-link" href="{{ url('/roomtypes') }}">Type</a>
+                                        <a class="nav-link" href="{{ url('/packages') }}">Service Type</a>
+                                        <a class="nav-link" href="{{ url('/roomtypes') }}">Service Plan</a>
                                         <a class="nav-link" href="{{ url('/rooms') }}">Slot</a>
                                     </nav>
                                 </div>
@@ -78,10 +78,10 @@
                                         <a class="nav-link" href="{{ url('/godowns') }}">Godown (Store)</a>
                                         <a class="nav-link" href="{{ url('/account') }}">Locker</a>
                                         <a class="nav-link" href="{{ url('/gstmasters') }}">GST,TAX,VAT</a>
-                                        @can('Restaurant Module')
-                                            <a class="nav-link" href="{{ url('/businesssources') }}">Business Source</a>
+                                 
+                                            <a class="nav-link" href="{{ url('/businesssources') }}">Vehicle Type</a>
                                             <a class="nav-link" href="{{ url('/othercharges') }}">Other Charge</a>
-                                        @endcan
+                                 
                                         <a class="nav-link" href="{{ url('/voucher_types') }}">Voucher Type</a>
                                     </nav>
                                 </div>
@@ -107,17 +107,17 @@
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                     data-bs-target="#pagesCollapseAuth" aria-expanded="false"
                                     aria-controls="pagesCollapseAuth">
-                                    Transaction
+                                    Vehical Service
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href={{ url('roombooking_home') }}>Slot Book</a>
-                                        <a class="nav-link" href={{ url('roomcheckins') }}>Job card</a>
-                                        <a class="nav-link" href={{ url('roomservices') }}>Stock issue </a>
-                                        <a class="nav-link" href={{ url('advace_receipt') }}>Invoice </a>
-                                        <a class="nav-link" href={{ url('roomcheckouts') }}>Gate pass </a>
+                                        <a class="nav-link" href={{ url('roombooking_home') }}> Book Slot</a>
+                                        <a class="nav-link" href={{ url('roomcheckins') }}>Job Card</a>
+                                        <a class="nav-link" href={{ url('roomservices') }}>Stock Issue </a>
+                                        <a class="nav-link" href={{ url('foodbills') }}>Invoice</a>
+                                        <a class="nav-link" href={{ url('roomcheckouts') }}>Gate Pass </a>
                                     </nav>
                                 </div>
                                 {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#bed" aria-expanded="false" aria-controls="bed">
@@ -134,7 +134,7 @@
                                  </nav>
                              </div> --}}
 
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                     data-bs-target="#pagesCollapseError" aria-expanded="false"
                                     aria-controls="pagesCollapseError">
                                     Spare_parts
@@ -149,7 +149,7 @@
                                         </a>
 
                                     </nav>
-                                </div>
+                                </div> --}}
 
                                 {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#Banquet" aria-expanded="false" aria-controls="Banquet">
                                 Banquet Hall 
@@ -165,15 +165,24 @@
 
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                     data-bs-target="#inventory" aria-expanded="false" aria-controls="inventory">
-                                    Stock
+                                    Transection
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="inventory" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
+                                       <a class="nav-link" href="{{ url('/sales') }}">Sale Invoice</a>
+                                       <a class="nav-link" href="{{ url('/sales') }}">Quotation</a>
+                                       <a class="nav-link" href="{{ url('/sales') }}">Estimate Sale</a>
+                                       <a class="nav-link" href="{{ url('/sales') }}">Sale Order</a>
+                                      <a class="nav-link" href="{{ url('/sales') }}">Sale Return</a>
                                         <a class="nav-link" href="{{ url('/purchases') }}">Purchase</a>
-                                        <a class="nav-link" href="{{ url('/stocktransfers') }}">Stock Transfer</a>
-                                        <a class="nav-link" href="{{ url('/sales') }}">Stock Issue</a>
+                                         <a class="nav-link" href="{{ url('/purchases') }}">Purchase Order</a>
+                                         <a class="nav-link" href="{{ url('/purchases') }}">Purchase Challan</a>
+                                         <a class="nav-link" href="{{ url('/purchases') }}">Purchase Return</a>
+
+                                      <a class="nav-link" href="{{ url('/stocktransfers') }}">Stock Transfer</a>
+ 
                                     </nav>
                                 </div>
 
@@ -189,6 +198,10 @@
                                         <a class="nav-link" href="{{ url('/reciepts') }}">Reciept
                                         </a>
                                         <a class="nav-link" href="{{ url('/payments') }}">Payment</a>
+                                      <a class="nav-link" href="{{ url('/purchases') }}">Countra</a>
+                                      <a class="nav-link" href="{{ url('/purchases') }}">Jurnal Entry</a>
+                                      <a class="nav-link" href="{{ url('/purchases') }}">Bank Entry</a>
+
 
 
 

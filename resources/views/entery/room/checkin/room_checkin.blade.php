@@ -309,29 +309,33 @@
 
                                         <div class="row">
                                             <!-- Room Booking -->
-<div class="col-md-3 col-3 mt-4">
-<div class="position-relative  col-md-4 w-75" style="border:none">
-    <label for="searchCustomer" class="position-absolute " style="top: -22px; left: 10px;">Select Slot </label>
-    <div id="searchCustomer">
-        <form action="{{ url('/show_roombooking') }}" method="POST" class="form-inline" id="select_roombooking">
-            @csrf
-            <div class="input-group">
-                <select name="roombooking_voucher_no" id="roombooking_voucher_no" class="form-select"
-                    aria-label="Default select example">
-                    <option selected disabled>Select Slot Booking</option>
-                    @foreach ($roombookings as $roombookings)
-                        <option value="{{ $roombookings->voucher_no }}">
-                            {{ $roombookings->guest_name }} -
-                            {{ \Carbon\Carbon::parse($roombookings->checkin_date)->format('d-m-y') }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+                                            <div class="col-md-3 col-3 mt-4">
+                                                <div class="position-relative  col-md-4 w-75" style="border:none">
+                                                    <label for="searchCustomer" class="position-absolute "
+                                                        style="top: -22px; left: 10px;">Select Slot </label>
+                                                    <div id="searchCustomer">
+                                                        <form action="{{ url('/show_roombooking') }}" method="POST"
+                                                            class="form-inline" id="select_roombooking">
+                                                            @csrf
+                                                            <div class="input-group">
+                                                                <select name="roombooking_voucher_no"
+                                                                    id="roombooking_voucher_no" class="form-select"
+                                                                    aria-label="Default select example">
+                                                                    <option selected disabled>Select Slot Booking</option>
+                                                                    @foreach ($roombookings as $roombookings)
+                                                                        <option value="{{ $roombookings->voucher_no }}">
+                                                                            {{ $roombookings->guest_name }} -
+                                                                            {{ \Carbon\Carbon::parse($roombookings->checkin_date)->format('d-m-y') }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
 
-            <span id="message"></span>
-        </form>
-    </div></div>
-</div>
+                                                            <span id="message"></span>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             {{-- 
                                             <div class="col-md-3 mt-4">
@@ -451,202 +455,337 @@
                                                 <div class="col-md-8">
                                                     <div class="row form-group">
                                                         <div class="row g-0">
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 5px;">
-                                                            <label for="label1"class="position-absolute bg-white px-2" style="top: -22px; left: 3px;">JOB Card No<span
-                                                                    class="requierdfield">*</span> </label>
-                                                            <input type="text" name="check_in_no"class=" form-control"
-                                                                id="" class="" value="{{ $new_bill_no }}"
-                                                                readonly>
-                                                            <input type="hidden" name="voucher_no"class=" form-control"
-                                                                id="" name="voucher_no" class=""
-                                                                value="{{ $new_voucher_no }}" readonly>
+                                                            <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 5px;">
+                                                                    <label
+                                                                        for="label1"class="position-absolute bg-white px-2"
+                                                                        style="top: -22px; left: 3px;">JOB Card No<span
+                                                                            class="requierdfield">*</span> </label>
+                                                                    <input type="text"
+                                                                        name="check_in_no"class=" form-control"
+                                                                        id="" class=""
+                                                                        value="{{ $new_bill_no }}" readonly>
+                                                                    <input type="hidden"
+                                                                        name="voucher_no"class=" form-control"
+                                                                        id="" name="voucher_no" class=""
+                                                                        value="{{ $new_voucher_no }}" readonly>
 
-                                                        </div></div>
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 5px;">
-                                                            <label for="checkin_date"class="position-absolute bg-white px-2" style="top: -22px; left: 3px;">Date<span
-                                                                    class="requierdfield">*</span></label>
-                                                            <input class="form-control date" id="checkin_date"
-                                                                type="text" name="checkin_date"
-                                                                value="{{ date('Y-m-d') }}" />
-                                                            <span class="text-danger">
-                                                                @error('checkin_date')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div></div>
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 5px;">
-                                                            <label for="checkin_time"class="position-absolute bg-white px-2" style="top: -22px; left: 3px;">Time<span
-                                                                    class="requierdfield">*</span></label>
-                                                            <input class="form-control" id="checkin_time" type="time"
-                                                                name="checkin_time" value="{{ date('Y-m-d') }}" />
-                                                            <span class="text-danger">
-                                                                @error('checkin_time')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 5px;">
+                                                                    <label
+                                                                        for="checkin_date"class="position-absolute bg-white px-2"
+                                                                        style="top: -22px; left: 3px;">Date<span
+                                                                            class="requierdfield">*</span></label>
+                                                                    <input class="form-control date" id="checkin_date"
+                                                                        type="text" name="checkin_date"
+                                                                        value="{{ date('Y-m-d') }}" />
+                                                                    <span class="text-danger">
+                                                                        @error('checkin_date')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 5px;">
+                                                                    <label
+                                                                        for="checkin_time"class="position-absolute bg-white px-2"
+                                                                        style="top: -22px; left: 3px;">Time<span
+                                                                            class="requierdfield">*</span></label>
+                                                                    <input class="form-control" id="checkin_time"
+                                                                        type="time" name="checkin_time"
+                                                                        value="{{ date('Y-m-d') }}" />
+                                                                    <span class="text-danger">
+                                                                        @error('checkin_time')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                                                                                       <div class="col-md-3  col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    {{-- <span class="requierdfield">*</span> --}}
+                                                                    <label for="guest_mobile"
+                                                                        class="position-absolute bg-transparent px-2"
+                                                                        style="top: -21px; left:2px;"><span
+                                                                            class="requierdfield">*</span>Vehicle
+                                                                        No</label>
+                                                                    <input class="form-control" id="guest_mobile"
+                                                                        type="text" name="guest_mobile"
+                                                                        value="{{ old('guest_mobile') }}"
+                                                                        autocomplete="none" style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_mobile')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div> 
 
-                                                            @if(!is_null($componyinfo->componyinfo_af1))
-                                                            <div class="col-md-3">
-                                                            <label for="checkin_date">Expected Check-Out Date<span
-                                                                    class="requierdfield"></span></label>
-                                                            <input class="form-control date" id="checkout_date"
-                                                                type="text" name="checkout_date"
-                                                                value="{{ date('Y-m-d') }}" />
-                                                            <span class="text-danger">
-                                                                @error('checkout_date')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
+                                                                          <div class="col-md-6 col-6 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="guest_name"class="position-absolute bg-white px-2"
+                                                                        style="top: -21px; left: 2px;"><span
+                                                                            class="requierdfield">*</span>Customer Name
+                                                                    </label>
+                                                                    <input class="form-control" id="guest_name"
+                                                                        type="text" name="guest_name"
+                                                                        value="{{ old('guest_name') }}"
+                                                                        autocomplete="none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_name')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="guest_address"class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">Address Line
+                                                                        1</label>
+                                                                    <input class="form-control" id="guest_address"
+                                                                        type="text" name="guest_address"
+                                                                        value="{{ old('guest_address') }}"
+                                                                        style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_address')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+    <div class="col-md-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label for="guest_address2"
+                                                                        class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">Address Line
+                                                                        2</label>
+                                                                    <input class="form-control" id="guest_address2"
+                                                                        type="text" name="guest_address2"
+                                                                        value="{{ old('guest_address2') }}"
+                                                                        style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_address2')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="col-md-3 mt-4 ">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="guest_city"class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">City</label>
+                                                                    <input class="form-control" id="guest_city"
+                                                                        type="text" name="guest_city"
+                                                                        value="{{ old('guest_city') }}"
+                                                                        style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_city')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 mt-4 ">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label for="guest_state"
+                                                                        class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">State</label>
+                                                                    <input class="form-control" id="guest_state"
+                                                                        type="text" name="guest_state"
+                                                                        value="{{ old('guest_state') }}"
+                                                                        style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_state')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+
+                                                                                                                       <div class="col-md-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="guest_pincode"class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;"> Pin Code </label>
+                                                                    <input class="form-control" id="guest_pincode"
+                                                                        type="text" name="guest_pincode"
+                                                                        value="" style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_pincode')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            {{-- <div class="col-md-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label for="guest_nationality"
+                                                                        class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">Nationality</label>
+                                                                    <input class="form-control" id="guest_nationality"
+                                                                        type="text" name="guest_nationality"
+                                                                        value="{{ old('guest_countery', $compinfofooter->country) }}"
+                                                                        style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_nationality')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div> --}}
+
+                                                            <div class="col-md-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="guest_phone"class="position-absolute bg-white px-1"
+                                                                        style="top: -14px; left: 10px;">Phone</label>
+                                                                    <input class="form-control" id="guest_phone"
+                                                                        type="text" name="guest_phone"
+                                                                        value="{{ old('guest_phone') }}"
+                                                                        autocomplete="none" style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_phone')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                                            <div class="col-md-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="guest_email"class="position-absolute bg-white px-1"
+                                                                        style="top: -14px; left: 10px;">Email</label>
+                                                                    <input class="form-control" id="guest_email"
+                                                                        type="text" name="guest_email"
+                                                                        value="{{ old('guest_email') }}"
+                                                                        style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_email')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="firm_name"class="position-absolute bg-white px-1"
+                                                                        style="top: -14px; left: 10px;">Company
+                                                                        Name</label>
+                                                                    <input class="form-control" id="firm_name"
+                                                                        type="text" name="firm_name"
+                                                                        value="{{ old('firm_name') }}"
+                                                                        style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('firm_name')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="firm_address"class="position-absolute bg-white px-1"
+                                                                        style="top: -14px; left: 10px;">Company Address
+                                                                    </label>
+                                                                    <input class="form-control" id="firm_address"
+                                                                        type="text" name="firm_address"
+                                                                        value="{{ old('firm_address') }}"style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('firm_address')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label for="gst_no"
+                                                                        class="position-absolute bg-white px-1"
+                                                                        style="top: -14px; left: 10px;">GST NO </label>
+                                                                    <input class="form-control" id="gst_no"
+                                                                        type="text" name="gst_no"
+                                                                        value="{{ old('gst_no') }}"style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('gst_no')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-md-3">
-                                                            <label for="checkin_time">Expected Check-Out Time<span
-                                                                    class="requierdfield"></span></label>
-                                                            <input class="form-control" id="checkout_time" type="time"
-                                                                name="checkout_time" value="{{ date('Y-m-d') }}" />
-                                                            <span class="text-danger">
-                                                                @error('checkout_time')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
 
-                                                       
-                                                       @endif
-
-                                                        
-                                                        
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 5px;">
-                                                            <label for="commited_days"class="position-absolute bg-white px-2" style="top: -22px; left: 3px;">KiloMeter <span
-                                                                    class="requierdfield">*</span></label>
-                                                            <input class="form-control" id="commited_days" type="text"
-                                                                name="commited_days" value="{{ old('commited_days') }}"
-                                                                required  style="border: none"/>
-                                                            <span class="text-danger">
-                                                                @error('commited_days')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-
-                                                        </div></div></div>
                                                         <div class="row g-0">
-                                                        <div class="col-md-4 col-4 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 5px;">
-                                                            <label for="no_of_guest"class="position-absolute bg-white px-2" style="top: -22px; left: 3px;">Model name<span
-                                                                    class="requierdfield">*</span></label>
-                                                            <input class="form-control" id="no_of_guest" type="text"
-                                                                name="no_of_guest" value="{{ old('no_of_guest') }}"
-                                                                required />
-                                                            <span class="text-danger">
-                                                                @error('no_of_guest')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div></div>
-                                                        <div class="col-md-4 col-4 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 5px;">
-                                                            <label for="business_source"class="position-absolute bg-white px-2" style="top: -22px; left: 3px;"><span class="requierdfield">*</span>Vehicle type</label>
-                                                            <select name="business_source_id" id="business_source_id"
-                                                                class="form-select" aria-label="Default select example">
-                                                                <option disabled
-                                                                    {{ old('business_source_id') ? '' : 'selected' }} style="border: none">
-                                                                    Select Vehicle type</option>
-                                                                @foreach ($businesssource as $businesssource)
-                                                                    <option value="{{ $businesssource->id }}"
-                                                                        {{ old('business_source_id') == $businesssource->id ? 'selected' : '' }}>
-                                                                        {{ $businesssource->business_source_name }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                            <span class="text-danger">
-                                                                @error('business_source_id')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div></div>
-                                                        <div class="col-md-4 col-4 mt-4">
-                                                            <div class="position-relative border col-md-4 w-75" style="border-radius: 5px;">
-                                                            <label for="package"class="position-absolute bg-white px-2" style="top: -22px; left: 4px;"><span class="requierdfield">*</span>Repair Type</label>
-                                                            <select name="package_id" id="package_id" class="form-select"
-                                                                aria-label="Default select example">
-                                                                <option disabled {{ old('package_id') ? '' : 'selected' }} style="border: none">
-                                                                    Select Service Type</option>
-                                                                @foreach ($package as $package)
-                                                                    <option value="{{ $package->id }}"
-                                                                        {{ old('package_id') == $package->id ? 'selected' : '' }}>
-                                                                        {{ $package->package_name }} ||
-                                                                        {{ $package->plan_name }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
+                                                           
 
-                                                            <span class="text-danger">
-                                                                @error('package_id')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div></div>
+
+                                                            {{-- @if (!is_null($componyinfo->componyinfo_af1))
+                                                                <div class="col-md-3">
+                                                                    <label for="checkin_date">Expected Check-Out Date<span
+                                                                            class="requierdfield"></span></label>
+                                                                    <input class="form-control date" id="checkout_date"
+                                                                        type="text" name="checkout_date"
+                                                                        value="{{ date('Y-m-d') }}" />
+                                                                    <span class="text-danger">
+                                                                        @error('checkout_date')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <label for="checkin_time">Expected Check-Out Time<span
+                                                                            class="requierdfield"></span></label>
+                                                                    <input class="form-control" id="checkout_time"
+                                                                        type="time" name="checkout_time"
+                                                                        value="{{ date('Y-m-d') }}" />
+                                                                    <span class="text-danger">
+                                                                        @error('checkout_time')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            @endif --}}
+
+
+
+
                                                         </div>
                                                         <div class="row g-0">
-                                                         <div class="col-md-3 col-3 mt-4">
-                                                            <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="checkin_remark1"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Remark 1</label>
-                                                            <input class="form-control" id="checkin_remark1"
-                                                                type="text" name="checkin_remark1" value="" style="border: none"/>
-                                                            <span class="text-danger">
-                                                                @error('checkin_remark1')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                         </div>
-                                                          <div class="col-md-3 col-3  mt-4">
-                                                            <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="checkin_remark2"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Remark 2</label>
-                                                            <input class="form-control" id="checkin_remark2"
-                                                                type="text" name="checkin_remark2" value="" style="border: none"/>
-                                                            <span class="text-danger">
-                                                                @error('checkin_remark2')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                            <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_name"class="position-absolute bg-white px-2" style="top: -21px; left: 2px;"><span class="requierdfield">*</span>Customer  Name </label>
-                                                            <input class="form-control" id="guest_name" type="text"
-                                                                name="guest_name" value="{{ old('guest_name') }}"
-                                                                autocomplete="none"  />
-                                                            <span class="text-danger">
-                                                                @error('guest_name')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
-
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_father_name" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Chassis </label>
-                                                            <input class="form-control" id="guest_father_name" type="text"
-                                                                name="guest_father_name" value="{{ old('guest_father_name') }}"
-                                                                autocomplete="none" />
-                                                            <span class="text-danger">
-                                                                @error('guest_father_name')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-
-                                                        </div>
+                                                        
                                                         </div>
 
                                                     </div>
-                                                </div>
                                                 </div>
 
 
@@ -747,50 +886,190 @@
                                                         </div>
                                                         </div> --}}
                                                         <div class="row g-0">
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_age" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Invoice type</label>
-                                                            <input class="form-control" id="guest_age" type="text"
-                                                                name="guest_age" value="{{ old('guest_age') }}"
-                                                                autocomplete="none"  style="border: none"/>
-                                                            <span class="text-danger">
-                                                                @error('guest_age')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
+                                                            {{-- <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label for="guest_age"
+                                                                        class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">Invoice
+                                                                        type</label>
+                                                                    <input class="form-control" id="guest_age"
+                                                                        type="text" name="guest_age"
+                                                                        value="{{ old('guest_age') }}"
+                                                                        autocomplete="none" style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_age')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
 
 
-                                                        </div>
-                                                        </div>
+                                                                </div>
+                                                            </div> --}}
+                                                            {{-- <div class="col-md-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="label1"class="position-absolute bg-white px-1"
+                                                                        style="top: -14px; left: 10px;">MODEL</label>
+                                                                    <input type="text" class=" form-control"id=""
+                                                                        name="comming_from" class=""
+                                                                        value="{{ old('comming_from') }}"
+                                                                        style="border: none">
+                                                                </div>
+                                                            </div> --}}
+                                                                <div class="col-md-4 col-4 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 5px;">
+                                                                    <label
+                                                                        for="no_of_guest"class="position-absolute bg-white px-2"
+                                                                        style="top: -22px; left: 3px;">Model name<span
+                                                                            class="requierdfield">*</span></label>
+                                                                    <input class="form-control" id="no_of_guest"
+                                                                        type="text" name="no_of_guest"
+                                                                        value="{{ old('no_of_guest') }}" required />
+                                                                    <span class="text-danger">
+                                                                        @error('no_of_guest')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4 col-4 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 5px;">
+                                                                    <label
+                                                                        for="business_source"class="position-absolute bg-white px-2"
+                                                                        style="top: -22px; left: 3px;"><span
+                                                                            class="requierdfield">*</span>Vehicle
+                                                                        type</label>
+                                                                    <select name="business_source_id"
+                                                                        id="business_source_id" class="form-select"
+                                                                        aria-label="Default select example">
+                                                                        <option disabled
+                                                                            {{ old('business_source_id') ? '' : 'selected' }}
+                                                                            style="border: none">
+                                                                            Select Vehicle type</option>
+                                                                        @foreach ($businesssource as $businesssource)
+                                                                            <option value="{{ $businesssource->id }}"
+                                                                                {{ old('business_source_id') == $businesssource->id ? 'selected' : '' }}>
+                                                                                {{ $businesssource->business_source_name }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    <span class="text-danger">
+                                                                        @error('business_source_id')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4 col-4 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 5px;">
+                                                                    <label
+                                                                        for="package"class="position-absolute bg-white px-2"
+                                                                        style="top: -22px; left: 4px;"><span
+                                                                            class="requierdfield">*</span>Repair
+                                                                        Type</label>
+                                                                    <select name="package_id" id="package_id"
+                                                                        class="form-select"
+                                                                        aria-label="Default select example">
+                                                                        <option disabled
+                                                                            {{ old('package_id') ? '' : 'selected' }}
+                                                                            style="border: none">
+                                                                            Select Service Type</option>
+                                                                        @foreach ($package as $package)
+                                                                            <option value="{{ $package->id }}"
+                                                                                {{ old('package_id') == $package->id ? 'selected' : '' }}>
+                                                                                {{ $package->package_name }} ||
+                                                                                {{ $package->plan_name }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
 
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_age"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Engine no</label>
-                                                            <input class="form-control" id="guest_age" type="text"
-                                                                name="guest_age" value="{{ old('guest_age') }}"
-                                                                autocomplete="none" style="border: none" />
-                                                            <span class="text-danger">
-                                                                @error('guest_age')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
+                                                                    <span class="text-danger">
+                                                                        @error('package_id')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 5px;">
+                                                                    <label
+                                                                        for="commited_days"class="position-absolute bg-white px-2"
+                                                                        style="top: -22px; left: 3px;">KiloMeter <span
+                                                                            class="requierdfield">*</span></label>
+                                                                    <input class="form-control" id="commited_days"
+                                                                        type="text" name="commited_days"
+                                                                        value="{{ old('commited_days') }}" required
+                                                                        style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('commited_days')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
 
-                                                        </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_age"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Registration no</label>
-                                                            <input class="form-control" id="guest_age" type="text"
-                                                                name="guest_age" value="{{ old('guest_age') }}"
-                                                                autocomplete="none" style="border: none" />
-                                                            <span class="text-danger">
-                                                                @error('guest_age')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
-                                                       {{-- <div class="col-md-3 col-3 mt-4">
+                                                                </div>
+                                                            </div>
+                                                                             <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label for="guest_father_name"
+                                                                        class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">Chassis </label>
+                                                                    <input class="form-control" id="guest_father_name"
+                                                                        type="text" name="guest_father_name"
+                                                                        value="{{ old('guest_father_name') }}"
+                                                                        autocomplete="none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_father_name')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="guest_age"class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">Engine no</label>
+                                                                    <input class="form-control" id="guest_age"
+                                                                        type="text" name="guest_age"
+                                                                        value="{{ old('guest_age') }}"
+                                                                        autocomplete="none" style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_age')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="guest_age"class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">Registration
+                                                                        no</label>
+                                                                    <input class="form-control" id="guest_age"
+                                                                        type="text" name="guest_age"
+                                                                        value="{{ old('guest_age') }}"
+                                                                        autocomplete="none" style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_age')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            {{-- <div class="col-md-3 col-3 mt-4">
                                                         <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
                                                             <label for="guest_gender" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Guest Gender </label>
 <select class="form-control" id="guest_gender" name="guest_gender">
@@ -816,20 +1095,8 @@
 
                                                         </div>
                                                         </div> --}}
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_address"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Address Line 1</label>
-                                                            <input class="form-control" id="guest_address" type="text"
-                                                                name="guest_address"
-                                                                value="{{ old('guest_address') }}" style="border: none" />
-                                                            <span class="text-danger">
-                                                                @error('guest_address')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
+                                                            
                                                         </div>
-                                                    </div>
-                                                </div>
                                                         {{-- <div class="col-md-3">
                                                             <label for="guest_address2">Address Line 2</label>
                                                             <input class="form-control" id="guest_address2"
@@ -841,59 +1108,27 @@
                                                                 @enderror
                                                             </span>
                                                         </div> --}}
-                                                        <div  class="row g-0">
-                                                            <div class="col-md-3 mt-4">
-                                                            <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_address2" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Address Line 2</label>
-                                                            <input class="form-control" id="guest_address2"
-                                                                type="text" name="guest_address2"
-                                                                value="{{ old('guest_address2') }}" style="border: none"/>
-                                                            <span class="text-danger">
-                                                                @error('guest_address2')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                            </div>
-
-                                                        <div class="col-md-3 mt-4 ">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_city"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">City</label>
-                                                            <input class="form-control" id="guest_city" type="text"
-                                                                name="guest_city" value="{{ old('guest_city') }}" style="border: none" />
-                                                            <span class="text-danger">
-                                                                @error('guest_city')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
-                                                        <div class="col-md-3 mt-4 ">
-                                                            <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_state" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">State</label>
-                                                            <input class="form-control" id="guest_state" type="text"
-                                                                name="guest_state" value="{{ old('guest_state') }}" style="border: none" />
-                                                            <span class="text-danger">
-                                                                @error('guest_state')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
+                                                        <div class="row g-0">
                                                         
-                                                        <div class="col-md-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_contery" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Country</label>
-                                                            <input class="form-control" id="guest_contery" type="text"
-                                                                name="guest_contery"
-                                                                value="{{ old('guest_countery', $compinfofooter->country) }}" style="border: none" />
-                                                            <span class="text-danger">
-                                                                @error('guest_contery')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
+{{-- 
+                                                            <div class="col-md-3 mt-4 ">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="guest_city"class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">City</label>
+                                                                    <input class="form-control" id="guest_city"
+                                                                        type="text" name="guest_city"
+                                                                        value="{{ old('guest_city') }}"
+                                                                        style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_city')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div> --}}
+                                                            
                                                         </div>
                                                         {{-- <div class="col-md-3">
                                                             <label for="guest_contery">Country</label>
@@ -907,182 +1142,139 @@
                                                             </span>
                                                         </div> --}}
                                                         <div class="row g-0">
-                                                        <div class="col-md-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">    
-                                                            <label for="guest_pincode"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;"> Pin Code </label>
-                                                            <input class="form-control" id="guest_pincode" type="text"
-                                                                name="guest_pincode" value="" style="border: none"/>
-                                                            <span class="text-danger">
-                                                                @error('guest_pincode')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
-
-                                                        <div class="col-md-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;"> 
-                                                            <label for="guest_nationality" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Nationality</label>
-                                                            <input class="form-control" id="guest_nationality"
-                                                                type="text" name="guest_nationality"
-                                                                value="{{ old('guest_countery', $compinfofooter->country) }}" style="border: none"/>
-                                                            <span class="text-danger">
-                                                                @error('guest_nationality')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
-                                                        <div class="col-md-3  col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            {{-- <span class="requierdfield">*</span> --}}
-                                                            <label for="guest_mobile" class="position-absolute bg-transparent px-2" style="top: -21px; left:2px;"><span class="requierdfield">*</span>Vehicle No</label>
-                                                            <input class="form-control" id="guest_mobile" type="text"
-                                                                name="guest_mobile" value="{{ old('guest_mobile') }}"
-                                                                autocomplete="none" style="border: none" />
-                                                            <span class="text-danger">
-                                                                @error('guest_mobile')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
-                                                        <div class="col-md-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">    
-                                                            <label for="guest_phone"class="position-absolute bg-white px-1" style="top: -14px; left: 10px;">Phone</label>
-                                                            <input class="form-control" id="guest_phone" type="text"
-                                                                name="guest_phone" value="{{ old('guest_phone') }}"
-                                                                autocomplete="none" style="border: none" />
-                                                            <span class="text-danger">
-                                                                @error('guest_phone')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
+ 
 
                                                         </div>
-                                                    
-                                                        
+
+
                                                         <div class="row g-0">
-                                                        <div class="col-md-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">    
-                                                            <label for="guest_email"class="position-absolute bg-white px-1" style="top: -14px; left: 10px;">Email</label>
-                                                            <input class="form-control" id="guest_email" type="text"
-                                                                name="guest_email" value="{{ old('guest_email') }}" style="border: none"/>
-                                                            <span class="text-danger">
-                                                                @error('guest_email')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
-                                                        <div class="col-md-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">    
-                                                            <label for="label1"class="position-absolute bg-white px-1" style="top: -14px; left: 10px;">Tech Name </label>
-                                                            <input type="text" class=" form-control"id=""
-                                                                name="agent" class=""
-                                                                value="{{ old('agent') }}" style="border:none">
-                                                        </div>
-                                                        </div>
-                                                        <div class="col-md-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">    
-                                                            <label for="label1"class="position-absolute bg-white px-1" style="top: -14px; left: 10px;">MAKE</label>
-                                                            <input type="text" class=" form-control"id=""
-                                                                name="purpose_of_visit" class=""
-                                                                value="{{ old('purpose_of_visit') }}" style="border: none">
-                                                        </div>
+                                            
+                                                            <div class="col-md-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="label1"class="position-absolute bg-white px-1"
+                                                                        style="top: -14px; left: 10px;">Tech Name </label>
+                                                                    <input type="text" class=" form-control"id=""
+                                                                        name="agent" class=""
+                                                                        value="{{ old('agent') }}" style="border:none">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="label1"class="position-absolute bg-white px-1"
+                                                                        style="top: -14px; left: 10px;">MAKE</label>
+                                                                    <input type="text" class=" form-control"id=""
+                                                                        name="purpose_of_visit" class=""
+                                                                        value="{{ old('purpose_of_visit') }}"
+                                                                        style="border: none">
+                                                                </div>
+                                                            </div>
+                                                                   <div class="col-md-6 col-6 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="checkin_remark1"class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">Remark 1</label>
+                                                                    <input class="form-control" id="checkin_remark1"
+                                                                        type="text" name="checkin_remark1"
+                                                                        value="" style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('checkin_remark1')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-6  mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="checkin_remark2"class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">Remark 2</label>
+                                                                    <input class="form-control" id="checkin_remark2"
+                                                                        type="text" name="checkin_remark2"
+                                                                        value="" style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('checkin_remark2')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                                                                                        <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="guest_idproof_no"class="position-absolute bg-white px-1"
+                                                                        style="top: -14px; left: 10px;">Driver Name
+                                                                    </label>
+                                                                    <input class="form-control" id="guest_idproof_no"
+                                                                        type="text" name="guest_idproof_no"
+                                                                        value="{{ old('guest_idproof_no') }}"
+                                                                        style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_idproof_no')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+
+                                                                                                                        <div class="col-md-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label for="guest_contery"
+                                                                        class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">Driver Mobile No</label>
+                                                                    <input class="form-control" id="guest_contery"
+                                                                        type="text" name="guest_contery"
+                                                                        value="{{ old('guest_countery', $compinfofooter->country) }}"
+                                                                        style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_contery')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            
+
                                                         </div>
 
-                                                        <div class="col-md-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">    
-                                                            <label for="label1"class="position-absolute bg-white px-1" style="top: -14px; left: 10px;">MODEL</label>
-                                                            <input type="text" class=" form-control"id=""
-                                                                name="comming_from" class=""
-                                                                value="{{ old('comming_from') }}" style="border: none">
-                                                        </div>
-                                                        </div>
-                                                        
-                                                        </div>
-
-                                                                {{-- <div class="col-md-3 ">
+                                                        {{-- <div class="col-md-3 ">
                                                             <label for="label1">GOING TO</label>
                                                             <input type="text" class=" form-control"id=""
                                                                 name="going_to" class=""
                                                                 value="{{ old('going_to') }}">
                                                         </div> --}}
                                                         <div class="row g-0">
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_idproof"class="position-absolute bg-white px-1" style="top: -14px; left: 10px;">Document Name </label>
-                                                            <input class="form-control" id="guest_idproof" type="text"
-                                                                name="guest_idproof"
-                                                                value="{{ old('guest_idproof') }}" style="border: none" />
-                                                            <span class="text-danger">
-                                                                @error('guest_idproof')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
+                                                            {{-- <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="guest_idproof"class="position-absolute bg-white px-1"
+                                                                        style="top: -14px; left: 10px;">Document Name
+                                                                    </label>
+                                                                    <input class="form-control" id="guest_idproof"
+                                                                        type="text" name="guest_idproof"
+                                                                        value="{{ old('guest_idproof') }}"
+                                                                        style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_idproof')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div> --}}
 
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_idproof_no"class="position-absolute bg-white px-1" style="top: -14px; left: 10px;">Document No </label>
-                                                            <input class="form-control" id="guest_idproof_no"
-                                                                type="text" name="guest_idproof_no"
-                                                                value="{{ old('guest_idproof_no') }}" style="border: none" />
-                                                            <span class="text-danger">
-                                                                @error('guest_idproof_no')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
 
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="firm_name"class="position-absolute bg-white px-1" style="top: -14px; left: 10px;">Company Name</label>
-                                                            <input class="form-control" id="firm_name" type="text"
-                                                                name="firm_name" value="{{ old('firm_name') }}" style="border: none" />
-                                                            <span class="text-danger">
-                                                                @error('firm_name')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-
-                                                        </div>
-                                                        </div>
-
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="firm_address"class="position-absolute bg-white px-1" style="top: -14px; left: 10px;">Company Address </label>
-                                                            <input class="form-control" id="firm_address" type="text"
-                                                                name="firm_address" value="{{ old('firm_address') }}"style="border: none"   />
-                                                            <span class="text-danger">
-                                                                @error('firm_address')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-
-                                                        </div>
-                                                        </div>
-                                                        </div>
-                                                        
-                                                        <div class="row g-0">
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="gst_no" class="position-absolute bg-white px-1" style="top: -14px; left: 10px;">GST NO </label>
-                                                            <input class="form-control" id="gst_no" type="text"
-                                                                name="gst_no" value="{{ old('gst_no') }}"style="border: none"   />
-                                                            <span class="text-danger">
-                                                                @error('gst_no')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
-                                                        {{-- <div class="col-md-3">
+                                                           
+                                                            {{-- <div class="col-md-3">
                                                             <label for="guest_id_pic">Document Image </label>
                                                             <input class="form-control" id="guest_id_pic" type="file"
                                                                 name="guest_id_pic" value="" />
@@ -1103,481 +1295,522 @@
                                                             </span>
 
                                                         </div> --}}
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_id_pic_trigger"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Document Image</label>
-                                                            <input class="form-control" id="guest_id_pic_trigger"
-                                                                type="text" readonly
-                                                                placeholder="Click to upload or capture"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#fileUploadModal" style="border: none" />
-                                                            <span class="text-danger">
-                                                                @error('guest_id_pic')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
+                                                            <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="guest_id_pic_trigger"class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">Image 1 </label>
+                                                                    <input class="form-control" id="guest_id_pic_trigger"
+                                                                        type="text" readonly
+                                                                        placeholder="Click to upload or capture"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#fileUploadModal"
+                                                                        style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_id_pic')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
 
-                                                        <!-- Modal -->
-                                                        <div class="modal fade" id="fileUploadModal" tabindex="-1"
-                                                            aria-labelledby="fileUploadModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered modal-sm">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="fileUploadModalLabel">
-                                                                            Upload Document</h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <!-- Drag and Drop -->
-                                                                        <div class="mb-3">
-                                                                            <label for="guest_id_pic"
-                                                                                class="form-label">Drag & Drop</label>
-                                                                            <div id="dropZone"
-                                                                                style="border: 2px dashed #007bff; padding: 15px; text-align: center; cursor: pointer; font-size: 14px;">
-                                                                                Drag & drop a file here or click
+                                                            <!-- Modal -->
+                                                            <div class="modal fade" id="fileUploadModal" tabindex="-1"
+                                                                aria-labelledby="fileUploadModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered modal-sm">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="fileUploadModalLabel">
+                                                                                Image 1 </h5>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <!-- Drag and Drop -->
+                                                                            <div class="mb-3">
+                                                                                <label for="guest_id_pic"
+                                                                                    class="form-label">Drag & Drop</label>
+                                                                                <div id="dropZone"
+                                                                                    style="border: 2px dashed #007bff; padding: 15px; text-align: center; cursor: pointer; font-size: 14px;">
+                                                                                    Drag & drop a file here or click
+                                                                                </div>
+                                                                            </div>
+                                                                            <!-- Select from Gallery -->
+                                                                            <div class="mb-3">
+                                                                                <label for="guest_id_pic"
+                                                                                    class="form-label">Select from
+                                                                                    Gallery</label>
+                                                                                <input type="file" id="guest_id_pic"
+                                                                                    name="guest_id_pic"
+                                                                                    class="form-control" />
+                                                                            </div>
+                                                                            <!-- Webcam Capture -->
+                                                                            <div class="mb-3">
+                                                                                <label for="webcam"
+                                                                                    class="form-label">Capture from
+                                                                                    Webcam</label>
+                                                                                <div>
+                                                                                    <video id="webcam" autoplay
+                                                                                        style="width: 100%; max-height: 150px;"></video>
+                                                                                    <button id="captureBtn"
+                                                                                        class="btn btn-primary btn-sm mt-2">Capture</button>
+                                                                                    <canvas id="canvas"
+                                                                                        style="display: none;"></canvas>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                        <!-- Select from Gallery -->
-                                                                        <div class="mb-3">
-                                                                            <label for="guest_id_pic"
-                                                                                class="form-label">Select from
-                                                                                Gallery</label>
-                                                                            <input type="file" id="guest_id_pic"
-                                                                                name="guest_id_pic"
-                                                                                class="form-control" />
+                                                                        <div class="modal-footer">
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary btn-sm"
+                                                                                id="closeBtn">Close</button>
+                                                                            <button type="button"
+                                                                                class="btn btn-primary btn-sm"
+                                                                                id="saveBtn">Save</button>
                                                                         </div>
-                                                                        <!-- Webcam Capture -->
-                                                                        <div class="mb-3">
-                                                                            <label for="webcam"
-                                                                                class="form-label">Capture from
-                                                                                Webcam</label>
-                                                                            <div>
-                                                                                <video id="webcam" autoplay
-                                                                                    style="width: 100%; max-height: 150px;"></video>
-                                                                                <button id="captureBtn"
-                                                                                    class="btn btn-primary btn-sm mt-2">Capture</button>
-                                                                                <canvas id="canvas"
-                                                                                    style="display: none;"></canvas>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button"
-                                                                            class="btn btn-secondary btn-sm"
-                                                                            id="closeBtn">Close</button>
-                                                                        <button type="button"
-                                                                            class="btn btn-primary btn-sm"
-                                                                            id="saveBtn">Save</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <script>
-                                                            $(document).ready(function() {
-                                                                const $guestIdPicInput = $('#guest_id_pic');
-                                                                const $triggerInput = $('#guest_id_pic_trigger');
-                                                                const $captureBtn = $('#captureBtn');
-                                                                const $webcam = $('#webcam')[0];
-                                                                const $canvas = $('#canvas')[0];
-                                                                const $modal = $('#fileUploadModal');
-                                                                const $dropZone = $('#dropZone');
-                                                                const $saveForm = $('#saveForm');
+                                                            <script>
+                                                                $(document).ready(function() {
+                                                                    const $guestIdPicInput = $('#guest_id_pic');
+                                                                    const $triggerInput = $('#guest_id_pic_trigger');
+                                                                    const $captureBtn = $('#captureBtn');
+                                                                    const $webcam = $('#webcam')[0];
+                                                                    const $canvas = $('#canvas')[0];
+                                                                    const $modal = $('#fileUploadModal');
+                                                                    const $dropZone = $('#dropZone');
+                                                                    const $saveForm = $('#saveForm');
 
-                                                                // Hide modal and remove buttons
-                                                                function closeModal() {
-                                                                    $modal.modal('hide');
-                                                                }
-
-                                                                // Update input field and close modal
-                                                                function updateInputAndCloseModal(fileName) {
-                                                                    $triggerInput.val(fileName);
-                                                                    closeModal();
-                                                                }
-
-                                                                // Handle Drag-and-Drop
-                                                                $dropZone.on('click', function() {
-                                                                    $guestIdPicInput.trigger('click');
-                                                                });
-
-                                                                $guestIdPicInput.on('change', function() {
-                                                                    if (this.files.length > 0) {
-                                                                        const fileName = this.files[0].name;
-                                                                        updateInputAndCloseModal(fileName);
-                                                                    }
-                                                                });
-
-                                                                // Handle Webcam Capture
-                                                                $captureBtn.on('click', function(e) {
-                                                                    e.preventDefault();
-
-                                                                    const context = $canvas.getContext('2d');
-                                                                    $canvas.width = $webcam.videoWidth;
-                                                                    $canvas.height = $webcam.videoHeight;
-                                                                    context.drawImage($webcam, 0, 0, $webcam.videoWidth, $webcam.videoHeight);
-
-                                                                    // Generate a unique file name by appending timestamp or random string
-                                                                    const uniqueFileName = 'doc-id-cap-' + Date.now() + '.jpg'; // Example using timestamp
-
-                                                                    $canvas.toBlob((blob) => {
-                                                                        const file = new File([blob], uniqueFileName, {
-                                                                            type: 'image/jpeg'
-                                                                        }); // Use the unique file name
-                                                                        const dataTransfer = new DataTransfer();
-                                                                        dataTransfer.items.add(file);
-                                                                        $guestIdPicInput[0].files = dataTransfer.files;
-
-                                                                        updateInputAndCloseModal(file.name);
-                                                                    });
-                                                                });
-
-                                                                // Start Webcam
-                                                                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                                                                    navigator.mediaDevices.getUserMedia({
-                                                                        video: true
-                                                                    }).then((stream) => {
-                                                                        $webcam.srcObject = stream;
-                                                                    });
-                                                                }
-
-                                                                // Ensure main body is active after modal close
-                                                                $modal.on('hidden.bs.modal', function() {
-                                                                    $('body').removeClass('modal-open'); // Remove modal-open class
-                                                                    $('.modal-backdrop').remove(); // Remove leftover backdrop
-                                                                    $('body').css('overflow', ''); // Reset to default behavior
-
-                                                                    // 2. Check for and remove custom scrollbars implemented during modal display:
-                                                                    const customScrollbars = document.querySelectorAll('.custom-scrollbar');
-                                                                    customScrollbars.forEach(scrollbar => scrollbar.remove());
-
-                                                                    // 3. If using a JavaScript library for managing scrollbars, call its reset function:
-                                                                    if (typeof myScrollbarLibrary.resetScrollbar === 'function') {
-                                                                        myScrollbarLibrary.resetScrollbar(); // Example: PerfectScrollbar.resetScrollbar()
+                                                                    // Hide modal and remove buttons
+                                                                    function closeModal() {
+                                                                        $modal.modal('hide');
                                                                     }
 
-                                                                    // 4. For reliable cross-browser compatibility, consider additional methods:
-                                                                    //    - document.documentElement.style.overflow = 'auto';
-                                                                    //    - document.body.style.overflow = 'auto';
-                                                                    //    (Use these if the above methods don't work consistently)
-                                                                    $saveForm.focus(); // Bring focus back to the form
+                                                                    // Update input field and close modal
+                                                                    function updateInputAndCloseModal(fileName) {
+                                                                        $triggerInput.val(fileName);
+                                                                        closeModal();
+                                                                    }
+
+                                                                    // Handle Drag-and-Drop
+                                                                    $dropZone.on('click', function() {
+                                                                        $guestIdPicInput.trigger('click');
+                                                                    });
+
+                                                                    $guestIdPicInput.on('change', function() {
+                                                                        if (this.files.length > 0) {
+                                                                            const fileName = this.files[0].name;
+                                                                            updateInputAndCloseModal(fileName);
+                                                                        }
+                                                                    });
+
+                                                                    // Handle Webcam Capture
+                                                                    $captureBtn.on('click', function(e) {
+                                                                        e.preventDefault();
+
+                                                                        const context = $canvas.getContext('2d');
+                                                                        $canvas.width = $webcam.videoWidth;
+                                                                        $canvas.height = $webcam.videoHeight;
+                                                                        context.drawImage($webcam, 0, 0, $webcam.videoWidth, $webcam.videoHeight);
+
+                                                                        // Generate a unique file name by appending timestamp or random string
+                                                                        const uniqueFileName = 'doc-id-cap-' + Date.now() + '.jpg'; // Example using timestamp
+
+                                                                        $canvas.toBlob((blob) => {
+                                                                            const file = new File([blob], uniqueFileName, {
+                                                                                type: 'image/jpeg'
+                                                                            }); // Use the unique file name
+                                                                            const dataTransfer = new DataTransfer();
+                                                                            dataTransfer.items.add(file);
+                                                                            $guestIdPicInput[0].files = dataTransfer.files;
+
+                                                                            updateInputAndCloseModal(file.name);
+                                                                        });
+                                                                    });
+
+                                                                    // Start Webcam
+                                                                    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                                                                        navigator.mediaDevices.getUserMedia({
+                                                                            video: true
+                                                                        }).then((stream) => {
+                                                                            $webcam.srcObject = stream;
+                                                                        });
+                                                                    }
+
+                                                                    // Ensure main body is active after modal close
+                                                                    $modal.on('hidden.bs.modal', function() {
+                                                                        $('body').removeClass('modal-open'); // Remove modal-open class
+                                                                        $('.modal-backdrop').remove(); // Remove leftover backdrop
+                                                                        $('body').css('overflow', ''); // Reset to default behavior
+
+                                                                        // 2. Check for and remove custom scrollbars implemented during modal display:
+                                                                        const customScrollbars = document.querySelectorAll('.custom-scrollbar');
+                                                                        customScrollbars.forEach(scrollbar => scrollbar.remove());
+
+                                                                        // 3. If using a JavaScript library for managing scrollbars, call its reset function:
+                                                                        if (typeof myScrollbarLibrary.resetScrollbar === 'function') {
+                                                                            myScrollbarLibrary.resetScrollbar(); // Example: PerfectScrollbar.resetScrollbar()
+                                                                        }
+
+                                                                        // 4. For reliable cross-browser compatibility, consider additional methods:
+                                                                        //    - document.documentElement.style.overflow = 'auto';
+                                                                        //    - document.body.style.overflow = 'auto';
+                                                                        //    (Use these if the above methods don't work consistently)
+                                                                        $saveForm.focus(); // Bring focus back to the form
+                                                                    });
                                                                 });
-                                                            });
-                                                        </script>
+                                                            </script>
 
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_pic_trigger"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Guest Image</label>
-                                                            <input class="form-control" id="guest_pic_trigger"
-                                                                type="text" readonly
-                                                                placeholder="Click to upload or capture"
-                                                                data-bs-toggle="modal" data-bs-target="#guestPicModal" style="border: none">
+                                                            <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="guest_pic_trigger"class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">Image 2</label>
+                                                                    <input class="form-control" id="guest_pic_trigger"
+                                                                        type="text" readonly
+                                                                        placeholder="Click to upload or capture"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#guestPicModal"
+                                                                        style="border: none">
 
-                                                            <span class="text-danger">
-                                                                @error('guest_pic')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
+                                                                    <span class="text-danger">
+                                                                        @error('guest_pic')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
 
-                                                        <!-- Modal for Guest Image -->
-                                                        <div class="modal fade" id="guestPicModal" tabindex="-1"
-                                                            aria-labelledby="guestPicModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered modal-sm">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="guestPicModalLabel">
-                                                                            Upload Guest Image</h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <!-- Drag and Drop -->
-                                                                        <div class="mb-3">
-                                                                            <label for="guest_pic" class="form-label">Drag
-                                                                                & Drop</label>
-                                                                            <div id="guestDropZone"
-                                                                                style="border: 2px dashed #007bff; padding: 15px; text-align: center; cursor: pointer; font-size: 14px;">
-                                                                                Drag & drop a file here or click
+                                                            <!-- Modal for Guest Image -->
+                                                            <div class="modal fade" id="guestPicModal" tabindex="-1"
+                                                                aria-labelledby="guestPicModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered modal-sm">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="guestPicModalLabel">
+                                                                                Upload Image 2</h5>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <!-- Drag and Drop -->
+                                                                            <div class="mb-3">
+                                                                                <label for="guest_pic"
+                                                                                    class="form-label">Drag
+                                                                                    & Drop</label>
+                                                                                <div id="guestDropZone"
+                                                                                    style="border: 2px dashed #007bff; padding: 15px; text-align: center; cursor: pointer; font-size: 14px;">
+                                                                                    Drag & drop a file here or click
+                                                                                </div>
+                                                                            </div>
+                                                                            <!-- Select from Gallery -->
+                                                                            <div class="mb-3">
+                                                                                <label for="guest_pic"
+                                                                                    class="form-label">Select from
+                                                                                    Gallery</label>
+                                                                                <input type="file" id="guest_pic"
+                                                                                    name="guest_pic"
+                                                                                    class="form-control" />
+                                                                            </div>
+                                                                            <!-- Webcam Capture -->
+                                                                            <div class="mb-3">
+                                                                                <label for="guestWebcam"
+                                                                                    class="form-label">Capture from
+                                                                                    Webcam</label>
+                                                                                <div>
+                                                                                    <video id="guestWebcam" autoplay
+                                                                                        style="width: 100%; max-height: 150px;"></video>
+                                                                                    <button id="guestCaptureBtn"
+                                                                                        class="btn btn-primary btn-sm mt-2">Capture</button>
+                                                                                    <canvas id="guestCanvas"
+                                                                                        style="display: none;"></canvas>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                        <!-- Select from Gallery -->
-                                                                        <div class="mb-3">
-                                                                            <label for="guest_pic"
-                                                                                class="form-label">Select from
-                                                                                Gallery</label>
-                                                                            <input type="file" id="guest_pic"
-                                                                                name="guest_pic" class="form-control" />
+                                                                        <div class="modal-footer">
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary btn-sm"
+                                                                                data-bs-dismiss="modal">Close</button>
+                                                                            <button type="button"
+                                                                                class="btn btn-primary btn-sm"
+                                                                                id="guestSaveBtn">Save</button>
                                                                         </div>
-                                                                        <!-- Webcam Capture -->
-                                                                        <div class="mb-3">
-                                                                            <label for="guestWebcam"
-                                                                                class="form-label">Capture from
-                                                                                Webcam</label>
-                                                                            <div>
-                                                                                <video id="guestWebcam" autoplay
-                                                                                    style="width: 100%; max-height: 150px;"></video>
-                                                                                <button id="guestCaptureBtn"
-                                                                                    class="btn btn-primary btn-sm mt-2">Capture</button>
-                                                                                <canvas id="guestCanvas"
-                                                                                    style="display: none;"></canvas>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button"
-                                                                            class="btn btn-secondary btn-sm"
-                                                                            data-bs-dismiss="modal">Close</button>
-                                                                        <button type="button"
-                                                                            class="btn btn-primary btn-sm"
-                                                                            id="guestSaveBtn">Save</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <script>
-                                                            $(document).ready(function() {
-                                                                const $guestPicInput = $('#guest_pic');
-                                                                const $guestTriggerInput = $('#guest_pic_trigger');
-                                                                const $guestCaptureBtn = $('#guestCaptureBtn');
-                                                                const $guestWebcam = $('#guestWebcam')[0];
-                                                                const $guestCanvas = $('#guestCanvas')[0];
-                                                                const $guestModal = $('#guestPicModal');
-                                                                const $guestDropZone = $('#guestDropZone');
+                                                            <script>
+                                                                $(document).ready(function() {
+                                                                    const $guestPicInput = $('#guest_pic');
+                                                                    const $guestTriggerInput = $('#guest_pic_trigger');
+                                                                    const $guestCaptureBtn = $('#guestCaptureBtn');
+                                                                    const $guestWebcam = $('#guestWebcam')[0];
+                                                                    const $guestCanvas = $('#guestCanvas')[0];
+                                                                    const $guestModal = $('#guestPicModal');
+                                                                    const $guestDropZone = $('#guestDropZone');
 
-                                                                // Hide modal and remove buttons
-                                                                function closeGuestModal() {
-                                                                    $guestModal.modal('hide');
-                                                                }
-
-                                                                // Update input field and close modal
-                                                                function updateGuestInputAndCloseModal(fileName) {
-                                                                    $guestTriggerInput.val(fileName);
-                                                                    closeGuestModal();
-                                                                }
-
-                                                                // Handle Drag-and-Drop
-                                                                $guestDropZone.on('click', function() {
-                                                                    $guestPicInput.trigger('click');
-                                                                });
-
-                                                                $guestPicInput.on('change', function() {
-                                                                    if (this.files.length > 0) {
-                                                                        const fileName = this.files[0].name;
-                                                                        updateGuestInputAndCloseModal(fileName);
-                                                                    }
-                                                                });
-
-                                                                // Handle Webcam Capture
-                                                                $guestCaptureBtn.on('click', function(e) {
-                                                                    e.preventDefault();
-
-                                                                    const context = $guestCanvas.getContext('2d');
-                                                                    $guestCanvas.width = $guestWebcam.videoWidth;
-                                                                    $guestCanvas.height = $guestWebcam.videoHeight;
-                                                                    context.drawImage($guestWebcam, 0, 0, $guestWebcam.videoWidth, $guestWebcam.videoHeight);
-
-                                                                    // Generate unique file name by appending timestamp (or random string)
-                                                                    const uniqueFileName = 'guest-pic-cap-' + Date.now() + '.png'; // Example using timestamp
-
-                                                                    $guestCanvas.toBlob((blob) => {
-                                                                        const file = new File([blob], uniqueFileName, {
-                                                                            type: 'image/png'
-                                                                        }); // Use the unique file name
-                                                                        const dataTransfer = new DataTransfer();
-                                                                        dataTransfer.items.add(file);
-                                                                        $guestPicInput[0].files = dataTransfer.files;
-
-                                                                        updateGuestInputAndCloseModal(file.name);
-                                                                    });
-                                                                });
-
-                                                                // Start Webcam
-                                                                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                                                                    navigator.mediaDevices.getUserMedia({
-                                                                        video: true
-                                                                    }).then((stream) => {
-                                                                        $guestWebcam.srcObject = stream;
-                                                                    });
-                                                                }
-
-                                                                // Ensure main body is active after modal close
-                                                                $guestModal.on('hidden.bs.modal', function() {
-                                                                    $('body').removeClass('modal-open'); // Remove modal-open class
-                                                                    $('.modal-backdrop').remove(); // Remove leftover backdrop
-
-                                                                    // Restore page scroll functionality using a combination of approaches:
-
-                                                                    // 1. Remove CSS `overflow: hidden` from the body (if applied):
-                                                                    $('body').css('overflow', ''); // Reset to default behavior
-
-                                                                    // 2. Check for and remove custom scrollbars implemented during modal display:
-                                                                    const customScrollbars = document.querySelectorAll('.custom-scrollbar');
-                                                                    customScrollbars.forEach(scrollbar => scrollbar.remove());
-
-                                                                    // 3. If using a JavaScript library for managing scrollbars, call its reset function:
-                                                                    if (typeof myScrollbarLibrary.resetScrollbar === 'function') {
-                                                                        myScrollbarLibrary.resetScrollbar(); // Example: PerfectScrollbar.resetScrollbar()
+                                                                    // Hide modal and remove buttons
+                                                                    function closeGuestModal() {
+                                                                        $guestModal.modal('hide');
                                                                     }
 
-                                                                    // 4. For reliable cross-browser compatibility, consider additional methods:
-                                                                    //    - document.documentElement.style.overflow = 'auto';
-                                                                    //    - document.body.style.overflow = 'auto';
-                                                                    //    (Use these if the above methods don't work consistently)
+                                                                    // Update input field and close modal
+                                                                    function updateGuestInputAndCloseModal(fileName) {
+                                                                        $guestTriggerInput.val(fileName);
+                                                                        closeGuestModal();
+                                                                    }
+
+                                                                    // Handle Drag-and-Drop
+                                                                    $guestDropZone.on('click', function() {
+                                                                        $guestPicInput.trigger('click');
+                                                                    });
+
+                                                                    $guestPicInput.on('change', function() {
+                                                                        if (this.files.length > 0) {
+                                                                            const fileName = this.files[0].name;
+                                                                            updateGuestInputAndCloseModal(fileName);
+                                                                        }
+                                                                    });
+
+                                                                    // Handle Webcam Capture
+                                                                    $guestCaptureBtn.on('click', function(e) {
+                                                                        e.preventDefault();
+
+                                                                        const context = $guestCanvas.getContext('2d');
+                                                                        $guestCanvas.width = $guestWebcam.videoWidth;
+                                                                        $guestCanvas.height = $guestWebcam.videoHeight;
+                                                                        context.drawImage($guestWebcam, 0, 0, $guestWebcam.videoWidth, $guestWebcam.videoHeight);
+
+                                                                        // Generate unique file name by appending timestamp (or random string)
+                                                                        const uniqueFileName = 'guest-pic-cap-' + Date.now() + '.png'; // Example using timestamp
+
+                                                                        $guestCanvas.toBlob((blob) => {
+                                                                            const file = new File([blob], uniqueFileName, {
+                                                                                type: 'image/png'
+                                                                            }); // Use the unique file name
+                                                                            const dataTransfer = new DataTransfer();
+                                                                            dataTransfer.items.add(file);
+                                                                            $guestPicInput[0].files = dataTransfer.files;
+
+                                                                            updateGuestInputAndCloseModal(file.name);
+                                                                        });
+                                                                    });
+
+                                                                    // Start Webcam
+                                                                    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                                                                        navigator.mediaDevices.getUserMedia({
+                                                                            video: true
+                                                                        }).then((stream) => {
+                                                                            $guestWebcam.srcObject = stream;
+                                                                        });
+                                                                    }
+
+                                                                    // Ensure main body is active after modal close
+                                                                    $guestModal.on('hidden.bs.modal', function() {
+                                                                        $('body').removeClass('modal-open'); // Remove modal-open class
+                                                                        $('.modal-backdrop').remove(); // Remove leftover backdrop
+
+                                                                        // Restore page scroll functionality using a combination of approaches:
+
+                                                                        // 1. Remove CSS `overflow: hidden` from the body (if applied):
+                                                                        $('body').css('overflow', ''); // Reset to default behavior
+
+                                                                        // 2. Check for and remove custom scrollbars implemented during modal display:
+                                                                        const customScrollbars = document.querySelectorAll('.custom-scrollbar');
+                                                                        customScrollbars.forEach(scrollbar => scrollbar.remove());
+
+                                                                        // 3. If using a JavaScript library for managing scrollbars, call its reset function:
+                                                                        if (typeof myScrollbarLibrary.resetScrollbar === 'function') {
+                                                                            myScrollbarLibrary.resetScrollbar(); // Example: PerfectScrollbar.resetScrollbar()
+                                                                        }
+
+                                                                        // 4. For reliable cross-browser compatibility, consider additional methods:
+                                                                        //    - document.documentElement.style.overflow = 'auto';
+                                                                        //    - document.body.style.overflow = 'auto';
+                                                                        //    (Use these if the above methods don't work consistently)
+                                                                    });
                                                                 });
-                                                            });
-                                                        </script>
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                            <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="second_guest_id_pic_trigger" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">gst Document </label>
-                                                            <input class="form-control" id="second_guest_id_pic_trigger" type="text" readonly
-                                                                placeholder="Click to upload or capture"
-                                                                data-bs-toggle="modal" data-bs-target="#secondFileUploadModal" style="border: none" />
-                                                            <span class="text-danger">
-                                                                @error('second_guest_id_pic')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
-                                                        
-                                                        <!-- Modal -->
-                                                        <div class="modal fade" id="secondFileUploadModal" tabindex="-1" aria-labelledby="secondFileUploadModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered modal-sm">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="secondFileUploadModalLabel">Upload Document</h5>
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <!-- Drag and Drop -->
-                                                                        <div class="mb-3">
-                                                                            <label for="second_guest_id_pic" class="form-label">Drag & Drop</label>
-                                                                            <div id="secondDropZone"
-                                                                                style="border: 2px dashed #007bff; padding: 15px; text-align: center; cursor: pointer; font-size: 14px;">
-                                                                                Drag & drop a file here or click
+                                                            </script>
+                                                            <div class="col-md-3 col-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label for="second_guest_id_pic_trigger"
+                                                                        class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">Image 3
+                                                                    </label>
+                                                                    <input class="form-control"
+                                                                        id="second_guest_id_pic_trigger" type="text"
+                                                                        readonly placeholder="Click to upload or capture"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#secondFileUploadModal"
+                                                                        style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('second_guest_id_pic')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Modal -->
+                                                            <div class="modal fade" id="secondFileUploadModal"
+                                                                tabindex="-1"
+                                                                aria-labelledby="secondFileUploadModalLabel"
+                                                                aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered modal-sm">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="secondFileUploadModalLabel">Upload
+                                                                                Image 3</h5>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <!-- Drag and Drop -->
+                                                                            <div class="mb-3">
+                                                                                <label for="second_guest_id_pic"
+                                                                                    class="form-label">Drag & Drop</label>
+                                                                                <div id="secondDropZone"
+                                                                                    style="border: 2px dashed #007bff; padding: 15px; text-align: center; cursor: pointer; font-size: 14px;">
+                                                                                    Drag & drop a file here or click
+                                                                                </div>
+                                                                            </div>
+                                                                            <!-- Select from Gallery -->
+                                                                            <div class="mb-3">
+                                                                                <label for="second_guest_id_pic"
+                                                                                    class="form-label">Select from
+                                                                                    Gallery</label>
+                                                                                <input type="file"
+                                                                                    id="second_guest_id_pic"
+                                                                                    name="second_guest_id_pic"
+                                                                                    class="form-control" />
+                                                                            </div>
+                                                                            <!-- Webcam Capture -->
+                                                                            <div class="mb-3">
+                                                                                <label for="second_webcam"
+                                                                                    class="form-label">Capture from
+                                                                                    Webcam</label>
+                                                                                <div>
+                                                                                    <video id="second_webcam" autoplay
+                                                                                        style="width: 100%; max-height: 150px;"></video>
+                                                                                    <button id="secondCaptureBtn"
+                                                                                        class="btn btn-primary btn-sm mt-2">Capture</button>
+                                                                                    <canvas id="secondCanvas"
+                                                                                        style="display: none;"></canvas>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                        <!-- Select from Gallery -->
-                                                                        <div class="mb-3">
-                                                                            <label for="second_guest_id_pic" class="form-label">Select from Gallery</label>
-                                                                            <input type="file" id="second_guest_id_pic" name="second_guest_id_pic" class="form-control" />
+                                                                        <div class="modal-footer">
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary btn-sm"
+                                                                                id="closeBtn">Close</button>
+                                                                            <button type="button"
+                                                                                class="btn btn-primary btn-sm"
+                                                                                id="saveBtn">Save</button>
                                                                         </div>
-                                                                        <!-- Webcam Capture -->
-                                                                        <div class="mb-3">
-                                                                            <label for="second_webcam" class="form-label">Capture from Webcam</label>
-                                                                            <div>
-                                                                                <video id="second_webcam" autoplay style="width: 100%; max-height: 150px;"></video>
-                                                                                <button id="secondCaptureBtn" class="btn btn-primary btn-sm mt-2">Capture</button>
-                                                                                <canvas id="secondCanvas" style="display: none;"></canvas>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary btn-sm" id="closeBtn">Close</button>
-                                                                        <button type="button" class="btn btn-primary btn-sm" id="saveBtn">Save</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <script>
-                                                            $(document).ready(function() {
-    const $secondGuestIdPicInput = $('#second_guest_id_pic');
-    const $secondTriggerInput = $('#second_guest_id_pic_trigger');
-    const $secondCaptureBtn = $('#secondCaptureBtn');
-    const $secondWebcam = $('#second_webcam')[0];
-    const $secondCanvas = $('#secondCanvas')[0];
-    const $secondModal = $('#secondFileUploadModal');
-    const $secondDropZone = $('#secondDropZone');
-    const $secondSaveForm = $('#saveForm'); // Adjust this if necessary
+                                                            <script>
+                                                                $(document).ready(function() {
+                                                                    const $secondGuestIdPicInput = $('#second_guest_id_pic');
+                                                                    const $secondTriggerInput = $('#second_guest_id_pic_trigger');
+                                                                    const $secondCaptureBtn = $('#secondCaptureBtn');
+                                                                    const $secondWebcam = $('#second_webcam')[0];
+                                                                    const $secondCanvas = $('#secondCanvas')[0];
+                                                                    const $secondModal = $('#secondFileUploadModal');
+                                                                    const $secondDropZone = $('#secondDropZone');
+                                                                    const $secondSaveForm = $('#saveForm'); // Adjust this if necessary
 
-    // Hide modal and remove buttons
-    function closeSecondModal() {
-        $secondModal.modal('hide');
-    }
+                                                                    // Hide modal and remove buttons
+                                                                    function closeSecondModal() {
+                                                                        $secondModal.modal('hide');
+                                                                    }
 
-    // Update input field and close modal
-    function updateSecondInputAndCloseModal(fileName) {
-        $secondTriggerInput.val(fileName);
-        closeSecondModal();
-    }
+                                                                    // Update input field and close modal
+                                                                    function updateSecondInputAndCloseModal(fileName) {
+                                                                        $secondTriggerInput.val(fileName);
+                                                                        closeSecondModal();
+                                                                    }
 
-    // Handle Drag-and-Drop
-    $secondDropZone.on('click', function() {
-        $secondGuestIdPicInput.trigger('click');
-    });
+                                                                    // Handle Drag-and-Drop
+                                                                    $secondDropZone.on('click', function() {
+                                                                        $secondGuestIdPicInput.trigger('click');
+                                                                    });
 
-    $secondGuestIdPicInput.on('change', function() {
-        if (this.files.length > 0) {
-            const fileName = this.files[0].name;
-            updateSecondInputAndCloseModal(fileName);
-        }
-    });
+                                                                    $secondGuestIdPicInput.on('change', function() {
+                                                                        if (this.files.length > 0) {
+                                                                            const fileName = this.files[0].name;
+                                                                            updateSecondInputAndCloseModal(fileName);
+                                                                        }
+                                                                    });
 
-    // Handle Webcam Capture
-    $secondCaptureBtn.on('click', function(e) {
-        e.preventDefault();
+                                                                    // Handle Webcam Capture
+                                                                    $secondCaptureBtn.on('click', function(e) {
+                                                                        e.preventDefault();
 
-        const context = $secondCanvas.getContext('2d');
-        $secondCanvas.width = $secondWebcam.videoWidth;
-        $secondCanvas.height = $secondWebcam.videoHeight;
-        context.drawImage($secondWebcam, 0, 0, $secondWebcam.videoWidth, $secondWebcam.videoHeight);
+                                                                        const context = $secondCanvas.getContext('2d');
+                                                                        $secondCanvas.width = $secondWebcam.videoWidth;
+                                                                        $secondCanvas.height = $secondWebcam.videoHeight;
+                                                                        context.drawImage($secondWebcam, 0, 0, $secondWebcam.videoWidth, $secondWebcam.videoHeight);
 
-        // Generate a unique file name by appending timestamp or random string
-        const uniqueFileName = 'doc-id-cap-' + Date.now() + '.jpg'; // Example using timestamp
+                                                                        // Generate a unique file name by appending timestamp or random string
+                                                                        const uniqueFileName = 'doc-id-cap-' + Date.now() + '.jpg'; // Example using timestamp
 
-        $secondCanvas.toBlob((blob) => {
-            const file = new File([blob], uniqueFileName, {
-                type: 'image/jpeg'
-            }); // Use the unique file name
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file);
-            $secondGuestIdPicInput[0].files = dataTransfer.files;
+                                                                        $secondCanvas.toBlob((blob) => {
+                                                                            const file = new File([blob], uniqueFileName, {
+                                                                                type: 'image/jpeg'
+                                                                            }); // Use the unique file name
+                                                                            const dataTransfer = new DataTransfer();
+                                                                            dataTransfer.items.add(file);
+                                                                            $secondGuestIdPicInput[0].files = dataTransfer.files;
 
-            updateSecondInputAndCloseModal(file.name);
-        });
-    });
+                                                                            updateSecondInputAndCloseModal(file.name);
+                                                                        });
+                                                                    });
 
-    // Start Webcam
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({
-            video: true
-        }).then((stream) => {
-            $secondWebcam.srcObject = stream;
-        });
-    }
+                                                                    // Start Webcam
+                                                                    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                                                                        navigator.mediaDevices.getUserMedia({
+                                                                            video: true
+                                                                        }).then((stream) => {
+                                                                            $secondWebcam.srcObject = stream;
+                                                                        });
+                                                                    }
 
-    // Ensure main body is active after modal close
-    $secondModal.on('hidden.bs.modal', function() {
-        $('body').removeClass('modal-open'); // Remove modal-open class
-        $('.modal-backdrop').remove(); // Remove leftover backdrop
-        $('body').css('overflow', ''); // Reset to default behavior
+                                                                    // Ensure main body is active after modal close
+                                                                    $secondModal.on('hidden.bs.modal', function() {
+                                                                        $('body').removeClass('modal-open'); // Remove modal-open class
+                                                                        $('.modal-backdrop').remove(); // Remove leftover backdrop
+                                                                        $('body').css('overflow', ''); // Reset to default behavior
 
-        // 2. Check for and remove custom scrollbars implemented during modal display:
-        const customScrollbars = document.querySelectorAll('.custom-scrollbar');
-        customScrollbars.forEach(scrollbar => scrollbar.remove());
+                                                                        // 2. Check for and remove custom scrollbars implemented during modal display:
+                                                                        const customScrollbars = document.querySelectorAll('.custom-scrollbar');
+                                                                        customScrollbars.forEach(scrollbar => scrollbar.remove());
 
-        // 3. If using a JavaScript library for managing scrollbars, call its reset function:
-        if (typeof myScrollbarLibrary.resetScrollbar === 'function') {
-            myScrollbarLibrary.resetScrollbar(); // Example: PerfectScrollbar.resetScrollbar()
-        }
+                                                                        // 3. If using a JavaScript library for managing scrollbars, call its reset function:
+                                                                        if (typeof myScrollbarLibrary.resetScrollbar === 'function') {
+                                                                            myScrollbarLibrary.resetScrollbar(); // Example: PerfectScrollbar.resetScrollbar()
+                                                                        }
 
-        // 4. For reliable cross-browser compatibility, consider additional methods:
-        //    - document.documentElement.style.overflow = 'auto';
-        //    - document.body.style.overflow = 'auto';
-        //    (Use these if the above methods don't work consistently)
-        $secondSaveForm.focus(); // Bring focus back to the form
-    });
-});
-
-                                                        </script>
+                                                                        // 4. For reliable cross-browser compatibility, consider additional methods:
+                                                                        //    - document.documentElement.style.overflow = 'auto';
+                                                                        //    - document.body.style.overflow = 'auto';
+                                                                        //    (Use these if the above methods don't work consistently)
+                                                                        $secondSaveForm.focus(); // Bring focus back to the form
+                                                                    });
+                                                                });
+                                                            </script>
 
                                                         </div>
-                                                    {{-- <div class="col-md-3">
+                                                        {{-- <div class="col-md-3">
                                                         <label for="second_guest_name">2nd Guest Name  </label>
                                                         <input class="form-control" id="second_guest_name" type="text"
                                                             name="second_guest_name" value="{{ old('second_guest_name') }}" />
@@ -1613,7 +1846,7 @@
 
                                                         <!--second guest image -->
 
-                                                        
+
                                                         <!----3rd guest documnt --->
 
                                                         {{-- <div class="col-md-3">
@@ -1650,152 +1883,178 @@
     
                                                         </div> --}}
                                                         <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="third_guest_id_pic_trigger" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;"> Parts Document</label>
-                                                            <input class="form-control" id="third_guest_id_pic_trigger" type="text" readonly
-                                                                placeholder="Click to upload or capture"
-                                                                data-bs-toggle="modal" data-bs-target="#thirdFileUploadModal"  style="border: none"/>
-                                                            <span class="text-danger">
-                                                                @error('third_guest_id_pic')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        
-                                                        <!-- Modal -->
-                                                        <div class="modal fade" id="thirdFileUploadModal" tabindex="-1" aria-labelledby="thirdFileUploadModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered modal-sm">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="thirdFileUploadModalLabel">Upload Document</h5>
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <!-- Drag and Drop -->
-                                                                        <div class="mb-3">
-                                                                            <label for="third_guest_id_pic" class="form-label">Drag & Drop</label>
-                                                                            <div id="thirdDropZone"
-                                                                                style="border: 2px dashed #007bff; padding: 15px; text-align: center; cursor: pointer; font-size: 14px;">
-                                                                                Drag & drop a file here or click
+                                                            <div class="position-relative border col-md-4 w-75"
+                                                                style="border-radius: 4px;">
+                                                                <label for="third_guest_id_pic_trigger"
+                                                                    class="position-absolute bg-white px-2"
+                                                                    style="top: -10px; left: 10px;"> Image 4</label>
+                                                                <input class="form-control"
+                                                                    id="third_guest_id_pic_trigger" type="text"
+                                                                    readonly placeholder="Click to upload or capture"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#thirdFileUploadModal"
+                                                                    style="border: none" />
+                                                                <span class="text-danger">
+                                                                    @error('third_guest_id_pic')
+                                                                        {{ $message }}
+                                                                    @enderror
+                                                                </span>
+                                                            </div>
+
+                                                            <!-- Modal -->
+                                                            <div class="modal fade" id="thirdFileUploadModal"
+                                                                tabindex="-1" aria-labelledby="thirdFileUploadModalLabel"
+                                                                aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered modal-sm">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="thirdFileUploadModalLabel">Upload
+                                                                                Document</h5>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <!-- Drag and Drop -->
+                                                                            <div class="mb-3">
+                                                                                <label for="third_guest_id_pic"
+                                                                                    class="form-label">Drag & Drop</label>
+                                                                                <div id="thirdDropZone"
+                                                                                    style="border: 2px dashed #007bff; padding: 15px; text-align: center; cursor: pointer; font-size: 14px;">
+                                                                                    Drag & drop a file here or click
+                                                                                </div>
+                                                                            </div>
+                                                                            <!-- Select from Gallery -->
+                                                                            <div class="mb-3">
+                                                                                <label for="third_guest_id_pic"
+                                                                                    class="form-label">Select from
+                                                                                    Gallery</label>
+                                                                                <input type="file"
+                                                                                    id="third_guest_id_pic"
+                                                                                    name="third_guest_id_pic"
+                                                                                    class="form-control" />
+                                                                            </div>
+                                                                            <!-- Webcam Capture -->
+                                                                            <div class="mb-3">
+                                                                                <label for="third_webcam"
+                                                                                    class="form-label">Capture from
+                                                                                    Webcam</label>
+                                                                                <div>
+                                                                                    <video id="third_webcam" autoplay
+                                                                                        style="width: 100%; max-height: 150px;"></video>
+                                                                                    <button id="thirdCaptureBtn"
+                                                                                        class="btn btn-primary btn-sm mt-2">Capture</button>
+                                                                                    <canvas id="thirdCanvas"
+                                                                                        style="display: none;"></canvas>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                        <!-- Select from Gallery -->
-                                                                        <div class="mb-3">
-                                                                            <label for="third_guest_id_pic" class="form-label">Select from Gallery</label>
-                                                                            <input type="file" id="third_guest_id_pic" name="third_guest_id_pic" class="form-control" />
+                                                                        <div class="modal-footer">
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary btn-sm"
+                                                                                id="closeBtn">Close</button>
+                                                                            <button type="button"
+                                                                                class="btn btn-primary btn-sm"
+                                                                                id="saveBtn">Save</button>
                                                                         </div>
-                                                                        <!-- Webcam Capture -->
-                                                                        <div class="mb-3">
-                                                                            <label for="third_webcam" class="form-label">Capture from Webcam</label>
-                                                                            <div>
-                                                                                <video id="third_webcam" autoplay style="width: 100%; max-height: 150px;"></video>
-                                                                                <button id="thirdCaptureBtn" class="btn btn-primary btn-sm mt-2">Capture</button>
-                                                                                <canvas id="thirdCanvas" style="display: none;"></canvas>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary btn-sm" id="closeBtn">Close</button>
-                                                                        <button type="button" class="btn btn-primary btn-sm" id="saveBtn">Save</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <script>
+                                                                $(document).ready(function() {
+                                                                    const $thirdGuestIdPicInput = $('#third_guest_id_pic');
+                                                                    const $thirdTriggerInput = $('#third_guest_id_pic_trigger');
+                                                                    const $thirdCaptureBtn = $('#thirdCaptureBtn');
+                                                                    const $thirdWebcam = $('#third_webcam')[0];
+                                                                    const $thirdCanvas = $('#thirdCanvas')[0];
+                                                                    const $thirdModal = $('#thirdFileUploadModal');
+                                                                    const $thirdDropZone = $('#thirdDropZone');
+                                                                    const $thirdSaveForm = $('#saveForm'); // Adjust if necessary
+
+                                                                    // Hide modal and remove buttons
+                                                                    function closeThirdModal() {
+                                                                        $thirdModal.modal('hide');
+                                                                    }
+
+                                                                    // Update input field and close modal
+                                                                    function updateThirdInputAndCloseModal(fileName) {
+                                                                        $thirdTriggerInput.val(fileName);
+                                                                        closeThirdModal();
+                                                                    }
+
+                                                                    // Handle Drag-and-Drop
+                                                                    $thirdDropZone.on('click', function() {
+                                                                        $thirdGuestIdPicInput.trigger('click');
+                                                                    });
+
+                                                                    $thirdGuestIdPicInput.on('change', function() {
+                                                                        if (this.files.length > 0) {
+                                                                            const fileName = this.files[0].name;
+                                                                            updateThirdInputAndCloseModal(fileName);
+                                                                        }
+                                                                    });
+
+                                                                    // Handle Webcam Capture
+                                                                    $thirdCaptureBtn.on('click', function(e) {
+                                                                        e.preventDefault();
+
+                                                                        const context = $thirdCanvas.getContext('2d');
+                                                                        $thirdCanvas.width = $thirdWebcam.videoWidth;
+                                                                        $thirdCanvas.height = $thirdWebcam.videoHeight;
+                                                                        context.drawImage($thirdWebcam, 0, 0, $thirdWebcam.videoWidth, $thirdWebcam.videoHeight);
+
+                                                                        // Generate a unique file name by appending timestamp or random string
+                                                                        const uniqueFileName = 'doc-id-cap-' + Date.now() + '.jpg'; // Example using timestamp
+
+                                                                        $thirdCanvas.toBlob((blob) => {
+                                                                            const file = new File([blob], uniqueFileName, {
+                                                                                type: 'image/jpeg'
+                                                                            }); // Use the unique file name
+                                                                            const dataTransfer = new DataTransfer();
+                                                                            dataTransfer.items.add(file);
+                                                                            $thirdGuestIdPicInput[0].files = dataTransfer.files;
+
+                                                                            updateThirdInputAndCloseModal(file.name);
+                                                                        });
+                                                                    });
+
+                                                                    // Start Webcam
+                                                                    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                                                                        navigator.mediaDevices.getUserMedia({
+                                                                            video: true
+                                                                        }).then((stream) => {
+                                                                            $thirdWebcam.srcObject = stream;
+                                                                        });
+                                                                    }
+
+                                                                    // Ensure main body is active after modal close
+                                                                    $thirdModal.on('hidden.bs.modal', function() {
+                                                                        $('body').removeClass('modal-open'); // Remove modal-open class
+                                                                        $('.modal-backdrop').remove(); // Remove leftover backdrop
+                                                                        $('body').css('overflow', ''); // Reset to default behavior
+
+                                                                        // 2. Check for and remove custom scrollbars implemented during modal display:
+                                                                        const customScrollbars = document.querySelectorAll('.custom-scrollbar');
+                                                                        customScrollbars.forEach(scrollbar => scrollbar.remove());
+
+                                                                        // 3. If using a JavaScript library for managing scrollbars, call its reset function:
+                                                                        if (typeof myScrollbarLibrary.resetScrollbar === 'function') {
+                                                                            myScrollbarLibrary.resetScrollbar(); // Example: PerfectScrollbar.resetScrollbar()
+                                                                        }
+
+                                                                        // 4. For reliable cross-browser compatibility, consider additional methods:
+                                                                        //    - document.documentElement.style.overflow = 'auto';
+                                                                        //    - document.body.style.overflow = 'auto';
+                                                                        //    (Use these if the above methods don't work consistently)
+                                                                        $thirdSaveForm.focus(); // Bring focus back to the form
+                                                                    });
+                                                                });
+                                                            </script>
+
+
                                                         </div>
-                                                        <script>
-                                                            $(document).ready(function() {
-    const $thirdGuestIdPicInput = $('#third_guest_id_pic');
-    const $thirdTriggerInput = $('#third_guest_id_pic_trigger');
-    const $thirdCaptureBtn = $('#thirdCaptureBtn');
-    const $thirdWebcam = $('#third_webcam')[0];
-    const $thirdCanvas = $('#thirdCanvas')[0];
-    const $thirdModal = $('#thirdFileUploadModal');
-    const $thirdDropZone = $('#thirdDropZone');
-    const $thirdSaveForm = $('#saveForm'); // Adjust if necessary
-
-    // Hide modal and remove buttons
-    function closeThirdModal() {
-        $thirdModal.modal('hide');
-    }
-
-    // Update input field and close modal
-    function updateThirdInputAndCloseModal(fileName) {
-        $thirdTriggerInput.val(fileName);
-        closeThirdModal();
-    }
-
-    // Handle Drag-and-Drop
-    $thirdDropZone.on('click', function() {
-        $thirdGuestIdPicInput.trigger('click');
-    });
-
-    $thirdGuestIdPicInput.on('change', function() {
-        if (this.files.length > 0) {
-            const fileName = this.files[0].name;
-            updateThirdInputAndCloseModal(fileName);
-        }
-    });
-
-    // Handle Webcam Capture
-    $thirdCaptureBtn.on('click', function(e) {
-        e.preventDefault();
-
-        const context = $thirdCanvas.getContext('2d');
-        $thirdCanvas.width = $thirdWebcam.videoWidth;
-        $thirdCanvas.height = $thirdWebcam.videoHeight;
-        context.drawImage($thirdWebcam, 0, 0, $thirdWebcam.videoWidth, $thirdWebcam.videoHeight);
-
-        // Generate a unique file name by appending timestamp or random string
-        const uniqueFileName = 'doc-id-cap-' + Date.now() + '.jpg'; // Example using timestamp
-
-        $thirdCanvas.toBlob((blob) => {
-            const file = new File([blob], uniqueFileName, {
-                type: 'image/jpeg'
-            }); // Use the unique file name
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file);
-            $thirdGuestIdPicInput[0].files = dataTransfer.files;
-
-            updateThirdInputAndCloseModal(file.name);
-        });
-    });
-
-    // Start Webcam
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({
-            video: true
-        }).then((stream) => {
-            $thirdWebcam.srcObject = stream;
-        });
-    }
-
-    // Ensure main body is active after modal close
-    $thirdModal.on('hidden.bs.modal', function() {
-        $('body').removeClass('modal-open'); // Remove modal-open class
-        $('.modal-backdrop').remove(); // Remove leftover backdrop
-        $('body').css('overflow', ''); // Reset to default behavior
-
-        // 2. Check for and remove custom scrollbars implemented during modal display:
-        const customScrollbars = document.querySelectorAll('.custom-scrollbar');
-        customScrollbars.forEach(scrollbar => scrollbar.remove());
-
-        // 3. If using a JavaScript library for managing scrollbars, call its reset function:
-        if (typeof myScrollbarLibrary.resetScrollbar === 'function') {
-            myScrollbarLibrary.resetScrollbar(); // Example: PerfectScrollbar.resetScrollbar()
-        }
-
-        // 4. For reliable cross-browser compatibility, consider additional methods:
-        //    - document.documentElement.style.overflow = 'auto';
-        //    - document.body.style.overflow = 'auto';
-        //    (Use these if the above methods don't work consistently)
-        $thirdSaveForm.focus(); // Bring focus back to the form
-    });
-});
-
-                                                        </script>
-
-
                                                     </div>
-                                                </div>
 
                                                 </div>
 
@@ -2091,16 +2350,15 @@
 
 
                                                         @can('Save')
-
-                                                        <div class="card-footer text-center py-3">
-                                                            <div class="small">
-                                                                <button id="saveButton"
-                                                                    type="submit"class="btn btn-primary btn-block">Save</button>
-                                                                <a
-                                                                    class= "btn btn-dark  "href={{ url('amclist') }}>Back</a>
+                                                            <div class="card-footer text-center py-3">
+                                                                <div class="small">
+                                                                    <button id="saveButton"
+                                                                        type="submit"class="btn btn-primary btn-block">Save</button>
+                                                                    <a
+                                                                        class= "btn btn-dark  "href={{ url('amclist') }}>Back</a>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                       @endcan
+                                                        @endcan
 
 
 
@@ -2257,8 +2515,8 @@
     {{-- Ajex for Account Detail --}}
     <script type="text/javascript">
         $(document).ready(function() {
-           $('#guest_mobile').blur(function () {
-    var contactNumber = $(this).val();
+            $('#guest_mobile').blur(function() {
+                var contactNumber = $(this).val();
                 console.log(contactNumber);
 
                 $.ajax({
@@ -2269,60 +2527,66 @@
                         console.log(response);
 
                         if (response.customer_info) {
-                            $('#guest_name').val(response.customer_info.account_name).prop('readonly', true);
+                            $('#guest_name').val(response.customer_info.account_name).prop(
+                                'readonly', true);
                         } else {
                             $('#guest_name').prop('readonly', false);
                         }
                         if (response.customer_info) {
-                            $('#guest_email').val(response.customer_info.email).prop('readonly', true);
+                            $('#guest_email').val(response.customer_info.email).prop('readonly',
+                                true);
                         } else {
-                          $('#guest_email').prop('readonly', false);
+                            $('#guest_email').prop('readonly', false);
                         }
                         if (response.customer_info) {
                             $('#guest_mobile').val(response.customer_info.mobile);
                         } else {
-                     $('#guest_mobile').prop('readonly', false);
+                            $('#guest_mobile').prop('readonly', false);
                         }
                         if (response.customer_info) {
-                            $('#guest_address').val(response.customer_info.address).prop('readonly', true);
+                            $('#guest_address').val(response.customer_info.address).prop(
+                                'readonly', true);
                         } else {
-                   $('#guest_address').prop('readonly', false); 
+                            $('#guest_address').prop('readonly', false);
                         }
                         if (response.customer_info) {
-                            $('#guest_city').val(response.customer_info.city).prop('readonly', true);
+                            $('#guest_city').val(response.customer_info.city).prop('readonly',
+                                true);
                         } else {
-                           $('#guest_city').prop('readonly', false);
+                            $('#guest_city').prop('readonly', false);
                         }
                         if (response.customer_info) {
-                            $('#guest_state').val(response.customer_info.state).prop('readonly', true);
+                            $('#guest_state').val(response.customer_info.state).prop('readonly',
+                                true);
                         } else {
-                             $('#guest_state').prop('readonly', false);
-                         
+                            $('#guest_state').prop('readonly', false);
+
                         }
                         if (response.customer_info) {
-                            $('#guest_contery').val(response.customer_info.nationality).prop('readonly', true);
+                            $('#guest_contery').val(response.customer_info.nationality).prop(
+                                'readonly', true);
                         } else {
-                            
+
                         }
                         if (response.customer_info) {
                             $('#guest_idproof').val(response.customer_info
                                 .account_idproof_name).prop('readonly', true);
                         } else {
-                          $('#guest_idproof').prop('readonly', false);  
+                            $('#guest_idproof').prop('readonly', false);
                         }
                         if (response.customer_info) {
                             $('#guest_idproof_no').val(response.customer_info
                                 .account_idproof_no).prop('readonly', true);
                         } else {
-                            $('#guest_idproof_no').prop('readonly', false);  
-                            
+                            $('#guest_idproof_no').prop('readonly', false);
+
                         }
 
 
                         if (response.customer_info) {
                             $('#guest_pic_response1').val(response.customer_info.account_pic1);
                         } else {
-                            
+
                         }
                         if (response.customer_info) {
                             const imageUrl =
@@ -2352,15 +2616,15 @@
                             $('#gst_no').val(response.customer_info.gst_no);
                         } else {
 
-                            
-                                      }
+
+                        }
 
                         if (response.customer_info.mobile) {
-alert("पिछले से गेस्ट की डिटेल मौजूदा है।\nयदि आप गेस्ट की जानकारी बदलना चाहते हैं,\nतो कृपया मोबाइल नंबर भी बदलें।\n\nGuest record found in database.\nIf you want to enter different guest details, please change the mobile number.");
+                            alert(
+                                "पिछले से गेस्ट की डिटेल मौजूदा है।\nयदि आप गेस्ट की जानकारी बदलना चाहते हैं,\nतो कृपया मोबाइल नंबर भी बदलें।\n\nGuest record found in database.\nIf you want to enter different guest details, please change the mobile number.");
 
 
-}
- else {
+                        } else {
                             $('#search_results').html(
                                 '<p>No customer found with this contact number.</p>');
                         }
@@ -2600,7 +2864,7 @@ alert("पिछले से गेस्ट की डिटेल मौज�
                 } else {
                     // Disable room checkboxes if no package is selected
                     $('.room-checkbox').prop('disabled', true).prop('checked',
-                    false); // Also uncheck checkboxes
+                        false); // Also uncheck checkboxes
                 }
             });
 
@@ -2610,7 +2874,8 @@ alert("पिछले से गेस्ट की डिटेल मौज�
                 if ($('.room-checkbox:checked').length === 0) {
                     event.preventDefault(); // Prevent form submission
                     alert(
-                        "Please select at least one room to proceed. & First Select Package Then Select Room");
+                        "Please select at least one room to proceed. & First Select Package Then Select Room"
+                        );
                 }
             });
         });
@@ -2636,7 +2901,8 @@ alert("पिछले से गेस्ट की डिटेल मौज�
 
 
                         if (response.customer_info) {
-                            $('#guest_name').val(response.customer_info.account_name).prop('readonly', true);
+                            $('#guest_name').val(response.customer_info.account_name).prop(
+                                'readonly', true);
                         } else {
                             $('#guest_name').val('');
                         }
@@ -2646,7 +2912,8 @@ alert("पिछले से गेस्ट की डिटेल मौज�
                             $('#guest_email').val('');
                         }
                         if (response.customer_info) {
-                            $('#guest_mobile').val(response.customer_info.mobile).prop('readonly', true);
+                            $('#guest_mobile').val(response.customer_info.mobile).prop(
+                                'readonly', true);
                         } else {
                             $('#guest_mobile').val('');
                         }
@@ -2859,21 +3126,21 @@ alert("पिछले से गेस्ट की डिटेल मौज�
     </script>
 
     <script>
-    $(document).ready(function() {
-        // Initialize Select2
-        $('#roombooking_voucher_no').select2({
-            placeholder: "Select Room Booking",
-            allowClear: true,
-            width: '100%' // Makes it fit the form width
-        });
+        $(document).ready(function() {
+            // Initialize Select2
+            $('#roombooking_voucher_no').select2({
+                placeholder: "Select Room Booking",
+                allowClear: true,
+                width: '100%' // Makes it fit the form width
+            });
 
-        // Redirect on selection
-        $('#roombooking_voucher_no').on('change', function() {
-            var voucherNo = $(this).val();
-            if (voucherNo) {
-                window.location.href = '/show_booking/' + voucherNo;
-            }
+            // Redirect on selection
+            $('#roombooking_voucher_no').on('change', function() {
+                var voucherNo = $(this).val();
+                if (voucherNo) {
+                    window.location.href = '/show_booking/' + voucherNo;
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endsection
