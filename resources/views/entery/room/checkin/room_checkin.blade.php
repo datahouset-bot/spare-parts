@@ -302,14 +302,35 @@
                             <div class="col-lg-12">
                                 <div class="card  mt-1">
                                     <div class="card-header">
-                                        <h5 class="text-center font-weight-light my-1">JOB CARD </h5>
+                                        <h5 class="text-center font-weight-light my-1">Job Card </h5>
                                     </div>
                                     <div class="card-body">
 
 
                                         <div class="row">
                                             <!-- Room Booking -->
+<div class="col-md-3 mt-4">
+    <label for="searchCustomer">Select Slot </label>
+    <div id="searchCustomer">
+        <form action="{{ url('/show_roombooking') }}" method="POST" class="form-inline" id="select_roombooking">
+            @csrf
+            <div class="input-group">
+                <select name="roombooking_voucher_no" id="roombooking_voucher_no" class="form-select"
+                    aria-label="Default select example">
+                    <option selected disabled>Select Room Booking</option>
+                    @foreach ($roombookings as $roombookings)
+                        <option value="{{ $roombookings->voucher_no }}">
+                            {{ $roombookings->guest_name }} -
+                            {{ \Carbon\Carbon::parse($roombookings->checkin_date)->format('d-m-y') }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
+            <span id="message"></span>
+        </form>
+    </div>
+</div>
 
                                             {{-- 
                                             <div class="col-md-3 mt-4">
@@ -348,7 +369,7 @@
                                             </div> --}}
 
                                             <!-- Room Booking Client Picture -->
-                                            {{-- <div class="col-md-3 mt-1">
+                                            <div class="col-md-3 mt-1">
 
                                                 <div id="roomBookingClientPic">
                                                     <!-- Image or content for room booking client picture -->
@@ -360,7 +381,7 @@
                                             </div>
 
                                             <!-- Search Customer -->
-                                            <div class="col-md-3 mt-4"> --}}
+                                            <div class="col-md-3 mt-4">
                                                 {{-- //this is code for search account by mobile no only
                                                  <label for="searchCustomer">Search Customer</label>
                                                 <div id="searchCustomer">
@@ -382,11 +403,11 @@
                                                         <span id="message"></span>
                                                     </form>
                                                 </div> --}}
-                                                {{-- <div class="input-group">
+                                                <div class="input-group">
 
                                                     <select id="guest_search_id" name="guest_search_id"
                                                         class="js-states form-control">
-                                                        <option disabled selected>Select customer</option>
+                                                        <option disabled selected>Select Guest</option>
                                                         @foreach ($guset_data as $record)
                                                             <option value={{ $record['id'] }}>
                                                                 {{ $record['account_name'] }}&nbsp;-
@@ -399,7 +420,7 @@
                                                         {{ $message }}
                                                     @enderror
                                                 </span>
-                                            </div> --}}
+                                            </div>
 
                                             {{-- </div>  --}}
 
@@ -407,7 +428,7 @@
                                                 <div class="col-md-3 mt-4 mx-2 ">
                              --}}
                                             <!-- Selected Customer Picture -->
-                                            {{-- <div class="col-md-3 mt-1">
+                                            <div class="col-md-3 mt-1">
                                                 <div id="selectedCustomerPic">
                                                     <!-- Image or content for selected customer picture -->
                                                     <img id="guest_pic_response"
@@ -419,17 +440,81 @@
                                                         alt="Uploaded ID pic" width="130PX">
                                                 </div>
                                             </div>
-                                        </div> --}}
+                                        </div>
 
                                         <form id ="saveForm"action="{{ route('roomcheckins.store') }}" method="POST"
                                             enctype="multipart/form-data">
                                             @csrf
                                             {{-- 2nd row checkin detail and select room no                                                          --}}
-                                            
+                                            <div class="row justify-content-centerm-3">
+                                                <div class="col-md-8">
+                                                    <div class="row form-group">
+                                                        <div class="col-md-3">
+                                                            <label for="label1">JOB Card No<span
+                                                                    class="requierdfield">*</span> </label>
+                                                            <input type="text" name="check_in_no"class=" form-control"
+                                                                id="" class="" value="{{ $new_bill_no }}"
+                                                                readonly>
+                                                            <input type="hidden" name="voucher_no"class=" form-control"
+                                                                id="" name="voucher_no" class=""
+                                                                value="{{ $new_voucher_no }}" readonly>
+
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="checkin_date">Date<span
+                                                                    class="requierdfield">*</span></label>
+                                                            <input class="form-control date" id="checkin_date"
+                                                                type="text" name="checkin_date"
+                                                                value="{{ date('Y-m-d') }}" />
+                                                            <span class="text-danger">
+                                                                @error('checkin_date')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="checkin_time">Time<span
+                                                                    class="requierdfield">*</span></label>
+                                                            <input class="form-control" id="checkin_time" type="time"
+                                                                name="checkin_time" value="{{ date('Y-m-d') }}" />
+                                                            <span class="text-danger">
+                                                                @error('checkin_time')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                        </div>
+
+                                                            @if(!is_null($componyinfo->componyinfo_af1))
+                                                            <div class="col-md-3">
+                                                            <label for="checkin_date">Expected Check-Out Date<span
+                                                                    class="requierdfield"></span></label>
+                                                            <input class="form-control date" id="checkout_date"
+                                                                type="text" name="checkout_date"
+                                                                value="{{ date('Y-m-d') }}" />
+                                                            <span class="text-danger">
+                                                                @error('checkout_date')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="checkin_time">Expected Check-Out Time<span
+                                                                    class="requierdfield"></span></label>
+                                                            <input class="form-control" id="checkout_time" type="time"
+                                                                name="checkout_time" value="{{ date('Y-m-d') }}" />
+                                                            <span class="text-danger">
+                                                                @error('checkout_time')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                        </div>
+
+                                                       
+                                                       @endif
 
                                                         
                                                         
-                                                        {{-- <div class="col-md-3">
+                                                        <div class="col-md-3">
                                                             <label for="commited_days">No Of Days <span
                                                                     class="requierdfield">*</span></label>
                                                             <input class="form-control" id="commited_days" type="text"
@@ -441,8 +526,8 @@
                                                                 @enderror
                                                             </span>
 
-                                                        </div> --}}
-                                                        {{-- <div class="col-md-3">
+                                                        </div>
+                                                        <div class="col-md-3">
                                                             <label for="no_of_guest">No Of Guest <span
                                                                     class="requierdfield">*</span></label>
                                                             <input class="form-control" id="no_of_guest" type="text"
@@ -453,8 +538,8 @@
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div> --}}
-                                                        {{-- <div class="col-md-3">
+                                                        </div>
+                                                        <div class="col-md-3">
                                                             <span class="requierdfield">*</span>
                                                             <label for="business_source">Business Source</label>
                                                             <select name="business_source_id" id="business_source_id"
@@ -474,122 +559,13 @@
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div> --}}
-                                                       
-                                                        {{-- <div class="col-md-6 mt-4">
-                                                         <div class="position-relative border p-1  col-md-4" style="border-radius: 4px; ">
-                                            <label for="myInput" class="position-absolute bg-white px-2" style="top: -10px; left: 10px; ">remark</label>
-                                            <input type="text" class="form-control" id="myInput" placeholder="Enter text here" style="border: none">
-                                            </div>
-                                            </div> --}}
-
-
-                                                {{-- <div class="col-md-4" id ="room_selection_box">
-                                                    <table id="room_selection"
-                                                        class="table table-striped table-responsive">
-                                                        <thead>
-                                                            <tr>
-                                                                <th># </th>
-                                                                <th>slot No </th>
-                                                                <th>Payment Type</th>
-                                                                <th>Tariff</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ($rooms as $room)
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="container_chekbox">
-                                                                            <input type="checkbox" class="room-checkbox"
-                                                                                name="checkin_room_id[]"
-                                                                                value="{{ $room->id }}">
-                                                                            <span class="checkmark"></span>
-                                                                        </label>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text"id="checkin_room_no"
-                                                                            name="checkin_room_no"
-                                                                            value="{{ $room->room_no }}" readonly>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text" name="checkin_roomtype"
-                                                                            id="checkin_roomtype"
-                                                                            value ="{{ $room->roomtype->roomtype_name }}"
-                                                                            readonly>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text"
-                                                                            name="checkin_room_tariff"id="checkin_room_tariff"
-                                                                            value="{{ $room->roomtype->room_tariff }}">
-                                                                    </td>
-                                                            </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>  --}}
-
-
-
-                                            {{-- 3rd row start for guest detail +valuadded                             --}}
-                                            {{-- <div class="position-relative border p-1 w-25" style="border-radius: 4px; ">
-                                            <label for="myInput" class="position-absolute bg-white px-2" style="top: -10px; left: 10px; ">Your Label</label>
-                                            <input type="text" class="form-control" id="myInput" placeholder="Enter text here" style="border: none">
-                                            </div>               
-        <br> --}}     {{--add rows and organize Job card--}}
-                            <div class="col-md-4" id ="room_selection_box">
-                                                    <table id="room_selection"
-                                                        class="table table-striped table-responsive">
-                                                        <thead>
-                                                            <tr>
-                                                                <th># </th>
-                                                                <th>slot No </th>
-                                                                <th>Payment Type</th>
-                                                                <th>Charge</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ($rooms as $room)
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="container_chekbox">
-                                                                            <input type="checkbox" class="room-checkbox"
-                                                                                name="checkin_room_id[]"
-                                                                                value="{{ $room->id }}">
-                                                                            <span class="checkmark"></span>
-                                                                        </label>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text"id="checkin_room_no"
-                                                                            name="checkin_room_no"
-                                                                            value="{{ $room->room_no }}" readonly>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text" name="checkin_roomtype"
-                                                                            id="checkin_roomtype"
-                                                                            value ="{{ $room->roomtype->roomtype_name }}"
-                                                                            readonly>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text"
-                                                                            name="checkin_room_tariff"id="checkin_room_tariff"
-                                                                            value="{{ $room->roomtype->room_tariff }}">
-                                                                    </td>
-                                                            </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div> 
-
-                                            <div class="row ">
-                                            {{-- <div class="col-md-4 mt-4" >
-                                            <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="package"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Package</label>
+                                                        </div>
+                                                        <div class="col-md-6"><span class="requierdfield">*</span>
+                                                            <label for="package">Service Type</label>
                                                             <select name="package_id" id="package_id" class="form-select"
                                                                 aria-label="Default select example">
-                                                                <option disabled {{ old('package_id') ? '' : 'selected' }} style="border: none">
-                                                                    Select Package</option>
+                                                                <option disabled {{ old('package_id') ? '' : 'selected' }}>
+                                                                    Select Service Type</option>
                                                                 @foreach ($package as $package)
                                                                     <option value="{{ $package->id }}"
                                                                         {{ old('package_id') == $package->id ? 'selected' : '' }}>
@@ -605,390 +581,390 @@
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        </div> --}}
-
-
-                                            <div class="col-md-4 mt-4" >
-                                            <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                            <label for="searchCustomer" >Select slot Booking</label>
-                                            <div id="searchCustomer" >
-                                            <form action="{{ url('/show_roombooking') }}" method="POST" class="form-inline" id="select_roombooking">
-                                            @csrf
-                                            <div class="input-group">
-                <select name="roombooking_voucher_no" id="roombooking_voucher_no" class="form-select" 
-                    aria-label="Default select example" style="border: none">
-                    <option selected disabled >Select slot Booking</option>
-                    @foreach ($roombookings as $roombookings)
-                        <option value="{{ $roombookings->voucher_no }}">
-                            {{ $roombookings->guest_name }} -
-                            {{ \Carbon\Carbon::parse($roombookings->checkin_date)->format('d-m-y') }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <span id="message"></span>
-        </form>
-                                            </div>
-                                            </div>
-                                            </div>
-                                            
-                                                <div class="col-md-4 mt-4">
-                                                    <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                    <div class="row form-group">
-                                                        <div class="col-md-3">
-                                                            <label for="label1"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Vehicle no </label>
-                                                            <input type="text" name="check_in_no"class=" form-control"
-                                                                id="" class="" value="{{ $new_bill_no }}"
-                                                                readonly style="border: none">
-                                                            <input type="hidden" name="voucher_no"class=" form-control"
-                                                                id="" name="voucher_no" class=""
-                                                                value="{{ $new_voucher_no }}" readonly>
-                                                        </div>
-                                                    </div>
-                                                        </div>
-                                                </div>
-
-                                                        <div class="col-md-4 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="checkin_date"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;"> Date</label>
-                                                            <input class="form-control date" id="checkin_date"
-                                                                type="text" name="checkin_date"
-                                                                value="{{ date('Y-m-d') }}" style="border: none" />
-                                                            <span class="text-danger">
-                                                                @error('checkin_date')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
-
-                                                        <div class="col-md-4 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="checkin_time"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;"> Time</label>
-                                                            <input class="form-control" id="checkin_time" type="time"
-                                                                name="checkin_time" value="{{ date('Y-m-d') }}" style="border: none"/>
-                                                            <span class="text-danger">
-                                                                @error('checkin_time')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
-
-                                                            @if(!is_null($componyinfo->componyinfo_af1))
-                                                        <div class="col-md-4 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="checkin_date"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Expected Check-Out Date<span
-                                                                    class="requierdfield"></span></label>
-                                                            <input class="form-control date" id="checkout_date"
-                                                                type="text" name="checkout_date"
-                                                                value="{{ date('Y-m-d') }}" style="border: none"/>
-                                                            <span class="text-danger">
-                                                                @error('checkout_date')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                    </div>
-
-                                                         <div class="col-md-4 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="checkin_time"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Expected Check-Out Time<span
-                                                                    class="requierdfield"></span></label>
-                                                            <input class="form-control" id="checkout_time" type="time"
-                                                                name="checkout_time" value="{{ date('Y-m-d') }}" style="border: none" />
-                                                            <span class="text-danger">
-                                                                @error('checkout_time')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                         </div>
-                                                       @endif
-                                                  <div class="col-md-4 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="checkin_remark1" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Remark 1</label>
+                                                        <div class="col-md-4">
+                                                            <label for="checkin_remark1">Remark 1</label>
                                                             <input class="form-control" id="checkin_remark1"
-                                                                type="text" name="checkin_remark1"placeholder="Enter text here" style="border: none" value="" />
+                                                                type="text" name="checkin_remark1" value="" />
                                                             <span class="text-danger">
                                                                 @error('checkin_remark1')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        </div>
-
-                                                        <div class="col-md-4 mt-4">
-                                                        <div class="position-relative border   col-md-4 w-75" style="border-radius: 4px;">   
-                                                            <label for="checkin_remark2" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Remark 2</label>
+                                                        <div class="col-md-8 mb-1">
+                                                            <label for="checkin_remark2">Remark 2</label>
                                                             <input class="form-control" id="checkin_remark2"
-                                                                type="text" name="checkin_remark2"placeholder="Enter text here" style="border: none"  value="" />
+                                                                type="text" name="checkin_remark2" value="" />
                                                             <span class="text-danger">
                                                                 @error('checkin_remark2')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                    </div>
 
-                                            <div class="col-md-4 mt-4">
-                                            <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="guest_name" class="position-absolute bg-white px-2" style="top: -10px; left: 10px; ">Customer Name </label>
+
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="col-md-4" id ="room_selection_box">
+                                                    <table id="room_selection"
+                                                        class="table table-striped table-responsive">
+                                                        <thead>
+                                                            <tr>
+                                                                <th># </th>
+                                                                <th>Room No </th>
+                                                                <th>Room Type</th>
+                                                                <th>Tariff</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+
+
+                                                            @foreach ($rooms as $room)
+                                                                <tr>
+                                                                    <td>
+                                                                        <label class="container_chekbox">
+                                                                            <input type="checkbox" class="room-checkbox"
+                                                                                name="checkin_room_id[]"
+                                                                                value="{{ $room->id }}">
+                                                                            <span class="checkmark"></span>
+                                                                        </label>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text"id="checkin_room_no"
+                                                                            name="checkin_room_no"
+                                                                            value="{{ $room->room_no }}" readonly>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" name="checkin_roomtype"
+                                                                            id="checkin_roomtype"
+                                                                            value ="{{ $room->roomtype->roomtype_name }}"
+                                                                            readonly>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text"
+                                                                            name="checkin_room_tariff"id="checkin_room_tariff"
+                                                                            value="{{ $room->roomtype->room_tariff }}">
+                                                                    </td>
+
+
+
+
+                                                                </tr>
+                                                            @endforeach
+
+
+
+                                                        </tbody>
+                                                    </table>
+
+
+
+
+
+
+
+                                                </div>
+                                            </div>
+
+
+                                            {{-- 3rd row start for guest detail +valuadded                             --}}
+                                            <div class="row justify-content-centerm-3 my-3">
+                                                <div class="col-md-8">
+                                                    <div class="row form-group">
+                                                        <div class="col-md-6"><span class="requierdfield">*</span>
+                                                            <label for="guest_name">Customer  Name </label>
                                                             <input class="form-control" id="guest_name" type="text"
                                                                 name="guest_name" value="{{ old('guest_name') }}"
-                                                                autocomplete="none"  style="border: none" />
+                                                                autocomplete="none" />
                                                             <span class="text-danger">
                                                                 @error('guest_name')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
+
+
                                                         </div>
-                                                    </div >
-                                                        <div class="col-md-4 mt-4 ">
-                                                            <div  class=" position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="guest_father_name" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Vehicle Name </label>
+                                                        <div class="col-md-6">
+                                                            <label for="guest_father_name">Chassis </label>
                                                             <input class="form-control" id="guest_father_name" type="text"
                                                                 name="guest_father_name" value="{{ old('guest_father_name') }}"
-                                                                autocomplete="none" style="border: none" />
+                                                                autocomplete="none" />
                                                             <span class="text-danger">
                                                                 @error('guest_father_name')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
-                                                        </div>
 
 
-                                                        <div class="col-md-4 mt-4">
-                                                        <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="guest_address" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Address Line 1</label>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="guest_age">KM </label>
+                                                            <input class="form-control" id="guest_age" type="text"
+                                                                name="guest_age" value="{{ old('guest_age') }}"
+                                                                autocomplete="none" />
+                                                            <span class="text-danger">
+                                                                @error('guest_age')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+
+
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="guest_gender">Guest Gender </label>
+<select class="form-control" id="guest_gender" name="guest_gender">
+    <option value="">-- Select Gender --</option>
+    <option value="Male" {{ old('guest_gender') == 'Male' ? 'selected' : '' }}>Male</option>
+    <option value="Female" {{ old('guest_gender') == 'Female' ? 'selected' : '' }}>Female</option>
+    <option value="Other" {{ old('guest_gender') == 'Other' ? 'selected' : '' }}>Other</option>
+</select>
+
+
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="account_birthday">DOB </label>
+                                                            <input class="form-control" id="account_birthday" type="date"
+                                                                name="account_birthday" value="{{ old('account_birthday') }}"
+                                                                autocomplete="none" />
+                                                            <span class="text-danger">
+                                                                @error('account_birthday')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+
+
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="guest_address">Address Line 1</label>
                                                             <input class="form-control" id="guest_address" type="text"
                                                                 name="guest_address"
-                                                                value="{{ old('guest_address') }}" style="border: none"/>
+                                                                value="{{ old('guest_address') }}" />
                                                             <span class="text-danger">
                                                                 @error('guest_address')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        </div>
-
-
-                                                       <div class="col-md-4 mt-4">
-                                                        <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="guest_address2"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Address Line 2</label>
+                                                        <div class="col-md-3">
+                                                            <label for="guest_address2">Address Line 2</label>
                                                             <input class="form-control" id="guest_address2"
                                                                 type="text" name="guest_address2"
-                                                                value="{{ old('guest_address2') }}"  style="border: none"/>
+                                                                value="{{ old('guest_address2') }}" />
                                                             <span class="text-danger">
                                                                 @error('guest_address2')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        </div>
-
-                                                    <div class="col-md-4 mt-4">
-                                                    <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="guest_city"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">City</label>
+                                                        <div class="col-md-3">
+                                                            <label for="guest_city">City</label>
                                                             <input class="form-control" id="guest_city" type="text"
-                                                                name="guest_city" value="{{ old('guest_city') }}"  style="border: none" />
+                                                                name="guest_city" value="{{ old('guest_city') }}" />
                                                             <span class="text-danger">
                                                                 @error('guest_city')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                    </div>
-
-                                                        <div class="col-md-4 mt-4">
-                                                    <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="guest_state"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">State</label>
+                                                        <div class="col-md-3">
+                                                            <label for="guest_state">State</label>
                                                             <input class="form-control" id="guest_state" type="text"
-                                                                name="guest_state" value="{{ old('guest_state') }}" style="border: none"  />
+                                                                name="guest_state" value="{{ old('guest_state') }}" />
                                                             <span class="text-danger">
                                                                 @error('guest_state')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        </div>
-
-                                                        <div class="col-md-4 mt-4">
-                                                    <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="guest_contery"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Country</label>
+                                                        <div class="col-md-3">
+                                                            <label for="guest_contery">Country</label>
                                                             <input class="form-control" id="guest_contery" type="text"
                                                                 name="guest_contery"
-                                                                value="{{ old('guest_countery', $compinfofooter->country) }}" style="border: none"/>
+                                                                value="{{ old('guest_countery', $compinfofooter->country) }}" />
                                                             <span class="text-danger">
                                                                 @error('guest_contery')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                    </div>
-
-                                                    <div class="col-md-4 mt-4">
-                                                    <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="guest_pincode"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;"> Pin Code </label>
+                                                        <div class="col-md-3">
+                                                            <label for="guest_pincode"> Pin Code </label>
                                                             <input class="form-control" id="guest_pincode" type="text"
-                                                                name="guest_pincode" value=""  style="border: none"/>
+                                                                name="guest_pincode" value="" />
                                                             <span class="text-danger">
                                                                 @error('guest_pincode')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        </div>
-
-                                                        <div class="col-md-4 mt-4">
-                                                    <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="guest_nationality"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Nationality</label>
+                                                        <div class="col-md-3">
+                                                            <label for="guest_nationality">Nationality</label>
                                                             <input class="form-control" id="guest_nationality"
                                                                 type="text" name="guest_nationality"
-                                                                value="{{ old('guest_countery', $compinfofooter->country) }}"style="border: none" />
+                                                                value="{{ old('guest_countery', $compinfofooter->country) }}" />
                                                             <span class="text-danger">
                                                                 @error('guest_nationality')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        </div>
-
-                                                    <div class="col-md-4 mt-4">
-                                                    <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="guest_mobile"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Mobile</label>
+                                                        <div class="col-md-3"><span class="requierdfield">*</span>
+                                                            <label for="guest_mobile">Vehicle No</label>
                                                             <input class="form-control" id="guest_mobile" type="text"
                                                                 name="guest_mobile" value="{{ old('guest_mobile') }}"
-                                                                autocomplete="none" style="border: none" />
+                                                                autocomplete="none" />
                                                             <span class="text-danger">
                                                                 @error('guest_mobile')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                    </div>
-                                                    </div>
 
-                                                    <div class="col-md-4 mt-4">
-                                                    <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="guest_phone"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Phone</label>
+
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="guest_phone">Phone</label>
                                                             <input class="form-control" id="guest_phone" type="text"
                                                                 name="guest_phone" value="{{ old('guest_phone') }}"
-                                                                autocomplete="none" style="border: none"/>
+                                                                autocomplete="none" />
                                                             <span class="text-danger">
                                                                 @error('guest_phone')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        </div>
-
-                                                        <div class="col-md-4 mt-4">
-                                                        <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="guest_email"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Email</label>
+                                                        <div class="col-md-3">
+                                                            <label for="guest_email">Email</label>
                                                             <input class="form-control" id="guest_email" type="text"
-                                                                name="guest_email" value="{{ old('guest_email') }}" style="border: none" />
+                                                                name="guest_email" value="{{ old('guest_email') }}" />
                                                             <span class="text-danger">
                                                                 @error('guest_email')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        </div>
-
-                                                        <div class="col-md-4 mt-4">
-                                                        <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="label1"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Agent</label>
+                                                        <div class="col-md-3 ">
+                                                            <label for="label1">Tech Name </label>
                                                             <input type="text" class=" form-control"id=""
                                                                 name="agent" class=""
-                                                                value="{{ old('agent') }}"style="border: none"  />
+                                                                value="{{ old('agent') }}">
                                                         </div>
+                                                           <div class="col-md-3 ">
+                                                            <label for="label1">MAKE</label>
+                                                            <input type="text" class=" form-control"id=""
+                                                                name="purpose_of_visit" class=""
+                                                                value="{{ old('purpose_of_visit') }}">
                                                         </div>
-
-                                                        <div class="col-md-4 mt-4">
-                                                        <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="guest_idproof"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Document Name </label>
+                                                                                                                  <div class="col-md-3 ">
+                                                            <label for="label1">MODEL</label>
+                                                            <input type="text" class=" form-control"id=""
+                                                                name="comming_from" class=""
+                                                                value="{{ old('comming_from') }}">
+                                                        </div>
+                                                                  <div class="col-md-3 ">
+                                                            <label for="label1">GOING TO</label>
+                                                            <input type="text" class=" form-control"id=""
+                                                                name="going_to" class=""
+                                                                value="{{ old('going_to') }}">
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="guest_idproof">Document Name </label>
                                                             <input class="form-control" id="guest_idproof" type="text"
                                                                 name="guest_idproof"
-                                                                value="{{ old('guest_idproof') }}"style="border: none" />
+                                                                value="{{ old('guest_idproof') }}" />
                                                             <span class="text-danger">
                                                                 @error('guest_idproof')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        </div>
-
-                                                        <div class="col-md-4 mt-4">
-                                                        <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="guest_idproof_no"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Document No </label>
+                                                        <div class="col-md-3">
+                                                            <label for="guest_idproof_no">Document No </label>
                                                             <input class="form-control" id="guest_idproof_no"
                                                                 type="text" name="guest_idproof_no"
-                                                                value="{{ old('guest_idproof_no') }}"style="border: none" />
+                                                                value="{{ old('guest_idproof_no') }}" />
                                                             <span class="text-danger">
                                                                 @error('guest_idproof_no')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        </div>
 
-                                                        <div class="col-md-4 mt-4">
-                                                        <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="firm_name" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Company Name</label>
+                                                        <div class="col-md-3">
+                                                            <label for="firm_name">Company Name</label>
                                                             <input class="form-control" id="firm_name" type="text"
-                                                                name="firm_name" value="{{ old('firm_name') }}"style="border: none"  />
+                                                                name="firm_name" value="{{ old('firm_name') }}" />
                                                             <span class="text-danger">
                                                                 @error('firm_name')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
+
                                                         </div>
 
-                                                        <div class="col-md-4 mt-4">
-                                                        <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="firm_address" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Company Address </label>
+                                                        <div class="col-md-3">
+                                                            <label for="firm_address">Company Address </label>
                                                             <input class="form-control" id="firm_address" type="text"
-                                                                name="firm_address" value="{{ old('firm_address') }}" style="border: none"  />
+                                                                name="firm_address" value="{{ old('firm_address') }}" />
                                                             <span class="text-danger">
                                                                 @error('firm_address')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
+
                                                         </div>
 
 
-                                                        <div class="col-md-4 mt-4">
-                                                        <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="gst_no"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">GST NO </label>
+                                                        <div class="col-md-3">
+                                                            <label for="gst_no">GST NO </label>
                                                             <input class="form-control" id="gst_no" type="text"
-                                                                name="gst_no" value="{{ old('gst_no') }}"  style="border: none"  />
+                                                                name="gst_no" value="{{ old('gst_no') }}" />
                                                             <span class="text-danger">
                                                                 @error('gst_no')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
-                                                        </div>
 
-                                                    <div class="col-md-4 mt-4">
-                                                    <div  class="  position-relative border w-75" style="border-radius: 6px;">
-                                                            <label for="guest_id_pic_trigger"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Document Image</label>
-                                                            <input class="form-control" id="guest_id_pic_trigger"
-                                                                type="text" readonly
-                                                                placeholder="Click to upload or capture"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#fileUploadModal"  style="border: none" />
+                                                        </div>
+                                                        {{-- <div class="col-md-3">
+                                                            <label for="guest_id_pic">Document Image </label>
+                                                            <input class="form-control" id="guest_id_pic" type="file"
+                                                                name="guest_id_pic" value="" />
                                                             <span class="text-danger">
                                                                 @error('guest_id_pic')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
                                                         </div>
-  <!-- Modal -->
+                                                        <div class="col-md-3">
+                                                            <label for="guest_pic">Guest Image </label>
+                                                            <input class="form-control" id="guest_pic" type="file"
+                                                                name="guest_pic" value="{{ old('guest_pic') }}" />
+                                                            <span class="text-danger">
+                                                                @error('guest_pic')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+
+                                                        </div> --}}
+                                                        <div class="col-md-3">
+                                                            <label for="guest_id_pic_trigger">Document Image</label>
+                                                            <input class="form-control" id="guest_id_pic_trigger"
+                                                                type="text" readonly
+                                                                placeholder="Click to upload or capture"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#fileUploadModal" />
+                                                            <span class="text-danger">
+                                                                @error('guest_id_pic')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                        </div>
+
+                                                        <!-- Modal -->
                                                         <div class="modal fade" id="fileUploadModal" tabindex="-1"
                                                             aria-labelledby="fileUploadModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -1136,90 +1112,7 @@
                                                             });
                                                         </script>
 
-                                                    </div>   
-
-                                                        {{-- <div class="col-md-3">
-                                                            <label for="guest_age">Guest Age </label>
-                                                            <input class="form-control" id="guest_age" type="text"
-                                                                name="guest_age" value="{{ old('guest_age') }}"
-                                                                autocomplete="none" />
-                                                            <span class="text-danger">
-                                                                @error('guest_age')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-
-
-                                                        </div>
                                                         <div class="col-md-3">
-                                                            <label for="guest_gender">Guest Gender </label>
-<select class="form-control" id="guest_gender" name="guest_gender">
-    <option value="">-- Select Gender --</option>
-    <option value="Male" {{ old('guest_gender') == 'Male' ? 'selected' : '' }}>Male</option>
-    <option value="Female" {{ old('guest_gender') == 'Female' ? 'selected' : '' }}>Female</option>
-    <option value="Other" {{ old('guest_gender') == 'Other' ? 'selected' : '' }}>Other</option>
-</select>
-
-
-                                                        </div> --}}
-                                                        {{-- <div class="col-md-3">
-                                                            <label for="account_birthday">DOB </label>
-                                                            <input class="form-control" id="account_birthday" type="date"
-                                                                name="account_birthday" value="{{ old('account_birthday') }}"
-                                                                autocomplete="none" />
-                                                            <span class="text-danger">
-                                                                @error('account_birthday')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-
-
-                                                        </div> --}}
-                                                       
-                                                           {{-- <div class="col-md-3 ">
-                                                            <label for="label1">Purpose Of Visit</label>
-                                                            <input type="text" class=" form-control"id=""
-                                                                name="purpose_of_visit" class=""
-                                                                value="{{ old('purpose_of_visit') }}">
-                                                        </div>  --}}
-                                                                        {{-- <div class="col-md-3 "> --}}
-                                                            {{-- <label for="label1">Comming From</label>
-                                                            <input type="text" class=" form-control"id=""
-                                                                name="comming_from" class=""
-                                                                value="{{ old('comming_from') }}">
-                                                        </div>
-                                                                  <div class="col-md-3 ">
-                                                            <label for="label1">GOING TO</label>
-                                                            <input type="text" class=" form-control"id=""
-                                                                name="going_to" class=""
-                                                                value="{{ old('going_to') }}">
-                                                        </div> --}}
-                                                      
-                                                        {{-- <div class="col-md-3">
-                                                            <label for="guest_id_pic">Document Image </label>
-                                                            <input class="form-control" id="guest_id_pic" type="file"
-                                                                name="guest_id_pic" value="" />
-                                                            <span class="text-danger">
-                                                                @error('guest_id_pic')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label for="guest_pic">Guest Image </label>
-                                                            <input class="form-control" id="guest_pic" type="file"
-                                                                name="guest_pic" value="{{ old('guest_pic') }}" />
-                                                            <span class="text-danger">
-                                                                @error('guest_pic')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-
-                                                        </div> --}}
-                                                       
-
-                                                      
-                                                        {{-- <div class="col-md-3">
                                                             <label for="guest_pic_trigger">Guest Image</label>
                                                             <input class="form-control" id="guest_pic_trigger"
                                                                 type="text" readonly
@@ -1231,7 +1124,7 @@
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div> --}}
+                                                        </div>
 
                                                         <!-- Modal for Guest Image -->
                                                         <div class="modal fade" id="guestPicModal" tabindex="-1"
@@ -1381,7 +1274,7 @@
                                                                 });
                                                             });
                                                         </script>
-                                                    {{-- <div class="col-md-3">
+                                                    <div class="col-md-3">
                                                         <label for="second_guest_name">2nd Guest Name  </label>
                                                         <input class="form-control" id="second_guest_name" type="text"
                                                             name="second_guest_name" value="{{ old('second_guest_name') }}" />
@@ -1391,8 +1284,8 @@
                                                             @enderror
                                                         </span>
 
-                                                    </div> --}}
-                                                    {{-- <div class="col-md-3">
+                                                    </div>
+                                                    <div class="col-md-3">
                                                         <label for="second_guest_id_name"> 2nd Guest Id Name  </label>
                                                         <input class="form-control" id="second_guest_id_name" type="text"
                                                             name="second_guest_id_name" value="{{ old('second_guest_id_name') }}" />
@@ -1402,8 +1295,8 @@
                                                             @enderror
                                                         </span>
 
-                                                    </div> --}}
-                                                    {{-- <div class="col-md-3">
+                                                    </div>
+                                                    <div class="col-md-3">
                                                         <label for="second_guest_id_no"> 2nd Guest Id No  </label>
                                                         <input class="form-control" id="second_guest_id_no" type="text"
                                                             name="second_guest_id_no" value="{{ old('second_guest_id_no') }}" />
@@ -1413,10 +1306,10 @@
                                                             @enderror
                                                         </span>
 
-                                                    </div> --}}
+                                                    </div>
 
                                                         <!--second guest image -->
-                                                        {{-- <div class="col-md-3">
+                                                        <div class="col-md-3">
                                                             <label for="second_guest_id_pic_trigger">2nd Guest Document </label>
                                                             <input class="form-control" id="second_guest_id_pic_trigger" type="text" readonly
                                                                 placeholder="Click to upload or capture"
@@ -1427,7 +1320,7 @@
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                         --}}
+                                                        
                                                         <!-- Modal -->
                                                         <div class="modal fade" id="secondFileUploadModal" tabindex="-1" aria-labelledby="secondFileUploadModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -1561,7 +1454,7 @@
 
                                                         <!----3rd guest documnt --->
 
-                                                        {{-- <div class="col-md-3">
+                                                        <div class="col-md-3">
                                                             <label for="third_guest_name">3rd Guest Name  </label>
                                                             <input class="form-control" id="third_guest_name" type="text"
                                                                 name="third_guest_name" value="{{ old('third_guest_name') }}" />
@@ -1605,7 +1498,7 @@
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                         --}}
+                                                        
                                                         <!-- Modal -->
                                                         <div class="modal fade" id="thirdFileUploadModal" tabindex="-1" aria-labelledby="thirdFileUploadModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -1792,51 +1685,6 @@
                                             </tbody>
                                            </table>
                                         </div>   --}}
-                                
-                                        {{-- <div class="col-md-4" id ="room_selection_box">
-                                                    <table id="room_selection"
-                                                        class="table table-striped table-responsive">
-                                                        <thead>
-                                                            <tr>
-                                                                <th># </th>
-                                                                <th>slot No </th>
-                                                                <th>Payment Type</th>
-                                                                <th>Tariff</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ($rooms as $room)
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="container_chekbox">
-                                                                            <input type="checkbox" class="room-checkbox"
-                                                                                name="checkin_room_id[]"
-                                                                                value="{{ $room->id }}">
-                                                                            <span class="checkmark"></span>
-                                                                        </label>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text"id="checkin_room_no"
-                                                                            name="checkin_room_no"
-                                                                            value="{{ $room->room_no }}" readonly>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text" name="checkin_roomtype"
-                                                                            id="checkin_roomtype"
-                                                                            value ="{{ $room->roomtype->roomtype_name }}"
-                                                                            readonly>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text"
-                                                                            name="checkin_room_tariff"id="checkin_room_tariff"
-                                                                            value="{{ $room->roomtype->room_tariff }}">
-                                                                    </td>
-                                                            </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>  --}}
 
                                                 <div class="col-md-4">
                                                     <h5>Payment Detail</h5>
@@ -1849,12 +1697,12 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody id="payment_mode_body">
-                                                            {{-- <tr>
+                                                            <tr>
                                                                 <td>Per Day Room Tariff</td>
                                                                 <td><input type="text" id="room_tariff_perday"
                                                                         name="room_tariff_perday" class="amount_input"
                                                                         readonly></td>
-                                                            </tr> --}}
+                                                            </tr>
                                                             <tr>
                                                                 <td>
                                                                     <select name="posting_acc_id[]"
@@ -1901,7 +1749,7 @@
                                                         </tr>
                                                     </table>
                                                 </div>
-                                
+
                                                 {{-- <script>
                                                     // JavaScript to dynamically add more payment modes
                                                     document.getElementById('add_payment_mode').addEventListener('click', function() {
