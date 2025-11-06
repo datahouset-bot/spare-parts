@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KotController;
 use App\Http\Controllers\PicController;
@@ -10,8 +11,8 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UnitController;
-use App\Http\Controllers\RestaController;
 
+use App\Http\Controllers\RestaController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\ExportController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\WhatsAppController;
 use App\Http\Controllers\GstmasterController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemgroupController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\OptionlistController;
 use App\Http\Controllers\ComponyinfoController;
 use App\Http\Controllers\LandingpageController;
@@ -49,7 +51,6 @@ use App\Http\Controllers\BusinesssourceController;
 use App\Http\Controllers\CompinfofooterController;
 use App\Http\Controllers\BusinesssettingController;
 use App\Http\Controllers\SoftwarecompanyController;
-use App\Http\Controllers\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------

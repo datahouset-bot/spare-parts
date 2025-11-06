@@ -26,11 +26,11 @@
 
     <div class="card my-3">
         <div class="card-header">
-        <h4>Stock Issue  <h4>       </div>
+        <h4>Sale invoice  <h4>       </div>
        <div class="row my-2">
           <div class="col-md-12 text-center">
-            <a href="{{url('sales/create')}}" class="btn btn-primary">New Stock Issue  </a>
-            <a href="{{url('sale_register')}}" class="btn btn-dark"> Issue Register  </a>
+            <a href="{{url('sales/create')}}" class="btn btn-primary">New Sale invoice</a>
+            <a href="{{url('sale_register')}}" class="btn btn-dark"> Register sale </a>
           </div>
        </div>
         

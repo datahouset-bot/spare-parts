@@ -98,7 +98,7 @@
 
         <div class="card my-3">
             <div class="card-header">
-                New Stock Issue 
+                Sale invoice
                 <a href="{{ url('temp_item_delete/' . Auth::user()->id) }}" class="btn btn-success">Add New</a>
                 <a href="{{ url('store_to_sale/' . Auth::user()->id) }}" class="btn btn-primary">Save</a>
             </div>
