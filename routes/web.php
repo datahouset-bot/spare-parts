@@ -334,7 +334,7 @@ route::get('show_selected_booking/{id}', [App\Http\Controllers\RoomcheckinContro
 route::get('show_booking/{id}', [App\Http\Controllers\RoomcheckinController::class, 'create_after_select_booking']);
 route::get('vacant_all_room', [App\Http\Controllers\RoomcheckinController::class, 'vacant_all_room']);
 route::Put('roomcheckin_update', [App\Http\Controllers\RoomcheckinController::class, 'update']);
-
+route::get('checkin_print_view/{id}', [App\Http\Controllers\RoomcheckinController::class, 'checkin_print_view']);
 //-----------------roomcheckout--------------------------
 Route::resource('roomcheckouts', RoomcheckoutController::class);
 route::get('roomcheckout_register', [App\Http\Controllers\RoomcheckoutController::class, 'register']);
@@ -420,8 +420,9 @@ Route::get('item_wise_sale_report_view', [App\Http\Controllers\FoodbillControlle
 Route::POST('item_wise_sale_report', [App\Http\Controllers\FoodbillController::class, 'item_wise_sale_report']);
 Route::get('fetchkot/{id}', [App\Http\Controllers\FoodbillController::class, 'fetchkot']);
 Route::get('fetchkot_foodbilledit/{id}', [App\Http\Controllers\FoodbillController::class, 'fetchkot_foodbilledit']);
-
+// route::get('foodbill_print_view_bill/{id}', [App\Http\Controllers\FoodbillController::class, 'foodbill_print_view_bill']);
 Route::get('foodbill_print_view/{voucher_no}', [App\Http\Controllers\FoodbillController::class, 'foodbill_print_view']);
+Route::get('foodbill_print_view_new/{voucher_no}', [App\Http\Controllers\FoodbillController::class, 'foodbill_print_view_new']);
 //-----------------------------option list --------------
 Route::resource('optionlists', OptionlistController::class);
 Route::get('report_dashboard', [App\Http\Controllers\OptionlistController::class, 'report_dashboard']);

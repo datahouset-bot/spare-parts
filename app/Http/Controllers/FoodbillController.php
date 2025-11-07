@@ -11,6 +11,7 @@ use App\Models\account;
 use App\Models\foodbill;
 use App\Models\inventory;
 use App\Models\tempentry;
+use App\Models\optionlist;
 use App\Models\componyinfo;
 use App\Models\roomcheckin;
 use App\Models\WhatsappSms;
@@ -596,8 +597,17 @@ class FoodbillController extends CustomBaseController
     //    return view('entery.roomservice.foodbill.foodbill_print_view');
 
 
+  public function foodbill_print_view_new($voucher_no)
+    {
 
+        $fromtlist = optionlist::where('firm_id', Auth::user()->firm_id)
+            ->where('option_type', 'Check_in')
+            ->orderBy('updated_at', 'desc')
+            ->get();
 
+        return view('entery.roomservice.foodbill.foodbills_print_select', compact('voucher_no', 'fromtlist'));
+
+    }
     //posting foodbill amount to respective account
 
     public function foodbill_posting(Request $request)

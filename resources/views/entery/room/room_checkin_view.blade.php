@@ -11,7 +11,7 @@ include(public_path('cdn/cdn.blade.php'));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room  Check Inn Slip </title>
+    <title>Job Card Slip </title>
       <style>
         @page {
             size: A4;
@@ -231,7 +231,7 @@ align-content: :flex-end;
 
         <div class= "voucher_head">
             <div class= "gst_no" > GST NO:{{ $componyinfo->cominfo_gst_no }}</div>
-            <div class="bill_head">Room  Check Inn Slip</div>
+            <div class="bill_head">Job Card</div>
 
 
         </div>
@@ -239,8 +239,8 @@ align-content: :flex-end;
           <div class="logo1">&nbsp;<img src="{{ asset('storage\app\public\image\\'.$pic->logo) }}" alt="qr_code" width="80px"></div>
           <div class="firm_detail"><h4>{{ $componyinfo->cominfo_firm_name }}</h4>
             <span>{{ $componyinfo->cominfo_address1 }}&nbsp;{{ $componyinfo->cominfo_address2 }}</span><br>
-            <span>{{ $componyinfo->cominfo_city }}&nbsp;{{ $componyinfo->cominfo_state }} &nbsp;{{ $componyinfo->cominfo_pincode }}&nbsp;<br>{{$compinfofooter->country }}</span>
-            <span>Email:{{ $componyinfo->cominfo_email }} Phone &nbsp;{{ $componyinfo->cominfo_phone }} Mobile&nbsp;{{ $componyinfo->cominfo_mobile }}   </span>
+            <span>{{ $componyinfo->cominfo_city }}&nbsp;{{ $componyinfo->cominfo_state }} &nbsp;{{ $componyinfo->cominfo_pincode }}&nbsp;<br>{{$compinfofooter->country }}</span>,
+            <span>Email:{{ $componyinfo->cominfo_email }} &nbsp;Phone={{ $componyinfo->cominfo_phone }},&nbsp;{{ $componyinfo->cominfo_mobile }}   </span>
 </div>
           <div class="logo2"><img src="{{ asset('storage\app\public\image\\' . $pic->brand) }}" alt="qr_code" width="80px"></div>  
         </div>
@@ -249,64 +249,40 @@ align-content: :flex-end;
             <div class="page_header">
             <div class="info-container">
                 <div class="cust_info">
-                    <span class="heading">Guest Detail</span><br>
-                    <span>Guest Name:{{ $roomcheckins->guest_name }}</span><br>
-                    <span>Add:{{ $guset_details->address}}</span><br>
-                    <span>city:{{ $guset_details->city}}</span><br>
-                    <span>State:{{ $guset_details->state}}</span><br>
-                    <span>Mob:{{ $guset_details->mobile}}&nbsp;{{ $guset_details->phone}}</span><br>
-  
-                    <span>Email:{{ $guset_details->email}}</span><br>
-           
-                    
+                    <span class="heading">Customer Detail</span><br>
+                    <span>Invoice No:{{ $roomcheckins->check_in_no }}</span><br>
+                    <span>Invoice Date:{{ $roomcheckins->checkin_date}}</span><br>
+                        <span>Billed To:{{ $roomcheckins->guest_name }}</span><br>
+                         <span>Mobile no:{{ $guset_details->phone }}</span><br>
+                    <span>Delivery Address:{{ $guset_details->address}}</span><br>
+                    <span>Policy No:{{ $guset_details->accout_group_id}}</span><br>
+                    <span>Campaign Name:{{ $guset_details->state}}</span><br>
+                     <span>Effective from:{{ $guset_details->email}}</span><br>
+                    <span>Effective to:{{ $guset_details->email}}</span><br>
                 </div>
                 <div class="voucher_info">
-                    <span class="heading">Check In Detail</span><br>
-                    <span>Checkin No :{{$roomcheckins->check_in_no}} </span><br>
-                    <span>Check In Date: {{ \Carbon\Carbon::parse($roomcheckins->checkin_date)->format('d-m-y') }}   
-                         </span><br>
-                    <span>Check In Time:{{$roomcheckins->checkin_time}}</span><br>
-                    <span>Commited Days :{{$roomcheckins->commited_days}}</span><br>
-                    <span>Total Guest :{{$roomcheckins->no_of_guest}}</span><br>
+                    <span class="heading">Jobcard Detail</span><br>
+                        <span>Jobcard  No:{{ $roomcheckins->business_source_id}}</span><br>
+                        <span> Jobcard Date: {{ \Carbon\Carbon::parse($roomcheckins->checkin_date)->format('d-m-y') }}   
+                        </span><br>
+                        <span>Invoice  type:{{ $roomcheckins->firm_id}}</span><br>
+                        <span>Payment type:{{ $guset_details->account_name}}</span><br>
+                    <span>Refrence No:{{ $guset_details->account_group_id}}</span><br>
+                    <span>Repair type:{{ $guset_details->balnce_type}}&nbsp;{{ $guset_details->phone}}</span><br>
+                    <span>kM Reading:{{ $roomcheckins->commited_days}}</span><br>
+                    <span>Date of sale:{{ $roomcheckins->checkin_date}}</span><br>
+                    
+                    <span>Registration No :{{$roomcheckins->firm_id}} </span><br>
+                    <span>Chassis  No:{{$roomcheckins->package_id}}&nbsp;{{ $guset_details->phone}}</span><br>
+                    <span>Engine No:{{ $roomcheckins->account_id}}&nbsp;{{ $guset_details->phone}}</span><br>
+                    <span>Model name:{{ $guset_details->person_name}}&nbsp;{{ $guset_details->phone}}</span><br>
+                    <span>Model year:{{$roomcheckins->no_of_guest}}</span><br>
                 </div>
             </div>
 
         </div>
-
-
-
         <div class="detail">
-            <table class="table_detail">
-                <thead>
-                    
-                    <tr>
-                        <th class="th_detail">Room No </th>
-                        <th class="th_detail"> No of Guest </th>
-                        <th class="th_detail">Commited Days</th>
-                        <th class="th_detail">Room Tariff Per Day</th>
-                        <th class="th_detail">Purpose Of Visit</th>
-                        <th class="th_detail">Comming From </th>
-                        <th class="th_detail">Going To </th>
-
-
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="td_detail">
-                            @foreach ($roomnos as $record )
-                               {{$record->room_no}}, 
-                            @endforeach
-                        </td>
-                        <td class="td_detail">{{ $roomcheckins->no_of_guest }}</td>
-                        <td class="td_detail">{{ $roomcheckins->commited_days }}</td>
-                        <td class="td_detail">{{ $roomcheckins->room_tariff_perday }}</td>
-                        <td class="td_detail">{{ $roomcheckins->purpose_of_visit }}</td>
-                        <td class="td_detail">{{ $roomcheckins->comming_from }}</td>
-                        <td class="td_detail">{{ $roomcheckins->going_to }}</td>
-                    </tr>
-
+            
 
 
             </table>
@@ -314,7 +290,7 @@ align-content: :flex-end;
 
 
 
-            <table class="table_detail">
+            {{-- <table class="table_detail">
                 <thead>
                     
                     <tr>
@@ -336,7 +312,7 @@ align-content: :flex-end;
                     </tr>
 
             </table>
-
+ --}}
 
 
 

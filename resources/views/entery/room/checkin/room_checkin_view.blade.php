@@ -249,7 +249,7 @@ align-content: :flex-end;
             <div class="page_header">
             <div class="info-container">
                 <div class="cust_info">
-                    <span class="heading">Guest Detail</span><br>
+                    <span class="heading">Customer Detail</span><br>
                     <span>Guest Name:{{ $roombooking->guest_name }}</span><br>
                     <span>Add:{{ $roombooking->guest_address }}</span><br>
                     <span>city:{{ $roombooking->guest_city }}</span><br>

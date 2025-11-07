@@ -309,23 +309,26 @@ background-color:white;
             <div class="page_header">
                 <div class="info-container">
                     <div class="cust_info">
+                        <span class="heading">Customer Detail</span><br>
+                        <span>Invoice No:{{$guest_detail->voucher_no}}</span><br>
+                    <span>Invoice Date:{{ $guest_detail->checkin_date}}</span><br>
                         @if(isset($guest_detail->guest_name))
-                        <span>Guest Name: {{ $guest_detail->guest_name }}</span><br>
+                        <span>Billed To: {{ $guest_detail->guest_name }}</span><br>
                     @else
                         <span>Guest Name: No record</span><br>
                     @endif
-                    
+                      <span>Mobile no:{{ $guest_detail->phone }}</span><br>
+                    <span>Delivery Address:{{ $guest_detail->address}}</span><br>
                     @if(isset($guest_detail->room_nos))
-                        <span>Guest Room No: {{ $guest_detail->room_nos }}</span><br>
+                        <span>policy No: {{ $guest_detail->room_nos }}</span><br>
                     @else
-                        <span>Guest Room No: No record</span><br>
+                        <span>policy No: No record</span><br>
                     @endif
-                    
-                    @if(isset($guest_detail->voucher_no))
-                        <span>Check In No: {{ $guest_detail->voucher_no }}</span><br>
-                    @else
-                        <span>Check In No: No record</span><br>
-                    @endif
+                     <span>Policy No:{{ $guest_detail->accout_group_id}}</span><br>
+                    <span>Campaign Name:{{ $guest_detail->state}}</span><br>
+                     <span>Effective from:{{ $guest_detail->email}}</span><br>
+                    <span>Effective to:{{ $guest_detail->email}}</span><br>
+                   
                     
 
 {{-- 
@@ -335,10 +338,25 @@ background-color:white;
                        <span>Check In No   :{{ $guest_detail->voucher_no }}</span><br> --}}
                     </div>
                     <div class="voucher_info">
+                         <span>Jobcard  No:{{ $foodbill_header->user_id}}</span><br>
+                        <span> Jobcard Date: {{ \Carbon\Carbon::parse($guest_detail->checkin_date)->format('d-m-y') }}   
+                        </span><br>
+                        <span>Invoice  type:{{ $foodbill_header->voucher_no}}</span><br>
+                        <span>Payment type:{{ $foodbill_header->user_name}}</span><br>
+                    <span>Refrence No:{{ $foodbill_header->food_bill_no}}</span><br>
+                    <span>Repair type:{{ $foodbill_header->voucher_type}}</span><br>
+                    <span>kM Reading:{{ $foodbill_header->kot_no}}</span><br>
+                    <span>Date of sale:{{ $foodbill_header->voucher_date}}</span><br>
+                    
+                    <span>Registration No :{{$foodbill_header->service_id}} </span><br>
+                    <span>Chassis  No:{{$guest_detail->room_Id}}</span><br>
+                    <span>Engine No:{{ $guest_detail->business_source_Id}}</span><br>
+                    <span>Model name:{{ $guest_detail->guest_name}}</span><br>
+                     <span>Model year:{{$guest_detail->no_of_guest}}</span><br>
 
-                        <span>Invoice No : {{ $foodbill_header->food_bill_no }}</span><br>
+                        {{-- <span>Invoice No : {{ $foodbill_header->food_bill_no }}</span><br>
                         <span>Date : {{ $foodbill_header->voucher_date }}</span><br>
-                        <span>Time : {{ $foodbill_header->created_at->format('H:i') }}</span><br>
+                        <span>Time : {{ $foodbill_header->created_at->format('H:i') }}</span><br> --}}
                     </div>
                 </div>
 
@@ -355,11 +373,15 @@ background-color:white;
 
                         <tr>
                             <th class="th_detail">S.no</th>
-                            <th class="th_detail">Item Name</th>
+                            <th class="th_detail">parts code</th>
+                            <th class="th_detail">parts Name</th>
+                            <th class="th_detail">UOM</th>
                             <th class="th_detail">Qty</th>
                             <th class="th_detail">Rate</th>
-
-                            <th class="th_detail">Gst%</th>
+                            <th class="th_detail">TAXABLE AMOUNT</th>
+                            <th class="th_detail">TD AMOUNT</th>
+                            <th class="th_detail">SGST/UTGST</th>
+                            <th class="th_detail">GGST%</th>
                             <th class="th_detail">Amount</th>
                         </tr>
                     </thead>
@@ -370,12 +392,16 @@ background-color:white;
                         @foreach ($foodbill_items as $records )
                         <tr>
                             <td>{{$sno=$sno+1}}</td>
-                          <td>{{$records->item_name}}</td>
-                          <td>{{ number_format($records->qty, 0) }}</td>
-                          <td>{{ number_format($records->rate,1)}}</td>
-                          <td>{{ number_format($records->gst_item_percent,1)}}</td>
-
-                          <td>{{ number_format($records->item_base_amount,1)}}</td>  
+                            <td>{{$records->item_id}}</td>
+                            <td>{{$records->item_name}}</td>
+                            <td>{{$records->voucher_type}}</td>
+                            <td>{{ number_format($records->qty, 0) }}</td>
+                            <td>{{ number_format($records->rate,1)}}</td>
+                            <td>{{ number_format($records->total_sgst,1)}}</td>
+                            <td>{{ number_format($records->gst_item_percent,1)}}</td>
+                            <td>{{ number_format($records->total_cgst,1)}}</td>
+                            <td>{{ number_format($records->total_gst_amount,1)}}</td>
+                            <td>{{ number_format($records->item_base_amount,1)}}</td>  
                         </tr>
                             
                         @endforeach
@@ -393,7 +419,7 @@ background-color:white;
                        
                         <span>Total Item ={{$foodbill_header->total_item}}</span><br>
                         <span>Total Qty ={{$foodbill_header->total_qty}}</span><br>
-                        <span>Kot Number ={{$foodbill_header->kot_no}}</span><br>
+                        <span>Kot Number ={{$foodbill_header->rate}}</span><br>
                        
                     </div>
                     <div class="voucher_info">
@@ -438,7 +464,7 @@ background-color:white;
 
                             <tr>
                                 <td>Round Off:</td>
-                                <td>{{ $foodbill_header->roundoff_amt }}</td>
+                                <td>{{ $foodbill_header->total_taxable_amount }}</td>
                             </tr>
                             <tr>
                                 <td>Grand Total :</td>

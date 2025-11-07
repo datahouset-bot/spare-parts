@@ -46,11 +46,11 @@
                 <thead>
                   <tr>
                     <th scope="col">S.No</th>
-                    <th scope="col"> Check In No    </th>
-                    <th scope="col"> vehicle No   </th>
+                    <th scope="col"> Registration No    </th>
+                    <th scope="col"> slot No   </th>
                     <th scope="col"> customer Name </th>
-                    <th scope="col"> Contact No </th>
-                    <th scope="col"> Total Parts  </th>
+                    <th scope="col"> Vehicle No </th>
+                    <th scope="col"> Model year</th>
                     <th scope="col">  Date </th>
                     <th scope="col"> Time  </th>
                     {{-- @if(!is_null($componyinfo->componyinfo_af1))
@@ -99,12 +99,14 @@
                   </td>
                   
 
-                  <td>
+                  {{-- <td>
                     <a href="{{ url('guest_reg_print', $record->voucher_no) }}" class="btn btn-sm">
                         <i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i>
                     </a>
-                </td>
-                
+                </td> --}}
+                <td>
+                      <a href="{{ url('checkin_print_view', $record->voucher_no) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
+                  </td> 
                   <td>
                       <a href="{{ route('roomcheckins.edit',  $record->voucher_no) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
                   </td>

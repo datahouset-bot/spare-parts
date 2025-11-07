@@ -55,9 +55,9 @@
                         <tr>
                             <th scope="col">S.No</th>
                             <th scope="col"> Date </th>
-                            <th scope="col"> Bill No </th>
-                            <th scope="col"> Service On </th>
-                            <th scope="col">Guest Name</th>
+                            <th scope="col"> Invoice no </th>
+                            <th scope="col"> slot no </th>
+                            <th scope="col">Customer Name</th>
                             <th scope="col"> Total Qty </th>
                             <th scope="col"> Total Amount </th>
                             <th scope="col"> Status </th>
@@ -110,8 +110,13 @@
 
                                 </td>
 
-                                <td>
+                                {{-- <td>
                                     <a href="{{ url('foodbill_print_view', $record['voucher_no']) }}"
+                                        class="btn  btn-sm"><i class="fa fa-eye"
+                                            style="font-size:20px;color:SlateBlue"></i></a>
+                                </td> --}}
+                                <td>
+                                    <a href="{{ url('foodbill_print_view_new', $record['voucher_no']) }}"
                                         class="btn  btn-sm"><i class="fa fa-eye"
                                             style="font-size:20px;color:SlateBlue"></i></a>
                                 </td>

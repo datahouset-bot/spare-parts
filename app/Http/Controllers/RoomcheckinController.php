@@ -46,7 +46,7 @@ class RoomcheckinController extends CustomBaseController
         $roomcheckins = roomcheckin::select(
             'account_id',
             'voucher_no',
-            \DB::raw('GROUP_CONCAT(room_no ORDER BY room_no ASC SEPARATOR ", ") as room_nos'),
+            DB::raw('GROUP_CONCAT(room_no ORDER BY room_no ASC SEPARATOR ", ") as room_nos'),
             'check_in_no',
             'guest_name',
             'guest_mobile',
@@ -295,10 +295,16 @@ class RoomcheckinController extends CustomBaseController
 
         return view('entery.room.checkin.room_checkin', compact('rooms', 'roombookings', 'businesssource', 'package', 'new_bill_no', 'new_voucher_no', 'othercharges', 'paymentmodes', 'guset_data'));
 
+    }
+     public function checkin_print_view($voucher_no)
+    {
 
+        $fromtlist = optionlist::where('firm_id', Auth::user()->firm_id)
+            ->where('option_type', 'Check_in')
+            ->orderBy('updated_at', 'desc')
+            ->get();
 
-
-
+        return view('entery.room.checkin.room_checkinn_print_select', compact('voucher_no', 'fromtlist'));
 
     }
     public function ledger_show($id)
