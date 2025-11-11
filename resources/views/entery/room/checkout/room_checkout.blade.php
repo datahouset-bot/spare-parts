@@ -155,7 +155,7 @@
                             <div class="col-lg-12">
                                 <div class="card  mt-1">
                                     <div class="card-header">
-                                        <h5 class="text-center font-weight-light my-1">Select slot For Invoice </h5>
+                                        <h5 class="text-center font-weight-light my-1">Select slot For moveout </h5>
                                     </div>
                                     <div class="card-body">
 

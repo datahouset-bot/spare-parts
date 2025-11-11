@@ -31,13 +31,13 @@
 
         <div class="card my-3">
             <div class="card-header">
-                Food Bill
+                Service Bill
             </div>
             <div class="row my-2">
                 <div class="col-md-12 text-center">
 
 
-                    <a href="{{ route('foodbills.create') }}" class="btn btn-primary">New Food Bill</a>
+                    <a href="{{ route('foodbills.create') }}" class="btn btn-primary">New Bill</a>
 
                 </div>
             </div>

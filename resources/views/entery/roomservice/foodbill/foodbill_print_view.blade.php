@@ -68,7 +68,7 @@
             }
                                
             .cust_info {
-                background-color: aquamarine;
+                background-color:white;
                 width: 50%;
                 /* Adjusted width to accommodate for separation */
                 padding: 5px;
@@ -78,7 +78,7 @@
 
             .voucher_info {
                 width: 50%;
-                background-color: gold;
+                background-color: white;
                 text-align: left;
                 padding: 5px;
                 fon
@@ -126,7 +126,7 @@ background-color:white;
             }
 
             .voucher_head {
-                background-color: yellow;
+                background-color: rgb(196, 196, 191);
                 display: grid;
                 grid-template-columns: 100%;
                 font: 100px;
@@ -152,7 +152,7 @@ background-color:white;
             }
 
             .company_info {
-                background-color: yellow;
+                background-color:white;
                 display: grid;
                 grid-template-columns: 1fr 4fr 1fr;
                 border: 1px solid black;
@@ -172,7 +172,7 @@ background-color:white;
             }
 
             .voucher_footer {
-                background-color: yellow;
+                background-color:white;
                 display: grid;
                 grid-template-columns: 1fr 1fr 1fr;
                 border: 1px solid black;
@@ -300,7 +300,7 @@ background-color:white;
                      {{ $componyinfo->cominfo_address1 }}&nbsp;{{ $componyinfo->cominfo_address2 }}&nbsp;
                     {{ $componyinfo->cominfo_city }}&nbsp;{{ $componyinfo->cominfo_state }}
                         &nbsp;{{ $componyinfo->cominfo_pincode }}&nbsp;{{ $compinfofooter->country }}&nbsp;
-                   Email:{{ $componyinfo->cominfo_email }} Phone &nbsp;{{ $componyinfo->cominfo_phone }}
+                   Email:{{ $componyinfo->cominfo_email }} <br>Phone &nbsp;{{ $componyinfo->cominfo_phone }},&nbsp;
                         Mobile&nbsp;{{ $componyinfo->cominfo_mobile }} 
                  
             </div>

@@ -71,10 +71,10 @@
                               <select name="head_group" Id ="head_group"class="form-select" aria-label="Default select example">
                                 <option selected disabled>Select Head Group </option>
                                 
-                                <option value="Restaurant_Item">Spare_parts</option>
-                                <option value="Raw_Material">labour</option>       
-                                <option value="Non_Consumable">Bike</option>
-                                <option value="Consumable">Car</option>
+                                <option value="Spare_parts">Spare_parts</option>
+                                <option value="labour">labour</option>       
+                                <option value="Bike">Bike</option>
+                                <option value="Car">Car</option>
                                 {{-- <option value="Laundry">Laundry</option>   --}}
                                 <option value="Other">Other</option>
 

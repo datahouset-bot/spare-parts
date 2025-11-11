@@ -199,7 +199,7 @@
                                         </a>
                                         <a class="nav-link" href="{{ url('/payments') }}">Payment</a>
                                       <a class="nav-link" href="{{ url('/purchases') }}">Countra</a>
-                                      <a class="nav-link" href="{{ url('/purchases') }}">Jurnal Entry</a>
+                                      <a class="nav-link" href="{{ url('/purchases') }}">Journal Entry</a>
                                       <a class="nav-link" href="{{ url('/purchases') }}">Bank Entry</a>
 
 

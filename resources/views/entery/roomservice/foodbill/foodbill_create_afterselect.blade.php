@@ -102,11 +102,8 @@
                         @csrf
                         <input  type="checkbox" name="approval" value="true" id="flexCheckDefault">
                             
-                             Print Approval
+                             {{-- Print Approval --}}
                         <button id="saveButton" type="submit" class="btn btn-primary">Save & Print</button>
-
-
-
 
                 </div>
             </div>
@@ -134,13 +131,13 @@
 
                     <input type="hidden" class="form-control" id="voucher_type" name="voucher_type" value="Foodbill">
                     <div class="col-md-2 col-4  text-center">
-                        <label for="food_bill_no">Bill No </label>
+                        <label for="food_bill_no">RegistrationNo </label>
                         <input type="text" class="form-control" id ="food_bill_no"name="food_bill_no"
                             value="{{ $new_bill_no }}">
                     </div>
 
                     <div class="col-md-3 col-4  text-center">
-                        <label for="kot_on">Select Room</label>
+                        <label for="kot_on">Select slot</label>
                         <select name="service_id" id="service_id" class="form-select">
 
                             @foreach ($checkinlists as $checkinlist)
@@ -153,7 +150,7 @@
 
                     </div>
                     <div class="col-md-2 col-4  text-center">
-                        <label for="kot_no">KOT No</label>
+                        <label for="kot_no">parts No</label>
                         <input type="text" class="form-control" id ="kot_no"name="kot_no" value="{{ $vouchers }}">
                     </div>
                     <div class="col-md-1 col-4  text-center">
@@ -261,10 +258,10 @@
 
 
 <div class="col-md-2">
-    <label for="settle_payment">Settle to Payment</label>
+    <label for="settle_payment">Select Payment</label>
     <select id="settle_payment" name="settle_payment" class="form-select">
-        <option value="no">Settle To Room</option>
-        <option value="yes">Settle To Payment</option>
+        <option value="no">Select Payment</option>
+        <option value="yes"> Payment mode</option>
     </select>
 </div>
 
