@@ -56,7 +56,7 @@
         });
     </script>
 
-    <div class="container ">
+    <div class="container-fluid px-0" style="max-width:100% !important;">
         @if (session('message'))
             <div class="alert alert-primary">
                 {{ session('message') }}
@@ -69,8 +69,8 @@
         @endif
 
 
-        <div class="card my-3">
-            <div class="card-header">
+        <div class="card my-3 w-100" style="border-radius:5px;">
+            <div class="card-header"> 
                 New Stock Transfer 
                 <a href="{{ url('temp_item_delete/' . Auth::user()->id) }}" class="btn btn-success">Add New</a>
                 <a href="{{ url('store_to_stocktransfer/' . Auth::user()->id) }}" class="btn btn-primary">Save</a>
@@ -167,9 +167,8 @@
                         <label for="voucher_bill_no">Bill No</label>
                         <input type="text" id="voucher_bill_no" class="form-control" name="voucher_bill_no">
                     </div>
-                </div>
-                <div class="row no-gutter" name="itementery">
-                    <div class="col-md-3 mt-4 mx-1 ">
+
+                    <div class="col-md-2 mt-4 mx-1 ">
                         <div class="input-group">
 
                             <select id="item_id" name="item_id" class="js-states form-control">
@@ -187,6 +186,10 @@
                         </span>
                     </div>
 
+                </div>
+
+
+                <div class="row no-gutter" name="itementery">
                     <div class="col-md-1  col-3   text-center">
                         <label for="qty">QTY </label>
                         <input type="text" class ="form-control " id="qty" name="qty" autocomplete="off"
@@ -227,7 +230,7 @@
                         <input type="text" class ="form-control " id="net_item_amt" name="net_item_amt" required
                             readonly>
                     </div>
-                    <div class="col-md-2  col-3  text-center">
+                    <div class="col-md-1 mt-4 col-3  text-center">
 
                         <button type="submit" name="additem" id ="additem"class="btn btn-success ">+</button>
 

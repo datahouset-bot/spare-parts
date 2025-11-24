@@ -200,7 +200,7 @@
                             <div class="col-lg-12">
                                 <div class="card  mt-0">
                                     <div class="card-header">
-                                        <h5 class="text-center font-weight-light my-1">New Room Check Out Ente </h5>
+                                        <h5 class="text-center font-weight-light my-1">Vehicle moveout Entry </h5>
                                     </div>
                                     <div class="card-body">
 
@@ -210,7 +210,7 @@
 
                                             <div class="col-md-6 mt-4">
 
-                                                <label for="searchCustomer">Selected Checkin Detail </label>
+                                                <label for="searchCustomer">Selected Customer Details </label>
                                                 <div id="searchCustomer">
 
 
@@ -279,7 +279,7 @@
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        {{-- <div class="col-md-3">
                                                             <label for="checkin_time">Check In Time</label>
                                                             <input class="form-control" type="time" name="checkin_time"
                                                                 id ="checkin_time1" value="{{ $data['checkin_time'] }}"
@@ -312,7 +312,7 @@
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="col-md-3">
                                                             <label for="calculation_type">Caculation Type</label>
                                                             <input type="text" name ="calculation_type"
@@ -338,7 +338,7 @@
                                                             </span>
 
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        {{-- <div class="col-md-3">
                                                             <label for="no_of_guest">No Of Guest</label>
                                                             <input class="form-control" id="no_of_guest" type="text"
                                                                 name="no_of_guest" value="{{$roomcheckins->first()->no_of_guest}}" readonly />
@@ -348,10 +348,10 @@
                                                                 @enderror
                                                             </span>
 
-                                                        </div>
+                                                        </div> --}}
 
                                                         <div class="col-md-3">
-                                                            <label for="per_day_tariff">Per Day Tariff</label>
+                                                            <label for="per_day_tariff">Labour charge</label>
                                                             <input class="form-control" id="per_day_tariff"
                                                                 type="text" name="per_day_tariff"
                                                                 value="{{ $data['room_tariff_perday'] }}"
@@ -366,7 +366,7 @@
                                                             </span>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <label for="total_room_rent">Total Room Rent</label>
+                                                            <label for="total_room_rent">Total Service cost</label>
                                                             <input class="form-control" id="total_room_rent"
                                                                 type="text" name="total_room_rent" value=""
                                                                 readonly />
@@ -379,7 +379,7 @@
 
 
                                                         <div class="col-md-6">
-                                                            <label for="food_amount">Food Amount</label>
+                                                            <label for="food_amount">Parts Cost</label>
                                                             <input class="form-control" id="food_amount" type="text"
                                                                 name="food_amount" value="" readonly />
                                                             <span class="text-danger">
@@ -400,7 +400,7 @@
                                                             </span>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <label for="checkin_remark1">Check In Remark</label>
+                                                            <label for="checkin_remark1">Movein Remark</label>
                                                             <input class="form-control" id="checkin_remark1"
                                                                 type="text" readonly name="checkin_remark1"
                                                                 value="{{ $data['checkin_remark1'] }}||{{ $data['checkin_remark1'] }}" />
@@ -411,7 +411,7 @@
                                                             </span>
                                                         </div>
                                                        
-                                                        <div class="col-md-4 mb-1">
+                                                        {{-- <div class="col-md-4 mb-1">
                                                             <label for="checkin_remark2">Checkout Remark </label>
                                                             <input class="form-control" id="checkin_remark2"
                                                                 type="text" name="checkout_remark" value="" />
@@ -420,7 +420,7 @@
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="col-md-4">
                                                             <label for="gst_no">GST NO </label>
                                                             <input class="form-control" id="gst_no" type="text"
@@ -561,14 +561,14 @@
                                                         </div>
                                                         {{-- kot Box  --}}
                                                         <div class="col-md-4 my-1 " id ="foodkot_selection_box">
-                                                            <h5>Pending Kot List </h5>
+                                                            <h5>Pending working list </h5>
                                                             <table id="foodkot_table"
                                                                 class="table table-striped table-responsive">
                                                                 <thead>
                                                                     <tr>
                                                                         <th scope="col">S.No</th>
                                                                         <th scope="col"> Date </th>
-                                                                        <th scope="col"> KOT No </th>
+                                                                        <th scope="col"> Service No </th>
                                                                         <th scope="col"> Total Qty </th>
                                                                         <th scope="col"> Total Amount </th>
                                                                         <th scope="col"></th>
@@ -626,7 +626,7 @@
                                                         </div>
                                                         {{-- Food Bill Box   --}}
                                                         <div class="col-md-4 my-1 " id ="foodkot_selection_box">
-                                                            <h5>Pending Food Bill </h5>
+                                                            <h5>Pending Parts Bill </h5>
                                                             <table id="foodkot_table"
                                                                 class="table table-striped table-responsive">
                                                                 <thead>
@@ -705,7 +705,7 @@
     
                                                         {{-- rent display   --}}
                                                         <div class="col-md-4 my-1 " id ="foodkot_selection_box">
-                                                            <h5>Day Wise Rent Report </h5>
+                                                            <h5>Labour charge</h5>
                                                             <table id="rent_diplay"
                                                                 class="table table-striped table-responsive">
                                                                 <thead>
@@ -715,7 +715,7 @@
                                                                         <th>End Date</th>
                                                                         <th>Day Count</th>
                                                                         <th>Rent</th>
-                                                                        <th>Totel</th>
+                                                                        <th>Total</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -740,11 +740,11 @@
                                                 <div class="col-md-4" id ="paymnet_selection_box">
                                                     <table id="room_selection"
                                                         class="table table-striped table-responsive">
-                                                        <thead>
+                                                        <thead>0
                                                             <tr>
                                                                 <th># </th>
-                                                                <th>Room No </th>
-                                                                <th>Room Type</th>
+                                                                <th>Slot No </th>
+                                                                <th>Service Type</th>
 
                                                             </tr>
                                                         </thead>
@@ -795,7 +795,7 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td>Total Room Rent
+                                                                <td>Total Service charge
                                                                     <span class="btn btn-danger btn-sm" id="tax_inclusive"
                                                                         data-toggle="tooltip"
                                                                         title="Calculate Bill (Tax Inclusive)">
@@ -827,7 +827,7 @@
                                                                         class="amount_input" readonly></td>
                                                             </tr>
                                                             <tr>
-                                                                <td>Total Food Amt </td>
+                                                                <td>Total parts Amt</td>
                                                                 <td><input type="text" class="amount_input"
                                                                         id="total_food_amt" name="total_food_amt"
                                                                         readonly>

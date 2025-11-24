@@ -12,6 +12,7 @@ use App\Models\voucher;
 use App\Models\purchase;
 use App\Models\inventory;
 use App\Models\tempentry;
+use App\Models\optionlist;
 use App\Models\roomcheckin;
 use App\Models\accountgroup;
 use App\Models\voucher_type;
@@ -35,10 +36,6 @@ class SaleController extends CustomBaseController
         
  
         return view('entery.sale.sale_index',compact('sales'));
-
-        
-        
-
     }
 
     /**
@@ -320,8 +317,11 @@ $salebill_items=inventory::withinFY('entry_date')->where('firm_id',Auth::user()-
 ->where('voucher_type','Sale')
 ->get();
 
-
-    return view('entery.sale.sale_print_view', compact( 'salebill_header', 'salebill_items'));        
+ $fromtlist = optionlist::where('firm_id', Auth::user()->firm_id)
+            ->where('option_type', 'sale')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+    return view('entery.sale.sale_print_select', compact( 'salebill_header', 'salebill_items','fromtlist'));        
     
     }
     else{
@@ -331,17 +331,32 @@ $salebill_items=inventory::withinFY('entry_date')->where('firm_id',Auth::user()-
 
 
     }
+    //======================================================== 
+    // use to select sale format at print
+    // =======================================================
 
-   Public function print_sale_invoice($voucher_no){
-      $salebill_header = voucher::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->with('account')->where('voucher_type','Sale')->where('voucher_no',$voucher_no)->first(); 
+   Public function print_sale_select($voucher_no){
+      
+    $fromtlist = optionlist::where('firm_id', Auth::user()->firm_id)
+            ->where('option_type', 'sale')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+    return view('entery.sale.sale_print_select', compact( 'fromtlist','voucher_no'));        
+
+   }
+  
+
+
+   Public function sale_print_view($voucher_no){
+    $salebill_header = voucher::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->with('account')->where('voucher_type','Sale')->where('voucher_no',$voucher_no)->first(); 
    $salebill_items=inventory::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->where('voucher_no',$salebill_header->voucher_no)
    ->where('voucher_type','Sale')
    ->get();
 
-    return view('entery.sale.sale_print_view', compact( 'salebill_header', 'salebill_items'));        
+ return view('entery.sale.sale_print_view',compact('salebill_header','salebill_items'));
 
-   }
-    /**
+   }   
+   /**
      * Display the specified resource.
      */
   

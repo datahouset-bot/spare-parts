@@ -60,20 +60,21 @@
             }
 
             .cust_info {
-                background-color: aquamarine;
+                background-color: whitesmoke;
                 width: 50%;
                 /* Adjusted width to accommodate for separation */
                 padding: 5px;
                 box-sizing: border-box;
                 text-align: left;
+                font-size: 20px;
             }
 
             .voucher_info {
                 width: 50%;
-                background-color: gold;
+                background-color:whitesmoke;
                 text-align: left;
                 padding: 5px;
-                font-size: 15px;
+                font-size: 20px;
 
             }
 
@@ -98,7 +99,8 @@
             }
 
             .th_detail {
-                background-color: white;
+                background-color:rgb(35, 34, 34);
+                color: white;
                 border: 1px solid;
                 text-align: center;
             }
@@ -121,7 +123,7 @@
             }
 
             .voucher_head {
-                background-color: yellow;
+                background-color: rgb(233, 230, 230);
                 display: grid;
                 grid-template-columns: 100%;
                 font: 100px;
@@ -142,7 +144,7 @@
             }
 
             .company_info {
-                background-color: yellow;
+                background-color:rgb(233, 230, 230);
                 display: grid;
                 grid-template-columns: 1fr 4fr 1fr;
                 border: 1px solid black;
@@ -302,16 +304,16 @@
             <div class="page_header">
                 <div class="info-container">
                     <div class="cust_info">
-                        <span class="heading">Guest Detail</span><br>
-                        <span>Guest Name:{{ $guest_detail->account_name }}</span><br>
+                        <span class="heading">Customer Detail</span><br>
+                        <span>Customer Name:{{ $guest_detail->account_name }}</span><br>
                         <span>Add:{{ $guest_detail->address }}</span><br>
                         <span>city:{{ $guest_detail->_city }}</span><br>
                         <span>State:{{ $guest_detail->state }}</span><br>
                         <span>Mob:{{ $guest_detail->mobile }}</span><br>
 
                         <span>Email:{{ $guest_detail->email }}</span><br>
-@if(!empty($guest_detail->gst_no))
-    <span>GST NO: {{ $guest_detail->gst_no }}</span><br>
+                        @if(!empty($guest_detail->gst_no))
+                        <span>GST NO: {{ $guest_detail->gst_no }}</span><br>
 @endif
 
 

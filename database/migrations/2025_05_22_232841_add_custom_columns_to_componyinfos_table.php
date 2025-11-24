@@ -18,7 +18,7 @@ return new class extends Migration {
                 $table->string("componyinfo_af5")->nullable();
                 $table->string("componyinfo_af6")->nullable(); 
                 $table->string("componyinfo_af7")->nullable();
-                $table->string("componyinfo_af9")->nullable();
+                // $table->string("componyinfo_af9")->nullable();
                 $table->string("componyinfo_af9")->nullable();
                 $table->string("componyinfo_af10",500)->nullable(); 
             

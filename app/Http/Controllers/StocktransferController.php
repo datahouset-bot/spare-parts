@@ -11,6 +11,7 @@ use App\Models\voucher;
 use App\Models\purchase;
 use App\Models\inventory;
 use App\Models\tempentry;
+use App\Models\optionlist;
 use App\Models\roomcheckin;
 use App\Models\voucher_type;
 use Illuminate\Http\Request;
@@ -201,6 +202,26 @@ class StocktransferController extends CustomBaseController
        }
     }
 
+
+//   enter print page of stock transfer
+   Public function stocktransfer_print_view($voucher_no){
+    $salebill_header = voucher::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->with('account')->where('voucher_type','Stock_Transfer')->where('voucher_no',$voucher_no)->first(); 
+   $salebill_items=inventory::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->where('voucher_no',$salebill_header->voucher_no)
+   ->where('voucher_type','Stock_Transfer')
+   ->get();
+
+ return view('entery.stocktransfer.stocktransfer_print_view',compact('salebill_header','salebill_items'));
+
+   }   
+// use to enter in format of stock transfer
+public function purchase_view($voucher_no){
+    
+    $fromtlist = optionlist::where('firm_id', Auth::user()->firm_id)
+            ->where('option_type', 'Stock_Transfer')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+    return view('entery.stocktransfer.stocktransfer_format_slelect',compact('fromtlist','voucher_no'));
+}
 
     public function store(Request $request)// store temp item record use on sale controller also 
     {

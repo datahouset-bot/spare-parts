@@ -1,7 +1,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<div id="layoutSidenav_content">
+<div id="layoutSidenav_content" style="background-color: whitesmoke">
    
-    <main>
+    <main  >
         <div class="container-fluid px-4">
 
             <div class="logo1">&nbsp;<img src="{{ asset('storage\app\public\image\\' . $pic->logo) }}" alt="qr_code"

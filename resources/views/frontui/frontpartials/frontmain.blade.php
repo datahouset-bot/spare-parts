@@ -60,8 +60,8 @@
             <div class="container">
                 <div class="row">
                     <div class="hidden-xs col-lg-7 col-sm-5 top-info">
-                        <span><i class="fa fa-phone"></i>Phone:{{$softwarecompinfo->software_mobile}},{{$softwarecompinfo->software_phone}}</span>
-                        <span class="hidden-sm"><i class="fa fa-envelope"></i>Email: {{$softwarecompinfo->software_email}}</span>
+                        {{-- <span><i class="fa fa-phone"></i>Phone:{{$softwarecompinfo->software_mobile}},{{$softwarecompinfo->software_phone}}</span> --}}
+                        {{-- <span class="hidden-sm"><i class="fa fa-envelope"></i>Email: {{$softwarecompinfo->software_email}}</span> --}}
                     </div>
                     <div class="col-lg-5 col-sm-7 top-info clearfix">
                         <ul>

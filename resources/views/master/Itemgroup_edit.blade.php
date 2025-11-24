@@ -38,7 +38,7 @@
             <div class="form-floating mb-3 mb-md-0">
               <select name="head_group" id="head_group" class="form-select">
                 <option disabled>Select Head Group</option>
-                @foreach(['Restaurant_Item', 'Raw_Material', 'Non_Consumable', 'Consumable', 'Laundry', 'Other'] as $group)
+                @foreach(['spare_parts', 'Labour', 'Bike', 'Car','Other'] as $group)
                   <option value="{{ $group }}" {{ $record->head_group === $group ? 'selected' : '' }}>{{ $group }}</option>
                 @endforeach
               </select>

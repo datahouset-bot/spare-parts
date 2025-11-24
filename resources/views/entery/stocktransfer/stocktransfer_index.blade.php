@@ -16,7 +16,7 @@
    
   });
 </script> --}}
-<div class="container ">
+<div class="container-fluid px-0 " style="max-width: 100% !important;">
   @if(session('message'))
     <div class="alert alert-primary">
         {{ session('message') }}
@@ -24,7 +24,7 @@
 @endif
 
 
-    <div class="card my-3">
+    <div class="card my-3 w-100" style="border-radius: 5px;">
         <div class="card-header">
         <h4>Stock Transfer  <h4>       </div>
        <div class="row my-2">

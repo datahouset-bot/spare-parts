@@ -16,7 +16,7 @@
    
   });
 </script> --}}
-<div class="container ">
+<div class="container-fluid px-0" style="max-width:100% !important;">
   @if(session('message'))
     <div class="alert alert-primary">
         {{ session('message') }}
@@ -24,7 +24,7 @@
 @endif
 
 
-    <div class="card my-3">
+   <div class="card my-3 w-100" style="border-radius:5px;">
         <div class="card-header">
         <h4>Sale invoice  <h4>       </div>
        <div class="row my-2">
@@ -58,11 +58,11 @@
                     <th scope="col">Tax Amt </th>
                     <th scope="col"> Bill Amount  </th>
   
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
+                    <th scope="col">Print</th>
+                    <th scope="col">View</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Message</th>
+                    <th scope="col">Delete</th>
 
 
                   </tr>
@@ -98,7 +98,7 @@
                   
 
                <td>
-                <a href="{{ url('print_sale_invoice', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
+                <a href="{{ url('print_sale_select', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
             </td> 
             <td>
                 <a href="{{ route('sales.edit', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>

@@ -74,7 +74,31 @@
     }
     </style>
     
+<style>
+    #sold_item_record {
+    width: 100% !important;
+}
 
+.table-responsive {
+    width: 100% !important;
+    overflow-x: auto;
+}
+.row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+  .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    #sold_item_record, .table-responsive {
+        width: 100% !important;
+    }
+    .container-fluid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+</style>
 
     <script>
         $(document).ready(function() {
@@ -83,7 +107,8 @@
         });
     </script>
 
-    <div class="container ">
+    <div class="container-fluid px-0" style="max-width: 100% !important;">
+
         @if (session('message'))
             <div class="alert alert-primary">
                 {{ session('message') }}
@@ -96,7 +121,8 @@
         @endif
 
 
-        <div class="card my-3">
+        <div class="card my-3 w-100" style="border-radius: 0;">
+
             <div class="card-header">
                 Sale invoice
                 <a href="{{ url('temp_item_delete/' . Auth::user()->id) }}" class="btn btn-success">Add New</a>
@@ -174,8 +200,8 @@
                             <label class="floating-label" for="voucher_bill_no">Bill No</label>
                         </div>
                     </div>
-                    
-                    <div class="col-md-3  text-center row ">
+                
+                    <div class="col-md-2 col-3  text-center  ">
                         {{-- <div class="form-group"> --}}
                             <select name="account_id" id="account_id" class="form-select" required>
                                 <option selected disabled>Select Party</option>
@@ -190,8 +216,8 @@
                 </div>
                 <div class="row no-gutter" name="itementery">
                 <div class="row no-gutter" name="itementery">
-                    <div class="col-md-3   ">
-                        <div class="input-group">
+                    <div class="col-md-2 col-3">
+                        <div class="form-group">
 
                             <select id="item_id" name="item_id" class="js-states form-control">
                                 <option disabled selected>Select Item</option>

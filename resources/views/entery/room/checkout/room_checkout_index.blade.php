@@ -53,15 +53,16 @@
                     <th scope="col"> chaches No   </th>
                     <th scope="col"> customer Name </th>
                     <th scope="col"> Contact No </th>
-                    {{-- <th scope="col"> Check in Date </th>
-                    <th scope="col"> Check Out Date  </th> --}}
+                    {{-- <th scope="col"> Check in Date </th>--}}
+                    <th scope="col"> Date  </th> 
                     <th scope="col"> Total Days  </th>
                     <th scope="col">  Bill Amount  </th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
+                    <th scope="col">Print</th>
+                    <th scope="col">View</th>
+                    <th scope="col">EDIT</th>
+                    <th scope="col">Message</th>
+                    <th scope="col">Delete</th>
+                    {{-- <th scope="col"></th> --}}
 
 
                   </tr>
@@ -77,7 +78,7 @@
            
                     <td scope="row">{{$r1=$r1+1}}</td>
                      <td>{{$record['check_out_no']}}</td>
-                     <td>{{$record->checkin_checkout_voucher_no }}</td>
+                     <td>{{$record['guest_mobile'] }}</td>
                     
                     
                      <td>{{$record->checkout_room_no}}</td>
@@ -85,7 +86,7 @@
                      <td>{{$record['guest_name']}}</td>
                      <td>{{$record['guest_mobile']}}</td>
                      <td scope="col">{{ \Carbon\Carbon::parse($record['checkin_date'])->format('d-m-y') }}</td>
-                     <td scope="col">{{ \Carbon\Carbon::parse($record['checkout_date'])->format('d-m-y') }}</td>
+                     {{-- <td scope="col">{{ \Carbon\Carbon::parse($record['checkout_date'])->format('d-m-y') }}</td> --}}
                      <td>{{$record['no_of_days']}}</td>
                      <td>{{$record['total_billamount']}}</td>
 

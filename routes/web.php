@@ -96,6 +96,7 @@ Route::get('/', [LandingpageController::class, 'show_secondindexpage'])->name('s
 Route::get('/mantinace_mode', [App\Http\Controllers\MaintenancemodeController::class, 'index']);
 Route::post('/maintenancemode/update', [App\Http\Controllers\MaintenancemodeController::class, 'update'])->name('maintenancemode.update');
 
+
 // profile Route--------------------------------------------------
 //Route::get('/userprofilelist', [App\Http\Controllers\userprofileController::class, 'show'])->name('userprofilelist');
 Route::get('/userprofile', [App\Http\Controllers\userprofileController::class, 'show_userprofile'])->name('userprofile');
@@ -291,8 +292,7 @@ Route::resource('rooms', RoomController::class);
 
 Route::resource('softwarecompanies', SoftwarecompanyController::class)
     ->middleware(['check.admin.email', 'check.subscription']);
-
-
+// route::redirect('rooms','slot');
 
 
 route::get('mark_room_dirty', [App\Http\Controllers\RoomController::class, 'mark_room_dirty']);
@@ -304,6 +304,7 @@ Route::POST('pushrate', [App\Http\Controllers\ChannelManagerController::class, '
 
 //--------------------------roomdashboard------------------------
 Route::get('room_dashboard', [App\Http\Controllers\roomdashboardcontroller::class, 'room_dashboard']);
+
 Route::post('room_dashboard', [App\Http\Controllers\roomdashboardcontroller::class, 'room_dashboard_datewise']);
 //------------------------roombooking--------------------
 Route::resource('roombookings', RoombookingController::class);
@@ -521,6 +522,8 @@ Route::post('/attendance_report', [AttendanceController::class, 'reportShow'])->
 Route::resource('purchases', PurchaseController::class);
 Route::resource('inventories', InventoryController::class);
 Route::resource('stocktransfers', StocktransferController::class);
+route::get('purchase_view/{id}',[App\Http\Controllers\StocktransferController::class,'purchase_view']);
+route::get('stocktransfer_print_view/{id}',[App\Http\Controllers\StocktransferController::class,'stocktransfer_print_view']);
 Route::get('liqour_stock_brand_wise', [App\Http\Controllers\InventoryController::class, 'liqour_stock_brand_wise']);
 Route::get('store_to_stocktransfer/{id}', [App\Http\Controllers\StocktransferController::class, 'store_to_stocktransfer']);
 Route::get('store_to_purchase/{id}', [App\Http\Controllers\PurchaseController::class, 'store_to_purchase']);
@@ -535,7 +538,9 @@ Route::Post('item_wise_stock', [App\Http\Controllers\InventoryController::class,
 Route::get('fetchItemRecords_inventory/{id}', [App\Http\Controllers\PurchaseController::class, 'fetchItemRecords_inventory']);
 
 Route::resource('sales', SaleController::class);
-Route::get('print_sale_invoice/{voucher_no}', [App\Http\Controllers\SaleController::class, 'print_sale_invoice']);
+Route::get('print_sale_select/{id}', [App\Http\Controllers\SaleController::class, 'print_sale_select']);
+route::get('sale_print_view/{id}', [App\Http\Controllers\saleController::class, 'sale_print_view']);
+// Route::get('print_select',[App\Http\Controllers\SaleController::class, 'print_select']);
 Route::resource('banquets', BanquetController::class);
 Route::get('/backup', [BackupController::class, 'runBackup']);
 Route::get('backupdata', function () {

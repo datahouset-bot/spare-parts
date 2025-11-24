@@ -24,7 +24,7 @@ class RoomController extends CustomBaseController
         ->where('firm_id',Auth::user()->firm_id)->get();
         $record3 = Room::where('firm_id',Auth::user()->firm_id)->get();
           return view('room_master.room',['data'=>$record,'data1'=>$record1,'data2'=>$record2,'data3'=>$record3]); 
-      
+    
     }
 
 
@@ -37,7 +37,7 @@ class RoomController extends CustomBaseController
  $request->validate([
     'room_no' => 'required|string|max:255',
     'roomtype_id' => 'required|exists:roomtypes,id',
-    'room_floor' => 'required|integer',
+    // 'room_floor' => 'required|integer',
     'room_facilities' => 'nullable|string|max:255',
     'room_image1' => 'nullable|image|max:2048',
     'room_image2' => 'nullable|image|max:2048',
