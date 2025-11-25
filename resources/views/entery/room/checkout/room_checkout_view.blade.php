@@ -309,7 +309,7 @@
                         <span>Add:{{ $guest_detail->address }}</span><br>
                         <span>city:{{ $guest_detail->_city }}</span><br>
                         <span>State:{{ $guest_detail->state }}</span><br>
-                        <span>Mob:{{ $guest_detail->mobile }}</span><br>
+                        <span>Vehicle no:{{ $guest_detail->mobile }}</span><br>
 
                         <span>Email:{{ $guest_detail->email }}</span><br>
                         @if(!empty($guest_detail->gst_no))
@@ -322,22 +322,16 @@
                     <div class="voucher_info">
                         <span class="heading">Detail</span><br>
                         <span>Invoice No : {{ $roomcheckouts->check_out_no }}</span><br>
-                        <span>Check In Date:
-                            {{ \Carbon\Carbon::parse($roomcheckouts->checkin_date)->format('d-m-y') }}</span><br>
-
-                        <span>Check In Time:{{ $roomcheckouts->checkin_time }}</span><br>
-                        <span>Check Out Date:
-                            {{ \Carbon\Carbon::parse($roomcheckouts->checkout_date)->format('d-m-y') }}</span><br>
-
-                        <span>Check Out Time:{{ $roomcheckouts->check_out_time }}</span><br>
+                        <span>Arrival Date/Time:&nbsp;
+                            {{ \Carbon\Carbon::parse($roomcheckouts->checkin_date)->format('d-m-y') }}/{{ $roomcheckouts->checkin_time }}</span><br>
+                        <span>Departure Date / Time: &nbsp;
+                            {{ \Carbon\Carbon::parse($roomcheckouts->checkout_date)->format('d-m-y') }}/{{ $roomcheckouts->check_out_time }}</span><br>
                         <span>Total Day :{{ $roomcheckouts->no_of_days }}</span><br>
-                        <span>Room No :{{ $roomcheckouts->room_no }}</span><br>
+                        <span>Slot No :{{ $roomcheckouts->room_no }}</span><br>
                     </div>
                 </div>
 
             </div>
-
-
 
             <div class="detail">
                 <table class="table_detail">
@@ -357,7 +351,7 @@
                     <tbody>
                         <tr>
                             <td class="td_detail"></td>
-                            <td class="td_detail">Room Rent Per Day -{{ $roomcheckouts->per_day_tariff }} </td>
+                            <td class="td_detail"> Labour charge Per Day -{{ $roomcheckouts->per_day_tariff }} </td>
                             <td class="td_detail">{{ $roomcheckouts->no_of_days }}</td>
                             <td class="td_detail">{{ $roomcheckouts->total_room_rent }}</td>
 
@@ -373,13 +367,13 @@
 
                         <tr>
                             <td class="td_detail"></td>
-                            <td class="td_detail">Total Room Tariff</td>
+                            <td class="td_detail">Total Charge</td>
                             <td class="td_detail"></td>
                             <td class="td_detail">{{ $roomcheckouts->final_room_rent }}</td>
                         </tr>
                         <tr>
                             <td class="td_detail"></td>
-                            <td class="td_detail">Food Amount</td>
+                            <td class="td_detail">Parts Amount</td>
                             <td class="td_detail"></td>
                             <td class="td_detail">{{ $roomcheckouts->total_food_amt }}</td>
                         </tr>

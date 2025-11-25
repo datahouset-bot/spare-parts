@@ -97,7 +97,7 @@
                   
 
                      <td>
-                      <a href="{{route('purchases.show', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
+                      <a href="{{url('purchases_show', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
                   </td> 
                   <td>
                       <a href="{{ route('purchases.edit', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>

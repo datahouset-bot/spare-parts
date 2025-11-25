@@ -223,7 +223,7 @@ text-align: center;
             }
 
             .company_info {
-                background-color: yellow;
+                background-color: rgb(190, 186, 186);
                 display: grid;
                 grid-template-columns: 1fr 4fr 1fr;
                 border: 1px solid black;
@@ -453,12 +453,12 @@ text-align: center;
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Room No </td>
+                                    <td>slot No </td>
                                     <td>:</td>
                                     <td>{{ $roomcheckouts->room_no }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Guest Name </td>
+                                    <td>Customer Name </td>
                                     <td>:</td>
                                     <td>{{ $guest_detail->account_name }}</td>
                                 </tr>
@@ -485,7 +485,7 @@ text-align: center;
                                 </tr>
 
                                 <tr>
-                                    <td>Mobile</td>
+                                    <td>Vehicle no</td>
                                     <td>:</td>
                                     <td>{{ $guest_detail->mobile }}</td>
                                 </tr>
@@ -568,9 +568,9 @@ text-align: center;
 
                         <tr>
                             <th class="th_detail">S.No </th>
-                            <th class="th_detail">Particulars </th>
+                            <th class="th_detail">Service type</th>
                             <th class="th_detail">Days </th>
-                            <th class="th_detail">Rate </th>
+                            <th class="th_detail">Labour cost </th>
                             <th class="th_detail">GST </th>
                             <th class="th_detail">Amount </th>
 
@@ -611,7 +611,7 @@ text-align: center;
                         </tr>
                         <tr>
                             <td colspan="3"></td>
-                            <td colspan="2"` class="td_total">Food Amount</td>
+                            <td colspan="2"` class="td_total">Service Amount</td>
                             <td class="td_detail">{{ $roomcheckouts->total_food_amt }}</td>
                         </tr>
                         <tr>

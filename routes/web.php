@@ -330,12 +330,13 @@ route::post('show_room_with_package', [App\Http\Controllers\RoomcheckinControlle
 route::post('show_roombooking', [App\Http\Controllers\RoomcheckinController::class, 'show_roombooking']);
 route::get('police_station_report', [App\Http\Controllers\RoomcheckinController::class, 'police_station_report']);
 route::POST('police_station_report_result', [App\Http\Controllers\RoomcheckinController::class, 'police_station_report_result']);
-route::get('guest_reg_print/{id}', [App\Http\Controllers\RoomcheckinController::class, 'guest_reg_print']);
+route::get('room_checkin_view/{id}', [App\Http\Controllers\RoomcheckinController::class, 'room_checkin_view']);
 route::get('show_selected_booking/{id}', [App\Http\Controllers\RoomcheckinController::class, 'show_selected_booking']);
 route::get('show_booking/{id}', [App\Http\Controllers\RoomcheckinController::class, 'create_after_select_booking']);
 route::get('vacant_all_room', [App\Http\Controllers\RoomcheckinController::class, 'vacant_all_room']);
 route::Put('roomcheckin_update', [App\Http\Controllers\RoomcheckinController::class, 'update']);
-route::get('checkin_print_view/{id}', [App\Http\Controllers\RoomcheckinController::class, 'checkin_print_view']);
+route::get('checkin_print_format/{id}', [App\Http\Controllers\RoomcheckinController::class, 'checkin_print_format']);
+
 //-----------------roomcheckout--------------------------
 Route::resource('roomcheckouts', RoomcheckoutController::class);
 route::get('roomcheckout_register', [App\Http\Controllers\RoomcheckoutController::class, 'register']);
@@ -520,6 +521,8 @@ Route::post('/attendance_report', [AttendanceController::class, 'reportShow'])->
 
 //----------------------------purchase- sales invetory  stock managment -------------------------
 Route::resource('purchases', PurchaseController::class);
+Route::get('purchases_show/{id}',[App\Http\Controllers\purchasecontroller::class,'purchase_show']);
+Route::get('purchase_print_view/{id}',[App\Http\Controllers\purchasecontroller::class,'purchase_print_view']);
 Route::resource('inventories', InventoryController::class);
 Route::resource('stocktransfers', StocktransferController::class);
 route::get('purchase_view/{id}',[App\Http\Controllers\StocktransferController::class,'purchase_view']);

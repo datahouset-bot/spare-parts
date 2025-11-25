@@ -35,7 +35,8 @@
         });
     </script>
 
-    <div class="container ">
+    <div class="container-fluid px-3">
+
         @if (session('message'))
             <div class="alert alert-primary">
                 {{ session('message') }}
@@ -51,9 +52,7 @@
         <div class="card my-3">
             <div class="card-header">
                 SERVICE PARTS
-            </div>
-            <div class="row my-2">
-                <div class="col-md-12 text-center">
+                <div class=" float-end">
                     {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#myModal">
                     Add New KOT
@@ -65,9 +64,13 @@
 
                 </div>
             </div>
+            <div class="row my-2">
+                
+            </div>
             <ul id="save_form_errorlist"></ul>
             <form id="item_entry">
-                <div class="row my-2" name="kot_header">
+                <div class="row g-0 mt-3 align-items-end"
+ name="kot_header">
                     {{-- hidden input--}}
                         <input type="hidden" class="form-control" name="user_id" id="user_id" readonly
                             value =  "{{ Auth::user()->id }}">
@@ -78,12 +81,13 @@
                             <input type="hidden" class="form-control" id="voucher_type" name="voucher_type" value="Kot">
                     {{-- hidden input close  --}}
 
-                        <div class="col-md-3 col-3 mt-2">
+                        <div class="col-md-2 col-4 text-center">
                         <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
                         <label for="voucher_date"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Date</label>
                         <input type="text" class="form-control date" id ="voucher_date" name="voucher_date" style="border: none">
                     </div></div>
-                    <div class="col-md-3 col-3  text-center mt-2">
+
+                    <div class="col-md-2 col-4 text-center">
                         <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
                         <label for="checkin_time"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">time</label>
                         <input class="form-control" id="checkin_time" type="time"
@@ -91,7 +95,7 @@
                     </div></div>
 
 
-                    <div class="col-md-3 col-3 mt-2">
+                    <div class="col-md-2 col-4 text-center">
                         <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
                         <label for="kot_no"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Vehicle No</label>
                         <input type="text" class="form-control" id ="kot_no"name="kot_no" value="{{ $new_bill_no }}">
@@ -100,7 +104,7 @@
                         <label for="waiter_name">Waiter Name</label>
                         <input type="text" id="waiter_name" class="form-control" name="waiter_name" value="sandeep">
                     </div> --}}
-                    <div class="col-md-3 col-3 mt-2">
+                    <div class="col-md-2 col-4 text-center">
                         <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
                         <label for="service_type" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Repair Type</label>
                         <select name="service_type" id="service_type" class="form-select">
@@ -111,9 +115,9 @@
                     $id = request()->route('id'); // Retrieve 'id' from the route
                 @endphp
                 
-                <div class="col-md-3 col-3 mt-2">
+                <div class="col-md-2 col-4 text-center">
                         <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                    <label for="kot_on"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Select Slot</label>
+                    <label for="kot_on"class="position-absolute bg-white px-2" style="top: -14px; left: 10px;">Select Slot</label>
                     <select name="service_id" id="service_id" class="form-select">
                         <option disabled {{ $id ? '' : 'selected' }} style="border: none">Select slot No</option>
                         @foreach ($checkinlists as $checkinlist)
@@ -127,17 +131,18 @@
                     </select>
                     
                 </div></div>
-                    <div class="col-md-3 col-3 mt-2">
+                    <div class="col-md-2 col-4 text-center">
                         <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
                         <label for="kot_remark"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Service Remark</label>
                         <input type="text" class="form-control" id ="kot_remark"name="kot_remark" style="border: none" >
                     </div></div>          
 {{-- 
                 
-                <div class="row my-2" name="itementery"> --}}
-                   <div class="col-md-3 col-3 mt-2">
+                {{-- <div class="row my-2" name="itementery">  --}}
+                    <div class="row g-0 mt-3 align-items-end">
+                   <div class="col-md-3 col-lg-3">
                         <div class="input-group">
-                                <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                <div class="position-relative border col-md-5 w-75 mt-3" style="border-radius: 4px;">
 
                             <select id="item_id" name="item_id" class="js-states form-control">
                                 <option disabled selected>Select Item</option>
@@ -154,27 +159,28 @@
                         </span>
                     </div></div>
 
-                    <div class="col-md-3 col-3 mt-2">
-                    <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                        <label for="qty"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">QTY </label>
+                    <div class="col-md-3 col-lg-3">
+                    <div class="position-relative border col-md-4 w-75 mt-3" style="border-radius: 4px;">
+                        <label for="qty"class="position-absolute bg-white px-1" style="top: -10px; left: 10px;">QTY </label>
                         <input type="text" class ="form-control " id="qty" name="qty"  autocomplete="off" style="border: none" required>
                     </div></div>
-                    <div class="col-md-3 col-3 mt-2">
-                    <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                    <div class="col-md-3 col-lg-2">
+                    <div class="position-relative border col-md-4 w-75 mt-3" style="border-radius: 4px;">
                         <label for="rate"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Rate </label>
                         <input type="text" class ="form-control " id ="rate" name="rate" required>
                     </div></div>
-                    <div class="col-md-3 col-3 mt-2">
-                    <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                    <div class="col-md-3 col-lg-2">
+                    <div class="position-relative border col-md-4 w-75 mt-3" style="border-radius: 4px;">
                         <label for="amount"class="position-absolute bg-transparent  px-2" style="top: -12px; left: 10px;">amount </label>
                         <input type="text" class ="form-control " id="amount" name="amount" required readonly style="border: none">
                     </div></div>
-                    <div class="col-md-2  col-3  text-center">
+                    <div class="col-md-1 col-lg-1">
 
-                        <button type="submit" name="additem" id ="additem"class="btn btn-success mt-4">+</button>
+                        <button type="submit" name="additem" id ="additem"class="btn btn-success mt-3">+</button>
 
                     </div>
                 </div>
+
 
 
             </form>

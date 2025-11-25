@@ -56,7 +56,7 @@ include(public_path('cdn/cdn.blade.php'));
         }
 
         .cust_info{
-            background-color: aquamarine;
+            background-color:whitesmoke;
             width: 50%; /* Adjusted width to accommodate for separation */
             padding: 5px;
             box-sizing: border-box;
@@ -65,7 +65,7 @@ include(public_path('cdn/cdn.blade.php'));
 
         .voucher_info {
             width: 50%;
-            background-color: gold;
+            background-color: rgb(224, 215, 215);
             text-align: left;
             padding: 5px;
         }
@@ -109,7 +109,7 @@ include(public_path('cdn/cdn.blade.php'));
          
         }
         .voucher_head{
-            background-color: yellow;
+            background-color:rgb(207, 204, 204);
             display: grid;
             grid-template-columns: 30% 70%;
         }
@@ -125,7 +125,7 @@ include(public_path('cdn/cdn.blade.php'));
             font-size: x-large;
         }
         .company_info{
-            background-color: yellow;
+            background-color: rgb(215, 210, 210);
             display: grid;
             grid-template-columns: 1fr 4fr 1fr;
             border: 1px solid black;
@@ -145,7 +145,7 @@ align-content: :flex-end;
         }
 
         .voucher_footer{
-            background-color: yellow;
+            background-color:rgb(255, 250, 250);
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             border: 1px solid black;

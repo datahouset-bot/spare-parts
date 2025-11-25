@@ -12,6 +12,7 @@ use App\Models\voucher;
 use App\Models\purchase;
 use App\Models\inventory;
 use App\Models\tempentry;
+use App\Models\optionlist;
 use App\Models\roomcheckin;
 use App\Models\accountgroup;
 use App\Models\voucher_type;
@@ -650,9 +651,27 @@ class PurchaseController extends CustomBaseController
         } else {
             return back()->with('error', 'Nothing  To Save  ');
         }
-
-
+    }
+    public function purchase_show($voucher_no){
+          $fromtlist = optionlist::where('firm_id', Auth::user()->firm_id)
+            ->where('option_type', 'purchase')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+    return view('entery.purchase.purchase_print_format', compact( 'fromtlist','voucher_no'));        
 
     }
-   
+   public function purchase_print_view($voucher_no){
+   $voucher_header = voucher::where('voucher_no', $voucher_no)
+        ->where('firm_id',Auth::user()->firm_id)
+            ->first();
+
+        $voucher_items = inventory::where('voucher_no', $voucher_no)
+        ->where('firm_id',Auth::user()->firm_id)
+        ->where('voucher_type','Purchase')
+
+            ->get();
+            $account_detail=account::where('account_name','purchase')  ->first();
+
+ return view('entery.purchase.purchase_print_view',compact('voucher_header','voucher_items','account_detail'));
+   }
 }

@@ -84,7 +84,7 @@
 
             .voucher_info {
                 width: 50%;
-                background-color: gold;
+                background-color: rgb(167, 166, 166);
                 text-align: left;
                 padding: 5px;
                 font-size: 15px;
@@ -177,7 +177,7 @@
             }
 
             .voucher_head {
-                background-color: yellow;
+                background-color:gray;
                 display: grid;
                 grid-template-columns: 100%;
                 font: 100px;
@@ -196,9 +196,9 @@
                 margin-left: 0%;
                 font-size: x-large;
             }
-
+                
             .company_info {
-                background-color: yellow;
+                background-color: rgb(179, 176, 176);
                 display: grid;
                 grid-template-columns: 1fr 2fr 2fr;
                 border: 1px solid black;
@@ -373,10 +373,10 @@
                 <table class="table_detail">
                     <thead>
                         <tr>
-                            <td>Room No</td>
-                            <td>Guest Name </td>
-                            <td>Room Tariff</td>
-                            <td>Room Type-</td>
+                            <td>slot No</td>
+                            <td>Customer Name </td>
+                            <td>Labour charge</td>
+                            <td>Service Type-</td>
                             <td>Nationality</td>
 
                         </tr>
@@ -396,8 +396,8 @@
                     <thead>
                         <tr>
                             <td>Address</td>
-                            <td>Arrival Date & Time </td>
-                            <td>Departure Date And Time </td>
+                            <td>Entry Date & Time </td>
+                            <td>Exit Date And Time </td>
 
 
                         </tr>
@@ -419,7 +419,7 @@
                     <thead>
                         <tr>
                             <td>Company GSTIN NO</td>
-                            <td> Mobile</td>
+                            <td> Vehicle</td>
                             <td>Email</td>
                             <td>Plan & Package </td>
 
@@ -453,7 +453,7 @@
                             <th class="th_detail">Date</th>
                             <th class="th_detail">SAC Code</th>
                             <th class="th_detail">Description </th>
-                            <th class="th_detail">Per Day Charge </th>
+                            <th class="th_detail">Service Charge </th>
 
 
 
@@ -504,10 +504,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr style="font-size: 22px">
                             <td></td>
                             <td></td>
-                            <td class="">Total Room Tariff</td>
+                            <td class="">Total labour cost</td>
                             <td class="tfooter_amount">{{ $roomcheckouts->total_room_rent }}</td>
 
                         </tr>
@@ -544,7 +544,7 @@
                         <tr>
                             <td></td>
                             <td></td>
-                            <td class="">Total Food Amount</td>
+                            <td class="">Total Service Amount</td>
                             <td class="tfooter_amount">{{ $roomcheckouts->total_food_amt }}</td>
 
                         </tr>

@@ -41,7 +41,7 @@
                 @endcan
             
                 <!-- Kitchen Dashboard -->
-                @can('Kitchen Dash Board')
+                {{-- @can('Kitchen Dash Board')
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
                         <a href="{{url('/kichen_dashboard')}}" class="btn btn-warning d-flex align-items-center justify-content-start">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 @endcan
-            
+             --}}
                 <!-- Outstanding Receivable -->
                 @can('Outstanding Receivable')
                 <div class="col-xl-3 col-md-6">
@@ -158,7 +158,7 @@
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-sign-in-alt"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Check-in Register</span>
+                            <span class="ms-2" style="width: 90%;">Move-in Register</span>
                         </a>
                     </div>
                 </div>
@@ -172,7 +172,7 @@
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-file-invoice"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Room Food Bills</span>
+                            <span class="ms-2" style="width: 90%;">Invoices Bills</span>
                         </a>
                     </div>
                 </div>
@@ -197,7 +197,7 @@
                                     <span class="d-flex" style="width: 10%;">
                                         <i class="fas fa-file-invoice"></i>
                                     </span>
-                                    <span class="ms-2" style="width: 90%;">Room Sales </span>
+                                    <span class="ms-2" style="width: 90%;">Service Report </span>
                                 </a>
                             </div>
                         </div>
@@ -258,7 +258,7 @@
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-sign-out-alt"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">GuestLog</span>
+                            <span class="ms-2" style="width: 90%;">Customer Log</span>
                         </a>
                     </div>
                 </div>

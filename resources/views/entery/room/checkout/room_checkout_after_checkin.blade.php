@@ -263,7 +263,7 @@
 
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <label for="checkin_date">Check In Date</label>
+                                                            <label for="checkin_date">Arrival Date</label>
                                                             <input class="form-control" id="checkin_date" type="text"
                                                                 name="checkin_date"
                                                                 value="{{ \Carbon\Carbon::parse($data['checkin_date'])->format('d-m-Y') }}"
@@ -279,8 +279,8 @@
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        {{-- <div class="col-md-3">
-                                                            <label for="checkin_time">Check In Time</label>
+                                                        <div class="col-md-3">
+                                                            <label for="checkin_time">Arrival Time</label>
                                                             <input class="form-control" type="time" name="checkin_time"
                                                                 id ="checkin_time1" value="{{ $data['checkin_time'] }}"
                                                                 readonly />
@@ -291,7 +291,7 @@
                                                             </span>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <label for="checkout_date">Check Out Date</label>
+                                                            <label for="checkout_date">Departure Date</label>
                                                             <input class="form-control date" id="checkout_date"
                                                                 type="text" name="checkout_date"
                                                                 value="{{ date('Y-m-d') }}"
@@ -303,7 +303,7 @@
                                                             </span>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <label for="check_out_time">Check Out Time</label>
+                                                            <label for="check_out_time">Departure Time</label>
                                                             <input class="form-control" id="check_out_time" type="time"
                                                                 name="check_out_time" value=""
                                                                 @cannot('Change_Date&Time')readonly data-restrict="true"  @endcannot />
@@ -312,7 +312,7 @@
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div> --}}
+                                                        </div>
                                                         <div class="col-md-3">
                                                             <label for="calculation_type">Caculation Type</label>
                                                             <input type="text" name ="calculation_type"
@@ -422,7 +422,7 @@
                                                             </span>
                                                         </div> --}}
                                                         <div class="col-md-4">
-                                                            <label for="gst_no">GST NO </label>
+                                                            <label for="gst_no">CHASSIS NO </label>
                                                             <input class="form-control" id="gst_no" type="text"
                                                                 name="gst_no" readonly
                                                                 value="{{ $account_detail->gst_no }}" />
@@ -525,7 +525,7 @@
                                                             </span>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <label for="guest_mobile">Mobile</label>
+                                                            <label for="guest_mobile">Vehicle No</label>
                                                             <input class="form-control" id="guest_mobile" type="text"
                                                                 name="guest_mobile"
                                                                 value="{{ $account_detail->mobile }}" />
@@ -561,7 +561,7 @@
                                                         </div>
                                                         {{-- kot Box  --}}
                                                         <div class="col-md-4 my-1 " id ="foodkot_selection_box">
-                                                            <h5>Pending working list </h5>
+                                                            <h5>Pending service list </h5>
                                                             <table id="foodkot_table"
                                                                 class="table table-striped table-responsive">
                                                                 <thead>

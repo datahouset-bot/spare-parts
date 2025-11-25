@@ -56,16 +56,17 @@ include(public_path('cdn/cdn.blade.php'));
         }
 
         .cust_info{
-            background-color: aquamarine;
+            background-color:whitesmoke;
             width: 50%; /* Adjusted width to accommodate for separation */
             padding: 5px;
             box-sizing: border-box;
             text-align: left;
+            font-size: 20px;
         }
 
         .voucher_info {
             width: 50%;
-            background-color: gold;
+            background-color:rgb(237, 235, 235);
             text-align: left;
             padding: 5px;
         }
@@ -109,7 +110,7 @@ include(public_path('cdn/cdn.blade.php'));
          
         }
         .voucher_head{
-            background-color: yellow;
+            background-color:rgb(180, 169, 169);
             display: grid;
             grid-template-columns: 30% 70%;
         }
@@ -125,7 +126,7 @@ include(public_path('cdn/cdn.blade.php'));
             font-size: x-large;
         }
         .company_info{
-            background-color: yellow;
+            background-color:rgb(212, 203, 203);
             display: grid;
             grid-template-columns: 1fr 4fr 1fr;
             border: 1px solid black;
@@ -355,7 +356,7 @@ align-content: :flex-end;
 
 
         <div class="button-container my-2">
-            <button class="btn btn-primary btn-lg" onclick="printInvoice()">Print</button>
+            <button class="btn btn-success btn-lg" onclick="printInvoice()">Print</button>
         </div>
 
 

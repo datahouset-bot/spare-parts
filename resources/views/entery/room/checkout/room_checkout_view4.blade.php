@@ -100,7 +100,7 @@
 
             .voucher_info {
                 width: 50%;
-                background-color: gold;
+                background-color:rgb(203, 200, 200);
                 text-align: left;
                 margin-left: 460px;
                 padding: 5px;
@@ -238,7 +238,7 @@ text-align: center;
             }
 
             .company_info {
-                background-color: yellow;
+                background-color:rgb(196, 203, 201);
                 display: grid;
                 grid-template-columns: 1fr 4fr 1fr;
                 
@@ -263,7 +263,7 @@ text-align: center;
             }
 
             .voucher_footer {
-                background-color: yellow;
+                background-color: rgb(200, 200, 194);
                 display: grid;
                 grid-template-columns:  1fr ;
                 border-top: 1px solid black;
@@ -470,7 +470,7 @@ text-align: center;
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Room No </td>
+                                    <td>Slot No </td>
                                     <td>:</td>
                                     <td>{{ $roomcheckouts->room_no }}</td>
                                 </tr>
@@ -502,7 +502,7 @@ text-align: center;
                                 </tr> --}}
 
                                 <tr>
-                                    <td>Mobile</td>
+                                    <td>Vehicle No:</td>
                                     <td>:</td>
                                     <td>{{ $guest_detail->mobile }}</td>
                                 </tr>
@@ -540,24 +540,14 @@ text-align: center;
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Arrival Date</td>
+                                    <td>Arrival Date/Time</td>
                                     <td>:</td>
-                                    <td>{{ \Carbon\Carbon::parse($roomcheckouts->checkin_date)->format('d-m-y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($roomcheckouts->checkin_date)->format('d-m-y') }}/{{ \Carbon\Carbon::parse($roomcheckouts->checkin_time)->format('g:i A') }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Arrival Time</td>
+                                    <td>Departure Date/Time</td>
                                     <td>:</td>
-                                    <td>{{ \Carbon\Carbon::parse($roomcheckouts->checkin_time)->format('g:i A') }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Departure Date</td>
-                                    <td>:</td>
-                                    <td>{{ \Carbon\Carbon::parse($roomcheckouts->checkout_date)->format('d-m-y') }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Departure Time</td>
-                                    <td>:</td>
-                                    <td>{{ \Carbon\Carbon::parse($roomcheckouts->check_out_time)->format('g:i A') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($roomcheckouts->checkout_date)->format('d-m-y') }}/{{ \Carbon\Carbon::parse($roomcheckouts->check_out_time)->format('g:i A') }}</td>
                                 </tr>
                                 <tr>
                                     <td>Billing Officer</td>
@@ -585,7 +575,7 @@ text-align: center;
 
                         <tr>
                             <th class="th_detail">S.No </th>
-                            <th class="th_detail">Particulars </th>
+                            <th class="th_detail">Service type </th>
                             <th class="th_detail">Days </th>
                             <th class="th_detail">Rate </th>
                             <th class="th_detail">GST </th>
@@ -628,7 +618,7 @@ text-align: center;
                         </tr>
                         <tr>
                             <td colspan="3"></td>
-                            <td colspan="2"` class="td_total">Food Amount</td>
+                            <td colspan="2"` class="td_total">Parts Amount</td>
                             <td class="td_detail">{{ $roomcheckouts->total_food_amt }}</td>
                         </tr>
                         <tr>

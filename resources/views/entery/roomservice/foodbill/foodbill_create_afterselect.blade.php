@@ -103,7 +103,7 @@
                         <input  type="checkbox" name="approval" value="true" id="flexCheckDefault">
                             
                              {{-- Print Approval --}}
-                        <button id="saveButton" type="submit" class="btn btn-primary">Save & Print</button>
+                       <a href="{{ url('foodbill_print_view_new', $record['voucher_no']) }}"> <button id="saveButton" type="submit" class="btn btn-primary">Save & Print</button></a>
 
                 </div>
             </div>

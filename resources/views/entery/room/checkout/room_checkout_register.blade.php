@@ -60,12 +60,13 @@
             <table class="display" id="remindtable">
                 <thead>
                     <tr>
-                        <th>S.No</th><th>Bill No</th><th>Bill Date</th><th>Vehicle No</th><th>customer Name</th>
-                        <th>Address</th><th>City</th><th>Mobile</th><th>Email</th><th>State</th><th>GST No</th>
-                        <th>Check in</th><th>Check Out</th><th>Days</th><th>Food Amt</th>
+                        <th>S.No</th><th>Bill No</th><th>Bill Date</th><th>Slot No</th><th>customer Name</th>
+                        <th>Address</th><th>City</th><th>Vehicle no</th><th>Email</th><th>State</th><th>GST No</th>
+                        <th>total Amount</th><th>Check Out</th><th>Days</th><th>parts Amt</th>
                         <th>GST %</th><th>SGST</th>
-                        <th>CGST</th><th>IGST</th><th>Taxable</th><th>Total GST</th><th>Bill Amt</th>
-                        <th>Advance</th><th>Net Pay</th><th></th><th></th>
+                        <th>CGST</th><th>IGST</th><th>Taxable</th><th>Net Pay</th>
+                        <th>Bill Amt</th><th>Advance</th><th></th>
+                        <th></th><th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,9 +86,10 @@
                         <td>{{ $record->account->gst_no }}</td>
                         {{-- <td>{{ \Carbon\Carbon::parse($record->checkin_date)->format('d-m-y') }}</td> --}}
                         {{-- <td>{{ \Carbon\Carbon::parse($record->checkout_date)->format('d-m-y') }}</td> --}}
-                        {{-- <td>{{ $record->no_of_days }}</td> --}}
+                        
                         <td>{{ $record->total_food_amt }}</td>
                         <td>{{ $record->gst_id }}</td>
+                        <td>{{ $record->no_of_days }}</td>
                         <td>{{ $record->sgst }}</td>
                         <td>{{ $record->cgst }}</td>
                         <td>{{ $record->igst }}</td>

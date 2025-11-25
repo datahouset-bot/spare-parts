@@ -59,20 +59,21 @@
             }
 
             .cust_info {
-                background-color: aquamarine;
+                background-color:white;
                 width: 50%;
                 /* Adjusted width to accommodate for separation */
                 padding: 5px;
                 box-sizing: border-box;
                 text-align: left;
+                font-size: 20px;
             }
 
             .voucher_info {
                 width: 50%;
-                background-color: gold;
+                background-color:whitesmoke;
                 text-align: left;
                 padding: 5px;
-                font-size: 15px;
+                font-size: 20px;
 
             }
 
@@ -82,7 +83,8 @@
             }
 
             .detail {
-                background-color: silver;
+                background-color:black;
+                color: white;
                 width: 100%;
                 text-align: right;
             }
@@ -97,8 +99,9 @@
             }
 
             .th_detail {
-                background-color: white;
-                border: 1px solid;
+                background-color:black;
+                color: white;
+                border: none;
                 text-align: center;
             }
 
@@ -106,6 +109,7 @@
                 background-color: white;
                 text-align: center;
                 border: 1px solid;
+            
             }
 
             .row1 {
@@ -120,7 +124,7 @@
             }
 
             .voucher_head {
-                background-color: yellow;
+                background-color: rgb(161, 161, 152);
                 display: grid;
                 grid-template-columns: 100%;
                 font: 100px;
@@ -141,7 +145,7 @@
             }
 
             .company_info {
-                background-color: yellow;
+                background-color:rgb(197, 193, 193);
                 display: grid;
                 grid-template-columns: 1fr 4fr 1fr;
                 border: 1px solid black;
@@ -303,7 +307,7 @@
 @endif
 
 @if(isset($guest_detail->room_nos))
-    <span>Vehicle slot No: {{ $guest_detail->room_nos }}</span><br>
+    <span>Vehicle  No: {{ $guest_detail->room_nos }}</span><br>
 @else
     <span>Vehicle No :&nbsp;{{$table_name}} </span><br>
 @endif
@@ -321,7 +325,7 @@
                     </div>
                     <div class="voucher_info">
 
-                        <span>Vehicle No : {{ $kot_header->bill_no }}</span><br>
+                        <span>Bill No : {{ $kot_header->bill_no }}</span><br>
                         <span>Date : {{ $kot_header->voucher_date }}</span><br>
                         <span>Time : {{ $kot_header->created_at->format('H:i') }}</span><br>
                     </div>

@@ -601,7 +601,7 @@ class FoodbillController extends CustomBaseController
     {
 
         $fromtlist = optionlist::where('firm_id', Auth::user()->firm_id)
-            ->where('option_type', 'Check_in')
+            ->where('option_type', 'foodbill')
             ->orderBy('updated_at', 'desc')
             ->get();
 

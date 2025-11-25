@@ -15,7 +15,7 @@
 
     <div class="card my-3">
         <div class="card-header">
-        <h4>Room Sales Report  {{$from_date}} &nbsp;   <h4>       </div>
+        <h4>Service Report  {{$from_date}} &nbsp;   <h4>       </div>
 
         
 
@@ -30,14 +30,14 @@
                 <thead>
                   <tr>
                     <th scope="col">S.No</th>
-                    <th scope="col"> Check In No    </th>
-                    <th scope="col"> Room No   </th>
-                    <th scope="col"> Guest Name </th>
-                    <th scope="col"> Contact No </th>
-                    <th scope="col"> Check in Date </th>
-                    <th scope="col"> Check in Time </th>
-                    <th scope="col"> No Of Guest   </th>
-                    <th scope="col"> Tariff   </th>
+                    <th scope="col">Bill No    </th>
+                    <th scope="col"> Slot No   </th>
+                    <th scope="col">Customer Name </th>
+                    <th scope="col"> Vehicle No </th>
+                    <th scope="col"> Arrival Date </th>
+                    <th scope="col"> Arrival Time </th>
+                    <th scope="col"> Model no   </th>
+                    <th scope="col"> Service charge  </th>
            
                   </tr>
                 </thead>
@@ -76,7 +76,7 @@
                   
                   </tr>
                   @endforeach
-                  <h1>Total Tariff={{$totaltariff}};</h1>
+                  <h1>Total Service Charge={{$totaltariff}};</h1>
                   
                 </tbody>
               </table>

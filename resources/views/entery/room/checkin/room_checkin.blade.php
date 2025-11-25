@@ -923,7 +923,7 @@
                                                                     style="border-radius: 5px;">
                                                                     <label
                                                                         for="no_of_guest"class="position-absolute bg-white px-2"
-                                                                        style="top: -22px; left: 3px;">Model name<span
+                                                                        style="top: -22px; left: 3px;">Model year<span
                                                                             class="requierdfield">*</span></label>
                                                                     <input class="form-control" id="no_of_guest"
                                                                         type="text" name="no_of_guest"

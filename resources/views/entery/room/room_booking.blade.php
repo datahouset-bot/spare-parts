@@ -604,6 +604,20 @@ $(function () {
 
                                                         </div></div>
 
+
+                                                           <div class="col-md-4 mt-4">  
+                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                                                            <label for="gst_no"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;"> Chassis NO </label>
+                                                            <input class="form-control" id="gst_no" type="text"
+                                                                name="gst_no" value="{{ old('gst_no') }}" />
+                                                            <span class="text-danger">
+                                                                @error('gst_no')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+
+                                                        </div></div>
+
                                                     </div>
                                                 </div>
 
@@ -871,18 +885,7 @@ $(function () {
                                                         </div></div>
 
 
-                                                        <div class="col-md-4 mt-4">  
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="gst_no"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">GST NO </label>
-                                                            <input class="form-control" id="gst_no" type="text"
-                                                                name="gst_no" value="{{ old('gst_no') }}" />
-                                                            <span class="text-danger">
-                                                                @error('gst_no')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-
-                                                        </div></div>
+                                                     
                                                         {{-- <div class="col-md-3">
                                                             <label for="guest_id_pic">Document Image </label>
                                                             <input class="form-control" id="guest_id_pic" type="file"

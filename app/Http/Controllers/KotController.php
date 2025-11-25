@@ -513,7 +513,7 @@ return redirect('/room_dashboard')->with('message', 'Records saved successfully.
             $tempkots = tempentry::where('user_id', $id)->where('firm_id', Auth::user()->firm_id)->get();
             $tempkots_first = tempentry::where('user_id', $id)
                 ->where('firm_id', Auth::user()->firm_id)->first();
-            $store_time = $tempkots_first->temp_af1;
+            // $store_time = $tempkots_first->temp_af1;
 
             if ($tempkots->count() > 0) {
                 $totalQty = $tempkots->sum('qty');

@@ -31,11 +31,11 @@
 
     <div class="card my-3">
         <div class="card-header">
-        <h4>Guest Log  <h4>       </div>
+        <h4>Vehicle Log  <h4>       </div>
        <div class="row my-2">
           <div class="col-md-12 text-center">
-            <a href="{{url('room_dashboard')}}" class="btn btn-warning">Room Dash Board</a>
-            <a href="{{url('roomcheckouts/create')}}" class="btn btn-primary">New Check Out </a>
+            <a href="{{url('room_dashboard')}}" class="btn btn-warning">Spare part DashBoard</a>
+            <a href="{{url('roomcheckouts/create')}}" class="btn btn-primary">New MoveOut </a>
           </div>
        </div>
         
@@ -52,8 +52,8 @@
                 <thead>
   <tr>
                         <th>S.No</th>
-                        <th>Guest Name</th>
-                        <th>No. of Visits</th>
+                        <th>Customer Name</th>
+                        <th>No. of service/entry</th>
                         <th>Total Amount (₹)</th>
                     </tr>
                 </thead>

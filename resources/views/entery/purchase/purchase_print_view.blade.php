@@ -63,25 +63,27 @@
             }
             #footer_total{
                 width: 100%;
-                 font-size: 15px;
+                 font-size: 20px;
                  padding: 2px; 
             }
                                
             .cust_info {
-                background-color: aquamarine;
+                background-color:whitesmoke;
                 width: 50%;
                 /* Adjusted width to accommodate for separation */
                 padding: 5px;
+                font-size: 20px;
                 box-sizing: border-box;
                 text-align: left;
             }
 
             .voucher_info {
                 width: 50%;
-                background-color: gold;
+                background-color:gainsboro;
+                  font-size: 20px;
                 text-align: left;
                 padding: 5px;
-                fon
+                
             }
             .qty_total{
                 text-align: left;
@@ -104,17 +106,11 @@ background-color:white;
             }
 
             .th_detail {
-                background-color: white;
-                border: 1px solid;
+                background-color:rgb(43, 42, 42);
+                border: none;
+                color:white;
                 text-align: center;
             }
-
-            .td_detail {
-                background-color: white;
-                text-align: center;
-                border: 1px solid;
-            }
-
             .row1 {
                 display: inline;
             }
@@ -152,7 +148,7 @@ background-color:white;
             }
 
             .company_info {
-                background-color: yellow;
+                background-color:rgb(182, 181, 181);
                 display: grid;
                 grid-template-columns: 1fr 4fr 1fr;
                 border: 1px solid black;
@@ -285,27 +281,24 @@ background-color:white;
                 </div>
                 <div class="firm_detail">
                     <h4>{{ $componyinfo->cominfo_firm_name }}</h4>
-                </div>
-                <div class="logo2"><img src="{{ asset('storage\app\public\image\\' . $pic->brand) }}" alt="qr_code" width="80px">
-                </div>
-            </div>
-            <div class="header_info">
-                     {{ $componyinfo->cominfo_address1 }}&nbsp;{{ $componyinfo->cominfo_address2 }}&nbsp;
+                       {{ $componyinfo->cominfo_address1 }}&nbsp;{{ $componyinfo->cominfo_address2 }}&nbsp;
                     {{ $componyinfo->cominfo_city }}&nbsp;{{ $componyinfo->cominfo_state }}
                         &nbsp;{{ $componyinfo->cominfo_pincode }}&nbsp;{{ $compinfofooter->country }}&nbsp;
                    Email:{{ $componyinfo->cominfo_email }} Phone &nbsp;{{ $componyinfo->cominfo_phone }}
                         Mobile&nbsp;{{ $componyinfo->cominfo_mobile }} 
-                 
+                </div>
+                <div class="logo2"><img src="{{ asset('storage\app\public\image\\' . $pic->brand) }}" alt="qr_code" width="80px">
+                </div>
             </div>
 
 
             <div class="page_header">
                 <div class="info-container">
                     <div class="cust_info">
-                        <span>Name:{{ $voucher_header->account->account_name}}</span><br>
-                        <span>Add:{{ $voucher_header->account->address}} </span><br>
-                        <span>{{ $voucher_header->account->address2}}&nbsp;{{ $voucher_header->account->city}}&nbsp;{{ $voucher_header->account->state}} </span><br>
-                        <span>GST{{ $voucher_header->account->gst_no}} </span><br>
+                        <span>Name:{{$account_detail->account_name}}</span><br>
+                        <span>Address:{{ $account_detail->address}} </span><br>
+              <span>  {{ $account_detail->address2}}&nbsp;{{ $account_detail->city}}&nbsp;{{ $account_detail->state}}</span> <br>
+                        <span>GST{{$account_detail->gst_no}} </span><br>
                     
 
 {{-- 
@@ -350,7 +343,7 @@ background-color:white;
                         $sno=0;
                         @endphp
                         @foreach ($voucher_items as $records )
-                        <tr>
+                        <tr style="font-size: 18px;">
                             <td>{{$sno=$sno+1}}</td>
                             
                           <td>{{$records->item_name}}</td>
@@ -455,7 +448,7 @@ background-color:white;
 
 
             <div class="button-container my-2">
-                <button class="btn btn-primary btn-lg" onclick="printInvoice()">Print</button>
+                <button class="btn btn-success btn-lg" onclick="printInvoice()">Print</button>
             </div>
 
 

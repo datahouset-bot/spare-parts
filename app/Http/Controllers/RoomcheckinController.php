@@ -84,7 +84,7 @@ class RoomcheckinController extends CustomBaseController
 
     }
 
-    public function guest_reg_print($id)
+    public function room_checkin_view($id)
     {
 
 
@@ -296,7 +296,9 @@ class RoomcheckinController extends CustomBaseController
         return view('entery.room.checkin.room_checkin', compact('rooms', 'roombookings', 'businesssource', 'package', 'new_bill_no', 'new_voucher_no', 'othercharges', 'paymentmodes', 'guset_data'));
 
     }
-     public function checkin_print_view($voucher_no)
+
+    //  use to select format of job card
+     public function checkin_print_format($voucher_no)
     {
 
         $fromtlist = optionlist::where('firm_id', Auth::user()->firm_id)

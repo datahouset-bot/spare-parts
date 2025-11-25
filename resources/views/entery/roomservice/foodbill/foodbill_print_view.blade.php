@@ -74,6 +74,7 @@
                 padding: 5px;
                 box-sizing: border-box;
                 text-align: left;
+                font-size: 20px;
             }
 
             .voucher_info {
@@ -81,7 +82,7 @@
                 background-color: white;
                 text-align: left;
                 padding: 5px;
-                fon
+                 font-size: 20px;
             }
             .qty_total{
                 text-align: left;
@@ -104,8 +105,9 @@ background-color:white;
             }
 
             .th_detail {
-                background-color: white;
-                border: 1px solid;
+                background-color:rgb(22, 21, 21);
+                color: white;
+                border: none;
                 text-align: center;
             }
 
@@ -152,7 +154,7 @@ background-color:white;
             }
 
             .company_info {
-                background-color:white;
+                background-color:rgb(158, 155, 155);
                 display: grid;
                 grid-template-columns: 1fr 4fr 1fr;
                 border: 1px solid black;
@@ -285,11 +287,15 @@ background-color:white;
                         width="80px">
                 </div>
                 <div class="firm_detail">
-                    <h4>{{ $componyinfo->cominfo_firm_name }}</h4>
                     @if(!empty($componyinfo->cominfo_gst_no))
     <h6>GST No: {{ $componyinfo->cominfo_gst_no }}</h6>
 @endif
-
+                    <h4>{{ $componyinfo->cominfo_firm_name }}</h4>
+{{ $componyinfo->cominfo_address1 }}&nbsp;{{ $componyinfo->cominfo_address2 }}&nbsp;
+                    {{ $componyinfo->cominfo_city }}&nbsp;{{ $componyinfo->cominfo_state }}
+                        &nbsp;{{ $componyinfo->cominfo_pincode }}&nbsp;{{ $compinfofooter->country }}&nbsp;
+                   Email:{{ $componyinfo->cominfo_email }} <br>Phone &nbsp;{{ $componyinfo->cominfo_phone }},&nbsp;
+                        Mobile&nbsp;{{ $componyinfo->cominfo_mobile }} 
                 </div>
                 <div class="logo2"><img src="{{ asset('storage\app\public\image\\' . $pic->qrcode) }}" alt="qr_code"
                         width="80px">
@@ -297,11 +303,7 @@ background-color:white;
                 </div>
             </div>
             <div class="header_info">
-                     {{ $componyinfo->cominfo_address1 }}&nbsp;{{ $componyinfo->cominfo_address2 }}&nbsp;
-                    {{ $componyinfo->cominfo_city }}&nbsp;{{ $componyinfo->cominfo_state }}
-                        &nbsp;{{ $componyinfo->cominfo_pincode }}&nbsp;{{ $compinfofooter->country }}&nbsp;
-                   Email:{{ $componyinfo->cominfo_email }} <br>Phone &nbsp;{{ $componyinfo->cominfo_phone }},&nbsp;
-                        Mobile&nbsp;{{ $componyinfo->cominfo_mobile }} 
+                     
                  
             </div>
 
@@ -351,7 +353,7 @@ background-color:white;
                     <span>Registration No :{{$foodbill_header->service_id}} </span><br>
                     <span>Chassis  No:{{$guest_detail->room_Id}}</span><br>
                     <span>Engine No:{{ $guest_detail->business_source_Id}}</span><br>
-                    <span>Model name:{{ $guest_detail->guest_name}}</span><br>
+                    <span>Model name:{{ $foodbill_header->user_name }}</span><br>
                      <span>Model year:{{$guest_detail->no_of_guest}}</span><br>
 
                         {{-- <span>Invoice No : {{ $foodbill_header->food_bill_no }}</span><br>
@@ -390,7 +392,7 @@ background-color:white;
                         $sno=0;
                         @endphp
                         @foreach ($foodbill_items as $records )
-                        <tr>
+                        <tr style="font-size: 20px">
                             <td>{{$sno=$sno+1}}</td>
                             <td>{{$records->item_id}}</td>
                             <td>{{$records->item_name}}</td>
@@ -423,7 +425,7 @@ background-color:white;
                        
                     </div>
                     <div class="voucher_info">
-                        <table id="footer_total">
+                        <table id="footer_total" style="font-size: 20px">
                             <tr>
                                 <td>Basic Amt:</td>
                                 <td>{{ $foodbill_header->total_base_amount }}</td>
@@ -519,7 +521,7 @@ background-color:white;
 
 
             <div class="button-container my-2">
-                <button class="btn btn-primary btn-lg" onclick="printInvoice()">Print</button>
+                <button class="btn btn-success btn-lg" onclick="printInvoice()">Print</button>
             </div>
 
 

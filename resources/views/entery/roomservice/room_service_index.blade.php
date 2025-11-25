@@ -33,7 +33,7 @@
             <a href="{{route('kots.index')}}" class="btn btn-primary">KOT</a>
 
 
-             <a href="{{route('foodbills.index')}}" class="btn btn-warning">parts Bill</a> 
+             <a href="{{ url('/stocktransfers') }}" class="btn btn-warning">parts Bill</a> 
           </div>
        </div>
         
