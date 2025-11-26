@@ -172,7 +172,7 @@
                             <div class="col-lg-12">
                                 <div class="card  mt-1">
                                     <div class="card-header">
-                                        <h5 class="text-center font-weight-light my-1" style="background-color:pink; font-size:30px;">Invoice </h5>
+                                        <h5 class="text-center font-weight-light my-1" style="background-color:pink; font-size:30px;">Reciept print format</h5>
                                     </div>
                                     <div class="card-body">
 

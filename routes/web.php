@@ -371,9 +371,16 @@ Route::get('/outstanding_payable', [App\Http\Controllers\LedgerController::class
 Route::POST('/outstanding_payable_result', [App\Http\Controllers\LedgerController::class, 'outstanding_payable_result']);
 
 Route::get('/reciepts', [App\Http\Controllers\LedgerController::class, 'reciepts']);
+Route::get('/reciepts_format/{id}', [App\Http\Controllers\LedgerController::class, 'reciepts_format']);
+route::get('receipt_print_view/{id}', [App\Http\Controllers\ledgerController::class, 'slip_print_view']);
 Route::post('reciept_store', [App\Http\Controllers\LedgerController::class, 'reciept_store']);
+
 Route::post('ledger_show', [App\Http\Controllers\LedgerController::class, 'ledger_show']);
+
 Route::get('/payments', [App\Http\Controllers\LedgerController::class, 'payments']);
+Route::get('/payment_format/{id}', [App\Http\Controllers\LedgerController::class, 'payment_format']);
+route::get('payment_print_view/{id}', [App\Http\Controllers\ledgerController::class, 'payment_print_view']);
+
 Route::post('payment_store', [App\Http\Controllers\LedgerController::class, 'payment_store']);
 Route::get('payment_delete/{id}', [App\Http\Controllers\LedgerController::class, 'payment_delete']);
 Route::get('/advace_receipt', [App\Http\Controllers\LedgerController::class, 'advace_receipt']);

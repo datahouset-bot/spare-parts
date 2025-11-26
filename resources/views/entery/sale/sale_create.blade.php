@@ -214,7 +214,7 @@
                     </div>
                     
                 </div>
-                <div class="row no-gutter" name="itementery">
+                
                 <div class="row no-gutter" name="itementery">
                     <div class="col-md-2 col-3">
                         <div class="form-group">

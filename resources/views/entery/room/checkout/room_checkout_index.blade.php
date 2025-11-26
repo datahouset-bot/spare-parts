@@ -26,7 +26,7 @@
 
     <div class="card my-3">
         <div class="card-header">
-        <h4>Vehicle Check Out <h4>       </div>
+        <h4>Vehicle MoveOut <h4>       </div>
        <div class="row my-2">
           <div class="col-md-12 text-center">
             <a href="{{url('room_dashboard')}}" class="btn btn-warning"> DashBoard</a>
@@ -61,7 +61,7 @@
                     <th scope="col">View</th>
                     <th scope="col">EDIT</th>
                     <th scope="col">Message</th>
-                    <th scope="col">Delete</th>
+                    <th scope="col"></th>
                     {{-- <th scope="col"></th> --}}
 
 

@@ -13,7 +13,117 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
+<style>
+    /* ============================================
+   GLOBAL PAGE RESPONSIVENESS
+============================================ */
+.container-fluid {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+}
 
+.card {
+    border-radius: 10px;
+}
+
+/* ============================================
+   MODAL RESPONSIVENESS
+============================================ */
+.modal-dialog {
+    max-width: 700px;
+}
+
+@media (max-width: 768px) {
+    .modal-dialog {
+        max-width: 95% !important;
+        margin: 10px auto;
+    }
+    .modal-body .col-md-6,
+    .modal-body .col-md-12 {
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+    }
+}
+
+/* Form fields inside modal */
+.modal-body label {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.modal-body input,
+.modal-body select {
+    font-size: 14px;
+    padding: 8px 10px;
+}
+
+/* ============================================
+   TABLE RESPONSIVENESS
+============================================ */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+table th {
+    white-space: nowrap;
+}
+
+table td {
+    vertical-align: middle;
+}
+
+/* Smaller font on mobile */
+@media (max-width: 768px) {
+    table td,
+    table th {
+        font-size: 13px;
+        padding: 6px;
+    }
+}
+
+/* Action buttons spacing */
+.table .btn {
+    padding: 3px 6px;
+}
+
+/* ============================================
+   BUTTON & UI OPTIMIZATIONS
+============================================ */
+.btn {
+    border-radius: 6px !important;
+}
+
+.btn-primary {
+    font-size: 15px;
+}
+
+/* Disable button animation on save */
+#saveButton[disabled] {
+    opacity: 0.8;
+}
+
+/* ============================================
+   SELECT2 FIX IN MODAL
+============================================ */
+.select2-container {
+    width: 100% !important;
+}
+
+.select2-selection {
+    min-height: 38px !important;
+    padding-top: 3px !important;
+}
+
+/* For mobile: dropdown inside modal */
+@media (max-width: 768px) {
+    .select2-container--open .select2-dropdown {
+        left: 0 !important;
+        width: 100% !important;
+    }
+}
+
+</style>
     <script>
         $(document).ready(function() {
             let table = new DataTable('#remindtable');
@@ -21,7 +131,7 @@
         });
     </script>
 
-    <div class="container ">
+     <div class="container-fluid px-3">
         @if (session('message'))
             <div class="alert alert-primary">
                 {{ session('message') }}
@@ -48,7 +158,7 @@
 
 
 
-            <div class="container mt-5">
+            <div class="container mt-2">
 
 
                 <!-- Modal -->
@@ -185,6 +295,7 @@
                             <th scope="col"> Remark</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -211,7 +322,11 @@
                                     <a href="" class="btn  btn-sm"><i class="fa fa-edit"
                                             style="font-size:20px;color:SlateBlue"></i></a>
                                 </td>
-
+ <td>
+                                    {{-- {{ route('roomtypes.edit', $ledger['id']) }} --}}
+                                    <a href="{{url('reciepts_format',$ledger->voucher_no)}}" class="btn  btn-sm"><i class="fa fa-eye"
+                                            style="font-size:20px;color:SlateBlue"></i></a>
+                                </td>
 
                                 <td>
                                     <form action="{{ route('ledgers.destroy', $ledger->voucher_no) }}" method="POST"

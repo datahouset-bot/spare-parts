@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\ledger;
 use App\Models\account;
+use App\Models\optionlist;
 use App\Models\roomcheckin;
 use App\Models\accountgroup;
 use App\Models\voucher_type;
@@ -77,6 +78,39 @@ class LedgerController extends CustomBaseController
 
     }
 
+// ========================Select format of receipt format view=======================================
+
+
+public function reciepts_format($voucher_no){
+ $fromtlist = optionlist::where('firm_id', Auth::user()->firm_id)
+            ->where('option_type', 'Receipts')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        return view('entery.reciept.receipt_format_print', compact('voucher_no', 'fromtlist'));
+}
+// ====================================print reepit print===============================================
+public function slip_print_view($voucher_no) 
+{
+        $account_names=account::where('firm_id',Auth::user()->firm_id)
+        ->orderBy('account_name','asc')->get();
+        $subquery = Ledger::select(DB::raw('MIN(id)'))
+        ->where('transaction_type', 'Receipts') // Apply this filter before grouping
+        ->where('firm_id',Auth::user()->firm_id)
+        ->groupBy('voucher_no');
+    
+    $ledgers = Ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
+         ->whereIn('id', $subquery)
+        ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
+        ->get();
+    
+
+    return view('entery.reciept.reciept_print_view', compact('account_names','ledgers') );
+}
+
+
+
+// ===========================Payment============================================================
     public function payments()
     { 
         $ledger_record = ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
@@ -135,6 +169,35 @@ class LedgerController extends CustomBaseController
 
 
     }
+// ============================================Select payment format=============================================================================================
+public function payment_format($voucher_no){
+ $fromtlist = optionlist::where('firm_id', Auth::user()->firm_id)
+            ->where('option_type', 'Payments')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        return view('entery.reciept.receipt_format_print', compact('voucher_no', 'fromtlist'));
+}
+// =================================================select payment print format=======================================================================================
+public function payment_print_view($voucher_no)
+{
+     $account_names=account::where('firm_id',Auth::user()->firm_id)
+        ->orderBy('account_name','asc')->get();
+
+        $ledgers = Ledger::withinFY('entry_date')->whereIn('id', function ($query) {
+            $query->select(DB::raw('MIN(id)'))
+                  ->from('ledgers')
+                  ->where('transaction_type', 'Payments')
+                  ->where('firm_id', Auth::user()->firm_id) // Filter by firm_id in the subquery
+                  ->groupBy('voucher_no');
+        })
+        ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
+        ->get();
+
+    
+     return view('entery.payment.payment_print_view',compact('ledgers','account_names') );
+}
+
     public function reciept_store(Request $request)
     { 
 

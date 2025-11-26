@@ -128,7 +128,7 @@
 
                                 <div class="col-md-12">
                                     <label for="receipt_remark">Remark </label>
-                                    <input type="text" class ="form-control " placeholder=" Remark"                                       name="receipt_remark">
+                                    <input type="text" class ="form-control " placeholder=" Remark"name="receipt_remark">
                                     <span class="text-danger"> 
                                         @error('receipt_remark')
                                         {{$message}}
@@ -181,6 +181,7 @@
                         <th scope="col"> Remark</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -207,6 +208,10 @@
                 {{-- {{ route('roomtypes.edit', $ledger['id']) }} --}}
                   <a href="" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
               </td>
+              <td>
+  <a href="{{url('payment_format',$ledger->voucher_no)}}" class="btn  btn-sm"><i class="fa fa-eye"
+                                            style="font-size:20px;color:SlateBlue"></i></a>
+                                </td>
 
 
                 <td>

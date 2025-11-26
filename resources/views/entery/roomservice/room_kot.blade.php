@@ -64,13 +64,9 @@
 
                 </div>
             </div>
-            <div class="row my-2">
-                
-            </div>
-            <ul id="save_form_errorlist"></ul>
-            <form id="item_entry">
-                <div class="row g-0 mt-3 align-items-end"
- name="kot_header">
+                            <ul id="save_form_errorlist"></ul>
+                            <form id="item_entry">
+                            <div class="row no-gutter" name="kot_header">
                     {{-- hidden input--}}
                         <input type="hidden" class="form-control" name="user_id" id="user_id" readonly
                             value =  "{{ Auth::user()->id }}">
@@ -82,21 +78,21 @@
                     {{-- hidden input close  --}}
 
                         <div class="col-md-2 col-4 text-center">
-                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                        <label for="voucher_date"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Date</label>
-                        <input type="text" class="form-control date" id ="voucher_date" name="voucher_date" style="border: none">
+                        <div class="form-group">
+                            <label for="voucher_date"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Date</label>
+                            <input type="text" class="form-control date" id="voucher_date" name="voucher_date" required>
                     </div></div>
 
-                    <div class="col-md-2 col-4 text-center">
-                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <div class="col-md-2 col-4 text-center">
+                        <div class="form-group">
                         <label for="checkin_time"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">time</label>
-                        <input class="form-control" id="checkin_time" type="time"
+                        <input class="form-control time" id="checkin_time" type="time"
                         name="checkin_time" value="{{ date('Y-m-d') }}" />
                     </div></div>
 
 
-                    <div class="col-md-2 col-4 text-center">
-                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                     <div class="col-md-2 col-4 text-center">
+                        <div class="form-group">
                         <label for="kot_no"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Vehicle No</label>
                         <input type="text" class="form-control" id ="kot_no"name="kot_no" value="{{ $new_bill_no }}">
                     </div></div>
@@ -105,7 +101,7 @@
                         <input type="text" id="waiter_name" class="form-control" name="waiter_name" value="sandeep">
                     </div> --}}
                     <div class="col-md-2 col-4 text-center">
-                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <div class="form-group">
                         <label for="service_type" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Repair Type</label>
                         <select name="service_type" id="service_type" class="form-select">
                             <option value="room_service" selected>Type</option>
@@ -116,7 +112,7 @@
                 @endphp
                 
                 <div class="col-md-2 col-4 text-center">
-                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
+                        <div class="form-group">
                     <label for="kot_on"class="position-absolute bg-white px-2" style="top: -14px; left: 10px;">Select Slot</label>
                     <select name="service_id" id="service_id" class="form-select">
                         <option disabled {{ $id ? '' : 'selected' }} style="border: none">Select slot No</option>
@@ -137,13 +133,15 @@
                         <input type="text" class="form-control" id ="kot_remark"name="kot_remark" style="border: none" >
                     </div></div>          
 {{-- 
-                
-                {{-- <div class="row my-2" name="itementery">  --}}
-                    <div class="row g-0 mt-3 align-items-end">
-                   <div class="col-md-3 col-lg-3">
-                        <div class="input-group">
-                                <div class="position-relative border col-md-5 w-75 mt-3" style="border-radius: 4px;">
+             {{-- ========================================================SECOND ROW 2========================================================================= --}}
 
+
+
+
+
+                  <div class="row no-gutter" name="itementery">
+                    <div class="col-md-2 col-"4>
+                        <div class="form-group">
                             <select id="item_id" name="item_id" class="js-states form-control">
                                 <option disabled selected>Select Item</option>
                                 @foreach ($itemdata as $record)
@@ -157,26 +155,27 @@
                                 {{ $message }}
                             @enderror
                         </span>
-                    </div></div>
+                    </div>
 
-                    <div class="col-md-3 col-lg-3">
-                    <div class="position-relative border col-md-4 w-75 mt-3" style="border-radius: 4px;">
+                        <div class="col-md-2 col-3 text-center">
+                        <div class="form-group">
                         <label for="qty"class="position-absolute bg-white px-1" style="top: -10px; left: 10px;">QTY </label>
-                        <input type="text" class ="form-control " id="qty" name="qty"  autocomplete="off" style="border: none" required>
+                        <input type="text" class ="form-control " id="qty" name="qty"  autocomplete="off" required autocomplete="off">
                     </div></div>
-                    <div class="col-md-3 col-lg-2">
-                    <div class="position-relative border col-md-4 w-75 mt-3" style="border-radius: 4px;">
+                        <div class="col-md-2 col-3 text-center">
+                        <div class="form-group">
                         <label for="rate"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Rate </label>
                         <input type="text" class ="form-control " id ="rate" name="rate" required>
                     </div></div>
-                    <div class="col-md-3 col-lg-2">
-                    <div class="position-relative border col-md-4 w-75 mt-3" style="border-radius: 4px;">
-                        <label for="amount"class="position-absolute bg-transparent  px-2" style="top: -12px; left: 10px;">amount </label>
-                        <input type="text" class ="form-control " id="amount" name="amount" required readonly style="border: none">
+                   <div class="col-md-2 col-3 text-center">
+                        <div class="form-group">
+                        <label for="amount"class="position-absolute bg-white px-2" style="top: -12px; left: 10px;">Amount </label>
+                        <input type="text" class ="form-control " id="amount" name="amount" required readonly>
                     </div></div>
-                    <div class="col-md-1 col-lg-1">
+                     <div class=" col-md-2  col-3  text-cent">
 
-                        <button type="submit" name="additem" id ="additem"class="btn btn-success mt-3">+</button>
+                        {{-- <button type="submit" name="additem" id ="additem"class="btn btn-success mt-3">+</button> --}}
+                           <button type="submit" name="additem" id ="additem"class="btn btn-success ">+</button>
 
                     </div>
                 </div>

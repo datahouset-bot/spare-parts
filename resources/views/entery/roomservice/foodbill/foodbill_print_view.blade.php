@@ -340,12 +340,13 @@ background-color:white;
                        <span>Check In No   :{{ $guest_detail->voucher_no }}</span><br> --}}
                     </div>
                     <div class="voucher_info">
-                         <span>Jobcard  No:{{ $foodbill_header->user_id}}</span><br>
-                        <span> Jobcard Date: {{ \Carbon\Carbon::parse($guest_detail->checkin_date)->format('d-m-y') }}   
-                        </span><br>
-                        <span>Invoice  type:{{ $foodbill_header->voucher_no}}</span><br>
+                       
+                        <span>Invoice  type:{{ $foodbill_header->payment_remark}}</span><br>
                         <span>Payment type:{{ $foodbill_header->user_name}}</span><br>
                     <span>Refrence No:{{ $foodbill_header->food_bill_no}}</span><br>
+                      <span>Jobcard no:{{ $guest_detail->check_in_no}}</span><br>
+                        <span> Jobcard Date: {{ \Carbon\Carbon::parse($guest_detail->checkin_date)->format('d-m-y') }}   
+                        </span><br>
                     <span>Repair type:{{ $foodbill_header->voucher_type}}</span><br>
                     <span>kM Reading:{{ $foodbill_header->kot_no}}</span><br>
                     <span>Date of sale:{{ $foodbill_header->voucher_date}}</span><br>
@@ -514,9 +515,16 @@ background-color:white;
 
 
             </div> --}}
+            <span>Tax Amount Payable on Reverse charge(in Rs.):</span>
 
-
-
+<h6>customer Advice:</h6>
+<div>
+    <p>
+Following jobs were refused by customer:{{
+    $foodbill_header->food_bill_remark
+}}
+</p>
+</div>
 
 
 

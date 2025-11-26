@@ -149,13 +149,13 @@
             <div class="container ">
 
                 <body class="bg-primary">
-                    <div class="container">
+             <div class="container-fluid px-3">
 
                         <div class="row justify-content-center">
                             <div class="col-lg-12">
                                 <div class="card  mt-1">
                                     <div class="card-header">
-                                        <h5 class="text-center font-weight-light my-1">Select slot For moveout </h5>
+                                        <h5 class="text-center font-weight-light my-1" style="background-color: pink;font-size:30px;">Select slot For moveout </h5>
                                     </div>
                                     <div class="card-body">
 
@@ -163,7 +163,7 @@
                                         <div class="row">
                                             <!-- Room Booking -->
 
-                                            <div class="col-md-10 mt-4">
+                                            <div class="col-md-12 mt-4">
                                                 <form class="form-inline" id="select_roomcheckout">
                                                     @csrf
                                                     <div class="input-group">

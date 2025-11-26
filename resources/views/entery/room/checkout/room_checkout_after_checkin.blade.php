@@ -230,7 +230,7 @@
 
                                             </div>
                                             <div class="col-md-4 mt-4">
-                                                <span class="btn btn-danger btn-sm" id="my_checkout">My Checkout </span>
+                                                <span class="btn btn-danger btn-sm" id="my_checkout">My Moveout </span>
 
 
 
@@ -560,7 +560,7 @@
                                                             </span>
                                                         </div>
                                                         {{-- kot Box  --}}
-                                                        <div class="col-md-4 my-1 " id ="foodkot_selection_box">
+                                                        {{-- <div class="col-md-4 my-1 " id ="foodkot_selection_box">
                                                             <h5>Pending service list </h5>
                                                             <table id="foodkot_table"
                                                                 class="table table-striped table-responsive">
@@ -623,7 +623,7 @@
 
 
                                                             </table>
-                                                        </div>
+                                                        </div> --}}
                                                         {{-- Food Bill Box   --}}
                                                         <div class="col-md-4 my-1 " id ="foodkot_selection_box">
                                                             <h5>Pending Parts Bill </h5>
