@@ -16,7 +16,7 @@
    
   });
 </script>
-<div class="container ">
+<div class="container-fluid ">
   @if(session('message'))
   <div class="alert alert-primary">
       {{ session('message') }}
@@ -31,7 +31,7 @@
 
     <div class="card my-3">
         <div class="card-header">
-         Item Group  List 
+          <h3>  Item Group  List </h3>
         </div>
        <div class="row my-2">
         <div class="col-md-12 text-center"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">

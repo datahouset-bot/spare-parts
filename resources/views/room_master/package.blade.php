@@ -16,7 +16,7 @@
    
   });
 </script>
-<div class="container ">
+<div class="container-fluid px-3 ">
   @if(session('message'))
     <div class="alert alert-primary">
         {{ session('message') }}
@@ -61,7 +61,7 @@
                           </div>
                           <div>
 
-                            Plan  <input type="text" name ="plan_name"class="form-control" placeholder="Food Plan">
+                            Plan  <input type="text" name ="plan_name"class="form-control" placeholder="Service Plan">
                             <span class="text-danger"> 
                               @error('plan_name')
                               {{$message}}

@@ -16,7 +16,7 @@
    
   });
 </script>
-<div class="container ">
+<div class="container-fluid ">
     
   @if (session('message'))
   <div class="alert alert-primary">
@@ -156,7 +156,7 @@
 
 
           {{-- data table start  --}}
-        <div class="card-body table-scrollable">
+        <div class="card-body table-scrollable ">
             <table class="table table-striped" id="remindtable">
                 <thead>
                   <tr>

@@ -284,10 +284,10 @@
         <div class="row ">
 
 
-            <div class="container ">
+            <div class="container-fluid">
 
                 <body class="bg-primary">
-                    <div class="container">
+                    <div class="container-fluid">
 
                         <div class="row justify-content-center">
                             <div class="col-lg-12">

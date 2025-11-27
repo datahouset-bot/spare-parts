@@ -3,7 +3,7 @@
 {{-- @include('layouts.blank') --}}
 @section('pagecontent')
 
-<div class="container ">
+<div class="container-fluid ">
 
     <div class="card my-3">
         <div class="card-header">

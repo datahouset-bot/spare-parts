@@ -29,7 +29,7 @@
    
   });
 </script> --}}
-<div class="container ">
+<div class="container-fluid ">
   @if(session('message'))
     <div class="alert alert-primary">
         {{ session('message') }}
@@ -39,7 +39,7 @@
 
     <div class="card my-1">
         <div class="card-header">
-        <h4>Checkout Register Only <h4>       </div>
+        <h4>Moveout Register Only <h4>       </div>
        <div class="container mt-1" id="account_select_form">
         <form action="{{ url('checkout_register_only') }}" method="POST">
             @csrf
@@ -76,17 +76,17 @@
                 <thead>
                   <tr>
                     <th scope="col">S.No</th>
-                    <th scope="col"> Bill No    </th>
-                    <th scope="col"> Room No   </th>
-                    <th scope="col"> Guest Name </th>
+                    <th scope="col"> Registration No    </th>
+                    <th scope="col"> slot No   </th>
+                    <th scope="col"> Customer Name </th>
                     <th scope="col"> Address </th>
                     <th scope="col"> City </th>
                     <th scope="col"> Mobile </th>
                     <th scope="col"> Email Id </th>
                     <th scope="col"> State </th>
                     <th scope="col"> GST No  </th>
-                    <th scope="col"> Check in Date </th>
-                    <th scope="col"> Check Out Date  </th>
+                    <th scope="col">Arrival Date </th>
+                    <th scope="col">  Departure Date  </th>
                     <th scope="col"> Total Days  </th>
                     <th scope="col"> Food Amount  </th>
                     <th scope="col"> GST % </th>
@@ -95,7 +95,7 @@
                     <th scope="col"> IGST </th>
                     <th scope="col"> Taxable </th>
                     <th scope="col"> Total GST </th>
-                    <th scope="col">  Bill Amt  </th> 
+                    <th scope="col">  Total Amt  </th> 
                     <th scope="col"> Advance  </th>
                     <th scope="col"> Net Pay Amt  </th>
                     <th></th>

@@ -29,7 +29,7 @@
    
   });
 </script> --}}
-<div class="container ">
+<div class="container-fluid px-3 ">
   @if(session('message'))
     <div class="alert alert-primary">
         {{ session('message') }}
@@ -44,16 +44,16 @@
         <form action="{{ url('fnb_result') }}" method="POST">
             @csrf
             <div class="row">
-                <div class="col-md-2 mb-3">
+                <div class="col-md-3 mb-3">
                            <select name="bill_type" id="bill_type"  class="form-select"required>
                             <option value="" selected disabled>Select Type </option>
-                            <option value="Foodbill" >Room Service Bills  </option>
-                            <option value="Restaurant_food_bill" >Restaurant  Bills  </option>
+                            <option value="Foodbill" >Service Bills  </option>
+                            <option value="Restaurant_food_bill" >Parts  Bills  </option>
                             <option value="" >All  Bills  </option>
 
                            </select>
                 </div>
-                <div class="col-md-2 mb-3">
+                <div class="col-md-3 mb-3">
                            <select name="view_type" id="view_type"  class="form-select"required>
                             <option value="view" selected >View  </option>
                             <option value="print" >Print  </option>
@@ -61,15 +61,15 @@
 
                            </select>
                 </div>
-                <div class="col-md-2 mb-3">
+                <div class="col-md-3 mb-3">
                     <input type="text" class="form-control date" name="from_date" value="{{ date('Y-m-d') }}"
                         required>
                 </div>
-                <div class="col-md-2 mb-3">
+                <div class="col-md-3 mb-3">
                     <input type="text" class="form-control date" name="to_date" value="{{ date('Y-m-d') }}"
                         required>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 float-end">
                     <button type="submit" class="btn btn-primary btn-block">OK</button>
 
                 </div>

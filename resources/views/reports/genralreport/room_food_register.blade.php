@@ -29,7 +29,7 @@
    
   });
 </script> --}}
-<div class="container ">
+<div class="container-fluid ">
   @if(session('message'))
     <div class="alert alert-primary">
         {{ session('message') }}
@@ -39,7 +39,7 @@
 
     <div class="card my-1">
         <div class="card-header">
-        <h4>Room & Food Bill GST Report  <h4>       </div>
+        <h4>Service & Parts Bill GST Report  <h4>       </div>
        <div class="container mt-1" id="account_select_form">
         <form action="{{ url('roomfood_gstreport') }}" method="POST">
             @csrf
@@ -76,9 +76,9 @@
             <thead>
                 <tr>
                     <th scope="col">S.No</th>
-                    <th scope="col">Bill No</th>
-                    <th scope="col">Room No</th>
-                    <th scope="col">Guest Name</th>
+                    <th scope="col">Registration No</th>
+                    <th scope="col">Slot No</th>
+                    <th scope="col">   customer Name</th>
                     <th scope="col">Address</th>
                     <th scope="col">City</th>
                     <th scope="col">State</th>
@@ -86,7 +86,7 @@
                     <th scope="col">Firm Name </th>
 
                     <th scope="col">GST No</th>
-                    <th scope="col">Check In Date</th>
+                    <th scope="col">Arrival Date</th>
                     <th scope="col">Invoice Date</th>
                     <th scope="col">Total Days</th>
                     <th scope="col">Type</th>

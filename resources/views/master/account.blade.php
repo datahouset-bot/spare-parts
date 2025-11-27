@@ -14,7 +14,7 @@
     let table = new DataTable('#remindtable');
   });
 </script>
-<div class="container ">
+<div class="container-fluid ">
   @if(session('message'))
   <div class="alert alert-primary">
       {{ session('message') }}

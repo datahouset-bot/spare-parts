@@ -5,7 +5,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="{{ asset('general_assets/css/table.css') }}">
 
-<div class="container">
+
+ <div class="container-fluid px-3">
     @if(session('message'))
         <div class="alert alert-primary">
             {{ session('message') }}
@@ -14,16 +15,16 @@
 
     <div class="card mt-3">
         <div class="card-header">
-            Update Room Type
+            Update Service Type
         </div>
         <div class="card-body">
             <div class="row justify-content-center align-items-center">
-                <div class="col-md-6">
+                <div class="col-md-10">
                     <form action="{{ route('roomtypes.update', $record2->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div>
-                            <label for="roomtype_name">Room Type Name</label>
+                            <label for="roomtype_name">Service Type Name</label>
                             <input type="text" name="roomtype_name" class="form-control" placeholder="Room Type Name" value="{{ old('roomtype_name', $record2->roomtype_name) }}">
                             <span class="text-danger">
                                 @error('roomtype_name')
@@ -64,7 +65,7 @@
                             </span>
                         </div>
                         <div>
-                            <label for="room_tariff">Room Tariff</label>
+                            <label for="room_tariff">Labour charge</label>
                             <input type="text" name="room_tariff" class="form-control" placeholder="Room Charge" value="{{ old('room_tariff', $record2->room_tariff) }}">
                             <span class="text-danger">
                                 @error('room_tariff')
@@ -73,7 +74,7 @@
                             </span>
                         </div>
                         <div>
-                            <label for="room_dis">Room Dis %</label>
+                            <label for="room_dis">Service Dis %</label>
                             <input type="text" name="room_dis" class="form-control" placeholder="Room dis On % only" value="{{ old('room_dis', $record2->room_dis) }}">
                             <span class="text-danger">
                                 @error('room_dis')
@@ -171,7 +172,7 @@
                               @enderror
                             </span> 
                           </div> 
-                        <button type="submit" class="btn btn-primary btn-sm my-2">Update</button>
+                        <button type="submit" class="btn btn-primary btn-m my-2 float-end">Update</button>
                     </form>
                 </div>
             </div>

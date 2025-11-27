@@ -1,3 +1,100 @@
+<style>
+/* ===============================
+   GLOBAL POLISH
+================================ */
+body {
+    background: #f4f6f9;
+}
+
+/* ===============================
+   LOGO + TITLE
+================================ */
+.logo1 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.logo1 h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: #1f2937;
+}
+
+/* ===============================
+   BREADCRUMB INFO BAR
+================================ */
+.breadcrumb {
+    background: linear-gradient(90deg, #ffffff, #f9fafb);
+    padding: 14px 16px;
+    border-radius: 10px;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+    font-size: 14px;
+}
+
+/* ===============================
+   DASHBOARD CARDS – BIG & CLICKABLE
+================================ */
+.card {
+    border-radius: 14px;
+    overflow: hidden;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.22);
+}
+
+/* ===============================
+   BIG BUTTONS INSIDE CARD
+================================ */
+.card a.btn {
+    width: 100%;
+    height: 75px;               /* BIG BUTTON */
+    font-size: 18px;            /* BIG TEXT */
+    font-weight: 700;
+    border-radius: 14px;
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    letter-spacing: 0.3px;
+    transition: all 0.3s ease;
+}
+
+/* ===============================
+   ICONS – BIG & ANIMATED
+================================ */
+.card i {
+    font-size: 26px;
+    transition: transform 0.3s ease;
+}
+
+.card:hover i {
+    transform: rotate(-6deg) scale(1.2);
+}
+
+/* ===============================
+   BUTTON HOVER EFFECT
+================================ */
+.card a.btn:hover {
+    filter: brightness(1.05);
+}
+
+/* ===============================
+   COLOR DEPTH
+================================ */
+.btn-success { background: linear-gradient(135deg, #22c55e, #16a34a); }
+.btn-danger  { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+.btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; }
+.btn-info    { background: linear-gradient(135deg, #0ea5e9, #0284c7); }
+.btn-dark    { background: linear-gradient(135deg, #374151, #111827); }
+.btn-primary { background: linear-gradient(135deg, #6366f1, #4f46e5); }
+</style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <div id="layoutSidenav_content" style="background-color: whitesmoke">
    
@@ -59,7 +156,7 @@
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-home"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;"> Dashboard</span>
+                            <span class="ms-2" style="width: 90%;"> <h3>Dashboard</h3></span>
                         </a>
                     </div>
                 </div>
@@ -234,7 +331,7 @@
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-file-alt"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Receipt</span>
+                            <span class="ms-2" style="width: 90%;"><h3>Receipt</h3></span>
                         </a>
                     </div>
                 </div>
@@ -246,23 +343,40 @@
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-money-bill"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Payment</span>
+                            <span class="ms-2" style="width: 90%;"><h3>Payment </h3>
+
+                            </span>
                         </a>
                     </div>
                 </div>
-            @endcan
-            @can('ledger')
+
+@can('purchase')
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/ledgers') }}" class="btn btn-danger d-flex align-items-center justify-content-start">
+                        <a href="{{ url('/purchases') }}" class="btn btn-primary d-flex align-items-center justify-content-start">
                             <span class="d-flex" style="width: 10%;">
-                                <i class="fas fa-book"></i>
+                                <i class="fas fa-cart-plus"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Ledger</span>
+                            <span class="ms-2" style="width: 90%;"><h3>Purchase</h3></span>
                         </a>
                     </div>
                 </div>
             @endcan
+            
+ @can('sale')
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-warning text-white mb-4">
+                        <a href="{{ url('/sales') }}" class="btn btn-sales d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-box-open"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;"><h3>Sale invoice</h3></span>
+                        </a>
+                    </div>
+                </div>
+            @endcan
+            @endcan
+           
             {{-- @can('Restaurant')
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-info text-white mb-4">
@@ -276,18 +390,6 @@
                     </div>
                 </div>
                 @endcan --}}
-            @can('purchase')
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/purchases') }}" class="btn btn-primary d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
-                                <i class="fas fa-cart-plus"></i>
-                            </span>
-                            <span class="ms-2" style="width: 90%;">Purchase</span>
-                        </a>
-                    </div>
-                </div>
-            @endcan
             
             @can('Stock_Transfer')
                 <div class="col-xl-3 col-md-6">
@@ -296,23 +398,25 @@
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-exchange-alt"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Stock Transfer</span>
+                            <span class="ms-2" style="width: 90%;"><h3>Stock Transfer</h3></span>
                         </a>
                     </div>
                 </div>
             @endcan
-            @can('sale')
+           
+             @can('ledger')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-warning text-white mb-4">
-                        <a href="{{ url('/sales') }}" class="btn btn-sales d-flex align-items-center justify-content-start">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{ url('/ledgers') }}" class="btn btn-danger d-flex align-items-center justify-content-start">
                             <span class="d-flex" style="width: 10%;">
-                                <i class="fas fa-box-open"></i>
+                                <i class="fas fa-book"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Sale invoice</span>
+                            <span class="ms-2" style="width: 90%;"><h3>Ledger</h3></span>
                         </a>
                     </div>
                 </div>
             @endcan
+
             @can('Report')
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
@@ -320,7 +424,7 @@
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-chart-line"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Report</span>
+                            <span class="ms-2" style="width: 90%;"><h3>Report</h3></span>
                         </a>
                     </div>
                 </div>

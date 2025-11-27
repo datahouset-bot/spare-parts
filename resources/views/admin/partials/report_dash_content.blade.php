@@ -176,7 +176,7 @@
                         </a>
                     </div>
                 </div>
-                 <div class="col-xl-3 col-md-6">
+                 {{-- <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
                         <a href="{{url('fnbrerport_pageshow')}}" class="btn btn-dark d-flex align-items-center justify-content-start">
                             <span class="d-flex" style="width: 10%;">
@@ -185,7 +185,7 @@
                             <span class="ms-2" style="width: 90%;">F & B Report</span>
                         </a>
                     </div>
-                </div>
+                </div> --}}
                @endcan
 
                                <!-- Room Food Bills -->
@@ -224,7 +224,7 @@
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-sign-out-alt"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Checkout Register</span>
+                            <span class="ms-2" style="width: 90%;"> Moveout Register</span>
                         </a>
                     </div>
                 </div>
@@ -271,11 +271,11 @@
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-utensils"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Restaurant Food Bills</span>
+                            <span class="ms-2" style="width: 90%;">Spare Part Bills</span>
                         </a>
                     </div>
                 </div>
-                <div class="col-xl-3 col-md-6">
+                {{-- <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
                         <a href="{{url('restaurant_pageshow')}}" class="btn btn-warning d-flex align-items-center justify-content-start">
                             <span class="d-flex" style="width: 10%;">
@@ -284,7 +284,7 @@
                             <span class="ms-2" style="width: 90%;">Restaurant Register</span>
                         </a>
                     </div>
-                </div>
+                </div> --}}
                 @endcan 
                 <!-- Kot Register -->
                 @can('Kot Register')
@@ -294,7 +294,7 @@
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-receipt"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Kot Register</span>
+                            <span class="ms-2" style="width: 90%;">Service Bill Register</span>
                         </a>
                     </div>
                 </div>
@@ -311,7 +311,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-xl-3 col-md-6">
+                {{-- <div class="col-xl-3 col-md-6">
                     <div class="card bg-dark text-white mb-4">
                         <a href="{{url('liqour_stock_brand_wise')}}" class="btn btn-dark d-flex align-items-center justify-content-start">
                             <span class="d-flex" style="width: 10%;">
@@ -320,7 +320,7 @@
                             <span class="ms-2" style="width: 90%;">Liqour Stock Brand Wise </span>
                         </a>
                     </div>
-                </div>
+                </div> --}}
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
                         <a href="{{url('item_wise_stock_pageshow')}}" class="btn btn-danger d-flex align-items-center justify-content-start">
@@ -409,7 +409,7 @@
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-bed"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Room List</span>
+                            <span class="ms-2" style="width: 90%;">Slot List</span>
                         </a>
                     </div>
                 </div>
@@ -441,7 +441,7 @@
                 </div>
                 @endcan
                 @can('Mycheckout')
-                <div class="col-xl-3 col-md-6">
+                {{-- <div class="col-xl-3 col-md-6">
                     <div class="card bg-warining text-white mb-4">
                         <a href="{{url('my_checkout_register_pageshow')}}" class="btn btn-warning d-flex align-items-center justify-content-start">
                             <span class="d-flex" style="width: 10%;">
@@ -450,7 +450,7 @@
                             <span class="ms-2" style="width: 90%;">My Check Out  Register Only</span>
                         </a>
                     </div>
-                </div>
+                </div> --}}
                 @endcan
                 @can('Checkout_Reg')
                 <div class="col-xl-3 col-md-6">
@@ -459,7 +459,7 @@
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-book"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Check Out Register Only</span>
+                            <span class="ms-2" style="width: 90%;">Moveout Out Register Only</span>
                         </a>
                     </div>
                 </div>
@@ -476,7 +476,7 @@
                     </div>
                 </div>
                 @endcan
-                @can('B2B Sale')
+                {{-- @can('B2B Sale')
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-success text-white mb-4">
                         <a href="{{url('b2bsales_pageshow')}}" class="btn btn-dark d-flex align-items-center justify-content-start">
@@ -500,7 +500,7 @@
                     </div>
                 </div>
                 @endcan
- 
+  --}}
  
             </div>
             

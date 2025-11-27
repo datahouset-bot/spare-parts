@@ -10,6 +10,17 @@
     <script src="jquery/master.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
     <style>
+
+
+.item-option {
+    padding: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+.item-option:hover {
+    background: #f1f1f1;
+}
+
         #display_rate {
             color: black;
 
@@ -135,27 +146,73 @@
 {{-- 
              {{-- ========================================================SECOND ROW 2========================================================================= --}}
 
+<div class="row no-gutter" name="itementery">
+<div class="col-md-2 col-4 position-relative">
+
+    <!-- Fake Select -->
+    <div id="itemSelect" class="form-control" style="cursor:pointer;">
+        Select Item
+    </div>
+
+    <!-- Dropdown -->
+    <div id="itemDropdown"
+         class="border bg-white p-2 d-none"
+         style="position:absolute;width:520px;z-index:9999">
+
+        <!-- ✅ 4 SEARCH INPUT SIDE BY SIDE -->
+      <div class="row g-1 mb-2">
+    <div class="col-3">
+        <input type="text" id="search_item"
+               class="form-control form-control-sm search-input"
+               placeholder="Item">
+    </div>
+    <div class="col-3">
+        <input type="text" id="search_barcode"
+               class="form-control form-control-sm search-input"
+               placeholder="Barcode">
+    </div>
+    <div class="col-3">
+        <input type="text" id="search_brand"
+               class="form-control form-control-sm search-input"
+               placeholder="Brand">
+    </div>
+    <div class="col-3">
+        <input type="text" id="search_category"
+               class="form-control form-control-sm search-input"
+               placeholder="Category">
+    </div>
+</div>
+
+        <hr class="my-1">
+
+        <!-- OPTION LIST -->
+      @foreach ($itemdata as $record)
+<div class="item-option"
+     data-id="{{ $record['id'] }}"
+     data-display="{{ $record['item_name'] }}"
+     data-name="{{ strtolower($record['item_name']) }}"
+     data-barcode="{{ strtolower($record['item_barcode']) }}"
+     data-brand="{{ strtolower($record['item_company'] ?? '') }}"
+     data-category="{{ strtolower($record['item_group'] ?? '') }}">
+
+    {{ $record['item_name'] }}
+    || {{ $record['item_barcode'] }}
+    || {{ $record['item_company'] }}
+    || {{ $record['item_group'] }}
+</div>
+@endforeach
+
+
+    </div>
+
+    <!-- REAL VALUE -->
+    <input type="hidden" name="item_id" id="item_id">
+
+</div>
 
 
 
 
-                  <div class="row no-gutter" name="itementery">
-                    <div class="col-md-2 col-"4>
-                        <div class="form-group">
-                            <select id="item_id" name="item_id" class="js-states form-control">
-                                <option disabled selected>Select Item</option>
-                                @foreach ($itemdata as $record)
-                                    <option value={{ $record['id'] }}>
-                                        {{ $record['item_name'] }}||{{ $record['item_barcode'] }} </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <span class="text-danger">
-                            @error('cust_name_id')
-                                {{ $message }}
-                            @enderror
-                        </span>
-                    </div>
 
                         <div class="col-md-2 col-3 text-center">
                         <div class="form-group">
@@ -241,6 +298,87 @@
     </div>
 
 
+    {{--============================= working of select item input field and give back data====================== --}}
+<script>
+$(document).ready(function () {
+
+    // open dropdown
+    $('#itemSelect').on('click', function () {
+        $('#itemDropdown').toggleClass('d-none');
+    });
+
+    // option select
+    // option select
+$('.item-option').on('click', function () {
+
+    let item_id     = $(this).data('id');
+    let displayText = $(this).data('display'); // ✅ ONLY ITEM NAME
+
+    $('#item_id').val(item_id);
+    $('#itemSelect').text(displayText); // ✅ now shows only product name
+    $('#itemDropdown').addClass('d-none');
+
+    // existing AJAX (NO CHANGE)
+    $.ajax({
+        url: '/searchitem/' + item_id,
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            if (response.item_info) {
+                $('#rate').val(response.item_info.sale_rate);
+                $('#display_rate').text(response.item_info.sale_rate);
+            } else {
+                $('#rate').val('');
+            }
+        }
+    });
+});
+
+    // close on outside click
+    $(document).on('click', function(e){
+        if (!$(e.target).closest('#itemSelect, #itemDropdown').length) {
+            $('#itemDropdown').addClass('d-none');
+        }
+    });
+
+});
+</script>
+
+
+
+
+{{-- ========================= use to search in input field of select item box======================================= --}}
+<script>
+$(document).ready(function () {
+
+    $('.search-input').on('keyup', function () {
+
+        let itemVal     = $('#search_item').val().toLowerCase();
+        let barcodeVal  = $('#search_barcode').val().toLowerCase();
+        let brandVal    = $('#search_brand').val().toLowerCase();
+        let categoryVal = $('#search_category').val().toLowerCase();
+
+        $('.item-option').each(function () {
+
+            let name     = String($(this).data('name'));
+            let barcode  = String($(this).data('barcode'));
+            let brand    = String($(this).data('brand'));
+            let category = String($(this).data('category'));
+
+            let match =
+                name.includes(itemVal) &&
+                barcode.includes(barcodeVal) &&
+                brand.includes(brandVal) &&
+                category.includes(categoryVal);
+
+            $(this).toggle(match);
+        });
+
+    });
+
+});
+
+</script>
 
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

@@ -8,7 +8,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
 
-<div class="container ">
+<div class="container-fluid ">
     @if(session('message'))
         <div class="alert alert-primary">
             {{ session('message') }}

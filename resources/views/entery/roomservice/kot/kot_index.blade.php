@@ -21,7 +21,7 @@
    
   });
 </script>
-<div class="container ">
+<div class="container-fluid ">
   @if(session('message'))
     <div class="alert alert-primary">
         {{ session('message') }}
@@ -36,15 +36,15 @@
 
     <div class="card my-3">
         <div class="card-header">
-       KOT 
+     <h3> Part bill list </h3>
         </div>
        <div class="row my-2">
           <div class="col-md-12 text-center">
 
 
-             <a href="{{url('/kots/create')}}" class="btn btn-success">New KOT</a>
-             <a href="{{url('/kots_cleared/kot')}}" class="btn btn-primary">Cleared KOT List </a>
-             <a href="{{url('/kichen_dashboard')}}" class="btn btn-warning">Kitchen Dashboard </a>
+             <a href="{{url('/kots/create')}}" class="btn btn-success">New Service bill</a>
+             <a href="{{url('/kots_cleared/kot')}}" class="btn btn-primary">Cleared service List </a>
+             {{-- <a href="{{url('/kichen_dashboard')}}" class="btn btn-warning">Kitchen Dashboard </a> --}}
           </div>
        </div>
         
@@ -61,11 +61,11 @@
                   <tr>
                     <th scope="col">S.No</th>
                     <th scope="col"> Date  </th>
-                    <th scope="col"> KOT No    </th>
+                    <th scope="col"> Part No    </th>
                     <th scope="col"> Service On </th>
                     <th scope="col"> Total Qty </th>
                     <th scope="col"> Total Amount </th>
-                    <th scope="col"> Serve Status </th>
+                    <th scope="col"> Bill Print Status </th>
                     <th scope="col"> Status </th>
                     <th scope="col"></th>
                     <th scope="col"></th>

@@ -3,190 +3,240 @@
 @endphp
 <link rel="stylesheet" href="{{ global_asset('/general_assets\css\form.css') }}">
 <style>
-    #room_selection_box {
-        background-color: rgb(242, 247, 247);
+/* ================================
+   GLOBAL POLISH
+================================ */
+body {
+    background: #f4f6f9;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    font-size: 14px;
+}
 
-        border: 5px solid #2196F3;
-        max-height: 170px;
-        min-height: 170px;
-        overflow: auto;
+.card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
 
-    }
+.card-header {
+    background: linear-gradient(135deg, #2196F3, #1976D2);
+    color: #fff;
+    border-radius: 12px 12px 0 0;
+    padding: 12px 16px;
+}
 
-    #paymnet_selection_box {
-        background-color: rgb(242, 247, 247);
-        border: 5px solid yellowgreen;
+.card-header h5 {
+    margin: 0;
+    font-weight: 600;
+}
 
-        overflow: auto;
+.card-body {
+    padding: 20px;
+}
 
-    }
+/* ================================
+   LABELS & INPUTS
+================================ */
+label {
+    color: #555;
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
 
-    #foodkot_selection_box {
-        background-color: rgb(242, 247, 247);
+.form-control,
+.form-select,
+.amount_input {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    font-size: 14px;
+    padding: 6px 10px;
+}
 
-        border: 5px solid #2196F3;
-        max-height: 170px;
-        min-height: 170px;
-        overflow: auto;
+.form-control:read-only {
+    background-color: #f1f3f5;
+}
 
-    }
+.form-control:focus {
+    border-color: #2196F3;
+    box-shadow: 0 0 0 0.15rem rgba(33,150,243,.2);
+}
 
+/* ================================
+   SECTION BOXES
+================================ */
+#room_selection_box,
+#foodkot_selection_box,
+#paymnet_selection_box {
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    background: #ffffff;
+}
 
-    #room_selection {
-        width: 100%;
-        border: 2px solid #ddd;
+#room_selection_box {
+    border: 2px solid #2196F3;
+}
 
-    }
+#foodkot_selection_box {
+    border: 2px solid #4CAF50;
+}
 
-    #foodkot_table {
-        width: 100%;
-        border: 2px solid #ddd;
-        font-size: 13px;
+#paymnet_selection_box {
+    border: 2px solid #FFC107;
+}
 
-    }
+/* ================================
+   TABLE STYLING
+================================ */
+table {
+    font-size: 13px;
+    border-radius: 8px;
+    overflow: hidden;
+}
 
-    #payment_table {
-        width: 100%;
-        border: 2px solid #ddd;
-        font-size: 15px;
-        padding: 0 !important;
-        margin: 0 !important;
+.table thead th {
+    background: #f0f3f6;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+}
 
-    }
+.table tbody td {
+    vertical-align: middle;
+    text-align: center;
+}
 
-    /* Style the table rows */
-    #room_selection tr {
-        border-bottom: 1px solid #ddd;
-    }
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #fafafa;
+}
 
-    /* Style the table cells */
-    #room_selection td {
-        padding: 3px;
-        text-align: left;
-        font-style: bold;
-        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-        font-size: 20px;
-        border: 1px solid #ddd;
-        background-color: white;
-        color: #048af8;
-    }
+/* ================================
+   CUSTOM CHECKBOX
+================================ */
+.container_chekbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.checkmark {
+    border-radius: 4px;
+}
 
-    .container_chekbox {
-        display: block;
-        position: relative;
-        padding-left: 35px;
-        margin-bottom: 1px;
-        cursor: pointer;
-        font-size: large;
-        text-align: center;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
+/* ================================
+   BUTTONS
+================================ */
+.btn {
+    border-radius: 8px;
+    font-size: 13px;
+    padding: 6px 12px;
+}
 
-    /* Hide the browser's default checkbox */
-    .container_chekbox input {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-        height: 0;
-        width: 0;
-    }
+.btn-primary {
+    background: linear-gradient(135deg, #2196F3, #1976D2);
+    border: none;
+}
 
-    /* Create a custom checkbox */
-    .checkmark {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 25px;
-        width: 25px;
-        background-color: #eee;
-        border: 1px solid;
-    }
+.btn-danger {
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+    border: none;
+}
 
-    /* On mouse-over, add a grey background color */
-    .container_chekbox:hover input~.checkmark {
-        background-color: white;
-        border: 1px solid;
-    }
+.btn-secondary {
+    background: #6c757d;
+    border: none;
+}
 
-    /* When the checkbox is checked, add a blue background */
-    .container_chekbox input:checked~.checkmark {
-        background-color: #2196F3;
-        border: 1px solid;
-    }
+.btn-sm i {
+    margin: 0;
+}
 
-    /* Create the checkmark/indicator (hidden when not checked) */
-    .checkmark:after {
-        content: "";
-        position: absolute;
-        display: none;
-    }
+/* ================================
+   PAYMENT AREA
+================================ */
+#payment_table td {
+    padding: 6px;
+}
 
-    /* Show the checkmark when checked */
-    .container_chekbox input:checked~.checkmark:after {
-        display: block;
-    }
+#payment_table tr td:first-child {
+    font-weight: 600;
+    color: #444;
+}
 
-    /* Style the checkmark/indicator */
-    .container_chekbox .checkmark:after {
-        left: 9px;
-        top: 5px;
-        width: 5px;
-        height: 12px;
-        border: solid white;
-        border-width: 0 3px 3px 0;
-        -webkit-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        transform: rotate(45deg);
-    }
+.amount_input {
+    text-align: right;
+}
 
-    #checkin_room_tariff {
-        width: 55px;
-        font-size: 15px;
-    }
+/* ================================
+   FOOTER BUTTONS
+================================ */
+.card-footer {
+    background: #ffffff;
+    border-top: 1px solid #eee;
+}
 
-    #checkin_room_dis {
-        width: 35px;
-        font-size: 15px;
-    }
+.card-footer .btn {
+    min-width: 120px;
+}
 
-    #checkin_room_no {
-        width: 80px;
-        font-size: 15px;
-    }
+/* ================================
+   HEADINGS INSIDE BOXES
+================================ */
+h5 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+}
 
-    .input_id {
-        width: 50px;
-    }
-
-    #checkin_roomtype {
-        width: 130px;
-        font-size: 15px;
-    }
-
-    label {
-        color: blue;
-        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-        font-size: 15px;
-        font-style: bold;
-        font-weight: 800;
+/* ================================
+   RESPONSIVE FIX
+================================ */
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 12px;
     }
 
     .amount_input {
-        width: 100px;
-        font-size: 15px;
+        width: 100%;
     }
+}
+
+/* ✅ FORCE LABOUR DATA TO SCROLL (NO HTML CHANGE) */
+#foodkot_selection_box:has(#rent_diplay) {
+    max-height: 220px !important;   
+    min-height: 220px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* ✅ keep header visible */
+#foodkot_selection_box:has(#rent_diplay) thead {
+    position: sticky;
+    top: 0;
+    background: #f0f3f6;
+    z-index: 5;
+}
+/* ✅ Make Pending Parts Bill total input smaller */
+#total_food_bill_amount {
+    width: 70px !important;     
+    font-size: 12px !important;
+    padding: 2px 6px !important;
+    height: 28px !important;
+    text-align: right;
+    border-radius: 6px;
+}
+
 </style>
+
 @extends('layouts.blank')
 @section('pagecontent')
     <div class="card my-1 ">
         <div class="row ">
 
 
-            <div class="container ">
+            <div class="container-fluid  ">
                 @php
                     $r1 = 0;
                     $total_amount_kot = 0;
@@ -194,7 +244,7 @@
                 @endphp
 
                 <body class="bg-primary">
-                    <div class="container">
+                    <div class="container-fluid px-3">
 
                         <div class="row justify-content-center">
                             <div class="col-lg-12">
@@ -625,7 +675,8 @@
                                                             </table>
                                                         </div> --}}
                                                         {{-- Food Bill Box   --}}
-                                                        <div class="col-md-4 my-1 " id ="foodkot_selection_box">
+                                                        <div class="row">
+                                                     <div class="col-lg-6 col-md-12 my-1" id="foodkot_selection_box">
                                                             <h5>Pending Parts Bill </h5>
                                                             <table id="foodkot_table"
                                                                 class="table table-striped table-responsive">
@@ -641,11 +692,6 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-
-                                                                    {{-- @php
-                        $r1=0;
-                     $total_amount_kot=0; 
-                      @endphp --}}
                                                                     @foreach ($foodbills as $record)
                                                                         <tr>
 
@@ -693,18 +739,10 @@
                                                             <input type="text" class="input_id"
                                                                 id ="total_food_bill_amount"
                                                                 value =" {{ $total_food_bill_amount }}" readonly>
-
-
-
-
-
                                                             </table>
                                                         </div>
-                                               
-
-    
-                                                        {{-- rent display   --}}
-                                                        <div class="col-md-4 my-1 " id ="foodkot_selection_box">
+                                                {{-- rent display   --}}
+                                                       <div class="col-lg-6 col-md-12 my-1" id="foodkot_selection_box">
                                                             <h5>Labour charge</h5>
                                                             <table id="rent_diplay"
                                                                 class="table table-striped table-responsive">
@@ -719,10 +757,6 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-
-
-
-
                                                                 </tbody>
                                                             </table>
 
@@ -734,7 +768,7 @@
 
                                                     </div>
                                                 </div>
-
+                                                </div>
 
 
                                                 <div class="col-md-4" id ="paymnet_selection_box">
