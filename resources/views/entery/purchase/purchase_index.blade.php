@@ -16,7 +16,7 @@
    
   });
 </script> --}}
-<div class="container-flud mx-3 ">
+<div class="container-fluid mx-3 ">
   @if(session('message'))
     <div class="alert alert-primary">
         {{ session('message') }}

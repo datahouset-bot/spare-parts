@@ -34,8 +34,9 @@
        <div class="row my-2">
         <div class="col-md-12 text-center"><a href={{url('/itemform')}} class="btn btn-primary">Add New Item  </a>
           <a href={{url('/item_dt')}} class="btn btn-dark">Register </a>
+          <a href={{url('/batchseeting')}} class="btn btn-danger">Batch Seeting </a>
           <button class="btn btn-warning mx-2">Import</button></div></div>
-
+ 
          
         <div class="card-body table-scrollable">
             <table class="table   table-striped"id="remindtable">

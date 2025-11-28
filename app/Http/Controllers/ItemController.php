@@ -7,9 +7,10 @@ use App\Models\unit;
 use App\Models\company;
 use App\Models\gstmaster;
 use App\Models\itemgroup;
+use App\Models\labelsetting;
+
+
 use Illuminate\Http\Request;
-
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -166,7 +167,7 @@ class ItemController extends CustomBaseController
         $itemgroup = itemgroup::where('firm_id',Auth::user()->firm_id)->get();
         $unit = unit::where('firm_id',Auth::user()->firm_id)->get();
         $gstmaster = gstmaster::where('firm_id',Auth::user()->firm_id)->get();
-
+ $labelsetting=labelsetting::where('firm_id',Auth::user()->firm_id)->get();
 
 
         $record = item::where('firm_id',Auth::user()->firm_id)->find($id);
@@ -174,8 +175,8 @@ class ItemController extends CustomBaseController
         return view('master.itemformedit', ['data' => $record, 'companydata' => $company,
         'itemgroupdata' => $itemgroup,
         'unit' => $unit,
-        'gstmaster' => $gstmaster,]);
-
+        'gstmaster' => $gstmaster,
+'labelsetting'=>$labelsetting]);
     }
     public function edit_item(Request $request)
     {

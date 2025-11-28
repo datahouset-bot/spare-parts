@@ -16,7 +16,7 @@
    
   });
 </script>
-<div class="container ">
+<div class="containerfluid">
   @if(session('message'))
     <div class="alert alert-primary">
         {{ session('message') }}

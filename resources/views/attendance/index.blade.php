@@ -1,7 +1,7 @@
 @extends('layouts.blank')
 @section('pagecontent')
 
-<div class="container">
+<div class="container-fluid">
     <h4 class="mb-3">Daily Attendance</h4>
 
     <form action="{{ route('attendance.store') }}" method="POST">

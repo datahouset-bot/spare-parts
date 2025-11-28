@@ -526,6 +526,16 @@ Route::post('/attendance', [AttendanceController::class, 'store'])->name('attend
 Route::get('/attendance_report', [AttendanceController::class, 'report'])->name('attendance.report');
 Route::post('/attendance_report', [AttendanceController::class, 'reportShow'])->name('attendance.report.show');
 
+
+// --------------------Batch Setting detail----------------------------
+Route::get('/batchseeting', [App\Http\Controllers\LabelsettingController::class, 'batchseeting'])->name('batchseeting');
+Route::post('/save_batchseeting', [App\Http\Controllers\LabelsettingController::class, 'store']);
+Route::get('/batch_lebel_edit/{id}', [App\Http\Controllers\LabelsettingController::class, 'batch_lebel_edit']);
+Route::put('/update_lable', [App\Http\Controllers\LabelsettingController::class, 'update_lable']);
+Route::post('store_batch', [App\Http\Controllers\BatchController::class, 'store']);
+Route::get('/searchbatch/{batch_id}', [BatchController::class, 'searchbatch']);
+
+
 //----------------------------purchase- sales invetory  stock managment -------------------------
 Route::resource('purchases', PurchaseController::class);
 Route::get('purchases_show/{id}',[App\Http\Controllers\purchasecontroller::class,'purchase_show']);

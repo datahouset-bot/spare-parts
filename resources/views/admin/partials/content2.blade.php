@@ -1,3 +1,4 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 /* ===============================
    GLOBAL POLISH
@@ -108,19 +109,19 @@ body {
             </div>
             <ol class="breadcrumb mb-4">
                 <li class="breadcrumb-item active">
-                    {{ $compinfofooter->ct2 }} Dashboard Today Date  {{ now()->format('d-m-y') }} Time
-                    <span id="current-time"></span> 
+                   <h5>{{ $compinfofooter->ct2 }} Dashboard Today Date  {{ now()->format('d-m-y') }} Time 
+                    <span id="current-time"></span>
                     <span id="finacial_year" style="background-color: rgb(247, 164, 164); font-weight: 800px; color: rgb(8, 32, 243);">
-          @if ($financialyear)
+           @if ($financialyear)
     FY From{{ \Carbon\Carbon::parse( $financialyear->financial_year_start)->format('d-m-y') }}  to   {{ \Carbon\Carbon::parse( $financialyear->financial_year_end)->format('d-m-y') }} 
 @endif
-
+ 
   
                     </span>
                     <br>Activation Date:&nbsp;{{ \Carbon\Carbon::parse($softwarecompinfo->activation_date)->format('d-m-y') }}  & Renew Date:&nbsp;{{ \Carbon\Carbon::parse($softwarecompinfo->expiry_date)->format('d-m-y') }} & Day Remaining:&nbsp;{{$daysDifference}}
                                 @if ($softwarecompinfo->software_af6 == 'af')
                                   <span style="background-color: orange; font-weight: 800px; color: white;"> WhatsApp Not Active99 </span>  
-
+</h5>
  @else
     @php
         $validity_date = \Carbon\Carbon::parse($softwarecompinfo->software_af6)->startOfDay();
@@ -324,7 +325,37 @@ body {
                 </div>
             </div>
         @endcan
-            @can('receipt')
+
+
+        @can('sale')
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-warning text-white mb-4">
+                        <a href="{{ url('/sales') }}" class="btn btn-sales d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-box-open"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;"><h3>Sale invoice</h3></span>
+                        </a>
+                    </div>
+                </div>
+            @endcan
+        
+           
+         @can('purchase')
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{ url('/purchases') }}" class="btn btn-primary d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-cart-plus"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;"><h3>Purchase</h3></span>
+                        </a>
+                    </div>
+                </div>
+            @endcan
+              
+
+ @can('receipt')
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
                         <a href="{{ url('/reciepts') }}" class="btn btn-warning d-flex align-items-center justify-content-start">
@@ -336,7 +367,7 @@ body {
                     </div>
                 </div>
             @endcan
-            @can('payment')
+@can('payment')
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
                         <a href="{{ url('/payments') }}" class="btn btn-info d-flex align-items-center justify-content-start">
@@ -349,34 +380,9 @@ body {
                         </a>
                     </div>
                 </div>
-
-@can('purchase')
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/purchases') }}" class="btn btn-primary d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
-                                <i class="fas fa-cart-plus"></i>
-                            </span>
-                            <span class="ms-2" style="width: 90%;"><h3>Purchase</h3></span>
-                        </a>
-                    </div>
-                </div>
-            @endcan
-            
- @can('sale')
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-warning text-white mb-4">
-                        <a href="{{ url('/sales') }}" class="btn btn-sales d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
-                                <i class="fas fa-box-open"></i>
-                            </span>
-                            <span class="ms-2" style="width: 90%;"><h3>Sale invoice</h3></span>
-                        </a>
-                    </div>
-                </div>
-            @endcan
-            @endcan
-           
+@endcan
+ 
+ 
             {{-- @can('Restaurant')
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-info text-white mb-4">
@@ -390,6 +396,19 @@ body {
                     </div>
                 </div>
                 @endcan --}}
+                 @can('ledger')
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <a href="{{ url('/ledgers') }}" class="btn btn-danger d-flex align-items-center justify-content-start">
+                            <span class="d-flex" style="width: 10%;">
+                                <i class="fas fa-book"></i>
+                            </span>
+                            <span class="ms-2" style="width: 90%;"><h3>Ledger</h3></span>
+                        </a>
+                    </div>
+                </div>
+            @endcan
+
             
             @can('Stock_Transfer')
                 <div class="col-xl-3 col-md-6">
@@ -404,19 +423,7 @@ body {
                 </div>
             @endcan
            
-             @can('ledger')
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/ledgers') }}" class="btn btn-danger d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
-                                <i class="fas fa-book"></i>
-                            </span>
-                            <span class="ms-2" style="width: 90%;"><h3>Ledger</h3></span>
-                        </a>
-                    </div>
-                </div>
-            @endcan
-
+            
             @can('Report')
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
@@ -593,6 +600,107 @@ body {
                     </div>
 
                     @endcan
+
+
+                    <hr class="my-4">
+
+<div class="row">
+
+    <!-- =====================
+        PURCHASE TABLE
+    ====================== -->
+    <div class="col-xl-6 col-lg-12 mb-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white fw-bold">
+                <i class="fas fa-cart-plus me-2"></i> Recent Purchases
+            </div>
+
+            <div class="card-body table-responsive p-0">
+                <table class="table table-striped table-hover align-middle mb-0">
+                    <thead class="table-light text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Supplier</th>
+                            <th>Invoice No</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <tr>
+                            <td>1</td>
+                            <td>24-11-2025</td>
+                            <td>ABC Traders</td>
+                            <td>PUR-101</td>
+                            <td class="fw-bold text-success">₹12,500</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>25-11-2025</td>
+                            <td>XYZ Suppliers</td>
+                            <td>PUR-102</td>
+                            <td class="fw-bold text-success">₹8,200</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer text-end">
+                <a href="{{ url('/purchases') }}" class="btn btn-sm btn-primary">
+                    View All Purchases
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================
+        SALE TABLE
+    ====================== -->
+    <div class="col-xl-6 col-lg-12 mb-4">
+        <div class="card">
+            <div class="card-header bg-success text-white fw-bold">
+                <i class="fas fa-box-open me-2"></i> Recent Sales
+            </div>
+
+            <div class="card-body table-responsive p-0">
+                <table class="table table-striped table-hover align-middle mb-0">
+                    <thead class="table-light text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Invoice No</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <tr>
+                            <td>1</td>
+                            <td>24-11-2025</td>
+                            <td>Rahul Sharma</td>
+                            <td>SAL-205</td>
+                            <td class="fw-bold text-danger">₹15,000</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>25-11-2025</td>
+                            <td>Amit Verma</td>
+                            <td>SAL-206</td>
+                            <td class="fw-bold text-danger">₹6,700</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer text-end">
+                <a href="{{ url('/sales') }}" class="btn btn-sm btn-success">
+                    View All Sales
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
                 </div>
                 
                 <script>

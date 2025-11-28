@@ -1,6 +1,6 @@
 @extends('layouts.blank')
 @section('pagecontent')
-    <div class="container ">
+    <div class="container-fluid">
         @if (session('message'))
             <div class="alert alert-primary">
                 {{ session('message') }}
