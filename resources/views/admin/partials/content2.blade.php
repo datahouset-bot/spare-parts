@@ -95,6 +95,47 @@ body {
 .btn-info    { background: linear-gradient(135deg, #0ea5e9, #0284c7); }
 .btn-dark    { background: linear-gradient(135deg, #374151, #111827); }
 .btn-primary { background: linear-gradient(135deg, #6366f1, #4f46e5); }
+
+
+/* =====================================================
+   FULL PAGE ALIGNMENT FIX – NO HTML CHANGE
+===================================================== */
+
+/* Prevent flex containers from affecting next rows */
+.col-md-6.d-flex {
+    flex-wrap: wrap !important;
+}
+
+/* Force the row containing Recent Sale + Outstanding
+   onto a new line below everything */
+.row.mt-4 {
+    clear: both !important;
+    display: flex !important;
+    width: 100%;
+}
+
+/* Ensure columns behave correctly */
+.row.mt-4 > [class*="col-"] {
+    float: none !important;
+    display: block;
+}
+
+/* Desktop: keep Recent Sale & Outstanding side-by-side */
+@media (min-width: 992px) {
+    .row.mt-4 > .col-xl-6 {
+        width: 50%;
+        float: left;
+    }
+}
+
+/* Mobile: stack both tables */
+@media (max-width: 991px) {
+    .row.mt-4 > .col-xl-6 {
+        width: 100%;
+        float: none;
+    }
+}
+
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <div id="layoutSidenav_content" style="background-color: whitesmoke">
@@ -437,22 +478,25 @@ body {
                 </div>
             @endcan   
           @can('Only_Whatsapp')
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/send_promotional_whatsapp') }}" class="btn btn-success d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
-                                <i class="fa fa-bullhorn"></i>
-                            </span>
-                            <span class="ms-2" style="width: 90%;">Bulk Whatsapp </span>
-                        </a>
-                    </div>
-                </div>
+              <!-- =========================
+    MOBILE NUMBER SECTION
+========================= -->
+<div class="row mt-3">
+    <div class="col-md-6"></div> <!-- left empty -->
 
-                  
+    <div class="col-md-6 d-flex justify-content-end align-items-center gap-2">
+        <div style="width:220px;">
+            <input type="text" class="form-control"
+                   id="mobile" name="mobile"
+                   placeholder="Enter mobile number"
+                   autocomplete="off">
+        </div>
 
-            @endcan    
-            </div>
-            
+        <a href="#" id="whatsapp-link">
+            <i class="fa fa-bullhorn" style="font-size:40px;color:green"></i>
+        </a>
+@endcan
+      
 
             {{-- <div class="row">
                 <div class="col-xl-6">
@@ -601,108 +645,180 @@ body {
 
                     @endcan
 
+<div class="row mt-4">
 
-                    <hr class="my-4">
-
-<div class="row">
-
-    <!-- =====================
-        PURCHASE TABLE
-    ====================== -->
-    <div class="col-xl-6 col-lg-12 mb-4">
-        <div class="card">
-            <div class="card-header bg-primary text-white fw-bold">
-                <i class="fas fa-cart-plus me-2"></i> Recent Purchases
-            </div>
-
-            <div class="card-body table-responsive p-0">
-                <table class="table table-striped table-hover align-middle mb-0">
-                    <thead class="table-light text-center">
-                        <tr>
-                            <th>#</th>
-                            <th>Date</th>
-                            <th>Supplier</th>
-                            <th>Invoice No</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-center">
-                        <tr>
-                            <td>1</td>
-                            <td>24-11-2025</td>
-                            <td>ABC Traders</td>
-                            <td>PUR-101</td>
-                            <td class="fw-bold text-success">₹12,500</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>25-11-2025</td>
-                            <td>XYZ Suppliers</td>
-                            <td>PUR-102</td>
-                            <td class="fw-bold text-success">₹8,200</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="card-footer text-end">
-                <a href="{{ url('/purchases') }}" class="btn btn-sm btn-primary">
-                    View All Purchases
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- =====================
-        SALE TABLE
-    ====================== -->
+    <!-- =========================
+        RECENT SALES (LEFT)
+    ========================== -->
     <div class="col-xl-6 col-lg-12 mb-4">
         <div class="card">
             <div class="card-header bg-success text-white fw-bold">
                 <i class="fas fa-box-open me-2"></i> Recent Sales
             </div>
 
-            <div class="card-body table-responsive p-0">
-                <table class="table table-striped table-hover align-middle mb-0">
-                    <thead class="table-light text-center">
+            <div class="card-body p-0" style="max-height:350px; overflow:auto;">
+                <table class="table table-striped table-hover align-middle mb-0" style="min-width:800px;">
+                    <thead class="table-light text-center sticky-top">
                         <tr>
                             <th>#</th>
                             <th>Date</th>
                             <th>Customer</th>
-                            <th>Invoice No</th>
+                            <th>Invoice</th>
                             <th>Amount</th>
                         </tr>
                     </thead>
+
+                    @php $r1 = 0; @endphp
                     <tbody class="text-center">
+                        @foreach($sales as $item)
                         <tr>
-                            <td>1</td>
-                            <td>24-11-2025</td>
-                            <td>Rahul Sharma</td>
-                            <td>SAL-205</td>
-                            <td class="fw-bold text-danger">₹15,000</td>
+                            <td>{{ ++$r1 }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->voucher_date)->format('d-m-y') }}</td>
+                            <td>{{ $item->account->account_name ?? 'N/A' }}</td>
+                            <td>{{ $item->voucher_bill_no }}</td>
+                            <td class="fw-bold text-danger">
+                                {{ number_format($item->total_net_amount, 2) }}
+                            </td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>25-11-2025</td>
-                            <td>Amit Verma</td>
-                            <td>SAL-206</td>
-                            <td class="fw-bold text-danger">₹6,700</td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
 
             <div class="card-footer text-end">
-                <a href="{{ url('/sales') }}" class="btn btn-sm btn-success">
+                <a href="{{ url('/sales') }}" class="btn btn-xs btn-success">
                     View All Sales
                 </a>
             </div>
         </div>
     </div>
+<div class="col-xl-6 col-lg-12 mb-4">
+    <div class="row">
 
-</div>
+        <!-- =========================
+            OUTSTANDING PAYABLE
+        ========================== -->
+        <div class="col-md-10 mb-3">
+            <div class="card h-100">
+                <div class="card-header bg-danger text-white fw-bold">
+                    <i class="fas fa-file-invoice-dollar me-2"></i>
+                    Outstanding Payable
                 </div>
-                
+
+                <div class="card-body p-0" style="max-height:280px; overflow:auto;">
+                    <table class="table table-striped table-hover mb-0">
+                        <thead class="table-light text-center sticky-top">
+                        </thead>
+                        @php
+                              $totalbalance=0;
+                            @endphp
+
+                        <tbody class="text-center">
+                            @foreach($outstandingPayables as $i => $acc)
+                            <tr>
+                                {{-- <td>{{ $i + 1 }}</td> --}}
+                                   @php
+
+if($acc->balnce_type === 'Dr'){
+        $balance = $acc->op_balnce + $acc->total_debit - $acc->total_credit;
+            }
+    else{
+        $balance =  $acc->total_debit-$acc->op_balnce  - $acc->total_credit;
+        
+        }
+        $totalbalance+=$balance;
+        $balanceDisplay = abs($balance) . ($balance >= 0 ? ' Dr' : ' Cr');
+                                @endphp
+                            </tr>
+                                        
+                            @endforeach
+                                              <tr>
+                                <td>Total</td>
+                                <td></td>
+                                @php
+                                         $totalbalanceDisplay = abs($totalbalance) . ($totalbalance >= 0 ? ' Dr' : ' Cr');
+ 
+                                @endphp
+                                <td>{{$totalbalanceDisplay}}</td>
+                                <td></td> 
+                                </tr>    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- =========================
+            PURCHASE BAR GRAPH
+        ========================== -->
+        <div class="col-md-10 mb-3">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white fw-bold">
+                    <i class="fas fa-cart-plus me-2"></i>
+                    Purchase Amount
+                </div>
+
+                <div class="card-body">
+                    <canvas id="purchaseBarChart" style="height:240px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const ctx = document.getElementById('purchaseBarChart');
+    if (!ctx) return;
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+                @foreach($purchaseChart as $p)
+                    "{{ $p->account->account_name ?? 'Unknown' }}",
+                @endforeach
+            ],
+            datasets: [{
+                data: [
+                    @foreach($purchaseChart as $p)
+                        {{ $p->total_net_amount ?? 0 }},
+                    @endforeach
+                ],
+                backgroundColor: '#0ea5e9',
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    ticks: { maxRotation: 45, minRotation: 20 }
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+});
+</script>
+
+
+
+
+
+
                 <script>
                     // First Button: Only mobile number
                     document.getElementById("whatsapp-link").addEventListener("click", function (event) {

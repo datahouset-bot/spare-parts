@@ -93,7 +93,6 @@ class BatchController extends Controller
         ->where('firm_id',Auth::user()->firm_id)
         ->get();
         
-        
         return response()->json([
             'message' => 'Records fetched successfully for user ' . $item_id,
             'status' => 200,

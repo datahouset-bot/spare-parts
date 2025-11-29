@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\componyinfo;
 use Carbon\Carbon;
 use App\Models\amc;
 use App\Models\kot;
 use App\Models\room;
 use App\Models\todo;
+use App\Models\account;
+use App\Models\voucher;
 use App\Models\Followup;
+use App\Models\componyinfo;
 use App\Models\roomcheckin;
 use Illuminate\Http\Request;
 use App\Models\financialyear;
@@ -87,11 +89,80 @@ class HomeController extends CustomBaseController
     ->count();
 
 
+ $sales = voucher::withinFY('entry_date')->with('account')
+        ->where('firm_id', Auth::user()->firm_id)
+        ->where('voucher_type','Sale')->orderBy('voucher_no','desc')->get();
+
+//  outstanding data show
+
+ $today = now()->toDateString(); // YYYY-MM-DD
+
+    // ==============================
+    // Outstanding Payable (Today)
+    // ==============================
+    $accounts = Account::select(
+            'accounts.id',
+            'accounts.account_name',
+            'accounts.op_balnce',
+            'accounts.balnce_type',
+            'accounts.mobile',
+
+            DB::raw("SUM(
+                CASE 
+                    WHEN ledgers.entry_date <= '$today' 
+                    THEN ledgers.debit 
+                    ELSE 0 
+                END
+            ) as total_debit"),
+
+            DB::raw("SUM(
+                CASE 
+                    WHEN ledgers.entry_date <= '$today' 
+                    THEN ledgers.credit 
+                    ELSE 0 
+                END
+            ) as total_credit")
+        )
+        ->leftJoin('ledgers', 'accounts.id', '=', 'ledgers.account_id')
+        ->where('accounts.firm_id', Auth::user()->firm_id)
+        ->groupBy(
+            'accounts.id',
+            'accounts.account_name',
+            'accounts.op_balnce',
+            'accounts.balnce_type',
+            'accounts.mobile'
+        )
+        ->get();
+
+    $outstandingPayables = $accounts
+        ->map(function ($account) {
+
+            if ($account->balnce_type === 'Dr') {
+                $balance = $account->op_balnce
+                         + $account->total_debit
+                         - $account->total_credit;
+            } else { // Cr
+                $balance = $account->total_credit
+                         - $account->total_debit
+                         - $account->op_balnce;
+            }
+
+            $account->outstanding_amount = $balance;
+            return $account;
+        })
+        ->filter(function ($account) {
+            return $account->outstanding_amount < 0;
+        })
+        ->sortBy('outstanding_amount'); // highest payable first
+// show purchase data 
 
 
-
-
-        // Pass the counts to the view
+    $purchaseChart = voucher::with('account')
+    ->where('firm_id', Auth::user()->firm_id)
+    ->where('voucher_type', 'Purchase')
+    ->orderBy('voucher_no', 'desc')
+    ->take(7)
+    ->get();
 
 
                 $user = Auth::user();
@@ -117,7 +188,7 @@ class HomeController extends CustomBaseController
 
             }
             else{
-                return view('home', compact('roomcheckin','currentDate','vacantroom','occupiedroom' ,'dirtyroom','daysDifference','amcCount', 'dueAmcCount','pendingTask','todayFollowup' ,'kot_Unprinted','Rkot_Unprinted','financialyear'));    
+                return view('home', compact('purchaseChart','outstandingPayables','roomcheckin','sales','currentDate','vacantroom','occupiedroom' ,'dirtyroom','daysDifference','amcCount', 'dueAmcCount','pendingTask','todayFollowup' ,'kot_Unprinted','Rkot_Unprinted','financialyear'));    
             }
         }
         else{

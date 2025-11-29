@@ -279,10 +279,7 @@ if($record->balnce_type === 'Dr'){
                                   </form>
                                   
 </td>
-
-
-
-                              </tr>
+                         </tr>
                                 
                               @endforeach
                               <tr>

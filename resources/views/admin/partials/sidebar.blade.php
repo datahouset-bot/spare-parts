@@ -215,21 +215,23 @@
                                       <a class="nav-link" href="{{ url('/purchases') }}" style="color: white; font-size:24px;">Countra</a>
                                       <a class="nav-link" href="{{ url('/purchases') }}" style="color: white; font-size:24px;">Journal Entry</a>
                                       <a class="nav-link" href="{{ url('/purchases') }}" style="color: white; font-size:24px;">Bank Entry</a>
-
-
-
-
-
                                     </nav>
                                 </div>
 
-
-
-
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"  style="color:white; font-size:22px;"
+                                    data-bs-target="#crush" aria-expanded="false" aria-controls="crush">
+                                    Crusher
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="crush" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="{{ url('crusher/create') }}" style="color: white; font-size:20px;">New Entry</a>
+                                         <a class="nav-link" href="{{ url('/crusher') }}" style="color: white; font-size:20px;">Challan Details</a>
+                                    </nav>
+                                </div>
 
                             </nav>
-
-
 
                         </div>
                     @endcan

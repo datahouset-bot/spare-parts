@@ -4,20 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\item;
 use App\Models\unit;
+use App\Models\batch;
 use App\Models\company;
 use App\Models\gstmaster;
 use App\Models\itemgroup;
 use App\Models\labelsetting;
-
-
 use Illuminate\Http\Request;
+use App\Imports\FullItemsImport;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 
 
 class ItemController extends CustomBaseController
 {
- 
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:view role', ['only' => ['index']]);
+    //     $this->middleware('permission:create role', ['only' => ['create','store','addPermissionToRole','givePermissionToRole']]);
+    //     $this-> middleware('permission:update role', ['only' => ['update','edit']]);
+    //     $this-> middleware('permission:delete role', ['only' => ['destroy']]);
+
+
+    //     $this->middleware(['auth', 'verified']);
+    // }
+
 
 
     public function index()
@@ -44,19 +55,20 @@ class ItemController extends CustomBaseController
         $unit = unit::where('firm_id',Auth::user()->firm_id)->get();
         $gstmaster = gstmaster::where('firm_id',Auth::user()->firm_id)->get();
 
-
+        $labelsetting=labelsetting::where('firm_id',Auth::user()->firm_id)->get();
         return view('master.itemform', [
             'companydata' => $company,
             'itemgroupdata' => $itemgroup,
             'unit' => $unit,
             'gstmaster' => $gstmaster,
+            'labelsetting'=>$labelsetting
 
 
         ]);
     }
 
     public function insertitem(Request $request)
-    {
+    { 
         if ($request->hasFile('item_image')) {
             $image1 = $request->file('item_image'); // Use `file()` method to access uploaded file
             $originalName = $image1->getClientOriginalName(); // Original file name
@@ -116,6 +128,7 @@ class ItemController extends CustomBaseController
             $item->sale_rate_b = $request->sale_rate_b;
             $item->sale_rate_c = $request->sale_rate_c;
             $item->purchase_rate = $request->purchase_rate;
+            $item->short_name = $request->short_name;
             if (is_null($request->item_barcode)) {
                 $last_item = Item::
                 where('firm_id',Auth::user()->firm_id)->orderByRaw('CAST(id AS UNSIGNED) DESC')->first();
@@ -167,16 +180,20 @@ class ItemController extends CustomBaseController
         $itemgroup = itemgroup::where('firm_id',Auth::user()->firm_id)->get();
         $unit = unit::where('firm_id',Auth::user()->firm_id)->get();
         $gstmaster = gstmaster::where('firm_id',Auth::user()->firm_id)->get();
- $labelsetting=labelsetting::where('firm_id',Auth::user()->firm_id)->get();
+
 
 
         $record = item::where('firm_id',Auth::user()->firm_id)->find($id);
+        $labelsetting=labelsetting::where('firm_id',Auth::user()->firm_id)->get();
 
         return view('master.itemformedit', ['data' => $record, 'companydata' => $company,
         'itemgroupdata' => $itemgroup,
         'unit' => $unit,
         'gstmaster' => $gstmaster,
-'labelsetting'=>$labelsetting]);
+        'labelsetting'=>$labelsetting,
+    
+    ]);
+
     }
     public function edit_item(Request $request)
     {
@@ -264,4 +281,37 @@ class ItemController extends CustomBaseController
 
 
     }
+    public function searchitem_batch($item_id)
+    {
+        $startTime = microtime(true); // Start timer
+    
+        $batch = batch::where('firm_id', Auth::user()->firm_id)
+                      ->where('item_id', $item_id)
+                      ->get();
+    
+        $endTime = microtime(true); // End timer
+        $executionTime = round(($endTime - $startTime) * 1000, 2); // Time in milliseconds
+    
+        if ($batch->isNotEmpty()) {
+            return response()->json([
+                'message' => '<p class="alert alert-success">Batch Record Found</p>',
+                'batch_info' => $batch->toArray(),
+                'execution_time_ms' => $executionTime . ' ms'
+            ]);
+        } else {
+            return response()->json([
+                'message' => '<p class="alert alert-danger">No Record Found for selected item</p>',
+                'batch_info' => null,
+                'execution_time_ms' => $executionTime . ' ms'
+            ]);
+        }
+    }
+    
+
+
+    public function importItems(Request $request)
+{
+    Excel::import(new FullItemsImport, $request->file('file'));
+    return back()->with('success', 'Items and master data imported successfully!');
+}
 }

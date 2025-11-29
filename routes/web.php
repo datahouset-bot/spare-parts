@@ -12,6 +12,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UnitController;
 
+use App\Http\Controllers\BatchController;
 use App\Http\Controllers\RestaController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\BackupController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\TenantController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BanquetController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\Crushercontroller;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\FollowupController;
 use App\Http\Controllers\FoodbillController;
@@ -526,14 +528,18 @@ Route::post('/attendance', [AttendanceController::class, 'store'])->name('attend
 Route::get('/attendance_report', [AttendanceController::class, 'report'])->name('attendance.report');
 Route::post('/attendance_report', [AttendanceController::class, 'reportShow'])->name('attendance.report.show');
 
-
-// --------------------Batch Setting detail----------------------------
+//---------------------------------batch setting------------------------------------
 Route::get('/batchseeting', [App\Http\Controllers\LabelsettingController::class, 'batchseeting'])->name('batchseeting');
 Route::post('/save_batchseeting', [App\Http\Controllers\LabelsettingController::class, 'store']);
 Route::get('/batch_lebel_edit/{id}', [App\Http\Controllers\LabelsettingController::class, 'batch_lebel_edit']);
 Route::put('/update_lable', [App\Http\Controllers\LabelsettingController::class, 'update_lable']);
 Route::post('store_batch', [App\Http\Controllers\BatchController::class, 'store']);
-Route::get('/searchbatch/{batch_id}', [BatchController::class, 'searchbatch']);
+Route::get('/searchbatch/{batch_id}', [App\Http\Controllers\BatchController::class, 'searchbatch']);
+Route::resource('batchs', BatchController::class);
+
+// -------------------------------------Crusher new table------------------------------------------------
+Route::resource('crusher',Crushercontroller::class);
+
 
 
 //----------------------------purchase- sales invetory  stock managment -------------------------
