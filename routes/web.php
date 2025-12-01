@@ -539,6 +539,9 @@ Route::resource('batchs', BatchController::class);
 
 // -------------------------------------Crusher new table------------------------------------------------
 Route::resource('crusher',Crushercontroller::class);
+Route::get('vehicledetail',[App\Http\Controllers\Crushercontroller::class,'vehicledetail']);
+Route::get(' vehicledetailstore',[App\Http\Controllers\Crushercontroller::class,' vehicledetailstore']);
+
 
 
 

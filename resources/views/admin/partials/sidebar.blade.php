@@ -228,6 +228,8 @@
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link" href="{{ url('crusher/create') }}" style="color: white; font-size:20px;">New Entry</a>
                                          <a class="nav-link" href="{{ url('/crusher') }}" style="color: white; font-size:20px;">Challan Details</a>
+                                          <a class="nav-link" href="{{ url('/vehicledetail') }}" style="color: white; font-size:20px;">Vehicle Details</a>
+
                                     </nav>
                                 </div>
 

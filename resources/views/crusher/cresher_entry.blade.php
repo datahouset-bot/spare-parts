@@ -400,21 +400,19 @@ label {
                                                     {{-- <label for="searchCustomer" class="position-absolute "
                                                         style="top: -22px; left: 10px;">Select Slot </label> --}}
                                                     <div id="searchCustomer">
-                                                    
-                                                            <form id="saveForm" action="{{ url('crusher.store') }}"method="POST" enctype="multipart/form-data">
-                                                            @csrf
-                                                             <div class="col-md-6 mt-4">
+<form id="saveForm"  action="{{ route('crusher.store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+        <div class="col-md-6 mt-4">
                                                 
                                                 <div class="input-group">
 
-                                                    <select id="guest_search_id" name="guest_search_id"
-                                                        class="js-states form-control">
+                                                    <select id="search_id" name="search_id" class="form-select">
                                                         <option disabled selected>Select Customer</option>
-                                                        {{-- @foreach ($guset_data as $record)
-                                                            <option value={{ $record['id'] }}>
-                                                                {{ $record['account_name'] }}&nbsp;-
-                                                                &nbsp;{{ $record['mobile'] }} </option>
-                                                        @endforeach --}}
+                                                        @foreach ($account as $acc)
+                                                            <option value={{ $acc['id'] }}>
+                                                                {{ $acc['account_name'] }}
+                                                                 </option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <span class="text-danger">
@@ -426,12 +424,9 @@ label {
 
 
                                                             <span id="message"></span>
-                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
-<form id="saveForm"  action="{{ route('crusher.store') }}" method="POST" enctype="multipart/form-data">
-    @csrf
 
                                             <div class="row justify-content-centerm-3">
                                                 <div class="col-md-8">
@@ -443,10 +438,8 @@ label {
                                                                     <label
                                                                         for="label1"class="position-absolute bg-transparent px-2"
                                                                         style="top: -22px; left: 3px;"><span class="requierdfield">*</span>Slip No </label>
-                                                                    <input type="text"
-                                                                        name="slip_no"class=" form-control"
-                                                                        id="" class=""
-                                                                        {{-- value="{{ $new_bill_no }}" readonly> --}}>
+                                                                   <input type="text" value="{{ $nextSlip }}" readonly class="form-control">
+
                                                                    
                                                                 </div>
                                                             </div>
@@ -533,7 +526,7 @@ label {
                                                                         style="top: -21px; left: 2px;"><span
                                                                             class="requierdfield">*</span>Vehicle Name
                                                                     </label>
-                                                                    <input class="form-control" id="Vehicle_name"
+                                                                    <input class="form-control" id="vehicle_name"
                                                                         type="text" name="Vehicle_name"
                                                                         value="{{ old('Vehicle_name') }}"
                                                                         autocomplete="none" />
@@ -646,7 +639,7 @@ label {
                                                                     <label
                                                                         for="checkin_remark1"class="position-absolute bg-white px-2"
                                                                         style="top: -10px; left: 10px;">Remark </label>
-                                                                    <input class="form-control" id="remark1"
+                                                                    <input class="form-control" id="remark"
                                                                         type="text" name="remark"
                                                                         value="" style="border: none" />
                                                                     <span class="text-danger">
@@ -712,13 +705,13 @@ label {
                                                             </div> --}}
 
                                                             
-                                                             <div class="col-md-6 col-6 mt-4">
+                                                             {{-- <div class="col-md-6 col-6 mt-4">
                                                                 <div class="position-relative border col-md-4 w-75"
                                                                     style="border-radius: 4px;">
                                                                     <label
                                                                         for="pic_trigger"class="position-absolute bg-white px-2"
                                                                         style="top: -10px; left: 10px;">Image 1 </label>
-                                                                    <input class="form-control" id="pic_trigger"
+                                                                    <input class="form-control" id="pic"
                                                                         type="text" readonly
                                                                         placeholder="Click to upload or capture"
                                                                         data-bs-toggle="modal"
@@ -879,11 +872,11 @@ label {
                                                                         $saveForm.focus(); // Bring focus back to the form
                                                                     });
                                                                 });
-                                                            </script>
-                                                                </div>
+                                                            </script>--}}
+                                                                </div> 
                                                             </div>
 
-<</div> <!-- ✅ END LEFT col-md-8 -->
+</div> <!-- ✅ END LEFT col-md-8 -->
 
 <!-- =======================
      RIGHT SIDE – PAYMENT
@@ -909,9 +902,9 @@ label {
                         <td>Repairing cost</td>
                         <td>
                             <input type="text"
-                                   id="room_tariff_perday"
-                                   name="room_tariff_perday"
-                                   class="amount_input"
+                                   id="cost"
+                                   name="cost"
+                                   class="cost"
                                    readonly>
                         </td>
                     </tr>
@@ -930,8 +923,8 @@ label {
                         </td>
                         <td>
                             <input type="text"
-                                   class="amount_input"
-                                   name="booking_amount[]"
+                                   class="mode"
+                                   name="mode"
                                    autocomplete="off">
                         </td>
                     </tr>
@@ -949,9 +942,9 @@ label {
                     </td>
                     <td>
                         <input type="text"
-                               id="total_receipt_amt"
-                               name="total_receipt_amt"
-                               class="amount_input"
+                               id="Payment"
+                               name="Payment"
+                               class="Payment"
                                readonly>
                     </td>
                 </tr>
@@ -960,7 +953,7 @@ label {
                     <td>Payment Reference</td>
                     <td>
                         <input type="text"
-                               name="voucher_payment_ref"
+                               name="payment_ref"
                                class="amount_input">
                     </td>
                 </tr>
@@ -969,7 +962,7 @@ label {
                     <td>Payment Remark</td>
                     <td>
                         <input type="text"
-                               name="voucher_payment_remark"
+                               name="payment_remark"
                                class="amount_input">
                     </td>
                 </tr>
@@ -979,7 +972,7 @@ label {
     </div>
 </div> <!-- ✅ END col-md-4 -->
 
-                                                <script>
+                                                {{-- <script>
                                                     // Function to calculate the total amount
                                                     function calculateTotalAmount() {
                                                         let total = 0;
@@ -1021,7 +1014,7 @@ label {
                                                             input.addEventListener('input', calculateTotalAmount);
                                                         });
                                                     });
-                                                </script>
+                                                </script> --}}
 
 
                                             </div>
@@ -1032,7 +1025,7 @@ label {
                                                                     <button id="saveButton"
                                                                         type="submit"class="btn btn-primary btn-block">Save</button>
                                                                     <a
-                                                                        class= "btn btn-dark  "href={{ url('amclist') }}>Back</a>
+                                                                        class= "btn btn-dark  "href={{ url('crusher') }}>Back</a>
                                                                 </div>
                                                             </div>
                                                         @endcan
@@ -1055,16 +1048,48 @@ label {
 </div>
 </div>
 </div>
-           <script>
+<script>
+$(document).ready(function () {
+    let now = new Date();
+
+    // ✅ Current Date YYYY-MM-DD
+    let date = now.toISOString().split('T')[0];
+    $('#date').val(date);
+
+    // ✅ Current Time HH:MM
+    let hours = String(now.getHours()).padStart(2, '0');
+    let minutes = String(now.getMinutes()).padStart(2, '0');
+    $('#time').val(hours + ':' + minutes);
+});
+</script>
+
+{{-- ==========================================use to save data===================================== --}}
+          <script>
 $(document).ready(function () {
 
     $('#saveForm').on('submit', function (e) {
-        e.preventDefault(); // stop normal submit
+        e.preventDefault();
 
-        let form = document.getElementById('saveForm');
-        let formData = new FormData(form);
+        let form = this; // ✅ FIX
 
-        // Disable button & show loader
+        let formdata = {
+            search_id: $('#search_id').val(),
+            slip_no: $('#slip_no').val(),
+            date: $('#date').val(),
+            time: $('#time').val(),
+            vehicle_no: $('#vehicle_no').val(),
+            party_name: $('#party_name').val(),
+            Vehicle_name: $('#vehicle_name').val(),
+            Material: $('#Material').val(),
+            Royalty: $('#Royalty').val(),
+            Quantity: $('#Quantity').val(),
+            address: $('#address').val(),
+            phone: $('#phone').val(),
+            remark: $('#remark').val(),
+            _token: $('meta[name="csrf-token"]').attr('content')
+        };
+
+        // ✅ Disable button & show loader
         $('#saveButton')
             .prop('disabled', true)
             .html('<i class="fa fa-spinner fa-spin"></i> Saving...');
@@ -1072,48 +1097,25 @@ $(document).ready(function () {
         $.ajax({
             url: $(form).attr('action'),
             type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-
+            data: formdata,   // ✅ SAME VARIABLE
             success: function (response) {
 
-                $('#saveButton')
-                    .prop('disabled', false)
-                    .html('Save');
-
-                // ✅ SUCCESS
-                alert('✅ Data saved successfully');
-
-                // OPTIONAL redirect
-                // window.location.href = "{{ url('amclist') }}";
-
-                // OPTIONAL reset
-                // form.reset();
+                $('#saveButton').prop('disabled', false).html('Save');
+          console.log("✅ Response save ", response);
+            alert(response.message);
             },
-
             error: function (xhr) {
 
-                $('#saveButton')
-                    .prop('disabled', false)
-                    .html('Save');
+                $('#saveButton').prop('disabled', false).html('Save');
 
-                // ✅ VALIDATION ERROR
                 if (xhr.status === 422) {
-                    let errors = xhr.responseJSON.errors;
-                    let message = "";
-
-                    $.each(errors, function (key, value) {
+                    let message = '';
+                    $.each(xhr.responseJSON.errors, function (key, value) {
                         message += value[0] + "\n";
                     });
-
-                    alert("⚠ Validation Error:\n\n" + message);
-                }
-                else {
-                    alert("❌ Server error. Please try again.");
+                    alert(message);
+                } else {
+                    alert("❌ Server error");
                 }
             }
         });
@@ -1121,5 +1123,5 @@ $(document).ready(function () {
 
 });
 </script>
-                 
+
 @endsection

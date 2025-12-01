@@ -18,8 +18,11 @@ return new class extends Migration
             $table->string('slip_no')->nullable();
             $table->string('date')->nullable();
             $table->string('time')->nullable();
-
+            $table->unsignedBigInteger('account_id');
+            $table->foreign('account_id')->references('id')->on('accounts');
             // ===== PARTY / VEHICLE =====
+            $table->unsignedBigInteger('vehicle_id');
+             $table->foreign('vehicle_id')->references('id')->on('vehicledetail');
             $table->string('vehicle_no')->nullable();
             $table->string('party_name')->nullable();
             $table->string('Vehicle_name')->nullable();
@@ -39,19 +42,19 @@ return new class extends Migration
             // ===== IMAGE =====
             $table->string('pic')->nullable();
 
+            // ==========total====
+                    $table->string('Total')->nullable();
+
             // ===== SYSTEM =====
-              $table->timestamps();
+            $table->timestamps();
             // =====additional field
-           $table->string('af1')->nullable();
+    
             $table->string('af2')->nullable();
             $table->string('af3')->nullable();
             $table->string('af4')->nullable();
             $table->string('af5')->nullable();
             $table->string('af6')->nullable();
             $table->string('af7')->nullable();
-                   
-                  
-          
         });
     }
 
