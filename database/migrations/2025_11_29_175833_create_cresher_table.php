@@ -25,7 +25,7 @@ return new class extends Migration
              $table->foreign('vehicle_id')->references('id')->on('vehicledetail');
             $table->string('vehicle_no')->nullable();
             $table->string('party_name')->nullable();
-            $table->string('Vehicle_name')->nullable();
+            $table->string('Vehicle_measure')->nullable();
             $table->string('Material')->nullable();
 
             // ===== MATERIAL DETAILS =====
@@ -43,13 +43,13 @@ return new class extends Migration
             $table->string('pic')->nullable();
 
             // ==========total====
-                    $table->string('Total')->nullable();
-
+                $table->string('Total')->nullable();
+                $table->string('Rate')->nullable();
             // ===== SYSTEM =====
             $table->timestamps();
             // =====additional field
     
-            $table->string('af2')->nullable();
+
             $table->string('af3')->nullable();
             $table->string('af4')->nullable();
             $table->string('af5')->nullable();

@@ -1,13 +1,19 @@
 @extends('layouts.blank')
 
 @section('pagecontent')
-<div class="container mt-4">
+<div class="container-fluid mt-4">
 
     <div class="card shadow">
         <div class="card-header bg-primary text-white fw-bold">
             Cresher Challan List
         </div>
 
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+@endif
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover mb-0">
@@ -19,12 +25,15 @@
                             <th>Time</th>
                             <th>Vehicle No</th>
                             <th>Party</th>
-                            <th>Vehicle Name</th>
+                            <th>Vehicle Measure</th>
                             <th>Material</th>
                             <th>Qty</th>
+                            <th>Rate</th>
                             <th>Royalty</th>
+                            <th>Total</th>
                             <th>Phone</th>
-                            <th>Image</th>
+                            {{-- <th>Image</th> --}}
+                            <th>Action</th>
                         </tr>
                     </thead>
 
@@ -37,13 +46,15 @@
                             <td>{{ $item->time }}</td>
                             <td>{{ $item->vehicle_no }}</td>
                             <td>{{ $item->party_name }}</td>
-                            <td>{{ $item->Vehicle_name }}</td>
+                            <td>{{ $item->vehicle_measure }}</td>
                             <td>{{ $item->Material }}</td>
                             <td>{{ $item->Quantity }}</td>
+                            <td>{{ number_format($item->Rate, 2) }}</td>
                             <td>{{ number_format($item->Royalty, 2) }}</td>
+                            <td>{{ number_format($item->Total, 2) }}</td>
                             <td>{{ $item->phone }}</td>
 
-                            <td>
+                            {{-- <td>
                                 @if($item->pic)
                                     <a href="{{ asset('storage/'.$item->pic) }}" target="_blank">
                                         <img src="{{ asset('storage/'.$item->pic) }}"
@@ -53,7 +64,33 @@
                                 @else
                                     <span class="text-muted">No Image</span>
                                 @endif
-                            </td>
+                            </td> --}}
+                            <td>
+ <a href="{{ route('crusher.show', $item->id) }}"
+       class="btn btn-sm btn-info text-white">
+        View
+    </a>
+
+    <!-- ✅ Edit Button -->
+    <a href="{{ route('crusher.edit', $item->id) }}"
+       class="btn btn-sm btn-primary">
+        Edit
+    </a>
+
+    <!-- ✅ Delete Button -->
+    <form action="{{ route('crusher.destroy', $item->id) }}"
+          method="POST"
+          style="display:inline-block;"
+          onsubmit="return confirm('Are you sure you want to delete this challan?')">
+        @csrf
+        @method('DELETE')
+
+        <button type="submit" class="btn btn-sm btn-danger">
+            Delete
+        </button>
+    </form>
+</td>
+
                         </tr>
                         @empty
                         <tr>
@@ -63,6 +100,7 @@
                         </tr>
                         @endforelse
                     </tbody>
+                    
                 </table>
             </div>
         </div>
@@ -73,6 +111,7 @@
             </a>
         </div>
     </div>
+    
 
 </div>
 @endsection

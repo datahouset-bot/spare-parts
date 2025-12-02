@@ -540,7 +540,23 @@ Route::resource('batchs', BatchController::class);
 // -------------------------------------Crusher new table------------------------------------------------
 Route::resource('crusher',Crushercontroller::class);
 Route::get('vehicledetail',[App\Http\Controllers\Crushercontroller::class,'vehicledetail']);
-Route::get(' vehicledetailstore',[App\Http\Controllers\Crushercontroller::class,' vehicledetailstore']);
+Route::post('vehicledetailstore', [App\Http\Controllers\Crushercontroller::class, 'vehicledetailstore'])
+    ->name('vehicledetail.store');
+    
+Route::get('vehicledetail', [Crushercontroller::class, 'vehicledetailindex'])
+    ->name('vehicledetail.index');
+
+Route::get('vehicledetail/create', [Crushercontroller::class, 'vehicledetailcreate'])
+    ->name('vehicledetail.create');
+Route::get('vehicledetail/{id}/edit', [Crushercontroller::class, 'vehicledetailedit'])
+    ->name('vehicledetail.edit');
+Route::delete('vehicledetaildestroy/{id}', [Crushercontroller::class, 'vehicledetaildestroy'])
+    ->name('vehicledetail.destroy'); 
+
+route::put('vehicledetailupdate/{id}', [App\Http\Controllers\Crushercontroller::class, 'vehicledetailupdate'])
+    ->name('vehicledetail.update');
+    
+    
 
 
 

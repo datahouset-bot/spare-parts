@@ -402,26 +402,7 @@ label {
                                                     <div id="searchCustomer">
 <form id="saveForm"  action="{{ route('crusher.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
-        <div class="col-md-6 mt-4">
-                                                
-                                                <div class="input-group">
-
-                                                    <select id="search_id" name="search_id" class="form-select">
-                                                        <option disabled selected>Select Customer</option>
-                                                        @foreach ($account as $acc)
-                                                            <option value={{ $acc['id'] }}>
-                                                                {{ $acc['account_name'] }}
-                                                                 </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <span class="text-danger">
-                                                    @error('cust_name_id')
-                                                        {{ $message }}
-                                                    @enderror
-                                                </span>
-                                            </div>
-
+       
 
                                                             <span id="message"></span>
                                                     </div>
@@ -477,19 +458,45 @@ label {
                                                                     </span>
                                                                 </div>
                                                             </div>
+                                                                  <div class="col-md-6 col-6 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                    <select id="search_id" name="search_id" class="form-select">
+                                                        <option disabled selected>Select party name</option>
+                                                        @foreach ($account as $acc)
+                                                            <option value={{ $acc['id'] }}>
+                                                                {{ $acc['account_name'] }}
+                                                             </option>
+                                                        @endforeach
+                                                             <input type="hidden" id="party_name" name="party_name">
+                                                    </select>
+                                                </div>
+                                                <span class="text-danger">
+                                                    @error('cust_name_id')
+                                                        {{ $message }}
+                                                    @enderror
+                                                </span>
+                                            </div>
                                                             <div class="col-md-6  col-6 mt-4">
                                                                 <div class="position-relative border col-md-4 w-75"
                                                                     style="border-radius: 4px;">
                                                                     {{-- <span class="requierdfield">*</span> --}}
-                                                                    <label for="vehicle_no"
-                                                                        class="position-absolute bg-transparent px-2"
-                                                                        style="top: -21px; left:2px;"><span
-                                                                            class="requierdfield">*</span>Vehicle
-                                                                        No</label>
-                                                                    <input class="form-control" id="vehicle_no"
-                                                                        type="text" name="vehicle_no"
-                                                                        value="{{ old('vehicle_no') }}"
-                                                                        autocomplete="none" style="border: none" />
+                                                                    <div class="input-group">
+
+                                                    <select id="vehicle_id" name="vehicle_id" class="form-select">
+                                                        <option disabled selected>Select Vehicle no</option>
+                                                        @foreach ($vehicle as $acc)
+                                                        <option value="{{ $acc->id }}"
+                                                          data-vehicle-measure="{{ $acc->vehicle_measure }}"
+                                                          data-vehicle-no="{{ $acc->Vehicle_no }}">
+                                                          {{ $acc->Vehicle_no }}
+                                                          </option>
+                                                        @endforeach
+                                                        <input type="hidden" id="vehicle_no" name="vehicle_no">
+
+                                                    </select>
+                                                </div>
+
                                                                     <span class="text-danger">
                                                                         @error('vehicle_no')
                                                                             {{ $message }}
@@ -498,40 +505,23 @@ label {
                                                                 </div>
                                                             </div> 
 
-                                                                <div class="col-md-6 col-6 mt-4">
-                                                                <div class="position-relative border col-md-4 w-75"
-                                                                    style="border-radius: 4px;">
-                                                                    <label
-                                                                        for="party_name"class="position-absolute bg-white px-2"
-                                                                        style="top: -21px; left: 2px;"><span
-                                                                            class="requierdfield">*</span>Party Name
-                                                                    </label>
-                                                                    <input class="form-control" id="party_name"
-                                                                        type="text" name="party_name"
-                                                                        value="{{ old('party_name') }}"
-                                                                        autocomplete="none" />
-                                                                    <span class="text-danger">
-                                                                        @error('party_name')
-                                                                            {{ $message }}
-                                                                        @enderror
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-
+                                                          
+                                                            
                                                             <div class="col-md-6 col-6 mt-4">
                                                                 <div class="position-relative border col-md-4 w-75"
                                                                     style="border-radius: 4px;">
-                                                                    <label
-                                                                        for="guest_name"class="position-absolute bg-white px-2"
-                                                                        style="top: -21px; left: 2px;"><span
-                                                                            class="requierdfield">*</span>Vehicle Name
-                                                                    </label>
-                                                                    <input class="form-control" id="vehicle_name"
-                                                                        type="text" name="Vehicle_name"
-                                                                        value="{{ old('Vehicle_name') }}"
-                                                                        autocomplete="none" />
+                                                            <label class="position-absolute bg-white px-2"
+                                                            style="top: -21px; left: 2px;">
+                                                            <span class="requierdfield">*</span>Vehicle Measure
+                                                            </label>
+                                                            <input class="form-control"
+                                                                   id="vehicle_measure"
+                                                                   type="text"
+                                                                   name="vehicle_measure"
+                                                                   readonly>
+                                                            
                                                                     <span class="text-danger">
-                                                                        @error('Vehicle_name')
+                                                                        @error('Vehicle_measure')
                                                                             {{ $message }}
                                                                         @enderror
                                                                     </span>
@@ -559,7 +549,46 @@ label {
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-md-6 col-6 mt-4">
+                                                          <div class="col-md-6 col-6 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="guest_name"class="position-absolute bg-white px-2"
+                                                                        style="top: -21px; left: 2px;"><span
+                                                                            class="requierdfield">*</span>Quantity
+                                                                    </label>
+                                                                    <input class="form-control" id="Quantity"
+                                                                        type="text" name="Quantity"
+                                                                        value="{{ old('Quantity') }}"
+                                                                        autocomplete="none" />
+                                                                    <span class="text-danger">
+                                                                        @error('Quantity')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                                <div class="col-md-6 col-6 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label
+                                                                        for="guest_name"class="position-absolute bg-white px-2"
+                                                                        style="top: -21px; left: 2px;">Rate
+                                                                    </label>
+                                                                    <input class="form-control" id="Rate"
+                                                                        type="text" name="Rate"
+                                                                        value="{{ old('Rate') }}"
+                                                                        autocomplete="none" />
+                                                                    <span class="text-danger">
+                                                                        @error('Rate')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                              <div class="col-md-6 col-6 mt-4">
                                                                 <div class="position-relative border col-md-4 w-75"
                                                                     style="border-radius: 4px;">
                                                                     <label
@@ -579,26 +608,25 @@ label {
                                                                 </div>
                                                             </div>
 
-                                                            
                                                                <div class="col-md-6 col-6 mt-4">
                                                                 <div class="position-relative border col-md-4 w-75"
                                                                     style="border-radius: 4px;">
                                                                     <label
                                                                         for="guest_name"class="position-absolute bg-white px-2"
-                                                                        style="top: -21px; left: 2px;"><span
-                                                                            class="requierdfield">*</span>Quantity
+                                                                        style="top: -21px; left: 2px;">Total 
                                                                     </label>
-                                                                    <input class="form-control" id="Quantity"
-                                                                        type="text" name="Quantity"
-                                                                        value="{{ old('Quantity') }}"
+                                                                    <input class="form-control" id="total"
+                                                                        type="text" name="total"
+                                                                        value="{{ old('total') }}"
                                                                         autocomplete="none" />
                                                                     <span class="text-danger">
-                                                                        @error('Quantity')
+                                                                        @error('total')
                                                                             {{ $message }}
                                                                         @enderror
                                                                     </span>
                                                                 </div>
                                                             </div>
+
                                                             <div class="col-md-6 col-6 mt-4">
                                                                 <div class="position-relative border col-md-4 w-75"
                                                                     style="border-radius: 4px;">
@@ -899,7 +927,7 @@ label {
                 </thead>
                 <tbody id="payment_mode_body">
                     <tr>
-                        <td>Repairing cost</td>
+                        <td>Total cost</td>
                         <td>
                             <input type="text"
                                    id="cost"
@@ -970,52 +998,7 @@ label {
 
         </div>
     </div>
-</div> <!-- ✅ END col-md-4 -->
-
-                                                {{-- <script>
-                                                    // Function to calculate the total amount
-                                                    function calculateTotalAmount() {
-                                                        let total = 0;
-                                                        document.querySelectorAll('.amount_input[name="booking_amount[]"]').forEach(function(input) {
-                                                            let amount = parseFloat(input.value) || 0; // Convert the input value to a number
-                                                            total += amount; // Add the value to the total
-                                                        });
-                                                        document.getElementById('total_receipt_amt').value = total.toFixed(2); // Update the total_receipt_amt field
-                                                    }
-
-                                                    // Add event listener to all booking_amount inputs
-                                                    document.addEventListener('input', function(event) {
-                                                        if (event.target.matches('.amount_input[name="booking_amount[]"]')) {
-                                                            calculateTotalAmount(); // Recalculate the total whenever an amount input is changed
-                                                        }
-                                                    });
-
-                                                    // JavaScript to dynamically add more payment modes
-                                                    document.getElementById('add_payment_mode').addEventListener('click', function() {
-                                                        let paymentBody = document.getElementById('payment_mode_body');
-                                                        let newRow = `
-                                                        <tr>
-                                                        <td>
-                                                            <select name="posting_acc_id[]" class="posting_acc_id">
-                                                                <option value="" selected disabled>Select Mode</option>
-                                                                   
-                                            
-                                                                </select>
-                                                            </td>
-                                                            <td>
-                                                            <input type="text" class="amount_input" name="booking_amount[]" autocomplete="off">
-                                                            </td>
-                                                        </tr>`;
-
-                                                        paymentBody.insertAdjacentHTML('beforeend', newRow);
-
-                                                        // Add event listener to the new amount input
-                                                        paymentBody.querySelectorAll('.amount_input[name="booking_amount[]"]').forEach(function(input) {
-                                                            input.addEventListener('input', calculateTotalAmount);
-                                                        });
-                                                    });
-                                                </script> --}}
-
+</div> 
 
                                             </div>
                                                     <div class="row mb-3">
@@ -1048,6 +1031,73 @@ label {
 </div>
 </div>
 </div>
+
+<script>
+$(document).ready(function () {
+
+    $('#search_id').on('change', function () {
+
+        let selectedPartyName = $(this).find(':selected').text().trim();
+
+        $('#party_name').val(selectedPartyName);
+
+    });
+
+});
+</script>
+
+
+<script>
+
+$(document).ready(function () {
+
+    function calculateTotal() {
+        let quantity = parseFloat($('#Quantity').val()) || 0;
+        let rate     = parseFloat($('#Rate').val()) || 0;
+        let royalty = parseFloat($('#Royalty').val()) || 0;
+if(royalty){
+    let total = (quantity * rate) + royalty;
+
+        // ✅ Fix to 2 decimal places (optional)
+        $('#total').val(total.toFixed(2));
+}
+else{
+    let total = (quantity * rate);
+
+        // ✅ Fix to 2 decimal places (optional)
+        $('#total').val(total.toFixed(2));
+}
+        
+    }
+
+    // 🔥 Trigger calculation on input change
+    $('#Quantity, #Rate, #Royalty').on('keyup change', function () {
+        calculateTotal();
+    });
+
+});
+</script>
+
+<script>
+$(document).ready(function () {
+
+    $('#vehicle_id').on('change', function () {
+
+        let selectedOption = $(this).find(':selected');
+
+        // ✅ Vehicle Measure
+        let vehicleMeasure = selectedOption.data('vehicle-measure');
+        $('#vehicle_measure').val(vehicleMeasure);
+
+        // ✅ Vehicle Number
+        let vehicleNo = selectedOption.data('vehicle-no');
+        $('#vehicle_no').val(vehicleNo);
+    });
+
+});
+</script>
+
+
 <script>
 $(document).ready(function () {
     let now = new Date();
@@ -1069,19 +1119,20 @@ $(document).ready(function () {
 
     $('#saveForm').on('submit', function (e) {
         e.preventDefault();
-
-        let form = this; // ✅ FIX
-
-        let formdata = {
+        let form = this;
+   let formdata = {
             search_id: $('#search_id').val(),
+            vehicle_id: $('#vehicle_id').val(),
             slip_no: $('#slip_no').val(),
             date: $('#date').val(),
             time: $('#time').val(),
             vehicle_no: $('#vehicle_no').val(),
             party_name: $('#party_name').val(),
-            Vehicle_name: $('#vehicle_name').val(),
+            Vehicle_measure: $('#vehicle_measure').val(),
             Material: $('#Material').val(),
             Royalty: $('#Royalty').val(),
+            rate: $('#Rate').val(),
+            total: $('#total').val(),
             Quantity: $('#Quantity').val(),
             address: $('#address').val(),
             phone: $('#phone').val(),

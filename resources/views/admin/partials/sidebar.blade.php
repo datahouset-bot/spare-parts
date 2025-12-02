@@ -209,12 +209,11 @@
                                 <div class="collapse" id="gst" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="{{ url('/reciepts') }}" style="color: white; font-size:24px;">Reciept
-                                        </a>
-                                        <a class="nav-link" href="{{ url('/payments') }}"  style="color: white; font-size:24px;">Payment</a>
-                                      <a class="nav-link" href="{{ url('/purchases') }}" style="color: white; font-size:24px;">Countra</a>
-                                      <a class="nav-link" href="{{ url('/purchases') }}" style="color: white; font-size:24px;">Journal Entry</a>
-                                      <a class="nav-link" href="{{ url('/purchases') }}" style="color: white; font-size:24px;">Bank Entry</a>
+                                    <a class="nav-link" href="{{ url('/reciepts') }}" style="color: white; font-size:24px;">Reciept</a>
+                                    <a class="nav-link" href="{{ url('/payments') }}"  style="color: white; font-size:24px;">Payment</a>
+                                    <a class="nav-link" href="{{ url('/purchases') }}" style="color: white; font-size:24px;">Countra</a>
+                                    <a class="nav-link" href="{{ url('/purchases') }}" style="color: white; font-size:24px;">Journal Entry</a>
+                                    <a class="nav-link" href="{{ url('/purchases') }}" style="color: white; font-size:24px;">Bank Entry</a>
                                     </nav>
                                 </div>
 
@@ -226,15 +225,13 @@
                                 <div class="collapse" id="crush" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="{{ url('crusher/create') }}" style="color: white; font-size:20px;">New Entry</a>
-                                         <a class="nav-link" href="{{ url('/crusher') }}" style="color: white; font-size:20px;">Challan Details</a>
-                                          <a class="nav-link" href="{{ url('/vehicledetail') }}" style="color: white; font-size:20px;">Vehicle Details</a>
-
+                                    <a class="nav-link" href="{{ url('crusher/create') }}" style="color: white; font-size:20px;">New Entry</a>
+                                    <a class="nav-link" href="{{ url('/crusher') }}" style="color: white; font-size:20px;">Challan Details</a>
+                                    <a class="nav-link" href="{{ url('/vehicledetail') }}" style="color: white; font-size:20px;">Vehicle Details</a>
+                                    <a class="nav-link" href="{{ url('vehicledetail/create') }}" style="color: white; font-size:20px;">Vehicle Entry</a>
                                     </nav>
                                 </div>
-
                             </nav>
-
                         </div>
                     @endcan
                     @can('ReportList')

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('vehicle_name');
             $table->string('owner_name');
             $table->string('Vehicle_no');
+            $table->string('vehicle_measure')->nullable();
             $table->string('Registration_date');
 
             // driver details
@@ -33,7 +34,6 @@ return new class extends Migration
             
 
             // =================additional fields==========================
-            $table->string('af3')->nullable();
             $table->string('af4')->nullable();
             $table->string('af5')->nullable();
             $table->string('af6')->nullable();

@@ -14,7 +14,7 @@ class cresher extends Model
     'time',
     'vehicle_no',
     'party_name',
-    'Vehicle_name',
+    'Vehicle_measure',
     'Material',
     'Royalty',
     'Quantity',

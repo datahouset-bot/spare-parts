@@ -100,24 +100,25 @@ table td {
 
 </style>
 
-<div class="container mt-3">
+<div class="container mt-4 mb-4">
     <div class="card shadow">
         <div class="card-header bg-primary text-white text-center fw-bold">
            <h3>Vehicle Registration </h3> 
         </div>
+         @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show text-center fw-bold" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
         <div class="card-body">
-            <form id="vehicleForm" action="{{ route('vehicledetailstore') }}" method="POST">
+            <form action="{{ route('vehicledetail.store') }}" method="POST">
                 @csrf
-
                 <div class="row">
-
                     {{-- ================= VEHICLE DETAILS ================= --}}
-              
-
                     <div class="col-md-4 mt-3">
                         <div class="position-relative border-none rounded p-2">
-                            <label class="position-absolute bg-white px-2"
-                                   style="top:-8px; left:10px;">Vehicle Name</label>
+                            <label class="position-absolute bg-white px-2" style="top:-8px; left:10px;">Vehicle Name</label>
                             <input type="text" name="vehicle_name" class="form-control" required>
                         </div>
                     </div>
@@ -137,6 +138,20 @@ table td {
                             <input type="text" name="Vehicle_no" class="form-control" required>
                         </div>
                     </div>
+
+                    <div class="col-md-4 mt-3">
+    <div class="position-relative border-none rounded p-2">
+        <label class="position-absolute bg-white px-2" style="top:-8px; left:10px;">
+            Vehicle Measure
+        </label>
+        <input type="text"
+       name="vehicle_measure"
+       class="form-control"
+       value="{{ old('vehicle_measure') }}"
+       placeholder="e.g. 10 Ton / 16 Wheel">
+
+    </div>
+</div>
 
                     <div class="col-md-4 mt-3">
                         <div class="position-relative border-none rounded p-2">
