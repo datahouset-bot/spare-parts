@@ -209,39 +209,66 @@ public function vehicledetailupdate(Request $request, $id)
 /**
      * Update the specified resource in storage.
      */
-  public function update(Request $request, $id)
+public function update(Request $request, $id)
 {
     $crusher = Cresher::findOrFail($id);
 
-    $crusher->update([
-        'party_name'   => $request->party_name,
-        'Vehicle_name' => $request->Vehicle_name,
-        'Material'     => $request->Material,
-        'Quantity'     => $request->Quantity,
-        'Rate'         => $request->Rate,
-        'Royalty'      => $request->Royalty,
-        'Total'        => $request->total,
-        'phone'        => $request->phone,
-        'remark'       => $request->remark,
-    ]);
+    // fields
+    $crusher->party_name      = $request->party_name;
+    $crusher->vehicle_measure = $request->vehicle_measure;
+    $crusher->Material        = $request->Material;
+    $crusher->Quantity        = $request->Quantity;
+    $crusher->Rate            = $request->Rate;
+    $crusher->Royalty         = $request->Royalty;
+    $crusher->Total           = $request->total;
+    $crusher->phone           = $request->phone;
+    $crusher->remark          = $request->remark;
+
+    // image
+    if ($request->hasFile('pic')) {
+        if ($crusher->pic && file_exists(public_path('uploads/crusher/'.$crusher->pic))) {
+            @unlink(public_path('uploads/crusher/'.$crusher->pic));
+        }
+
+        $file = $request->file('pic');
+        $filename = time().'_'.$file->getClientOriginalName();
+        $file->move(public_path('uploads/crusher'), $filename);
+
+        $crusher->pic = $filename;
+    }
+
+    $crusher->save();  // ✅ single save
 
     return redirect()
         ->route('crusher.index')
         ->with('success', 'Challan updated successfully!');
 }
+
     /**
      * Remove the specified resource from storage.
      */
 
 public function destroy($id)
 {
-    $crusher = Cresher::findOrFail($id);
+    // Special "delete all" case
+    if ($id === 'all') {
+        // Option 1: delete everything & reset IDs
+        Cresher::truncate();
 
+        // Option 2 (if you don't want to reset auto-increment):
+        // Crusher::query()->delete();
+
+        return redirect()
+            ->route('crusher.index')
+            ->with('success', 'All challan records deleted successfully.');
+    }
+
+    // Normal single delete
+    $crusher = Cresher::findOrFail($id);
     $crusher->delete();
 
     return redirect()
         ->route('crusher.index')
-        ->with('success', 'Challan deleted successfully!');
+        ->with('success', 'Challan deleted successfully.');
 }
-
 }

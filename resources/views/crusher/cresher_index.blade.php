@@ -32,7 +32,7 @@
                             <th>Royalty</th>
                             <th>Total</th>
                             <th>Phone</th>
-                            {{-- <th>Image</th> --}}
+                            <th>Image</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -54,17 +54,17 @@
                             <td>{{ number_format($item->Total, 2) }}</td>
                             <td>{{ $item->phone }}</td>
 
-                            {{-- <td>
-                                @if($item->pic)
-                                    <a href="{{ asset('storage/'.$item->pic) }}" target="_blank">
-                                        <img src="{{ asset('storage/'.$item->pic) }}"
-                                             width="40" height="40"
-                                             style="border-radius:6px;">
-                                    </a>
-                                @else
-                                    <span class="text-muted">No Image</span>
-                                @endif
-                            </td> --}}
+<td>
+    @if($item->pic)
+        <a href="{{ asset('uploads/crusher/'.$item->pic) }}" target="_blank">
+            <img src="{{ asset('uploads/crusher/'.$item->pic) }}"
+                 width="40" height="40"
+                 style="border-radius:6px; object-fit:cover;">
+        </a>
+    @else
+        <span class="text-muted">No Image</span>
+    @endif
+</td>
                             <td>
  <a href="{{ route('crusher.show', $item->id) }}"
        class="btn btn-sm btn-info text-white">
@@ -104,13 +104,28 @@
                 </table>
             </div>
         </div>
+<div class="card-footer d-flex justify-content-between align-items-center">
 
-        <div class="card-footer text-end">
-            <a href="{{ route('crusher.create') }}" class="btn btn-success">
-                + Add New Challan
-            </a>
-        </div>
-    </div>
+    {{-- 🔴 DELETE ALL --}}
+    <form action="{{ route('crusher.destroy', 'all') }}"
+          method="POST"
+          onsubmit="return confirm('⚠️ Are you sure you want to DELETE ALL challans? This cannot be undone!')">
+        @csrf
+        @method('DELETE')
+
+        <button type="submit" class="btn btn-danger">
+            🗑️ Delete All
+        </button>
+    </form>
+
+    {{-- ✅ ADD NEW --}}
+    <a href="{{ route('crusher.create') }}" class="btn btn-success">
+        + Add New Challan
+    </a>
+
+</div>
+
+</div>
     
 
 </div>

@@ -363,18 +363,41 @@ $salebill_items=inventory::withinFY('entry_date')->where('firm_id',Auth::user()-
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(sale $sale)
+    public function edit($voucher_no)
     {
-        //
+         // find by voucher_no instead of id
+        $sale = voucher::where('voucher_no', $voucher_no)->firstOrFail();
+
+        // all parties for dropdown
+        $accounts = Account::orderBy('account_name')->get();
+
+        return view('entery.sale.sale_edit', compact('sale', 'accounts'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatesaleRequest $request, sale $sale)
+   public function update(Request $request, $voucher_no)
     {
-        //
+        $voucher = voucher::where('voucher_no', $voucher_no)->firstOrFail();
+
+        $voucher->update([
+            'account_id' => $request->account_id,
+            'voucher_date' => $request->voucher_date,
+            'voucher_terms' => $request->voucher_terms,
+            'voucher_bill_no' => $request->voucher_bill_no,
+            'total_qty' => $request->total_qty,
+            'total_net_amount' => $request->total_net_amount,
+            'total_item_basic_amount' => $request->total_item_basic_amount,
+            'total_gst_amount' => $request->total_gst_amount,
+            'total_disc_item_amount' => $request->total_disc_item_amount,
+            'total_net_amount' => $request->total_net_amount,    // add other fields as necessary
+        ]);
+        return redirect()
+            ->route('sales.index')
+            ->with('success', 'Sale updated successfully');
     }
+
 
     /**
      * Remove the specified resource from storage.

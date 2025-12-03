@@ -8,7 +8,7 @@
             Edit Material Challan
         </div>
 
-        <form action="{{ route('crusher.update', $crusher->id) }}" method="POST">
+        <form action="{{ route('crusher.update', $crusher->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -50,10 +50,10 @@
                     </div>
 
                     <div class="col-md-4 mb-3">
-                        <label>Vehicle Name</label>
+                        <label>Vehicle measure</label>
                         <input type="text" class="form-control"
-                               name="Vehicle_name"
-                               value="{{ $crusher->Vehicle_name }}">
+                               name="vehicle_measure"
+                               value="{{ $crusher->vehicle_measure }}">
                     </div>
 
                     <div class="col-md-4 mb-3">
@@ -109,6 +109,26 @@
                                name="remark"
                                value="{{ $crusher->remark }}">
                     </div>
+
+
+                    <div class="col-md-4 mb-3">
+    <label>Image</label>
+
+    <input type="file"
+           name="pic"
+           class="form-control">
+
+    {{-- ✅ SHOW OLD IMAGE --}}
+    @if($crusher->pic)
+        <div class="mt-2">
+            <a href="{{ asset('uploads/crusher/'.$crusher->pic) }}" target="_blank">
+                <img src="{{ asset('uploads/crusher/'.$crusher->pic) }}"
+                     width="100"
+                     style="border-radius:8px; border:1px solid #ccc;">
+            </a>
+        </div>
+    @endif
+</div>
 
                 </div>
             </div>

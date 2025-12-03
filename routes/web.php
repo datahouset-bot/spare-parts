@@ -555,11 +555,6 @@ Route::delete('vehicledetaildestroy/{id}', [Crushercontroller::class, 'vehiclede
 
 route::put('vehicledetailupdate/{id}', [App\Http\Controllers\Crushercontroller::class, 'vehicledetailupdate'])
     ->name('vehicledetail.update');
-    
-    
-
-
-
 
 //----------------------------purchase- sales invetory  stock managment -------------------------
 Route::resource('purchases', PurchaseController::class);
