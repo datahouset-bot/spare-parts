@@ -55,9 +55,9 @@
 
                     {{-- Party (Account) --}}
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Party</label>
+                        <label class="form-label">Customer</label>
                         <select name="account_id" class="form-select" required>
-                            <option value="">-- Select Party --</option>
+                            <option value="">-- Select customer --</option>
                             @foreach ($accounts as $account)
                                 <option value="{{ $account->id }}"
                                     {{ old('account_id', $sale->account_id) == $account->id ? 'selected' : '' }}>

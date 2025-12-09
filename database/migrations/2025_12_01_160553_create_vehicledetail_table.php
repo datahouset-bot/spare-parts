@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vehicledetail', function (Blueprint $table) {
+        Schema::create('vehicledetails', function (Blueprint $table) {
             $table->id()->autoIncrement();
 
             // vehicle Details

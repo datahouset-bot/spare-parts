@@ -93,56 +93,109 @@ return view('crusher.cresher_entry', compact('account','nextSlip','vehicle'));
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validate = Validator::make($request->all(), [
-            'party_name' => 'required',
-            'vehicle_no' => 'required|string|max:255',
-            'pic' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
+ public function store(Request $request)
+{
+    $validate = Validator::make($request->all(), [
 
-        ]);
+        'date'              => 'required|date',
+        'time'              => 'required',
+        'search_id'         => 'required|numeric',       // PARTY
+        'vehicle_id'        => 'required|numeric',
+        'vehicle_no'        => 'required|string',
+        'party_name'        => 'required|string',
+        'vehicle_measure'   => 'required',
 
-        if ($validate->passes()) {
-             $lastSlip = cresher::max('slip_no');
-        $slipNo = $lastSlip ? $lastSlip + 1 : 1;
+        'Material'          => 'required|string',
+        'Quantity'          => 'required|numeric',
 
-            $crusher = new cresher();
-            // save the data
-            $crusher->vehicle_id = $request->vehicle_id;
-            $crusher->account_id = $request->search_id;
-            $crusher->slip_no =  $slipNo;
-            $crusher->date = $request->date;
-            $crusher->time = $request->time;
-            $crusher->vehicle_no = $request->vehicle_no;
-            $crusher->party_name = $request->party_name;
-            $crusher->Vehicle_measure = $request->Vehicle_measure;
-            $crusher->Material = $request->Material;
-            $crusher->Royalty = $request->Royalty;
-            $crusher->Rate = $request->rate;
-            $crusher->Total = $request->total;
-            $crusher->Quantity = $request->Quantity;
-            $crusher->address = $request->address;
-            $crusher->phone = $request->phone;
-            $crusher->remark = $request->remark;
-            // to save the image
+        'Rate'              => 'nullable|numeric',
+        'unit'              => 'nullable|string',
 
-            if ($request->hasFile('pic')) {
-                $file = $request->file('pic');
-                $filename = time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('uploads/crusher'), $filename);
-                $crusher->pic = $filename;
-            }
+        'Royalty_Quantity'  => 'nullable|numeric',
+        'Royalty_Rate'      => 'nullable|numeric',
+        'Royalty'           => 'nullable|numeric',
 
-            // save the data
+        'total'             => 'nullable|numeric',
 
-            $crusher->save();
-            return response()->
-         json(['message'=>'Material challan successfully!'],200);
-        } else {
-            // make model
-            return response()->json(['errors' => $validate->errors(), 'message' => 'Validation failed'], 422);
-        }
+        'address'           => 'nullable|string',
+        'phone'             => 'nullable|string',
+        'remark'            => 'nullable|string',
+
+        'pic'               => 'nullable|file|mimes:jpg,jpeg,png|max:4096',
+    ]);
+
+    if (!$validate->passes()) {
+        return response()->json([
+            'errors' => $validate->errors(),
+            'message' => 'Validation failed'
+        ], 422);
     }
+
+    // Generate Slip No
+    $lastSlip = cresher::max('slip_no');
+    $slipNo = $lastSlip ? $lastSlip + 1 : 1;
+
+    $crusher = new cresher();
+
+    // BASIC
+    $crusher->slip_no         = $slipNo;
+    $crusher->date            = $request->date;
+    $crusher->time            = $request->time;
+
+    // FIXED: acc_id correct column
+    $crusher->acc_id          = $request->search_id;
+
+    // VEHICLE
+    $crusher->vehicle_id      = $request->vehicle_id;
+    $crusher->vehicle_no      = $request->vehicle_no;
+    $crusher->party_name      = $request->party_name;
+    $crusher->vehicle_measure = $request->vehicle_measure;
+
+    // MATERIAL
+    $crusher->Material        = $request->Material;
+    $crusher->Materialremark  = $request->Materialremark;
+    $crusher->Quantity        = $request->Quantity;
+    $crusher->Rate            = $request->Rate;
+    $crusher->unit            = $request->unit;
+
+    // ROYALTY
+    $crusher->Royalty_Quantity = $request->Royalty_Quantity;
+    $crusher->Royalty_Rate     = $request->Royalty_Rate;
+    $crusher->Royalty          = $request->Royalty;
+
+    // TOTAL
+    $crusher->Total        = $request->total;
+
+    // CONTACT
+    $crusher->address      = $request->address;
+    $crusher->phone        = $request->phone;
+    $crusher->remark       = $request->remark;
+
+    // IMAGE (camera or file)
+    if ($request->hasFile('pic')) 
+    {
+        $folder = public_path('uploads/crusher');
+
+        if (!file_exists($folder)) {
+            mkdir($folder, 0777, true);
+        }
+
+        $file = $request->file('pic');
+
+        $filename = time().'_'.$file->getClientOriginalName();
+        $file->move($folder, $filename);
+
+        $crusher->pic = $filename;
+    }
+
+    $crusher->save();
+
+    return response()->json([
+        'message' => 'Material challan saved successfully!',
+        'slip_no' => $slipNo,
+    ], 200);
+}
+
 
     /**
      * Display the specified resource.

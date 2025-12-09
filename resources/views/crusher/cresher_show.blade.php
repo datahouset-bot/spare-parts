@@ -1,6 +1,15 @@
-@extends('layouts.blank')
+{{-- @extends('layouts.blank')
 
-@section('pagecontent')
+@section('pagecontent') --}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    
 <style>
     /* ================= PRINT SETTINGS ================= */
   @media print {
@@ -130,8 +139,9 @@
         flex: 1;
     }
 </style>
-
-<div class="card-body">
+</head>
+<body>
+    <div class="card-body">
     <div class="challan-wrapper">
 
         {{-- LOGO ROW LIKE SAMPLE IMAGE --}}
@@ -192,10 +202,10 @@
                 {{ $crusher->Material }}
             </span>
 
-            <span class="challan-label short ms-3">रॉयल्टी</span>
+            {{-- <span class="challan-label short ms-3">रॉयल्टी</span>
             <span class="challan-dotted small">
                 {{ number_format($crusher->Royalty, 2) }}
-            </span>
+            </span> --}}
         </div>
 
         {{-- मात्रा / गाड़ी का नाप --}}
@@ -216,7 +226,7 @@
             <span class="challan-label">पार्टी का नाम व पता:-</span>
             <span class="challan-dotted challan-multiline">
                 {{ $crusher->party_name }}
-                , {{ $crusher->address ?? '' }}
+                {{-- , {{ $crusher->address ?? '' }} --}}
                 @if($crusher->phone)
                     , {{ $crusher->phone }}
                 @endif
@@ -279,4 +289,8 @@
     }
 </script>
 
-@endsection
+</body>
+</html>
+
+
+{{-- @endsection --}}

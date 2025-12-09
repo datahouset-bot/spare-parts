@@ -231,6 +231,20 @@
                                     <a class="nav-link" href="{{ url('vehicledetail/create') }}" style="color: white; font-size:20px;">Vehicle Entry</a>
                                     </nav>
                                 </div>
+
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"  style="color:white; font-size:22px;"
+                                    data-bs-target="#attandence" aria-expanded="false" aria-controls="attandence">
+                                Attendance
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="attandence" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                    {{-- <a class="nav-link" href="{{ url('attendances') }}" style="color: white; font-size:20px;">Employee registration</a> --}}
+                                 <a class="nav-link" href="{{ url('attendances/create') }}" style="color: white; font-size:20px;">Employee Details</a>
+                                    <a class="nav-link" href="{{ url('attendancecheckin') }}" style="color: white; font-size:20px;">Check In/Out</a>
+                                    <a class="nav-link" href="{{ url('attendancephoto') }}" style="color: white; font-size:20px;">Attendance Records</a>
+                                </div>
                             </nav>
                         </div>
                     @endcan

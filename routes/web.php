@@ -12,6 +12,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UnitController;
 
+use App\Http\Controllers\attendancecheck;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\RestaController;
 use App\Http\Controllers\TableController;
@@ -52,7 +53,9 @@ use App\Http\Controllers\SuperCompListController;
 use App\Http\Controllers\BusinesssourceController;
 use App\Http\Controllers\CompinfofooterController;
 use App\Http\Controllers\BusinesssettingController;
+use App\Http\Controllers\photoattendancecontroller;
 use App\Http\Controllers\SoftwarecompanyController;
+use App\Http\Controllers\attendancesalarycontroller;
 
 /*
 |--------------------------------------------------------------------------
@@ -555,6 +558,18 @@ Route::delete('vehicledetaildestroy/{id}', [Crushercontroller::class, 'vehiclede
 
 route::put('vehicledetailupdate/{id}', [App\Http\Controllers\Crushercontroller::class, 'vehicledetailupdate'])
     ->name('vehicledetail.update');
+//=================================================attandance APP=================================================================
+route::resource('attendances',photoattendancecontroller::class)->names  ('attendances');
+route::get('attendancecheckin', [App\Http\Controllers\photoattendancecontroller::class, 'showform']);
+Route::get('/employeename/{id}', [photoattendanceController::class, 'getEmployeeName']);
+route::resource('attendancephoto', attendancecheck::class)->names  ('attendancephoto');
+// Route::get('/attendance-status', [Attendancecheck::class, 'attendanceStatus'])
+//      ->name('attendance.status');
+Route::post('/advance-salary/store', [photoattendanceController::class, 'saveAdvanceSalary'])
+     ->name('advance.store');
+
+
+
 
 //----------------------------purchase- sales invetory  stock managment -------------------------
 Route::resource('purchases', PurchaseController::class);
