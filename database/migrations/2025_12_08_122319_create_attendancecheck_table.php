@@ -24,7 +24,7 @@ return new class extends Migration
     $table->datetime('checkin_time')->nullable();
     $table->datetime('checkout_time')->nullable();
 // additional fields if needed
-$table->string('af1')->nullable();
+$table->string('Date')->nullable();
 $table->string('af2')->nullable();
 $table->string('af3')->nullable();
 $table->string('af4')->nullable();

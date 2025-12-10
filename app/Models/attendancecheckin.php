@@ -15,5 +15,6 @@ class attendancecheckin extends Model
         'checkout_photo',
         'checkin_time',
         'checkout_time',
+        'Date',
     ];
 }

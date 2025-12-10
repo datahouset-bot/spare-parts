@@ -27,12 +27,57 @@
                     <tr><th>Address</th><td>{{ $employee->address }}</td></tr>
                     <tr><th>Salary</th><td>₹{{ $employee->salary_amount }}</td></tr>
                     <tr><th>Date of Joining</th><td>{{ $employee->date_of_joining }}</td></tr>
+                     @if($employee->document_submit)
+        <tr>
+            <th>Document</th>
+            <td>
+                <a href="{{ asset('uploads/attendance/documents/' . $employee->document_submit) }}"
+                   target="_blank" class="btn btn-sm btn-info">
+                    View Document
+                </a>
+            </td>
+        </tr>
+    @else
+        <tr>
+            <th>Document</th>
+            <td class="text-muted">No document uploaded</td>
+        </tr>
+    @endif
                 </table>
             </div>
 
         </div>
     </div>
 
+<form method="GET" class="mb-3">
+    <div class="row">
+
+        <!-- MONTH DROPDOWN -->
+        <div class="col-md-4">
+            <label class="fw-bold">Select Month</label>
+            <select name="month" class="form-select" onchange="this.form.submit()">
+                @for ($m = 1; $m <= 12; $m++)
+                    <option value="{{ $m }}" {{ request('month', now()->month) == $m ? 'selected' : '' }}>
+                        {{ date('F', mktime(0, 0, 0, $m, 1)) }}
+                    </option>
+                @endfor
+            </select>
+        </div>
+
+        {{-- <!-- YEAR DROPDOWN -->
+        <div class="col-md-4">
+            <label class="fw-bold">Select Year</label>
+            <select name="year" class="form-select" onchange="this.form.submit()">
+                @for ($y = now()->year; $y >= now()->year - 10; $y--)
+                    <option value="{{ $y }}" {{ request('year', now()->year) == $y ? 'selected' : '' }}>
+                        {{ $y }}
+                    </option>
+                @endfor
+            </select>
+        </div> --}}
+
+    </div>
+</form>
 
     <!-- ADVANCE SALARY TABLE -->
     <div class="card shadow mb-4">
@@ -74,6 +119,21 @@
 
         </div>
     </div>
+<form method="GET" class="mb-3">
+    <div class="row">
+        <div class="col-md-4">
+            <select name="month" class="form-select" onchange="this.form.submit()">
+                <option value="">Select Month</option>
+
+                @for ($m = 1; $m <= 12; $m++)
+                    <option value="{{ $m }}" {{ request('month') == $m ? 'selected' : '' }}>
+                        {{ date('F', mktime(0, 0, 0, $m, 1)) }}
+                    </option>
+                @endfor
+            </select>
+        </div>
+    </div>
+</form>
 
 
     <!-- ATTENDANCE SUMMARY -->
@@ -110,10 +170,20 @@
                 <tbody>
                     @foreach($attendance as $day)
                         <tr>
-                            <td>{{ $day->date }}</td>
-                            <td class="{{ $day->status == 'present' ? 'text-success' : 'text-danger' }}">
-                                {{ strtoupper($day->status) }}
-                            </td>
+                            <td>{{ $day->Date }}</td>
+                            <td>
+    @if($day->status == 'present')
+        <span class="text-success fw-bold">PRESENT</span>
+
+    @elseif($day->status == 'late')
+        <span class="text-danger fw-bold">LATE</span><br>
+        <small class="text-danger">{{ $day->late_message }}</small>
+
+    @else
+        <span class="text-danger fw-bold">ABSENT</span>
+    @endif
+</td>
+
                         </tr>
                     @endforeach
                 </tbody>

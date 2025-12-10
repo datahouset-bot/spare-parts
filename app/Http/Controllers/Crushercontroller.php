@@ -95,6 +95,8 @@ return view('crusher.cresher_entry', compact('account','nextSlip','vehicle'));
      */
  public function store(Request $request)
 {
+
+
     $validate = Validator::make($request->all(), [
 
         'date'              => 'required|date',
@@ -121,7 +123,7 @@ return view('crusher.cresher_entry', compact('account','nextSlip','vehicle'));
         'phone'             => 'nullable|string',
         'remark'            => 'nullable|string',
 
-        'pic'               => 'nullable|file|mimes:jpg,jpeg,png|max:4096',
+     // max 2MB
     ]);
 
     if (!$validate->passes()) {
@@ -197,6 +199,39 @@ return view('crusher.cresher_entry', compact('account','nextSlip','vehicle'));
 }
 
 
+
+
+public function crusher_addstore(Request $request)
+{
+    // validate and return JSON (AJAX-friendly)
+    $validator = Validator::make($request->all(), [
+        'Vehicle_no'      => 'required|string|max:100',
+        'vehicle_measure' => 'required|string|max:100',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
+    }
+
+    try {
+        // Option A: explicit assign + save (no need for $fillable)
+        $vehicle = new Vehicledetail();
+        $vehicle->Vehicle_no = $request->input('Vehicle_no');
+        $vehicle->vehicle_measure = $request->input('vehicle_measure');
+        $vehicle->save();
+
+        // return the saved model as JSON
+        return response()->json([
+            'message' => 'Vehicle added successfully',
+            'data' => $vehicle
+        ], 200);
+
+    } catch (\Exception $e) {
+        // log error server-side and return simple JSON error
+        \Log::error('crusher_addstore error: '.$e->getMessage());
+        return response()->json(['error' => 'Server error'], 500);
+    }
+}
     /**
      * Display the specified resource.
      */

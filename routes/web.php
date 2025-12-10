@@ -545,7 +545,9 @@ Route::resource('crusher',Crushercontroller::class);
 Route::get('vehicledetail',[App\Http\Controllers\Crushercontroller::class,'vehicledetail']);
 Route::post('vehicledetailstore', [App\Http\Controllers\Crushercontroller::class, 'vehicledetailstore'])
     ->name('vehicledetail.store');
-    
+Route::post('crusher/addstore', [Crushercontroller::class, 'crusher_addstore'])
+    ->name('crusher.addstore');
+
 Route::get('vehicledetail', [Crushercontroller::class, 'vehicledetailindex'])
     ->name('vehicledetail.index');
 

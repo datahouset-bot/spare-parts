@@ -3,6 +3,7 @@
 @endphp
 <link rel="stylesheet" href="{{ global_asset('/general_assets/css/form.css') }}">
 
+
 @extends('layouts.blank')
 
 @section('pagecontent')
@@ -24,7 +25,7 @@
         font-size: 14px;
     }
 
-    #pic_trigger {
+    #pic {
         display: block;
         width: 100%;
         padding: 10px 15px;
@@ -81,22 +82,31 @@
                     </select>
                     <input type="hidden" id="party_name" name="party_name">
                 </div>
+                <!-- ADD VEHICLE MODAL -->
 
-                <!-- Vehicle ID -->
-                <div class="col-md-4 col-12">
-                    <label>Select Vehicle</label>
-                    <select id="vehicle_id" name="vehicle_id" class="form-select">
-                        <option disabled selected>Select vehicle</option>
-                        @foreach ($vehicle as $acc)
-                            <option value="{{ $acc->id }}"
-                                data-vehicle-measure="{{ $acc->vehicle_measure }}"
-                                data-vehicle-no="{{ $acc->Vehicle_no }}">
-                                {{ $acc->Vehicle_no }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <input type="hidden" id="vehicle_no" name="vehicle_no">
-                </div>
+
+               <!-- Vehicle ID -->
+<!-- Vehicle ID -->
+<div class="col-md-4 col-12">
+    <label>Select Vehicle</label>
+
+    <!-- Dropdown -->
+<select id="vehicle_id" name="vehicle_id" class="form-select">
+    <option disabled selected>Select vehicle</option>
+
+    @foreach ($vehicle as $acc)
+        <option value="{{ $acc->id }}"
+            data-vehicle-measure="{{ $acc->vehicle_measure }}"
+            data-vehicle-no="{{ $acc->Vehicle_no }}">
+            {{ $acc->Vehicle_no }}
+        </option>
+    @endforeach
+</select>
+
+    <input type="hidden" id="vehicle_no" name="vehicle_no">
+</div>
+
+
 
                 <!-- Vehicle Measure -->
                 <div class="col-md-4 col-12">
@@ -184,20 +194,14 @@
                 </div>
 
                 <!-- IMAGE CAPTURE -->
-                <div class="col-md-4 col-12">
-                    <label>Image 1</label>
-
-                    <input type="text" id="pic_trigger"
-                           class="form-control"
-                           readonly
-                           placeholder="Click to upload or capture"
-                           data-bs-toggle="modal"
-                           data-bs-target="#fileUploadModal">
-
-                    <input type="file" id="pic_file" name="pic" class="d-none" accept="image/*">
-                </div>
-
-            </div>
+                    <!-- IMAGE CAPTURE -->
+<div class="col-md-4 col-12">
+    <label>Image</label>
+ <input class="form-control" id="pic_trigger" type="text" readonly
+           placeholder="Click to capture image"
+           data-bs-toggle="modal"
+           data-bs-target="#captureModal">
+</div>
 
             <div class="row mt-4">
                 <div class="col-12 text-center">
@@ -205,36 +209,22 @@
                     <a class="btn btn-dark" href="{{ url('crusher') }}">Back</a>
                 </div>
             </div>
-
-        </form>
-    </div>
-</div>
-
-
-
-<!-- CAMERA / FILE UPLOAD MODAL -->
-<div class="modal fade" id="fileUploadModal" tabindex="-1">
+{{-- camera modal --}}
+<input type="file" id="pic" name="pic" class="d-none" accept="image/*">
+<div class="modal fade" id="captureModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title">Select Image</h5>
+                <h5 class="modal-title">Capture Image</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
-            <div class="modal-body">
-
-                <label>Drag & Drop</label>
-                <div id="dropZone">Drag file here or click</div>
-
-                <hr>
-
-                <label>Capture from Camera</label>
-                <video id="webcam" autoplay playsinline></video>
-                <canvas id="canvas"></canvas>
+            <div class="modal-body text-center">
+                <video id="webcam" autoplay playsinline style="width:100%; max-height:180px; display:none;"></video>
+                <canvas id="canvas" style="display:none;"></canvas>
 
                 <button id="captureBtn" class="btn btn-primary btn-sm mt-2">Capture</button>
-
             </div>
 
             <div class="modal-footer">
@@ -246,13 +236,235 @@
 </div>
 
 
+                <!-- END IMAGE CAPTURE -->
+
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{{-- vehicle modal --}}
+<div class="modal fade" id="vehicleModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Add Vehicle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="vehicleForm">
+                    @csrf
+
+                    <div class="mb-2">
+                        <label>Vehicle Number *</label>
+                        <input type="text" class="form-control" name="Vehicle_no">
+                    </div>
+
+                    <div class="mb-2">
+                        <label>Vehicle Measure *</label>
+                        <input type="text" class="form-control" name="vehicle_measure" >
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="saveVehicleBtn" type="button" class="btn btn-primary">Save</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 
 <!-- JS SCRIPTS -->
+<!-- jQuery FIRST -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Select2 AFTER jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    const webcam = document.getElementById("webcam");
+    const canvas = document.getElementById("canvas");
+    const captureBtn = document.getElementById("captureBtn");
+    const modal = document.getElementById("captureModal");
+    const inputFile = document.getElementById("pic");
+  const triggerInput = document.getElementById("pic_trigger"); // correct field
 
 
+    let stream = null;
+
+    // START CAMERA WHEN MODAL OPENS
+    modal.addEventListener("shown.bs.modal", async () => {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            webcam.srcObject = stream;
+            webcam.style.display = "block";
+        } catch (err) {
+            alert("Camera access blocked OR device has no camera.");
+        }
+    });
+
+    // STOP CAMERA WHEN MODAL CLOSES
+    modal.addEventListener("hidden.bs.modal", () => {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+        webcam.srcObject = null;
+        webcam.style.display = "none";
+        stream = null;
+
+        // FIX dark screen issue
+        $("body").removeClass("modal-open");
+        $(".modal-backdrop").remove();
+    });
+
+    // CAPTURE IMAGE
+    captureBtn.addEventListener("click", () => {
+        if (!stream) return;
+
+        canvas.width = webcam.videoWidth;
+        canvas.height = webcam.videoHeight;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(webcam, 0, 0);
+
+      canvas.toBlob(blob => {
+
+    const fileName = "capture_" + Date.now() + ".jpg";
+    const file = new File([blob], fileName, { type: "image/jpeg" });
+
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    inputFile.files = dt.files;   // <-- Correct file input
+
+    triggerInput.value = fileName; // UI display only
+
+    bootstrap.Modal.getInstance(modal).hide();
+        }, "image/jpeg", 0.95);
+    });
+
+});
+</script>
+
+<script>
+$(document).ready(function () {
+
+    $('#vehicle_id').select2({
+        placeholder: "Search vehicle...",
+        width: "100%",
+        allowClear: true
+    });
+
+    // HTML for button inside dropdown
+    let addBtnHtml = `
+        <div id="addVehicleBtn"
+             style="padding:10px; text-align:center; cursor:pointer;
+                    border-top:1px solid #ddd; font-weight:bold; color:#007bff;">
+            ➕ Add New Vehicle
+        </div>
+    `;
+
+    // Inject button every time dropdown opens
+    $('#vehicle_id').on('select2:open', function () {
+
+        // Remove duplicates
+        $('#addVehicleBtn').remove();
+
+        // Append button to results
+        $('.select2-results').append(addBtnHtml);
+    });
+
+    // BUTTON CLICK → redirect to page
+    $(document).on('click', '#addVehicleBtn', function () {
+
+        // Close dropdown
+        $('#vehicle_id').select2('close');
+
+        // Redirect to your page
+        window.location.href = "{{ url('vehicledetail/create') }}";  
+    });
+
+});
+
+</script>
+
+{{-- ======================for vehicle entry model================================== --}}
+<script>
+$(function() {
+
+    // Save Vehicle
+   $("#saveVehicleBtn").click(function() {
+
+    let fd = new FormData(document.getElementById("vehicleForm"));
+    fd.append('_token', "{{ csrf_token() }}");
+
+    $("#saveVehicleBtn").prop("disabled", true).text("Saving...");
+
+    $.ajax({
+        url: "{{ route('crusher.addstore') }}",
+        type: "POST",
+        data: fd,
+        processData: false,
+        contentType: false,
+
+   success: function(res) {
+
+    $("#vehicleModal").modal("hide");
+
+    var newOption = new Option(res.data.Vehicle_no, res.data.id, true, true);
+    $(newOption).attr("data-vehicle-measure", res.data.vehicle_measure);
+    $(newOption).attr("data-vehicle-no", res.data.Vehicle_no);
+
+    $('#vehicle_id').append(newOption).trigger('change');
+
+    alert("Vehicle added successfully!");
+}
+
+,
+
+        error: function(xhr) {
+            $("#saveVehicleBtn").prop("disabled", false).text("Save");
+            alert("Error saving vehicle");
+            console.log(xhr.responseText);
+        }
+    });
+});
+
+
+    // SELECT BUTTON → Select highlighted vehicle
+  $("#selectVehicleBtn").click(function () {
+
+    let s = $("#vehicle_id").select2('data')[0];
+
+    if (!s) {
+        return alert("Please select a vehicle");
+    }
+
+    // Assign values
+    $("#vehicle_measure").val($(s.element).data("vehicle-measure"));
+    $("#vehicle_no").val($(s.element).data("vehicle-no"));
+
+    alert("Vehicle selected!");
+});
+
+});
+</script>
+<!-- ======================end for vehicle entry model================================== -->    
 
 
 <!-- ============= AUTO FILL + TOTAL ============= -->
@@ -263,11 +475,11 @@ $(function() {
         $('#party_name').val($(this).find(':selected').text().trim());
     });
 
-    $('#vehicle_id').change(function() {
-        let s = $(this).find(':selected');
-        $('#vehicle_measure').val(s.data('vehicle-measure'));
-        $('#vehicle_no').val(s.data('vehicle-no'));
-    });
+  $('#vehicle_id').change(function() {
+    let s = $(this).find(":selected");
+    $('#vehicle_measure').val(s.data('vehicle-measure'));
+    $('#vehicle_no').val(s.data('vehicle-no'));
+});
 
     function calc() {
         let q = parseFloat($('#Quantity').val()) || 0;
@@ -296,79 +508,6 @@ $(function() {
 
 });
 </script>
-
-
-
-
-
-<!-- ============= FILE UPLOAD + DRAG DROP + CAMERA FIXED ============= -->
-    <script>
-$(function() {
-
-    const modalEl = document.getElementById('fileUploadModal');
-
-    const video = document.getElementById('webcam');
-    const canvas = document.getElementById('canvas');
-    const captureBtn = $('#captureBtn');
-    const fileInput = document.getElementById('pic_file');
-    const trigger = $('#pic_trigger');
-
-    let stream = null;
-
-    // Start camera when modal opens
-    modalEl.addEventListener('shown.bs.modal', async () => {
-        try {
-            stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            video.srcObject = stream;
-            video.style.display = "block";
-        } catch (err) {
-            alert("Camera error: " + err.message);
-        }
-    });
-
-    // Stop camera when modal closes
-    modalEl.addEventListener('hidden.bs.modal', () => {
-        if (stream) {
-            stream.getTracks().forEach(t => t.stop());
-        }
-        video.srcObject = null;
-        video.style.display = "none";
-        stream = null;
-    });
-
-    // Capture Image
-    captureBtn.click(function (e) {
-        e.preventDefault();
-
-        if (!stream) return;
-
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-
-        canvas.getContext("2d").drawImage(video, 0, 0);
-
-        canvas.toBlob(blob => {
-            let filename = "photo_" + Date.now() + ".jpg";
-            let file = new File([blob], filename, { type: "image/jpeg" });
-
-            const dt = new DataTransfer();
-            dt.items.add(file);
-            fileInput.files = dt.files;
-
-            trigger.val(filename);
-
-            // Correct Bootstrap 5 method:
-            bootstrap.Modal.getInstance(modalEl).hide();
-        });
-    });
-
-});
-</script>
-
-
-
-
-
 
 <!-- ============= AJAX SAVE FORM ============= -->
 <script>

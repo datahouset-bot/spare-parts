@@ -31,19 +31,59 @@ class photoattendancecontroller extends Controller
 {
      $employee = photoattendance::findOrFail($id);
 
-    // Get all advance salary records
-    $advances = DB::table('attendancesalary')
-                    ->where('emp_id', $id)
-                    ->orderBy('id', 'DESC')
-                    ->get();
+    //  show advance salary
+   $selectedMonth = request('month') ? request('month') : now()->month;
+$selectedYear  = now()->year;
 
-    // Total Advance Taken
-    $totalAdvance = $advances->sum('advance_salary');
+$advances = DB::table('attendancesalary')
+                ->where('emp_id', $id)
+                ->whereMonth('date', $selectedMonth)
+                ->whereYear('date', $selectedYear)
+                ->orderBy('id', 'DESC')
+                ->get();
+// Calculate total advance salary
+$totalAdvance = $advances->sum('advance_salary');
 
-     $attendance = DB::table('attendancecheckins')
-                    ->where('emp_id', $id)
-                    ->orderBy('id', 'DESC')
-                    ->get();
+// Show attendance
+ $selectedMonth = request('month') ? request('month') : now()->month;
+$selectedYear  = now()->year;
+
+$attendance = DB::table('attendancecheckins')
+                ->where('emp_id', $id)
+                ->whereMonth('date', $selectedMonth)
+                ->whereYear('date', $selectedYear)
+                ->orderBy('date', 'DESC')
+                ->get();
+// Determine present and absent days
+$bufferTime = $employee->Buffer_time ? $employee->Buffer_time . ":00" : "09:30:00";
+
+foreach ($attendance as $day) {
+
+    // If no check-in → absent
+    if (!$day->checkin_time) {
+        $day->status = 'absent';
+        $day->late_message = null;
+        continue;
+    }
+
+    // Extract HH:MM:SS
+    $checkinTime = date("H:i:s", strtotime($day->checkin_time));
+
+    if ($checkinTime > $bufferTime) {
+
+        // LATE
+        $day->status = 'late';
+
+        // Minutes difference
+        $lateMinutes = (strtotime($checkinTime) - strtotime($bufferTime)) / 60;
+        $day->late_message = "Late by " . round($lateMinutes) . " minutes";
+
+    } else {
+        // ON TIME
+        $day->status = 'present';
+        $day->late_message = null;
+    }
+}
 
     $presentDays = $attendance->where('status', 'present')->count();
     $absentDays  = $attendance->where('status', 'absent')->count();

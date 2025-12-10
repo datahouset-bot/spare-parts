@@ -37,6 +37,7 @@
                         <th>Check-Out Time</th>
 
                         <th>Status</th>
+                        <th>Late Message</th>
                     </tr>
                 </thead>
 
@@ -87,16 +88,32 @@
 
                         {{-- STATUS --}}
                         <td>
-                            @if($item['status'] == 'Present')
-                                <span class="badge bg-success">Present</span>
+                          @if($item['status'] == 'Present')
+    <span class="badge bg-success">Present</span>
 
-                            {{-- @elseif($item['status'] == 'Half Day')
-                                <span class="badge bg-warning text-dark">Half Day</span> --}}
+@elseif($item['status'] == 'Half Day')
+    <span class="badge bg-warning text-dark">Half Day</span>
 
-                            @else
-                                <span class="badge bg-danger">Absent</span>
-                            @endif
-                        </td>
+@elseif($item['status'] == 'Late')
+    <span class="badge bg-warning text-dark">Late</span>
+
+@else
+    <span class="badge bg-danger">Absent</span>
+@endif
+
+ <td>
+    @if($item['status'] == 'Late')
+        <span class="badge bg-warning text-dark">Late</span><br>
+        <small class="text-warning fw-bold">{{ $item['late_message'] }}</small>
+
+    @elseif($item['status'] == 'Present')
+        <span class="badge bg-success">Present</span>
+
+    @else
+        <span class="badge bg-danger">Absent</span>
+    @endif
+</td>
+
 
                     </tr>
                     @endforeach
