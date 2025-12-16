@@ -2,6 +2,8 @@
 
 @section('pagecontent')
 
+
+
 <div class="container fluid">
 
     <div class="card shadow">
@@ -106,10 +108,11 @@
 
                             {{-- PRINT --}}
                             <td>
-                                <button class="btn btn-sm btn-warning"
-                                        onclick="printSingleEmployee({{ $employee->id }})">
-                                    Print
-                                </button>
+                               <button class="btn btn-sm btn-warning"
+        onclick="printEmployee({{ $employee->id }})">
+    Print
+</button>
+
                             </td>
 
                             {{-- ADD ADVANCE SALARY --}}
@@ -171,11 +174,213 @@
                     + Add New Employee
                 </a>
 
+            
+
             </div>
         </div>
     </div>
 
 </div>
+
+
+
+{{-- =============================model for print user script============================== --}}
+{{-- Load jQuery once --}}
+<script>
+const employeesData = @json($employees->keyBy('id'));
+const baseUrl = "{{ url('') }}";
+
+// Base64 blank image (offline safe)
+const blankImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==";
+
+const companyName = @json($componyinfo->cominfo_firm_name ?? '');
+const companyAddress = @json(
+    trim(
+        ($componyinfo->cominfo_address1 ?? '') . ' ' .
+        ($componyinfo->cominfo_address2 ?? '') . ' ' .
+        ($componyinfo->cominfo_city ?? '') . ' ' .
+        ($componyinfo->cominfo_state ?? '') . ' ' .
+        ($componyinfo->cominfo_pincode ?? '') . ' ' .
+        ($compinfofooter->country ?? '')
+    )
+);
+
+// ✅ FIXED PATH (also had typo)
+const companyLogo = "{{ asset('storage/app/public/image/' . ($pic->logo ?? '')) }}";
+
+function printEmployee(id) {
+    let emp = employeesData[id];
+    if (!emp) return alert("Employee not found!");
+
+    let photo = emp.photo 
+        ? baseUrl + "/uploads/attendance/photos/" + emp.photo 
+        : blankImg;
+
+    let document = emp.document_submit 
+        ? baseUrl + "/uploads/attendance/documents/" + emp.document_submit 
+        : blankImg;
+
+    let printWin = window.open("", "_blank", "width=900,height=1100");
+printWin.document.write(`
+<html>
+<head>
+    <title>Employee Print</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <style>
+        body { padding: 20px; }
+        table { width:100%; border-collapse:collapse; margin-top:15px; }
+        td, th { border:1px solid #000; padding:6px; font-size:14px; }
+        img.photo { width:160px; border:1px solid #444; }
+
+ .header {
+    display: grid;
+    grid-template-columns: auto 1fr auto; /* left | center | right */
+    align-items: center;
+    border-bottom: 3px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.header .logo img {
+    height: 70px;
+}
+
+.header .company-info {
+    text-align: center;
+}
+
+.header .company-info h4 {
+    margin: 0;
+    font-weight: 700;
+}
+
+.header .company-info small {
+    font-size: 13px;
+}
+
+.header .emp-photo img {
+    width: 120px;
+    border: 1px solid #444;
+}
+
+.photo-row {
+    display:flex;
+    gap:30px;
+    margin-top:20px;
+}
+
+.photo-right {
+    margin-left: auto;
+}
+
+
+        .signature-section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 60px;
+}
+
+.signature-box {
+    width: 45%;
+    text-align: center;
+}
+
+.signature-line {
+    border-top: 2px solid #000;
+    margin-top: 50px;
+}
+
+    </style>
+</head>
+
+<body>
+
+    <!-- COMPANY HEADER -->
+  <div class="header">
+
+    <!-- COMPANY LOGO (LEFT) -->
+    <div class="logo">
+        <img src="${companyLogo}" onerror="this.style.display='none'">
+    </div>
+
+    <!-- COMPANY NAME (CENTER) -->
+    <div class="company-info">
+        <h4>${companyName}</h4>
+        <small>${companyAddress}</small>
+    </div>
+
+    <!-- EMPLOYEE PHOTO (RIGHT) -->
+    <div class="emp-photo">
+        <img src="${photo}">
+    </div>
+
+</div>
+
+
+    <h5 class="text-center fw-bold">Employee Details</h5>
+
+    <!-- PHOTO LEFT + DETAILS RIGHT -->
+    <div class="photo-row">
+
+    <!-- DETAILS TABLE (LEFT) -->
+    <div style="flex:1;">
+        <table>
+            <tr><th>ID</th><td>${emp.id}</td></tr>
+            <tr><th>Name</th><td>${emp.name}</td></tr>
+            <tr><th>Email</th><td>${emp.email ?? "-"}</td></tr>
+            <tr><th>Mobile</th><td>${emp.mobile ?? "-"}</td></tr>
+            <tr><th>Address</th><td>${emp.address ?? "-"}</td></tr>
+            <tr><th>Salary</th><td>${emp.salary_amount ?? "-"}</td></tr>
+            <tr><th>Date of Joining</th><td>${emp.date_of_joining ?? "-"}</td></tr>
+            <tr><th>Document Type</th><td>${emp.document_type ?? "-"}</td></tr>
+            <tr><th>Document Number</th><td>${emp.document_no ?? "-"}</td></tr>
+            <tr><th>Report Time</th><td>${emp.Report_time ?? "-"}</td></tr>
+            <tr><th>Buffer Time</th><td>${emp.Buffer_time ?? "-"}</td></tr>
+            <tr><th>Terms</th><td>${emp.terms_text ?? "-"}</td></tr>
+        </table>
+    </div>
+
+    <!-- EMPLOYEE PHOTO (RIGHT) -->
+ 
+
+</div>
+
+    <!-- SIGNATURES -->
+   <div class="signature-section">
+    <div class="signature-box">
+        <div class="signature-line"></div>
+        <h6 class="mt-2">Employee Signature</h6>
+    </div>
+
+    <div class="signature-box">
+        <div class="signature-line"></div>
+        <h6 class="mt-2">Official Signature</h6>
+    </div>
+</div>
+
+
+</body>
+</html>
+`);
+
+    printWin.document.close();
+
+    // Wait for images → print
+    printWin.onload = () => {
+        setTimeout(() => {
+            printWin.print();
+            printWin.close();
+        }, 300);
+    };
+}
+</script>
+
+
+
+{{-- =============================end model for print user script============================== --}}
+
 
 <script>
 function showAdvanceInput(id) {

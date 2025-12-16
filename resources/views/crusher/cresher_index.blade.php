@@ -25,15 +25,20 @@
                             <th>Time</th>
                             <th>Vehicle No</th>
                             <th>Party</th>
-                            <th>Vehicle Measure</th>
+                            @can('view user')
+                                  <th>Vehicle Measure</th>
                             <th>Material</th>
                             <th>Qty</th>
                             <th>Rate</th>
                             <th>Royalty</th>
                             <th>Total</th>
+                            <th>Address</th>
                             <th>Phone</th>
+                            <th>Remarks</th>
                             <th>Image</th>
-                            <th>Action</th>
+                            @endcan
+                          
+                            <th >Action</th>
                         </tr>
                     </thead>
 
@@ -46,13 +51,16 @@
                             <td>{{ $item->time }}</td>
                             <td>{{ $item->vehicle_no }}</td>
                             <td>{{ $item->party_name }}</td>
-                            <td>{{ $item->vehicle_measure }}</td>
+                            @can('view user')
+                                  <td>{{ $item->vehicle_measure }}</td>
                             <td>{{ $item->Material }}</td>
                             <td>{{ $item->Quantity }}</td>
                             <td>{{ number_format($item->Rate, 2) }}</td>
                             <td>{{ number_format($item->Royalty, 2) }}</td>
                             <td>{{ number_format($item->Total, 2) }}</td>
-                            <td>{{ $item->phone }}</td>
+                              <td>{{ $item->address }}</td>
+                            <td>{{ $item->phone }}</td>              
+                            <td>{{ $item->remark }}</td>
 
 <td>
     @if($item->pic)
@@ -65,30 +73,40 @@
         <span class="text-muted">No Image</span>
     @endif
 </td>
-                            <td>
- <a href="{{ route('crusher.show', $item->id) }}"
-       class="btn btn-sm btn-info text-white">
-        View
-    </a>
+                            @endcan
+                          
+      <td class="text-center">
+    <div class="d-flex justify-content-center gap-2">
 
-    <!-- ✅ Edit Button -->
-    <a href="{{ route('crusher.edit', $item->id) }}"
-       class="btn btn-sm btn-primary">
-        Edit
-    </a>
+        <!-- View -->
+        <a href="{{ route('crusher.show', $item->id) }}"
+           class="btn btn-sm btn-info text-white">
+            View
+        </a>
+@can('update user')
+      <a href="{{ route('crusher.edit', $item->id) }}"
+           class="btn btn-sm btn-primary">
+            Edit
+        </a>
+@endcan
+        <!-- Edit -->
+      
+@can('delete user')
+    
 
-    <!-- ✅ Delete Button -->
-    <form action="{{ route('crusher.destroy', $item->id) }}"
-          method="POST"
-          style="display:inline-block;"
-          onsubmit="return confirm('Are you sure you want to delete this challan?')">
-        @csrf
-        @method('DELETE')
+        <!-- Delete -->
+        <form action="{{ route('crusher.destroy', $item->id) }}"
+              method="POST"
+              onsubmit="return confirm('Are you sure you want to delete this challan?')">
+            @csrf
+            @method('DELETE')
 
-        <button type="submit" class="btn btn-sm btn-danger">
-            Delete
-        </button>
-    </form>
+            <button type="submit" class="btn btn-sm btn-danger">
+                Delete
+            </button>
+        </form>
+@endcan
+    </div>
 </td>
 
                         </tr>
@@ -105,8 +123,8 @@
             </div>
         </div>
 <div class="card-footer d-flex justify-content-between align-items-center">
-
-    {{-- 🔴 DELETE ALL --}}
+@can('delete user')
+     {{-- 🔴 DELETE ALL --}}
     <form action="{{ route('crusher.destroy', 'all') }}"
           method="POST"
           onsubmit="return confirm('⚠️ Are you sure you want to DELETE ALL challans? This cannot be undone!')">
@@ -118,6 +136,8 @@
         </button>
     </form>
 
+@endcan
+   
     {{-- ✅ ADD NEW --}}
     <a href="{{ route('crusher.create') }}" class="btn btn-success">
         + Add New Challan

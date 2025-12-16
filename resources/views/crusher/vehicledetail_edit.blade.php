@@ -36,6 +36,14 @@
                                value="{{ $vehicle->Vehicle_no }}" required>
                     </div>
 
+                     <div class="col-md-4 mb-3">
+                        <label>Vehicle Measure</label>
+                        <input type="text" name="vehicle_measure"
+                               class="form-control"
+                               value="{{ $vehicle->vehicle_measure }}" required>
+                    </div>
+
+
                     <div class="col-md-4 mb-3">
                         <label>Registration Date</label>
                         <input type="date" name="Registration_date"

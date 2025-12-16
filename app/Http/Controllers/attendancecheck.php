@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use App\Models\photoattendance;
 use App\Models\attendancecheckin;
@@ -11,81 +12,85 @@ class attendancecheck extends Controller
     /**
      * Display a listing of the resource.
      */
-  public function index(Request $request)
+public function index(Request $request)
 {
-    $date = $request->date ?? now()->format('Y-m-d');
+    $fromDate = $request->from_date ?? now()->format('Y-m-d');
+    $toDate   = $request->to_date ?? now()->format('Y-m-d');
 
     $employees = photoattendance::all();
 
+    // Create date range
+    $period = CarbonPeriod::create($fromDate, $toDate);
+
     $attendanceData = [];
 
-foreach ($employees as $emp) {
+    foreach ($employees as $emp) {
 
-    $attendance = attendancecheckin::where('emp_id', $emp->id)
-        ->whereDate('date', $date)
-        ->first();
+        foreach ($period as $date) {
 
-    $status = "Absent";
-    $lateMessage = "";
+            $attendance = attendancecheckin::where('emp_id', $emp->id)
+                ->whereDate('date', $date->format('Y-m-d'))
+                ->first();
 
-    $checkin_time = $attendance->checkin_time ?? "--";
-    $checkout_time = $attendance->checkout_time ?? "--";
+            $status = "Absent";
+            $lateMessage = "";
 
-    $checkin_photo = $attendance->checkin_photo ?? null;
-    $checkout_photo = $attendance->checkout_photo ?? null;
-if ($attendance) {
+            $checkin_time  = $attendance->checkin_time ?? "--";
+            $checkout_time = $attendance->checkout_time ?? "--";
 
-    // CASE 1 — Only check-in → Half Day
-    if ($attendance->checkin_time && !$attendance->checkout_time) {
-        $status = "Half Day";
-    }
+            $checkin_photo  = $attendance->checkin_photo ?? null;
+            $checkout_photo = $attendance->checkout_photo ?? null;
 
-    // CASE 2 — Both check-in & checkout → Present
-    if ($attendance->checkin_time && $attendance->checkout_time) {
-        $status = "Present";
-    }
+            if ($attendance) {
 
-    // CASE 3 — Late (override Present & Half Day)
-    $bufferTime = $emp->Buffer_time
-        ? $emp->Buffer_time . ":00"
-        : "09:30:00";
+                // Half Day
+                if ($attendance->checkin_time && !$attendance->checkout_time) {
+                    $status = "Half Day";
+                }
 
-    if ($attendance->checkin_time) {
-        
-        $checkinOnly = date("H:i:s", strtotime($attendance->checkin_time));
+                // Present
+                if ($attendance->checkin_time && $attendance->checkout_time) {
+                    $status = "Present";
+                }
 
-        if ($checkinOnly > $bufferTime) {
+                // Late logic
+                $bufferTime = $emp->Buffer_time
+                    ? $emp->Buffer_time . ":00"
+                    : "09:30:00";
 
-            // Late only if NOT absent
-            if ($status != "Absent") {
+                if ($attendance->checkin_time) {
+                    $checkinOnly = date("H:i:s", strtotime($attendance->checkin_time));
 
-                $status = "Late";
+                    if ($checkinOnly > $bufferTime && $status != "Absent") {
+                        $status = "Late";
 
-                $lateMinutes = (strtotime($checkinOnly) - strtotime($bufferTime)) / 60;
-                $lateMinutes = round($lateMinutes);
+                        $lateMinutes = (strtotime($checkinOnly) - strtotime($bufferTime)) / 60;
+                        $lateMinutes = round($lateMinutes);
 
-                $lateMessage = "Late by {$lateMinutes} minutes";
+                        $lateMessage = "Late by {$lateMinutes} minutes";
+                    }
+                }
             }
+
+            $attendanceData[] = [
+                'date'           => $date->format('Y-m-d'),
+                'emp_id'         => $emp->id,
+                'emp_name'       => $emp->name,
+                'checkin_time'   => $checkin_time,
+                'checkout_time'  => $checkout_time,
+                'checkin_photo'  => $checkin_photo,
+                'checkout_photo' => $checkout_photo,
+                'status'         => $status,
+                'late_message'   => $lateMessage,
+            ];
         }
     }
-}
 
-    $attendanceData[] = [
-        'emp_id'         => $emp->id,
-        'emp_name'       => $emp->name,
-        'checkin_time'   => $checkin_time,
-        'checkout_time'  => $checkout_time,
-        'checkin_photo'  => $checkin_photo,
-        'checkout_photo' => $checkout_photo,
-        'status'         => $status,
-        'late_message'   => $lateMessage,
-    ];
-}
-
-
-
-
-    return view('photoattendancee.checkin_detail', compact('attendanceData', 'date'));
+    return view('photoattendancee.checkin_detail', compact(
+        'attendanceData',
+        'fromDate',
+        'toDate'
+    ));
 }
 
 
@@ -220,4 +225,54 @@ public function store(Request $request)
     {
         //
     }
+    
+public function updateStatus(Request $request)
+{
+    $request->validate([
+        'emp_id' => 'required',
+        'date'   => 'required',
+        'status' => 'required'
+    ]);
+
+    $attendance = attendancecheckin::where('emp_id', $request->emp_id)
+        ->whereDate('date', $request->date)
+        ->first();
+
+    if (!$attendance) {
+        $emp = photoattendance::find($request->emp_id);
+
+        $attendance = new attendancecheckin();
+        $attendance->emp_id   = $request->emp_id;
+        $attendance->emp_name = $emp->name ?? '';
+        $attendance->date     = $request->date;
+    }
+
+    // RESET
+    $attendance->checkin_time  = null;
+    $attendance->checkout_time = null;
+
+    // Create full datetime using selected date
+    $checkinDateTime  = $request->date . ' ';
+    $checkoutDateTime = $request->date . ' ';
+
+    if ($request->status == 'Present') {
+        $attendance->checkin_time  = $checkinDateTime . '09:00:00';
+        $attendance->checkout_time = $checkoutDateTime . '18:00:00';
+    }
+
+    if ($request->status == 'Half Day') {
+        $attendance->checkin_time = $checkinDateTime . '09:00:00';
+    }
+
+    if ($request->status == 'Late') {
+        $attendance->checkin_time  = $checkinDateTime . '10:30:00';
+        $attendance->checkout_time = $checkoutDateTime . '18:00:00';
+    }
+
+    // Absent = null/null
+
+    $attendance->save();
+
+    return back()->with('success', 'Attendance updated successfully');
+}
 }

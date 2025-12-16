@@ -199,7 +199,14 @@ class HomeController extends CustomBaseController
             // $daysDifference = $currentDate->diffInDays($expiryDate, false); // false for signed difference
         
   $debugData="";
-                return view('home', compact('roomcheckin','currentDate','vacantroom','occupiedroom' ,'dirtyroom','daysDifference','amcCount', 'dueAmcCount','pendingTask','todayFollowup','kot_Unprinted','Rkot_Unprinted','financialyear','debugData' ));    
+               return view('home', compact(
+    'roomcheckin','currentDate','vacantroom','occupiedroom','dirtyroom',
+    'daysDifference','amcCount','dueAmcCount','pendingTask','todayFollowup',
+    'kot_Unprinted','Rkot_Unprinted','financialyear','debugData','sales',
+'purchaseChart','outstandingPayables',
+    
+));
+
            
     }
     

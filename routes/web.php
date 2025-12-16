@@ -4,18 +4,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KotController;
 use App\Http\Controllers\PicController;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\cctvcontroller;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TodoController;
-use App\Http\Controllers\UnitController;
 
+use App\Http\Controllers\UnitController;
 use App\Http\Controllers\attendancecheck;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\RestaController;
 use App\Http\Controllers\TableController;
+use App\Http\Controllers\visitController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\GodownController;
@@ -26,6 +28,7 @@ use App\Http\Controllers\BanquetController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\Crushercontroller;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\shownewController;
 use App\Http\Controllers\FollowupController;
 use App\Http\Controllers\FoodbillController;
 use App\Http\Controllers\PurchaseController;
@@ -197,6 +200,7 @@ Route::get('/amc_format/{id}', [App\Http\Controllers\AmcController::class, 'amc_
 
 
 
+Route::resource('cctv',cctvController::class);
 
 Route::get('amcform', [App\Http\Controllers\AmcController::class, 'create'])->name('amcform');
 Route::get('amclist', [App\Http\Controllers\AmcController::class, 'amclist'])->name('amclist');
@@ -542,7 +546,7 @@ Route::resource('batchs', BatchController::class);
 
 // -------------------------------------Crusher new table------------------------------------------------
 Route::resource('crusher',Crushercontroller::class);
-Route::get('vehicledetail',[App\Http\Controllers\Crushercontroller::class,'vehicledetail']);
+Route::get('vehicledetail',[App\Http\Controllers\Crushercontroller::class,'vehicledetail'])->name('vehicledetail');
 Route::post('vehicledetailstore', [App\Http\Controllers\Crushercontroller::class, 'vehicledetailstore'])
     ->name('vehicledetail.store');
 Route::post('crusher/addstore', [Crushercontroller::class, 'crusher_addstore'])
@@ -569,7 +573,12 @@ route::resource('attendancephoto', attendancecheck::class)->names  ('attendancep
 //      ->name('attendance.status');
 Route::post('/advance-salary/store', [photoattendanceController::class, 'saveAdvanceSalary'])
      ->name('advance.store');
+     
+Route::post('/attendance/update-status', 
+    [attendancecheck::class, 'updateStatus']
+)->name('attendancephoto.updateStatus');
 
+Route::get('employee/print/{id}', [photoattendanceController::class, 'print'])->name('employee.print');
 
 
 
@@ -619,4 +628,5 @@ route::get('/hotel_gallery/{firm_id}', [App\Http\Controllers\HotelfrontControlle
 route::get('/hotel_blog/{firm_id}', [App\Http\Controllers\HotelfrontController::class, 'blog']);
 route::get('/hotel_contact/{firm_id}', [App\Http\Controllers\HotelfrontController::class, 'contact']);
 
+// ==================================================[for cctv viit ]====================================================================
 

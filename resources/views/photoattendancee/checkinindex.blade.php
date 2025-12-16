@@ -25,6 +25,21 @@
         border-radius: 10px;
     }
 </style>
+<style>
+#emp_id.select2-hidden-accessible + .select2-container .select2-selection--single {
+    height: 55px !important;
+    padding: 9px 9px;
+    font-size: 20px;
+}
+#emp_id.select2-hidden-accessible + .select2-container .select2-selection__rendered {
+    line-height: 35px !important;
+    font-size: 20px;
+}
+#emp_id.select2-hidden-accessible + .select2-container .select2-selection__arrow {
+    height: 55px !important;
+}
+</style>
+
 
 <div class="main-box">
 
@@ -51,13 +66,13 @@
         @csrf
 
         <div class="mb-3">
-            <select id="emp_id" name="emp_id" class="form-select form-select-lg">
-                <option value="">Select EP ID</option>
-                @foreach ($employees as $emp)
-                    <option value="{{ $emp->id }}">{{ $emp->id }} {{ $emp->name }}</option>
-                @endforeach
-            </select>
-        </div>
+    <select id="emp_id" name="emp_id" class="form-select form-select-lg">
+        <option value="">Select EP ID</option>
+        @foreach ($employees as $emp)
+            <option value="{{ $emp->id }}">{{ $emp->id }} {{ $emp->name }}</option>
+        @endforeach
+    </select>
+</div>
 
         <div class="mb-4">
             <input type="text" id="emp_name" name="emp_name" class="form-control form-control-lg"
@@ -105,6 +120,24 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#emp_id').select2({
+        placeholder: "Select Employee",
+        allowClear: true,
+        width: "100%"
+    });
+});
+</script>
+
+
+</script>
+
+
 
 <script>
 let captureType = ""; // checkin OR checkout

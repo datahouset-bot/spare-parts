@@ -650,7 +650,8 @@ body {
     <!-- =========================
         RECENT SALES (LEFT)
     ========================== -->
-    <div class="col-xl-6 col-lg-12 mb-4">
+  <div class="col-xl-6 col-lg-12 mb-4" id="recent-sales-section">
+
         <div class="card">
             <div class="card-header bg-success text-white fw-bold">
                 <i class="fas fa-box-open me-2"></i> Recent Sales
@@ -814,8 +815,16 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-
-
+@if(isset($sales) && count($sales) > 0)
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const salesSection = document.getElementById("recent-sales-section");
+        if (salesSection) {
+            salesSection.scrollIntoView({ behavior: "smooth" });
+        }
+    });
+</script>
+@endif
 
 
 

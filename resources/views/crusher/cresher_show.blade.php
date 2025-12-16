@@ -270,10 +270,12 @@
             <a href="{{ route('crusher.index') }}" class="btn btn-dark">
                 Back
             </a>
-
-            <a href="{{ route('crusher.edit', $crusher->id) }}" class="btn btn-primary">
+@can('update user')
+      <a href="{{ route('crusher.edit', $crusher->id) }}" class="btn btn-primary">
                 Edit
             </a>
+@endcan
+          
 
             <button onclick="printChallan()" class="btn btn-success">
                 Print

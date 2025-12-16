@@ -74,12 +74,18 @@
                 <!-- Party name -->
                 <div class="col-md-4 col-12">
                     <label>Select Party</label>
-                    <select id="search_id" name="search_id" class="form-select">
-                        <option disabled selected>Select party name</option>
-                        @foreach ($account as $acc)
-                            <option value="{{ $acc['id'] }}">{{ $acc['account_name'] }}</option>
-                        @endforeach
-                    </select>
+                  <select id="search_id" name="search_id" class="form-select">
+    <option disabled selected>Select party name</option>
+
+    @foreach ($account as $acc)
+        <option value="{{ $acc->id }}"
+            data-address="{{ $acc->address }}"
+            data-phone="{{ $acc->mobile }}">
+            {{ $acc->account_name }}
+        </option>
+    @endforeach
+</select>
+
                     <input type="hidden" id="party_name" name="party_name">
                 </div>
                 <!-- ADD VEHICLE MODAL -->
@@ -509,40 +515,69 @@ $(function() {
 });
 </script>
 
+<script>
+    $('#search_id').change(function () {
+    let selected = $(this).find(":selected");
+
+    // Fill hidden party name
+    $('#party_name').val(selected.text().trim());
+
+    // Auto-fill address
+    $('#address').val(selected.data('address') || '');
+
+    // Auto-fill phone
+    $('#phone').val(selected.data('phone') || '');
+});
+
+</script>
 <!-- ============= AJAX SAVE FORM ============= -->
 <script>
 $(function() {
-    $('#saveForm').submit(function(e) {
-        e.preventDefault();
+ $('#saveForm').submit(function (e) {
+    e.preventDefault();
 
-        let fd = new FormData(this);
+    let fd = new FormData();
+    fd.append("_token", "{{ csrf_token() }}");
 
-        $('#saveButton').prop('disabled', true).text('Saving...');
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: fd,
-            processData: false,
-            contentType: false,
-            success: function(res) {
-                $('#saveButton').prop('disabled', false).text('Save');
-                alert(res.message);
-            },
-            error: function(xhr) {
-                $('#saveButton').prop('disabled', false).text('Save');
-
-                if (xhr.status === 422) {
-                    let msg = "";
-                    $.each(xhr.responseJSON.errors, (k, v) => msg += v[0] + "\n");
-                    alert(msg);
-                } else {
-                    alert("Server error");
-                    console.error(xhr.responseText);
-                }
-            }
-        });
+    // add all form fields EXCEPT file
+    $('#saveForm').find("input, select, textarea").each(function () {
+        if (this.type !== "file") {
+            fd.append(this.name, $(this).val());
+        }
     });
+
+    // add the image file
+    let f = document.getElementById("pic").files;
+    if (f.length > 0) {
+        fd.append("pic", f[0]);
+    }
+
+    $('#saveButton').prop('disabled', true).text('Saving...');
+
+    $.ajax({
+        url: $('#saveForm').attr('action'),
+        type: 'POST',
+        data: fd,
+        processData: false,
+        contentType: false,
+        success: function (res) {
+            $('#saveButton').prop('disabled', false).text('Save');
+            alert(res.message);
+        },
+        error: function (xhr) {
+            $('#saveButton').prop('disabled', false).text('Save');
+            if (xhr.status === 422) {
+                let msg = "";
+                $.each(xhr.responseJSON.errors, (k, v) => msg += v[0] + "\n");
+                alert(msg);
+            } else {
+                alert("Server error");
+                console.error(xhr.responseText);
+            }
+        }
+    });
+});
+
 });
 </script>
 

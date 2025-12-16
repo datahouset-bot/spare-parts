@@ -119,7 +119,7 @@
 
         </div>
     </div>
-<form method="GET" class="mb-3">
+{{-- <form method="GET" class="mb-3">
     <div class="row">
         <div class="col-md-4">
             <select name="month" class="form-select" onchange="this.form.submit()">
@@ -133,64 +133,68 @@
             </select>
         </div>
     </div>
-</form>
+</form> --}}
 
 
     <!-- ATTENDANCE SUMMARY -->
-    <div class="card shadow mb-4">
-        <div class="card-header bg-success text-white fw-bold">
-            Attendance Summary
-        </div>
-
-        <div class="card-body">
-
-            <div class="row text-center mb-3">
-                <div class="col-md-4">
-                    <h4 class="text-success">Present</h4>
-                    <h3>{{ $presentDays }}</h3>
-                </div>
-                <div class="col-md-4">
-                    <h4 class="text-danger">Absent</h4>
-                    <h3>{{ $absentDays }}</h3>
-                </div>
-                <div class="col-md-4">
-                    <h4 class="text-primary">Total Days</h4>
-                    <h3>{{ $totalDays }}</h3>
-                </div>
-            </div>
-
-            <table class="table table-bordered text-center">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Date</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach($attendance as $day)
-                        <tr>
-                            <td>{{ $day->Date }}</td>
-                            <td>
-    @if($day->status == 'present')
-        <span class="text-success fw-bold">PRESENT</span>
-
-    @elseif($day->status == 'late')
-        <span class="text-danger fw-bold">LATE</span><br>
-        <small class="text-danger">{{ $day->late_message }}</small>
-
-    @else
-        <span class="text-danger fw-bold">ABSENT</span>
-    @endif
-</td>
-
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-        </div>
+   
+<form method="GET" class="mb-3">
+    <div class="col-md-4">
+        <label class="fw-bold">Select Month</label>
+        <select name="month" class="form-select" onchange="this.form.submit()">
+            @for ($m = 1; $m <= 12; $m++)
+                <option value="{{ $m }}" {{ $selectedMonth == $m ? 'selected' : '' }}>
+                    {{ date('F', mktime(0, 0, 0, $m, 1)) }}
+                </option>
+            @endfor
+        </select>
     </div>
+</form>
+
+<!-- SUMMARY -->
+<div class="row text-center mb-3">
+    <div class="col-md-4">
+        <h4 class="text-success">Present</h4>
+        <h3>{{ $presentDays }}</h3>
+    </div>
+    <div class="col-md-4">
+        <h4 class="text-danger">Absent</h4>
+        <h3>{{ $absentDays }}</h3>
+    </div>
+    <div class="col-md-4">
+        <h4 class="text-primary">Total Days</h4>
+        <h3>{{ $totalDays }}</h3>
+    </div>
+</div>
+
+<!-- ATTENDANCE TABLE -->
+<table class="table table-bordered text-center">
+    <thead class="table-dark">
+        <tr>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+   <tbody>
+@foreach($attendance as $day)
+<tr>
+    <td>{{ $day->date }}</td>
+    <td>
+        @if($day->status == 'present')
+            <span class="text-success fw-bold">PRESENT</span>
+        @elseif($day->status == 'late')
+            <span class="text-success fw-bold">LATE</span><br>
+            <small class="text-success">{{ $day->late_message }}</small>
+        @else
+            <span class="text-danger fw-bold">ABSENT</span>
+        @endif
+    </td>
+</tr>
+@endforeach
+</tbody>
+
+</table>
 
 
     <a href="{{ route('attendances.create') }}" class="btn btn-primary mt-3">

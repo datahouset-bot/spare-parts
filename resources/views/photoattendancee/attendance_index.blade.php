@@ -74,7 +74,7 @@
                         <small class="text-muted">Document Upload</small>
                         <input type="file" name="document_file" class="form-control">
                     </div>
-
+  <small class="text-muted">Buffer Time</small>
                     <input type="time" name="buffer_time" class="form-control mb-3" placeholder="Buffer Time">
                 </div>
 

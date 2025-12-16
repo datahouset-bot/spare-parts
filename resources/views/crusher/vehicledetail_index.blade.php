@@ -1,7 +1,7 @@
 @extends('layouts.blank')
 
 @section('pagecontent')
-<div class="container mt-4">
+<div class="container-fluid mt-4">
 
     <div class="card shadow">
         <div class="card-header bg-primary text-white fw-bold">
@@ -53,14 +53,20 @@
                             <td>{{ $item->Driver_address }}</td>
                             <td>{{ $item->Insaurance }}</td>
                             <td>{{ $item->Puc }}</td>
-     <td>
+       @can('update user') <td>
+     
+            
+       
     <!-- ✅ Edit Button -->
     <a href="{{ route('vehicledetail.edit', $item->id) }}"
        class="btn btn-sm btn-primary">
         Edit
     </a>
-</td>
+</td> @endcan
 <td>
+    @can('delete user')
+        
+
     <!-- ✅ Delete Button -->
     <form action="{{ route('vehicledetail.destroy', $item->id) }}"
           method="POST"
@@ -74,7 +80,7 @@
         </button>
     </form>
 
-
+    @endcan
 </td>
 
                         </tr>

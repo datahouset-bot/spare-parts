@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use App\Models\photoattendance;
 use App\Models\attendancesalary;
@@ -27,75 +29,121 @@ class photoattendancecontroller extends Controller
         return view('photoattendancee.checkinindex', compact('employees'));
     }
 
-    public function show($id)
+
+    //============ SHOW EMPLOYEE ATTENDANCE/salary/and all DETAILS===========================
+public function show($id)
 {
-     $employee = photoattendance::findOrFail($id);
+    $employee = photoattendance::findOrFail($id);
 
-    //  show advance salary
-   $selectedMonth = request('month') ? request('month') : now()->month;
-$selectedYear  = now()->year;
+    /* ===============================
+       MONTH / YEAR
+    =============================== */
+    $selectedMonth = request('month', now()->month);
+    $selectedYear  = now()->year;
 
-$advances = DB::table('attendancesalary')
-                ->where('emp_id', $id)
-                ->whereMonth('date', $selectedMonth)
-                ->whereYear('date', $selectedYear)
-                ->orderBy('id', 'DESC')
-                ->get();
-// Calculate total advance salary
-$totalAdvance = $advances->sum('advance_salary');
+    /* ===============================
+       ADVANCE SALARY
+    =============================== */
+    $advances = DB::table('attendancesalary')
+        ->where('emp_id', $id)
+        ->whereMonth('date', $selectedMonth)
+        ->whereYear('date', $selectedYear)
+        ->orderBy('date', 'DESC')
+        ->get();
 
-// Show attendance
- $selectedMonth = request('month') ? request('month') : now()->month;
-$selectedYear  = now()->year;
+    $totalAdvance = $advances->sum('advance_salary');
 
-$attendance = DB::table('attendancecheckins')
-                ->where('emp_id', $id)
-                ->whereMonth('date', $selectedMonth)
-                ->whereYear('date', $selectedYear)
-                ->orderBy('date', 'DESC')
-                ->get();
-// Determine present and absent days
-$bufferTime = $employee->Buffer_time ? $employee->Buffer_time . ":00" : "09:30:00";
+    /* ===============================
+       RAW ATTENDANCE (FORMAT DATE)
+    =============================== */
+   $rawAttendance = DB::table('attendancecheckins')
+    ->where('emp_id', $id)
+    ->whereMonth('created_at', $selectedMonth)
+    ->whereYear('created_at', $selectedYear)
+    ->get()
+    ->mapWithKeys(function ($item) {
+        $date = Carbon::parse($item->created_at)->format('Y-m-d');
+        $item->date = $date; // ensure property exists
+        return [$date => $item];
+    });
 
-foreach ($attendance as $day) {
+    /* ===============================
+       BUFFER TIME
+    =============================== */
+    $bufferTime = $employee->Buffer_time
+        ? $employee->Buffer_time . ':00'
+        : '09:30:00';
 
-    // If no check-in → absent
-    if (!$day->checkin_time) {
-        $day->status = 'absent';
-        $day->late_message = null;
-        continue;
-    }
+    /* ===============================
+       FULL MONTH LOOP
+    =============================== */
+    $start = Carbon::create($selectedYear, $selectedMonth, 1);
+    $end   = $start->copy()->endOfMonth();
 
-    // Extract HH:MM:SS
-    $checkinTime = date("H:i:s", strtotime($day->checkin_time));
+    $attendance = collect();
+foreach (CarbonPeriod::create($start, $end) as $date) {
 
-    if ($checkinTime > $bufferTime) {
+    $dateStr = $date->format('Y-m-d');
 
-        // LATE
-        $day->status = 'late';
+    if ($rawAttendance->has($dateStr)) {
 
-        // Minutes difference
-        $lateMinutes = (strtotime($checkinTime) - strtotime($bufferTime)) / 60;
-        $day->late_message = "Late by " . round($lateMinutes) . " minutes";
+        $day = $rawAttendance[$dateStr];
+
+        // ✅ ENSURE DATE PROPERTY EXISTS
+        $day->date = $dateStr;
+
+        if (!$day->checkin_time) {
+            $day->status = 'absent';
+            $day->late_message = 'absent';
+        } else {
+
+            $checkinTime = date("H:i:s", strtotime($day->checkin_time));
+
+            if ($checkinTime > $bufferTime) {
+                $day->status = 'late';
+                $lateMinutes = (strtotime($checkinTime) - strtotime($bufferTime)) / 60;
+                $day->late_message = "Late by " . round($lateMinutes) . " minutes";
+            } else {
+                $day->status = 'present';
+                $day->late_message = null;
+            }
+        }
+
+        $attendance->push($day);
 
     } else {
-        // ON TIME
-        $day->status = 'present';
-        $day->late_message = null;
+
+        // ABSENT DAY
+        $attendance->push((object)[
+            'date' => $dateStr,
+            'status' => 'absent',
+            'late_message' => 'absent'
+        ]);
     }
 }
 
-    $presentDays = $attendance->where('status', 'present')->count();
+
+    /* ===============================
+       COUNTS
+    =============================== */
+    $presentDays = $attendance->whereIn('status', ['present', 'late'])->count();
     $absentDays  = $attendance->where('status', 'absent')->count();
     $totalDays   = $attendance->count();
 
     return view('photoattendancee.attendance_show', compact(
-        'employee', 'advances', 'totalAdvance', 'attendance',
+        'employee',
+        'advances',
+        'totalAdvance',
+        'attendance',
         'presentDays',
         'absentDays',
-        'totalDays'
+        'totalDays',
+        'selectedMonth'
     ));
 }
+
+
+    // =====================================================================================
 
     public function getEmployeeName($id)
     {

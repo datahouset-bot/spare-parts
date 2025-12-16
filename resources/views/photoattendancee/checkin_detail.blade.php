@@ -2,23 +2,38 @@
 
 @section('pagecontent')
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+{{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 
 <div class="container mt-4">
 
-    <h2 class="fw-bold mb-4 text-center">Attendance Status for {{ $date }}</h2>
+   <h2 class="fw-bold mb-4 text-center">
+    Attendance Status
+    @if(request('from_date') && request('to_date'))
+        ({{ request('from_date') }} to {{ request('to_date') }})
+    @endif
+</h2>
 
-    {{-- DATE FILTER --}}
-    <form method="GET" action="{{ route('attendancephoto.index') }}" class="mb-3">
-        <div class="row g-2">
-            <div class="col-md-4">
-                <input type="date" name="date" class="form-control" value="{{ $date }}">
-            </div>
-            <div class="col-md-2">
-                <button class="btn btn-primary w-100">View</button>
-            </div>
+
+{{-- DATE RANGE FILTER --}}
+<form method="GET" action="{{ route('attendancephoto.index') }}" class="mb-3">
+    <div class="row g-2">
+        <div class="col-md-4">
+            <input type="date" name="from_date" class="form-control"
+                   value="{{ request('from_date') }}">
         </div>
-    </form>
+
+        <div class="col-md-4">
+            <input type="date" name="to_date" class="form-control"
+                   value="{{ request('to_date') }}">
+        </div>
+
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100">View</button>
+        </div>
+    </div>
+</form>
 
     <div class="card shadow">
         <div class="card-body p-0">
@@ -38,6 +53,9 @@
 
                         <th>Status</th>
                         <th>Late Message</th>
+                        <th>Date</th>
+                        <th>Action</th>
+
                     </tr>
                 </thead>
 
@@ -114,6 +132,20 @@
     @endif
 </td>
 
+<td>{{ $item['date'] }}</td>
+
+<td>
+    <button
+        class="btn btn-sm btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#editAttendanceModal"
+        data-emp="{{ $item['emp_id'] }}"
+        data-date="{{ $item['date'] }}"
+        data-status="{{ $item['status'] }}"
+    >
+        Edit
+    </button>
+</td>
 
                     </tr>
                     @endforeach
@@ -125,5 +157,50 @@
     </div>
 
 </div>
+
+
+<div class="modal fade" id="editAttendanceModal" tabindex="-1">
+    <div class="modal-dialog">
+        <form method="POST" action="{{ route('attendancephoto.updateStatus') }}">
+            @csrf
+
+            <input type="hidden" name="emp_id" id="modal_emp_id">
+            <input type="hidden" name="date" id="modal_date">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Attendance</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <label class="fw-bold mb-1">Status</label>
+                    <select name="status" id="modal_status" class="form-select" required>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                        <option value="Half Day">Half Day</option>
+                        <option value="Late">Late</option>
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-success">Update</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+document.getElementById('editAttendanceModal').addEventListener('show.bs.modal', function (event) {
+
+    let button = event.relatedTarget;
+
+    document.getElementById('modal_emp_id').value = button.getAttribute('data-emp');
+    document.getElementById('modal_date').value   = button.getAttribute('data-date');
+    document.getElementById('modal_status').value = button.getAttribute('data-status');
+});
+</script>
+
 
 @endsection

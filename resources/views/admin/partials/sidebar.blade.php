@@ -17,11 +17,43 @@
         <nav class="sb-sidenav accordion sb-sidenav-primary" id="sidenavAccordion" style="background-color:rgb(3, 43, 3)">
             <div class="sb-sidenav-menu">
                 <div class="nav">
-                    <div class="sb-sidenav-menu-heading"></div>
-                    <a class="nav-link fs-3" href={{ url('/home') }} style="color: white">
-                        <div class="sb-nav-link-icon" ><i class="fas fa-tachometer-alt"></i></div>
-                        Dashboard
-                    </a>
+                   <div class="sb-sidenav-menu-heading"></div>
+
+    {{-- SPARE PARTS MENUS HERE --}}
+
+
+{{-- If user has Crusher Module → redirect to crusher dashboard --}}
+@can('Crusher Module')
+    <a class="nav-link fs-3"
+        href="{{ url('/crusher') }}"
+        style="color: white">
+        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+    REPORTS
+    </a>
+
+{{-- If user has Attendance Module → redirect to check-in/out --}}
+@elseif(auth()->user()->can('Attendance Module'))
+
+    <a class="nav-link fs-3"
+        href="{{ url('/attendancecheckin') }}"
+        style="color: white">
+        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+        Dashboard
+    </a>
+
+{{-- Default Dashboard --}}
+@else
+    <a class="nav-link fs-3"
+        href="{{ url('/home') }}"
+        style="color: white">
+        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+        Dashboard
+    </a>
+@endcan
+
+
+
+                
                     {{-- page section  --}}
                     @can('Master')
                         <a class="nav-link collapsed " href="#" data-bs-toggle="collapse" style="color: white; font-size:27px;"
@@ -33,6 +65,25 @@
                         <div class="collapse" id="collapsemaster" aria-labelledby="headingTwo"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+
+  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"  style="color: white; font-size:22px;"
+                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
+                                    aria-controls="pagesCollapseError">
+                                    Account Master
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="{{ url('/account') }}"style="color: white; font-size:24px;">Account</a>
+                                        <a class="nav-link" href="{{ url('/accountgroups') }}"  style="color: white; font-size:24px;">Account Group</a>
+                                        <a class="nav-link" href="{{ url('/primarygroups') }}"  style="color: white; font-size:24px;">Primary Group</a>
+                                    </nav>
+                                </div>
+
+@cannot('Crusher Module')
+    
+
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" style="color: white; font-size:22px;"
                                     data-bs-target="#pagesCollapseAuth" aria-expanded="false"
                                     aria-controls="pagesCollapseAuth">
@@ -48,20 +99,7 @@
                                         <a class="nav-link" href={{ url('units') }} style="color: white; font-size:24px;">Unit</a>
                                     </nav>
                                 </div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"  style="color: white; font-size:22px;"
-                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
-                                    aria-controls="pagesCollapseError">
-                                    Account Master
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="{{ url('/account') }}"style="color: white; font-size:24px;">Account</a>
-                                        <a class="nav-link" href="{{ url('/accountgroups') }}"  style="color: white; font-size:24px;">Account Group</a>
-                                        <a class="nav-link" href="{{ url('/primarygroups') }}"  style="color: white; font-size:24px;">Primary Group</a>
-                                    </nav>
-                                </div>
+                              
                                 {{-- @can('Hotel Module') --}}
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                         data-bs-target="#room" aria-expanded="false" aria-controls="room" style="color: white; font-size:22px;">
@@ -100,13 +138,21 @@
                                     </nav>
                                 </div>
 
-
+@endcannot
 
                             </nav>
 
 
                         </div>
                     @endcan
+
+{{-- =============================================== for cctv visit=============================================================================== --}}
+
+                             
+   
+
+{{-- ================================================================================================================================================== --}}
+
                     @can('Entry')
                         {{-- Entery section end  --}}
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#entery" style="color: white; font-size:27px;"
@@ -115,9 +161,49 @@
                             Entry
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
+                    
                         <div class="collapse" id="entery" aria-labelledby="headingTwo"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+{{-- ======================================================================================================= --}}
+
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#shownew" aria-expanded="false"
+                                    aria-controls="shownew" style="color:white; font-size:22px;">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                    Visits
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="shownew" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        {{-- <a class="nav-link" href={{ url('/amcform') }} style="color: white; font-size:24px;">New Entry</a> --}}
+                                         <a class="nav-link" href="{{ url('/cctv') }}"  style="color: white; font-size:24px;">New Entry</a>
+                                    </nav>
+                                </div>
+
+        
+  
+@if(auth()->user()->can('Crusher Module'))
+    {{-- CRUSHER MENUS HERE --}}
+       <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"  style="color:white; font-size:22px;"
+                                    data-bs-target="#crush" aria-expanded="false" aria-controls="crush">
+                                    Crusher
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="crush" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{ url('crusher/create') }}" style="color: white; font-size:20px;">New Entry</a>
+                                    <a class="nav-link" href="{{ url('/crusher') }}" style="color: white; font-size:20px;">Challan Details</a>
+                                    <a class="nav-link" href="{{ url('/vehicledetail') }}" style="color: white; font-size:20px;">Vehicle Details</a>
+                                    {{-- <a class="nav-link" href="{{ url('vehicledetail/create') }}" style="color: white; font-size:20px;">Vehicle Entry</a> --}}
+                                    </nav>
+                                </div>
+
+@endif
+         @cannot('Crusher Module')   
+                          
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                     data-bs-target="#pagesCollapseAuth" aria-expanded="false"  style="color: white; font-size:22px;"
                                     aria-controls="pagesCollapseAuth">
@@ -177,6 +263,8 @@
                                 </nav>
                             </div> --}}
 
+    
+
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                     data-bs-target="#inventory" aria-expanded="false" aria-controls="inventory"  style="color: white; font-size:22px;">
                                     Transection
@@ -217,37 +305,15 @@
                                     </nav>
                                 </div>
 
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"  style="color:white; font-size:22px;"
-                                    data-bs-target="#crush" aria-expanded="false" aria-controls="crush">
-                                    Crusher
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="crush" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url('crusher/create') }}" style="color: white; font-size:20px;">New Entry</a>
-                                    <a class="nav-link" href="{{ url('/crusher') }}" style="color: white; font-size:20px;">Challan Details</a>
-                                    <a class="nav-link" href="{{ url('/vehicledetail') }}" style="color: white; font-size:20px;">Vehicle Details</a>
-                                    <a class="nav-link" href="{{ url('vehicledetail/create') }}" style="color: white; font-size:20px;">Vehicle Entry</a>
-                                    </nav>
-                                </div>
-
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"  style="color:white; font-size:22px;"
-                                    data-bs-target="#attandence" aria-expanded="false" aria-controls="attandence">
-                                Attendance
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="attandence" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                    {{-- <a class="nav-link" href="{{ url('attendances') }}" style="color: white; font-size:20px;">Employee registration</a> --}}
-                                 <a class="nav-link" href="{{ url('attendances/create') }}" style="color: white; font-size:20px;">Employee Details</a>
-                                    <a class="nav-link" href="{{ url('attendancecheckin') }}" style="color: white; font-size:20px;">Check In/Out</a>
-                                    <a class="nav-link" href="{{ url('attendancephoto') }}" style="color: white; font-size:20px;">Attendance Records</a>
-                                </div>
+    @endcannot             
                             </nav>
                         </div>
+         
                     @endcan
+
+
+
+
                     @can('ReportList')
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#report" style="color: white; font-size:27px;"
                             aria-expanded="false" aria-controls="report">
@@ -362,15 +428,7 @@
 
                                     </nav>
                                 </div>
-
-
-
-
-
                             </nav>
-
-
-
                         </div>
                     @endcan
 
@@ -461,8 +519,6 @@
 
                         </div>
                     @endcan
-
-
 
                     @can('Setting')
 
@@ -555,8 +611,9 @@
                             </nav>
                         </div>
                     @endcan
-                           
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" style="color: white; font-size:27px;"
+
+     @can('help')
+                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" style="color: white; font-size:27px;"
                             data-bs-target="#collapsehelp" aria-expanded="false" aria-controls="collapsehelp">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                         Help
@@ -581,15 +638,36 @@
                                         <a class="nav-link" href="https://dht.datahouseerp.com/todo_by_customer" style="color: white; font-size:24px;">Support Request</a>
                                        
 
-                                       
-
 
 
                                     </nav>
                                 </div>
                             </nav>
                         </div>
-  
+                           @endcan
+                        
+       
+
+
+@if(auth()->user()->can('Attendance Module'))
+   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"  style="color:white; font-size:22px;"
+                                    data-bs-target="#attandence" aria-expanded="false" aria-controls="attandence">
+                                Attendance
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="attandence" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                    {{-- <a class="nav-link" href="{{ url('attendances') }}" style="color: white; font-size:20px;">Employee registration</a> --}}
+                                 <a class="nav-link" href="{{ url('attendances/create') }}" style="color: white; font-size:20px;">Employee Details</a>
+                                    <a class="nav-link" href="{{ url('attendancecheckin') }}" style="color: white; font-size:20px;">Check In/Out</a>
+                                    <a class="nav-link" href="{{ url('attendancephoto') }}" style="color: white; font-size:20px;">Attendance Records</a>
+                                </div>
+@endif
+
+
+
+                      
                 </div>
 
 

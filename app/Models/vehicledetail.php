@@ -21,6 +21,6 @@ class vehicledetail extends Model
         'Driver_address',
         'model_year',
         'Insaurance',
-        'PUC',
+        'Puc',
     ];
 }
