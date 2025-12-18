@@ -11,10 +11,22 @@
     .signature-box{ border:2px solid #aaa; border-radius:8px; height:120px; background:#fff; }
 </style>
 
+
 <div class="card form-card">
     <div class="card-header bg-primary text-white text-center fw-bold">
         Employee Registration
     </div>
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 
     @if(session('success'))
         <div class="alert alert-success text-center fw-bold">
@@ -44,7 +56,7 @@
 
                     <div class="mb-3">
                         <small class="text-muted">Report Time</small>
-                        <input type="time" name="report_time" class="form-control">
+                        <input type="time" name="Report_time" class="form-control">
                     </div>
                 </div>
 
@@ -75,7 +87,7 @@
                         <input type="file" name="document_file" class="form-control">
                     </div>
   <small class="text-muted">Buffer Time</small>
-                    <input type="time" name="buffer_time" class="form-control mb-3" placeholder="Buffer Time">
+                    <input type="time" name="Buffer_time" class="form-control mb-3" placeholder="Buffer Time">
                 </div>
 
             </div>

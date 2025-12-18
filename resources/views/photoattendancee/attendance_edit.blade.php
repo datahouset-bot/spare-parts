@@ -28,7 +28,7 @@
                         <div class="mb-3">
                             <label class="form-label">Employee ID</label>
                             <input type="text" name="emp_id" class="form-control" 
-                                   value="{{ $employee->id }}" readonly>
+                                   value="{{ $employee->emp_id }}">
                         </div>
 
                         <input type="text" name="name" class="form-control mb-3"
@@ -42,8 +42,10 @@
 
                         <textarea name="address" class="form-control mb-3" rows="2">{{ $employee->address }}</textarea>
 
+                        <div class="mb-3">
+                            <label class="form-label">Document no.</label>
                         <input type="text" name="document_no" class="form-control mb-3"
-                               value="{{ $employee->document_no }}">
+                               value="{{ $employee->document_no }}"></div>
 
                         <div class="mb-3">
                             <label class="form-label">Report Time</label>
@@ -66,9 +68,11 @@
 
                             <input type="file" name="photo" class="form-control">
                         </div>
-
+                        
+                         <div class="mb-3">
+                            <label class="form-label">Salary amount</label>
                         <input type="text" name="salary_amount" class="form-control mb-3"
-                               value="{{ $employee->salary_amount }}">
+                               value="{{ $employee->salary_amount }}"></div>
 
                         <div class="mb-3">
                             <label class="form-label">Date of Joining</label>
@@ -76,11 +80,14 @@
                                    value="{{ $employee->date_of_joining }}">
                         </div>
 
+                        <div class="mb-3">
+                            <label class="form-label">Document Type</label>
                         <select name="document_type" class="form-select mb-3">
                             <option value="Aadhar Card" {{ $employee->document_type == "Aadhar Card" ? "selected" : "" }}>Aadhar Card</option>
                             <option value="Voter ID" {{ $employee->document_type == "Voter ID" ? "selected" : "" }}>Voter ID</option>
                             <option value="Driving License" {{ $employee->document_type == "Driving License" ? "selected" : "" }}>Driving License</option>
                         </select>
+                        </div>
 
                         <label class="form-label">Document Upload</label>
                         @if($employee->document_submit)
@@ -90,8 +97,11 @@
 
                         <input type="file" name="document_file" class="form-control mb-3">
 
+                        <div class="mb-3">
+                            <label class="form-label">Report Time</label>
                         <input type="time" name="buffer_time" class="form-control mb-3"
                                value="{{ $employee->Buffer_time }}">
+                        </div>
 
                     </div>
 

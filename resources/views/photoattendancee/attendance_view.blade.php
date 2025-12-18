@@ -2,9 +2,31 @@
 
 @section('pagecontent')
 
+<style>
+/* Clamp remarks to 2 lines */
+.remarks-cell {
+    max-width: 250px;
+    line-height: 1.4em;
+    max-height: 2.8em;           /* 2 lines × line-height */
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;       /* CHANGE TO 1 FOR SINGLE LINE */
+    -webkit-box-orient: vertical;
+
+    white-space: normal;
+    word-break: break-word;
+    text-align: left;
+    vertical-align: top;
+-webkit-line-clamp: 4;
+max-height: 5.2em;
+
+}
+</style>
 
 
-<div class="container fluid">
+<div class="container-fluid">
 
     <div class="card shadow">
         <div class="card-header bg-primary text-white fw-bold">
@@ -47,7 +69,7 @@
                         {{-- EMPLOYEE ROW --}}
                         <tr>
                             <td>{{ $key + 1 }}</td>
-                            <td>{{ $employee->id }}</td>
+                            <td>{{ $employee->emp_id }}</td>
                             <td>{{ $employee->name }}</td>
                             <td>{{ $employee->email }}</td>
                             <td>{{ $employee->mobile }}</td>
@@ -65,24 +87,30 @@
                             <td>{{ $employee->document_type }}</td>
 
                             <td>
-                                @if($employee->photo)
-                                    <a class="btn btn-sm btn-info text-white"
-                                       href="{{ asset('uploads/attendance/photos/' . $employee->photo) }}"
-                                       target="_blank">View</a>
-                                @else N/A @endif
+<img src="{{ asset('storage/app/public/attendance/checkin/1765977713_checkin.png') }}" width="130" height="130">
+
+
+                                <!--@if($employee->photo)-->
+                                <!--    <a class="btn btn-sm btn-info text-white"-->
+                                <!--       href="{{ asset('storage/attendance/photos/'. $employee->photo) }}"-->
+                                <!--       target="_blank">View</a>-->
+                                <!--@else N/A @endif-->
                             </td>
 
                             <td>
                                 @if($employee->document_submit)
-                                    <a class="btn btn-sm btn-info text-white"
-                                       href="{{ asset('uploads/attendance/documents/' . $employee->document_submit) }}"
-                                       target="_blank">View</a>
+                                   <a href="{{ asset('storage/attendance/documents/'.$employee->document_submit) }}" target="_blank">
+    View Document
+</a>
+
                                 @else N/A @endif
                             </td>
 
                             <td>{{ $employee->Report_time }}</td>
                             <td>{{ $employee->Buffer_time }}</td>
-                            <td>{{ $employee->terms_text }}</td>
+                            <td class="remarks-cell" title="{{ $employee->terms_text }}">
+                            {{ $employee->terms_text }}</td>
+
 
                             <td>
     <a href="{{ route('attendances.show', $employee->id) }}"
@@ -206,7 +234,7 @@ const companyAddress = @json(
 );
 
 // ✅ FIXED PATH (also had typo)
-const companyLogo = "{{ asset('storage/app/public/image/' . ($pic->logo ?? '')) }}";
+const companyLogo = "{{ asset('storage\app\public\image\\' . $pic->logo) }}";
 
 function printEmployee(id) {
     let emp = employeesData[id];
@@ -229,11 +257,12 @@ printWin.document.write(`
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 
     <style>
-        body { padding: 20px; }
+        body { padding: 20px;}
         table { width:100%; border-collapse:collapse; margin-top:15px; }
         td, th { border:1px solid #000; padding:6px; font-size:14px; }
         img.photo { width:160px; border:1px solid #444; }
 
+    
  .header {
     display: grid;
     grid-template-columns: auto 1fr auto; /* left | center | right */
@@ -260,21 +289,27 @@ printWin.document.write(`
     font-size: 13px;
 }
 
-.header .emp-photo img {
-    width: 120px;
-    border: 1px solid #444;
+.photo-pair {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    margin-top: 30px;
 }
 
-.photo-row {
-    display:flex;
-    gap:30px;
-    margin-top:20px;
+.photo-box {
+    text-align: center;
 }
 
-.photo-right {
-    margin-left: auto;
+.photo-placeholder {
+    width: 220px;        /* increased size */
+    height: 180px;       /* increased size */
+    border: 2px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
 }
-
 
         .signature-section {
     display: flex;
@@ -311,41 +346,46 @@ printWin.document.write(`
         <small>${companyAddress}</small>
     </div>
 
-    <!-- EMPLOYEE PHOTO (RIGHT) -->
-    <div class="emp-photo">
-        <img src="${photo}">
-    </div>
-
 </div>
 
 
     <h5 class="text-center fw-bold">Employee Details</h5>
 
-    <!-- PHOTO LEFT + DETAILS RIGHT -->
-    <div class="photo-row">
+ <div class="photo-row">
 
-    <!-- DETAILS TABLE (LEFT) -->
-    <div style="flex:1;">
-        <table>
-            <tr><th>ID</th><td>${emp.id}</td></tr>
-            <tr><th>Name</th><td>${emp.name}</td></tr>
-            <tr><th>Email</th><td>${emp.email ?? "-"}</td></tr>
-            <tr><th>Mobile</th><td>${emp.mobile ?? "-"}</td></tr>
-            <tr><th>Address</th><td>${emp.address ?? "-"}</td></tr>
-            <tr><th>Salary</th><td>${emp.salary_amount ?? "-"}</td></tr>
-            <tr><th>Date of Joining</th><td>${emp.date_of_joining ?? "-"}</td></tr>
-            <tr><th>Document Type</th><td>${emp.document_type ?? "-"}</td></tr>
-            <tr><th>Document Number</th><td>${emp.document_no ?? "-"}</td></tr>
-            <tr><th>Report Time</th><td>${emp.Report_time ?? "-"}</td></tr>
-            <tr><th>Buffer Time</th><td>${emp.Buffer_time ?? "-"}</td></tr>
-            <tr><th>Terms</th><td>${emp.terms_text ?? "-"}</td></tr>
-        </table>
+    <!-- DETAILS TABLE -->
+    <table>
+        <tr><th>ID</th><td>${emp.id}</td></tr>
+        <tr><th>Name</th><td>${emp.name}</td></tr>
+        <tr><th>Email</th><td>${emp.email ?? "-"}</td></tr>
+        <tr><th>Mobile</th><td>${emp.mobile ?? "-"}</td></tr>
+        <tr><th>Address</th><td>${emp.address ?? "-"}</td></tr>
+        <tr><th>Salary</th><td>${emp.salary_amount ?? "-"}</td></tr>
+        <tr><th>Date of Joining</th><td>${emp.date_of_joining ?? "-"}</td></tr>
+        <tr><th>Document Type</th><td>${emp.document_type ?? "-"}</td></tr>
+        <tr><th>Document Number</th><td>${emp.document_no ?? "-"}</td></tr>
+        <tr><th>Report Time</th><td>${emp.Report_time ?? "-"}</td></tr>
+        <tr><th>Buffer Time</th><td>${emp.Buffer_time ?? "-"}</td></tr>
+    </table>
+ <div style="display:flex; margin-top:10px;">
+    <strong style="min-width:180px;">Term and Conditions:-</strong>
+    <span>${emp.terms_text ?? "-"}</span>
+</div>
+<div class="photo-pair">
+    <div class="photo-box">
+        <div class="photo-placeholder">
+            <img src="${photo}" style="max-width:100%; max-height:100%;">
+        </div>
     </div>
 
-    <!-- EMPLOYEE PHOTO (RIGHT) -->
- 
+    <div class="photo-box">
+        <div class="photo-placeholder"></div>
+    
+    </div>
+</div>
 
 </div>
+
 
     <!-- SIGNATURES -->
    <div class="signature-section">
@@ -360,6 +400,8 @@ printWin.document.write(`
     </div>
 </div>
 
+</body>
+</html>
 
 </body>
 </html>

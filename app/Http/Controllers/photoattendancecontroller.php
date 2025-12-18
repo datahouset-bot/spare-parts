@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\photoattendance;
 use App\Models\attendancesalary;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class photoattendancecontroller extends Controller
@@ -99,14 +100,26 @@ foreach (CarbonPeriod::create($start, $end) as $date) {
 
             $checkinTime = date("H:i:s", strtotime($day->checkin_time));
 
-            if ($checkinTime > $bufferTime) {
-                $day->status = 'late';
-                $lateMinutes = (strtotime($checkinTime) - strtotime($bufferTime)) / 60;
-                $day->late_message = "Late by " . round($lateMinutes) . " minutes";
-            } else {
-                $day->status = 'present';
-                $day->late_message = null;
-            }
+         if ($checkinTime > $bufferTime) {
+
+    $day->status = 'late';
+
+    $lateSeconds = strtotime($checkinTime) - strtotime($bufferTime);
+
+    $hours   = floor($lateSeconds / 3600);
+    $minutes = floor(($lateSeconds % 3600) / 60);
+
+    if ($hours > 0) {
+        $day->late_message = "Late by {$hours} hr {$minutes} min";
+    } else {
+        $day->late_message = "Late by {$minutes} min";
+    }
+
+} else {
+    $day->status = 'present';
+    $day->late_message = null;
+}
+
         }
 
         $attendance->push($day);
@@ -152,22 +165,23 @@ foreach (CarbonPeriod::create($start, $end) as $date) {
             'name' => $employee ? $employee->name : null
         ]);
     }
-
-  public function store(Request $request)
+    public function store(Request $request)
 {
-    // VALIDATION
     $validate = Validator::make($request->all(), [
-        'id'              => 'nullable|numeric',
+        'emp_id'          => 'nullable|string',
         'name'            => 'required|string|max:255',
         'email'           => 'nullable|email',
         'mobile'          => 'nullable|string|max:15',
         'address'         => 'nullable|string',
         'document_no'     => 'nullable|string|max:100',
+
         'Report_time'     => 'nullable',
+        'Buffer_time'     => 'nullable', // ✅ FIXED (not numeric)
+
         'salary_amount'   => 'nullable|numeric',
         'date_of_joining' => 'nullable|date',
         'document_type'   => 'nullable|string',
-        'Buffer_time'     => 'nullable|numeric',
+
         'terms_text'      => 'nullable|string',
         'terms'           => 'required',
 
@@ -177,33 +191,33 @@ foreach (CarbonPeriod::create($start, $end) as $date) {
 
     if ($validate->fails()) {
         return redirect()->back()->withErrors($validate)->withInput();
-    }
+    }// ==========================
+// SAVE PHOTO (STORAGE STYLE)
+// // ==========================
+// $photoName = null;
+// if ($request->hasFile('photo')) {
+//     $photo     = $request->file('photo');
+//     $photoName = time().'_'.$photo->getClientOriginalName();
+//     $photo->storeAs('public/attendance/photos', $photoName);
+// }
 
-    // ==========================
-    //   SAVE PHOTO
-    // ==========================
-    $photoName = null;
-    if ($request->hasFile('photo')) {
-        $photoName = time() . '_' . $request->photo->getClientOriginalName();
-        $request->photo->move(public_path('uploads/attendance/photos'), $photoName);
-    }
 
-    // ==========================
-    //   SAVE DOCUMENT
-    // ==========================
-    $documentName = null;
-    if ($request->hasFile('document_file')) {
-        $documentName = time() . '_' . $request->document_file->getClientOriginalName();
-        $request->document_file->move(public_path('uploads/attendance/documents'), $documentName);
-    }
+// ==========================
+// SAVE DOCUMENT (STORAGE STYLE)
+// ==========================
+$documentName = null;
+if ($request->hasFile('document_file')) {
+    $document     = $request->file('document_file');
+    $documentName = time().'_'.$document->getClientOriginalName();
+    $document->storeAs('public/attendance/documents', $documentName);
+}
 
-    // ==========================
-    //   SAVE EMPLOYEE RECORD
-    // ==========================
+
+    // SAVE EMPLOYEE
     $employee = new photoattendance();
 
-    if ($request->id) {
-        $employee->id = $request->id; // manual ID if needed
+    if ($request->emp_id) {
+        $employee->emp_id = $request->emp_id; // ✅ FIXED
     }
 
     $employee->name            = $request->name;
@@ -211,16 +225,26 @@ foreach (CarbonPeriod::create($start, $end) as $date) {
     $employee->mobile          = $request->mobile;
     $employee->address         = $request->address;
     $employee->document_no     = $request->document_no;
+
     $employee->Report_time     = $request->Report_time;
+    $employee->Buffer_time     = $request->Buffer_time;
+
     $employee->salary_amount   = $request->salary_amount;
     $employee->date_of_joining = $request->date_of_joining;
     $employee->document_type   = $request->document_type;
-    $employee->Buffer_time     = $request->Buffer_time;
 
     $employee->terms_text      = $request->terms_text;
-    $employee->terms           = $request->has('terms') ? 1 : 0;
+    $employee->terms           = 1;
+     if ($request->hasFile('photo')) {
 
-    $employee->photo           = $photoName;
+    $photo_image1=$request->photo;
+    $name=$photo_image1->getClientOriginalName();
+    $photo_image1->storeAS('public\room_image',$name);
+    
+   $employee->photo           = $name;
+}
+
+ 
     $employee->document_submit = $documentName;
 
     $employee->save();
@@ -228,6 +252,8 @@ foreach (CarbonPeriod::create($start, $end) as $date) {
     return redirect()->back()->with('success', 'Employee Registered Successfully!');
 }
 
+
+// ===================================================================================================
     public function edit($id)
     {
         $employee = photoattendance::findOrFail($id);
@@ -285,40 +311,36 @@ public function update(Request $request, $id)
     /* ============================
        UPDATE PHOTO
     ============================ */
-    if ($request->hasFile('photo')) {
+  if ($request->hasFile('photo')) {
 
-        // Delete old file safely
-        if (!empty($employee->photo)) {
-            $oldPath = public_path('uploads/attendance/photos/' . $employee->photo);
-            if (file_exists($oldPath) && is_file($oldPath)) {
-                unlink($oldPath);
-            }
-        }
-
-        // Save new file
-        $photoName = time() . '_' . $request->photo->getClientOriginalName();
-        $request->photo->move(public_path('uploads/attendance/photos'), $photoName);
-        $employee->photo = $photoName;
+    if ($employee->photo) {
+        Storage::delete('public/attendance/photos/'.$employee->photo);
     }
+
+    $photo     = $request->file('photo');
+    $photoName = time().'_'.$photo->getClientOriginalName();
+    $photo->storeAs('public/attendance/photos', $photoName);
+
+    $employee->photo = $photoName;
+}
 
 
     /* ============================
        UPDATE DOCUMENT
     ============================ */
-    if ($request->hasFile('document_file')) {
+   if ($request->hasFile('document_file')) {
 
-        if (!empty($employee->document_submit)) {
-            $oldDoc = public_path('uploads/attendance/documents/' . $employee->document_submit);
-            if (file_exists($oldDoc) && is_file($oldDoc)) {
-                unlink($oldDoc);
-            }
-        }
-
-        $documentName = time() . '_' . $request->document_file->getClientOriginalName();
-        $request->document_file->move(public_path('uploads/attendance/documents'), $documentName);
-
-        $employee->document_submit = $documentName;
+    if ($employee->document_submit) {
+        Storage::delete('public/attendance/documents/'.$employee->document_submit);
     }
+
+    $document     = $request->file('document_file');
+    $documentName = time().'_'.$document->getClientOriginalName();
+    $document->storeAs('public/attendance/documents', $documentName);
+
+    $employee->document_submit = $documentName;
+}
+
 
     $employee->save();
 
@@ -327,28 +349,28 @@ public function update(Request $request, $id)
             ->with('success', 'Employee updated successfully!');
 }
 
+public function destroy($id)
+{
+    $employee = photoattendance::findOrFail($id);
 
-
-    public function destroy($id)
-    {
-        $employee = photoattendance::findOrFail($id);
-
-        // DELETE PHOTO
-        if ($employee->photo) {
-            $path = public_path('uploads/attendance/photos/' . $employee->photo);
-            if (file_exists($path)) unlink($path);
-        }
-
-        // DELETE DOCUMENT
-        if ($employee->document_submit) {
-            $path = public_path('uploads/attendance/documents/' . $employee->document_submit);
-            if (file_exists($path)) unlink($path);
-        }
-
-        $employee->delete();
-
-        return redirect()->back()->with('success', 'Employee deleted successfully!');
+    // ==========================
+    // DELETE PHOTO (STORAGE)
+    // ==========================
+    if ($employee->photo) {
+        Storage::delete('public/attendance/photos/' . $employee->photo);
     }
+
+    // ==========================
+    // DELETE DOCUMENT (STORAGE)
+    // ==========================
+    if ($employee->document_submit) {
+        Storage::delete('public/attendance/documents/' . $employee->document_submit);
+    }
+
+    $employee->delete();
+
+    return redirect()->back()->with('success', 'Employee deleted successfully!');
+}
 
     // =====================================save advance salary=====================================================
 public function saveAdvanceSalary(Request $request)

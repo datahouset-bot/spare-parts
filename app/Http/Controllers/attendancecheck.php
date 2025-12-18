@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use App\Models\photoattendance;
+
 use App\Models\attendancecheckin;
+use Illuminate\Support\Facades\Storage;
 
 class attendancecheck extends Controller
 {
@@ -14,12 +17,17 @@ class attendancecheck extends Controller
      */
 public function index(Request $request)
 {
+    // ✅ Validate date range
+    $request->validate([
+        'from_date' => 'nullable|date',
+        'to_date'   => 'nullable|date|after_or_equal:from_date',
+    ]);
+
     $fromDate = $request->from_date ?? now()->format('Y-m-d');
-    $toDate   = $request->to_date ?? now()->format('Y-m-d');
+    $toDate   = $request->to_date   ?? now()->format('Y-m-d');
 
     $employees = photoattendance::all();
 
-    // Create date range
     $period = CarbonPeriod::create($fromDate, $toDate);
 
     $attendanceData = [];
@@ -32,42 +40,45 @@ public function index(Request $request)
                 ->whereDate('date', $date->format('Y-m-d'))
                 ->first();
 
-            $status = "Absent";
-            $lateMessage = "";
+            $status       = "Absent";
+            $lateMessage  = "";
 
-            $checkin_time  = $attendance->checkin_time ?? "--";
-            $checkout_time = $attendance->checkout_time ?? "--";
+            $checkin_time  = $attendance?->checkin_time ?? "--";
+            $checkout_time = $attendance?->checkout_time ?? "--";
 
-            $checkin_photo  = $attendance->checkin_photo ?? null;
-            $checkout_photo = $attendance->checkout_photo ?? null;
+            $checkin_photo  = $attendance?->checkin_photo ?? null;
+            $checkout_photo = $attendance?->checkout_photo ?? null;
 
             if ($attendance) {
 
-                // Half Day
                 if ($attendance->checkin_time && !$attendance->checkout_time) {
                     $status = "Half Day";
                 }
 
-                // Present
                 if ($attendance->checkin_time && $attendance->checkout_time) {
                     $status = "Present";
                 }
 
-                // Late logic
                 $bufferTime = $emp->Buffer_time
                     ? $emp->Buffer_time . ":00"
                     : "09:30:00";
 
                 if ($attendance->checkin_time) {
+
                     $checkinOnly = date("H:i:s", strtotime($attendance->checkin_time));
 
-                    if ($checkinOnly > $bufferTime && $status != "Absent") {
+                    if ($checkinOnly > $bufferTime && $status !== "Absent") {
+
                         $status = "Late";
 
-                        $lateMinutes = (strtotime($checkinOnly) - strtotime($bufferTime)) / 60;
-                        $lateMinutes = round($lateMinutes);
+                        $lateSeconds = strtotime($checkinOnly) - strtotime($bufferTime);
 
-                        $lateMessage = "Late by {$lateMinutes} minutes";
+                        $hours   = floor($lateSeconds / 3600);
+                        $minutes = floor(($lateSeconds % 3600) / 60);
+
+                        $lateMessage = $hours > 0
+                            ? "Late by {$hours} hr {$minutes} min"
+                            : "Late by {$minutes} min";
                     }
                 }
             }
@@ -82,6 +93,7 @@ public function index(Request $request)
                 'checkout_photo' => $checkout_photo,
                 'status'         => $status,
                 'late_message'   => $lateMessage,
+                'Remark'         => $attendance?->Remark,
             ];
         }
     }
@@ -92,6 +104,7 @@ public function index(Request $request)
         'toDate'
     ));
 }
+
 
 
     /**
@@ -132,15 +145,20 @@ public function store(Request $request)
         }
 
         // Create folder
-        $directory = public_path('uploads/attendance');
-        if (!file_exists($directory)) mkdir($directory, 0777, true);
+       // SAVE CHECK-IN IMAGE (storage)
+$data = base64_decode(
+    preg_replace('#^data:image/\w+;base64,#i', '', $request->checkin_photo)
+);
 
-        // Save image
-        $data = base64_decode(str_replace('data:image/png;base64,', '', $request->checkin_photo));
-        $filename = time() . '_checkin.png';
-        file_put_contents($directory . '/' . $filename, $data);
+$filename = time().'_checkin.png';
 
-        $attendance->checkin_photo = $filename;
+Storage::put(
+    'public/attendance/checkin/'.$filename,
+    $data
+);
+
+$attendance->checkin_photo = $filename;
+
         $attendance->checkin_time = $request->checkin_time;
 
         // Ensure date saved (if not already)
@@ -165,15 +183,20 @@ public function store(Request $request)
         }
 
         // Create folder
-        $directory = public_path('uploads/attendance');
-        if (!file_exists($directory)) mkdir($directory, 0777, true);
+       // SAVE CHECK-OUT IMAGE (storage)
+$data = base64_decode(
+    preg_replace('#^data:image/\w+;base64,#i', '', $request->checkout_photo)
+);
 
-        // Save image
-        $data = base64_decode(str_replace('data:image/png;base64,', '', $request->checkout_photo));
-        $filename = time() . '_checkout.png';
-        file_put_contents($directory . '/' . $filename, $data);
+$filename = time().'_checkout.png';
 
-        $attendance->checkout_photo = $filename;
+Storage::put(
+    'public/attendance/checkout/'.$filename,
+    $data
+);
+
+$attendance->checkout_photo = $filename;
+
         $attendance->checkout_time = $request->checkout_time;
 
         // Ensure today's date is saved
@@ -225,13 +248,13 @@ public function store(Request $request)
     {
         //
     }
-    
-public function updateStatus(Request $request)
+    public function updateStatus(Request $request)
 {
     $request->validate([
         'emp_id' => 'required',
         'date'   => 'required',
-        'status' => 'required'
+        'status' => 'required',
+        'Remark' => 'nullable|string'
     ]);
 
     $attendance = attendancecheckin::where('emp_id', $request->emp_id)
@@ -251,7 +274,6 @@ public function updateStatus(Request $request)
     $attendance->checkin_time  = null;
     $attendance->checkout_time = null;
 
-    // Create full datetime using selected date
     $checkinDateTime  = $request->date . ' ';
     $checkoutDateTime = $request->date . ' ';
 
@@ -269,10 +291,12 @@ public function updateStatus(Request $request)
         $attendance->checkout_time = $checkoutDateTime . '18:00:00';
     }
 
-    // Absent = null/null
+    // ✅ SAVE Remark
+    $attendance->Remark = $request->Remark;
 
     $attendance->save();
 
     return back()->with('success', 'Attendance updated successfully');
 }
+
 }
