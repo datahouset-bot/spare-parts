@@ -566,7 +566,7 @@ route::put('vehicledetailupdate/{id}', [App\Http\Controllers\Crushercontroller::
     ->name('vehicledetail.update');
 //=================================================attandance APP=================================================================
 route::resource('attendances',photoattendancecontroller::class)->names  ('attendances');
-route::get('attendancecheckin', [App\Http\Controllers\photoattendancecontroller::class, 'showform']);
+route::get('attendancecheckin', [App\Http\Controllers\photoattendancecontroller::class, 'showform'])->name('attendance.checkin');
 Route::get('/employeename/{id}', [photoattendanceController::class, 'getEmployeeName']);
 route::resource('attendancephoto', attendancecheck::class)->names  ('attendancephoto');
 // Route::get('/attendance-status', [Attendancecheck::class, 'attendanceStatus'])
@@ -579,6 +579,13 @@ Route::post('/attendance/update-status',
 )->name('attendancephoto.updateStatus');
 
 Route::get('employee/print/{id}', [photoattendanceController::class, 'print'])->name('employee.print');
+Route::put('/advance-salary/{id}', [photoattendancecontroller::class, 'updateAdvance'])
+     ->name('advance.update');
+
+     Route::put('/salary-status/{id}', 
+    [photoattendancecontroller::class, 'updateSalaryStatus']
+)->name('salary.status.update');
+
 
 
 

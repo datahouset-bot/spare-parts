@@ -43,7 +43,7 @@
 
 <div class="main-box">
 
-    <h3 class="text-center mb-4 fw-bold">Hotel Staff Attendance</h3>
+    <h3 class="text-center mb-4 fw-bold">{{$componyinfo->cominfo_firm_name}}</h3>
     {{-- SUCCESS MESSAGE --}}
 @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">

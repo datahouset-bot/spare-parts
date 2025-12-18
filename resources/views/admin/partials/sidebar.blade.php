@@ -167,21 +167,7 @@
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
 {{-- ======================================================================================================= --}}
 
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#shownew" aria-expanded="false"
-                                    aria-controls="shownew" style="color:white; font-size:22px;">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                    Visits
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="shownew" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        {{-- <a class="nav-link" href={{ url('/amcform') }} style="color: white; font-size:24px;">New Entry</a> --}}
-                                         <a class="nav-link" href="{{ url('/cctv') }}"  style="color: white; font-size:24px;">New Entry</a>
-                                    </nav>
-                                </div>
-
+                             
         
   
 @if(auth()->user()->can('Crusher Module'))
@@ -203,6 +189,21 @@
 
 @endif
          @cannot('Crusher Module')   
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#shownew" aria-expanded="false"
+                                    aria-controls="shownew" style="color:white; font-size:22px;">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                    Visits
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="shownew" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        {{-- <a class="nav-link" href={{ url('/amcform') }} style="color: white; font-size:24px;">New Entry</a> --}}
+                                         <a class="nav-link" href="{{ url('/cctv') }}"  style="color: white; font-size:24px;">New Entry</a>
+                                    </nav>
+                                </div>
+
                           
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                     data-bs-target="#pagesCollapseAuth" aria-expanded="false"  style="color: white; font-size:22px;"
@@ -650,19 +651,19 @@
 
 
 @if(auth()->user()->can('Attendance Module'))
-   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"  style="color:white; font-size:22px;"
+   {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"  style="color:white; font-size:22px;"
                                     data-bs-target="#attandence" aria-expanded="false" aria-controls="attandence">
                                 Attendance
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="attandence" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
+                                    <nav class="sb-sidenav-menu-nested nav"> --}}
                                     {{-- <a class="nav-link" href="{{ url('attendances') }}" style="color: white; font-size:20px;">Employee registration</a> --}}
                                  <a class="nav-link" href="{{ url('attendances/create') }}" style="color: white; font-size:20px;">Employee Details</a>
                                     <a class="nav-link" href="{{ url('attendancecheckin') }}" style="color: white; font-size:20px;">Check In/Out</a>
                                     <a class="nav-link" href="{{ url('attendancephoto') }}" style="color: white; font-size:20px;">Attendance Records</a>
-                                </div>
+                    
 @endif
 
 

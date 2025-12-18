@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('photoattendances', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
 
               // Left column
             $table->string('name');
@@ -37,10 +37,10 @@ return new class extends Migration
             // Add any additional fields as necessary
             $table->string('Report_time')->nullable();
             $table->string('Buffer_time')->nullable();
-            $table->string('af3')->nullable();
-            $table->string('af4')->nullable();
-            $table->string('af5')->nullable();
-            $table->string('af6')->nullable();      
+            $table->string('advance_salary')->nullable();
+            $table->string('advance_date')->nullable();
+            $table->string('emp_id')->nullable();
+            $table->string('designation')->nullable();      
     
 
         });

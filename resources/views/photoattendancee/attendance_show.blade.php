@@ -13,10 +13,11 @@
         <div class="card-body row">
 
             <div class="col-md-4 text-center">
-                @if($employee->photo)
-                    <img src="{{ asset('uploads/attendance/photos/' . $employee->photo) }}"
+            
+                                           
+<img src="{{ asset('storage\app\public\room_image\\' . $employee->photo) }}" 
                          width="180" class="rounded shadow mb-2">
-                @endif
+            
             </div>
 
             <div class="col-md-8">
@@ -25,16 +26,40 @@
                     <tr><th>Email</th><td>{{ $employee->email }}</td></tr>
                     <tr><th>Mobile</th><td>{{ $employee->mobile }}</td></tr>
                     <tr><th>Address</th><td>{{ $employee->address }}</td></tr>
-                    <tr><th>Salary</th><td>₹{{ $employee->salary_amount }}</td></tr>
+             <tr>
+    <th>Salary</th>
+    <td>
+        ₹{{ $employee->salary_amount }}
+
+        <form method="POST"
+              action="{{ route('salary.status.update', $employee->id) }}"
+              class="d-inline ms-3">
+            @csrf
+            @method('PUT')
+
+            <label class="ms-2">
+                <input type="checkbox"
+                       name="salary_status"
+                       value="paid"
+                       onchange="this.form.submit()"
+                       {{ $employee->salary_status === 'paid' ? 'checked' : '' }}>
+                <span class="fw-bold text-success">Paid</span>
+            </label>
+        </form>
+
+        @if($employee->salary_status === 'unpaid')
+            <span class="badge bg-danger ms-2">Unpaid</span>
+        @endif
+    </td>
+</tr>
+
                     <tr><th>Date of Joining</th><td>{{ $employee->date_of_joining }}</td></tr>
                      @if($employee->document_submit)
         <tr>
             <th>Document</th>
             <td>
-                <a href="{{ asset('uploads/attendance/documents/' . $employee->document_submit) }}"
-                   target="_blank" class="btn btn-sm btn-info">
-                    View Document
-                </a>
+                
+                                   <immg src="{{ asset('storage\app\public\item_image\\'.$employee->document_submit) }}" width="80px">
             </td>
         </tr>
     @else
@@ -94,19 +119,84 @@
                         <th>Advance Amount</th>
                         <th>Date</th>
                         <th>Remarks</th>
+                        <th>Actions</th>
+
                     </tr>
                 </thead>
 
-                <tbody>
-                    @foreach($advances as $key => $adv)
-                        <tr>
-                            <td>{{ $key + 1 }}</td>
-                            <td>₹{{ $adv->advance_salary }}</td>
-                            <td>{{ $adv->date }}</td>
-                            <td>{{ $adv->remarks ?? '-' }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
+              <tbody>
+@foreach($advances as $key => $adv)
+<tr>
+    <td>{{ $key + 1 }}</td>
+    <td>₹{{ $adv->advance_salary }}</td>
+    <td>{{ $adv->date }}</td>
+    <td>{{ $adv->remark ?? '-' }}</td>
+    <td>
+        <button class="btn btn-sm btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#editAdvanceModal{{ $adv->id }}">
+            Edit
+        </button>
+    </td>
+</tr>
+
+{{-- EDIT MODAL --}}
+<div class="modal fade" id="editAdvanceModal{{ $adv->id }}" tabindex="-1">
+    <div class="modal-dialog">
+        <form method="POST" action="{{ route('advance.update', $adv->id) }}">
+            @csrf
+            @method('PUT')
+
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Edit Advance Salary</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="fw-bold">Advance Amount</label>
+                        <input type="number"
+                               name="advance_salary"
+                               class="form-control"
+                               value="{{ $adv->advance_salary }}"
+                               required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="fw-bold">Date</label>
+                        <input type="date"
+                               name="date"
+                               class="form-control"
+                               value="{{ $adv->date }}"
+                               required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="fw-bold">Remark</label>
+                        <input type="text"
+                               name="remark"
+                               class="form-control"
+                               value="{{ $adv->remark }}">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-success">Update</button>
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@endforeach
+</tbody>
+
             </table>
 
 

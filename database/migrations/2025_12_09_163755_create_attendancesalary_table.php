@@ -21,6 +21,12 @@ return new class extends Migration
             $table->string('advance_salary')->nullable();
             $table->string('no_of_days_worked')->nullable();
             $table->string('remark')->nullable();
+             $table->enum('salary_status', ['paid', 'unpaid'])->default('unpaid');
+                 $table->string('af1')->nullable();
+        $table->string('af2')->nullable();
+               $table->string('af3')->nullable();
+                      $table->string('af4')->nullable();
+                             $table->string('af5')->nullable();
             $table->timestamps();
         });
     }

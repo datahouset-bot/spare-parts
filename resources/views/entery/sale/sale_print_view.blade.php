@@ -277,7 +277,7 @@ background-color:white;
         <div class="page">
 
             <div class="company_info">
-                <div class="logo1">&nbsp;<img src="{{ asset('torage\app\public\image\\' . $pic->logo) }}" alt="qr_code" width="80px">
+                <div class="logo1">&nbsp;<img src="{{ asset('storage\app\public\image\\' . $pic->logo) }}" alt="qr_code" width="80px">
                 </div>
                 <div class="firm_detail">
                     <h4>{{ $componyinfo->cominfo_firm_name }}</h4>

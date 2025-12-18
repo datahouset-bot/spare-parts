@@ -28,7 +28,7 @@
                         <div class="mb-3">
                             <label class="form-label">Employee ID</label>
                             <input type="text" name="emp_id" class="form-control" 
-                                   value="{{ $employee->id }}" readonly>
+                                   value="{{ $employee->emp_id }}">
                         </div>
 
                         <input type="text" name="name" class="form-control mb-3"
@@ -42,8 +42,10 @@
 
                         <textarea name="address" class="form-control mb-3" rows="2">{{ $employee->address }}</textarea>
 
+                        <div class="mb-3">
+                            <label class="form-label">Document no.</label>
                         <input type="text" name="document_no" class="form-control mb-3"
-                               value="{{ $employee->document_no }}">
+                               value="{{ $employee->document_no }}"></div>
 
                         <div class="mb-3">
                             <label class="form-label">Report Time</label>
@@ -60,38 +62,52 @@
                             <label class="form-label">Upload New Photo</label><br>
 
                             @if($employee->photo)
-                                <img src="{{ asset('uploads/attendance/photos/' . $employee->photo) }}"
-                                     width="100" height="100" class="rounded mb-2">
+                                <img src="{{ asset('storage/app/public/attendance/photos/' . $employee->photo) }}"
+                                width="100" height="100" class="rounded mb-2">
                             @endif
 
                             <input type="file" name="photo" class="form-control">
                         </div>
-
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Salary amount</label>
                         <input type="text" name="salary_amount" class="form-control mb-3"
-                               value="{{ $employee->salary_amount }}">
+                            value="{{ $employee->salary_amount }}"></div>
+
+                             <div class="mb-3">
+                            <label class="form-label">Designation</label>
+                        <input type="text" name="designation" class="form-control mb-3"
+                            value="{{ $employee->designation }}"></div>
 
                         <div class="mb-3">
                             <label class="form-label">Date of Joining</label>
                             <input type="date" name="date_of_joining" class="form-control"
-                                   value="{{ $employee->date_of_joining }}">
+                            value="{{ $employee->date_of_joining }}">
                         </div>
 
+                        <div class="mb-3">
+                            <label class="form-label">Document Type</label>
                         <select name="document_type" class="form-select mb-3">
                             <option value="Aadhar Card" {{ $employee->document_type == "Aadhar Card" ? "selected" : "" }}>Aadhar Card</option>
                             <option value="Voter ID" {{ $employee->document_type == "Voter ID" ? "selected" : "" }}>Voter ID</option>
                             <option value="Driving License" {{ $employee->document_type == "Driving License" ? "selected" : "" }}>Driving License</option>
                         </select>
+                        </div>
 
                         <label class="form-label">Document Upload</label>
                         @if($employee->document_submit)
-                            <a href="{{ asset('uploads/attendance/documents/' . $employee->document_submit) }}"
-                               target="_blank" class="btn btn-info btn-sm mb-2">View Document</a>
+                        <img src ="{{ asset('storage/app/public/attendance/documents/' . $employee->document_submit) }}"
+                            width="100" height="100" class="rounded mb-2">
+                            
                         @endif
 
                         <input type="file" name="document_file" class="form-control mb-3">
 
+                        <div class="mb-3">
+                            <label class="form-label">Report Time</label>
                         <input type="time" name="buffer_time" class="form-control mb-3"
                                value="{{ $employee->Buffer_time }}">
+                        </div>
 
                     </div>
 
@@ -101,9 +117,13 @@
                 <label class="fw-bold mt-3 d-block">Terms & Conditions</label>
 
                 <div class="signature-box mb-2">
-                    <textarea name="terms_text" class="form-control border-0 h-100">
-                        {{ $employee->terms_text }}
-                    </textarea>
+<textarea
+    name="terms_text"
+    id="terms_text"
+    class="form-control border-0 h-100"
+    rows="6"
+    placeholder="• Enter terms here">{{ old('terms_text', $employee->terms_text) }}</textarea>
+
                 </div>
 
                 <div class="form-check mb-3">
@@ -120,5 +140,41 @@
     </div>
 
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const textarea = document.getElementById('terms_text');
+
+    // Ensure every line starts with •
+    function normalizeBullets() {
+        let lines = textarea.value.split('\n').map(line => {
+            line = line.trim();
+            if (!line) return '';
+            return line.startsWith('•') ? line : '• ' + line;
+        });
+        textarea.value = lines.join('\n');
+    }
+
+    // Auto bullet on Enter
+    textarea.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            textarea.value += '\n• ';
+        }
+    });
+
+    // Normalize while typing
+    textarea.addEventListener('input', normalizeBullets);
+
+    // Initial load normalization
+    if (!textarea.value.trim()) {
+        textarea.value = '• ';
+    } else {
+        normalizeBullets();
+    }
+
+});
+</script>
+
 
 @endsection

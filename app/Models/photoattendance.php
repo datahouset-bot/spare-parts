@@ -10,7 +10,7 @@ class photoattendance extends Model
     use HasFactory;
      protected $fillable = [
 
-        'id',
+        'emp_id',
         'name',
         'email',
         'mobile',
@@ -25,6 +25,8 @@ class photoattendance extends Model
         'terms',
         'photo',
         'Buffer_time',
+        'id',
+        'designation'
     ];
     public function latestAdvance()
 {
