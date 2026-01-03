@@ -507,203 +507,6 @@ $(document).ready(function () {
 
 });
 </script>
-
-
-{{-- =================================for data print preview============================================== --}}
-<script>
-function openPrintPreview(data) {
-
-    let w = window.open('', '_blank');
-
-    w.document.write(`
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-<meta charset="UTF-8">
-<title>मटेरियल चालान</title>
-
-<style>
-@page {
-    size: A4;
-    margin: 20mm;
-}
-
-body {
-    font-family: Mangal, "Noto Sans Devanagari", Arial, sans-serif;
-    font-size: 15px;
-    color: #000;
-}
-
-/* ===== TOP LOGOS ===== */
-.logos {
-    width: 100%;
-    display: table;
-    margin-bottom: 10px;
-}
-.logos div {
-    display: table-cell;
-    text-align: center;
-}
-.logos img {
-    height: 45px;
-}
-
-/* ===== TITLE BAR ===== */
-.title {
-    background: #333 !important;
-    color: #fff !important;
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    padding: 8px;
-    margin: 12px 0 25px;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-}
-
-/* ===== TABLE ===== */
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-td {
-    padding: 6px 4px;
-    vertical-align: bottom;
-}
-
-.label {
-    width: 120px;
-    white-space: nowrap;
-}
-
-.value {
-    border-bottom: 1px dotted #000;
-    min-width: 180px;
-    padding-left: 6px;
-}
-
-.spacer td {
-    padding-top: 12px;
-}
-
-/* ===== FOOTER ===== */
-.footer {
-    margin-top: 45px;
-    display: table;
-    width: 100%;
-}
-.footer div {
-    display: table-cell;
-    text-align: center;
-    width: 33%;
-}
-.footer span {
-    display: inline-block;
-    border-top: 1px solid #000;
-    padding-top: 6px;
-    min-width: 180px;
-}
-</style>
-</head>
-
-<body>
-
-<!-- LOGOS -->
-<div class="logos">
-    <div><img src="${data.left_logo || ''}"></div>
-    <div><img src="${data.center_logo || ''}"></div>
-    <div><img src="${data.right_logo || ''}"></div>
-</div>
-
-<!-- TITLE -->
-<div class="title">मटेरियल चालान</div>
-
-<!-- CONTENT -->
-<table>
-<tr>
-    <td class="label">क्रमांक</td>
-    <td class="value">${data.slip_no || ''}</td>
-    <td class="label">दिनांक</td>
-    <td class="value">${data.date || ''}</td>
-</tr>
-
-<tr>
-    <td class="label">समय</td>
-    <td class="value">${data.time || ''}</td>
-    <td class="label">सुबह / शाम</td>
-    <td class="value"></td>
-</tr>
-
-<tr>
-    <td class="label">वाहन नं.</td>
-    <td class="value">${data.vehicle_no || ''}</td>
-    <td></td><td></td>
-</tr>
-
-<tr>
-    <td class="label">माल</td>
-    <td class="value">${data.Material || ''}</td>
-    <td></td><td></td>
-</tr>
-
-<tr>
-    <td class="label">मात्रा</td>
-    <td class="value">${data.Quantity || ''}</td>
-    <td class="label">गाड़ी का नाप</td>
-    <td class="value">${data.vehicle_measure || ''}</td>
-</tr>
-
-<tr class="spacer">
-    <td colspan="4">
-        पार्टी का नाम व पता :
-        <span style="border-bottom:1px dotted #000; padding-left:6px;">
-            ${data.party_name || ''}, ${data.phone || ''}
-        </span>
-    </td>
-</tr>
-
-<tr class="spacer">
-    <td class="label">कैश / खाता</td>
-    <td class="value">${data.payment_type || ''}</td>
-    <td class="label">RST</td>
-    <td class="value">${data.rst || ''}</td>
-</tr>
-</table>
-
-<!-- FOOTER -->
-<div class="footer">
-    <div>
-        <span>लोडर ऑपरेटर<br>
-        ${data.loader || ''}</span>
-    </div>
-
-    <div>
-        <span>हस्ता. ड्राइवर<br>
-        ${data.Driver || ''}</span>
-    </div>
-
-    <div>
-        <span>हस्ता. क्रेशर सुपरवाइजर<br>
-        ${data.supervisor || ''}</span>
-    </div>
-</div>
-
-
-<script>
-window.onload = function() {
-    window.print();
-}
-<\/script>
-
-</body>
-</html>
-    `);
-
-    w.document.close();
-}
-</script>
-
 {{-- ======================for vehicle entry model================================== --}}
 <script>
 $(function() {
@@ -830,19 +633,10 @@ $(function () {
 
                 $('#saveButton').prop('disabled', false).text('Save');
 
-                // 🔹 Collect form data for print
-                let data = {};
-                $('#saveForm').find('input, select, textarea').each(function () {
-                    if (this.name) {
-                        data[this.name] = $(this).val();
-                    }
-                });
-
-                // Slip no
-                data.slip_no = "{{ $nextSlip }}";
-
-                // ✅ PRINT AFTER SAVE
-                openPrintPreview(data);
+                if (res.success) {
+                    // ✅ REDIRECT AFTER SAVE (NO PRINT)
+                    window.location.href = res.redirect;
+                }
             },
 
             error: function (xhr) {
@@ -864,7 +658,7 @@ $(function () {
 
 });
 </script>
-
+<!-- ============= CALCULATE GRAND TOTAL ON ROYALTY BLUR ============= -->
 <script>
 $(document).ready(function () {
 
