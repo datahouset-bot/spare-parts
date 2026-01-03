@@ -115,6 +115,19 @@
     border-top: 1px solid rgba(255,255,255,0.05);
 }
 
+.sb-divider {
+    margin: 14px 16px;
+    border: none;
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0.25),
+        rgba(255,255,255,0)
+    );
+}
+
+
 </style>
 
 
@@ -145,8 +158,8 @@
                         {{-- Default Dashboard --}}
                     @else
                         <a class="nav-link fs-3" href="{{ url('/home') }}" style="color: white">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard
+                            <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
+                            Home
                         </a>
                     @endcan
 
@@ -158,7 +171,7 @@
                         <a class="nav-link collapsed " href="#" data-bs-toggle="collapse"
                             style=" ." data-bs-target="#collapsemaster" aria-expanded="false"
                             aria-controls="collapsemaster">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-users"></i></div>
                             Master
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
@@ -273,7 +286,7 @@
                         {{-- Entery section end  --}}
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#entery"
                             style=" ." aria-expanded="false" aria-controls="entery">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-store"></i></div>
                             Entry
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
@@ -456,13 +469,14 @@
 
                     @endcan
 
+<hr class="sb-divider">
 
 
 
                     @can('ReportList')
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#report"
                             style=" ." aria-expanded="false" aria-controls="report">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-chart-line"></i></div>
                             Report
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
@@ -675,12 +689,13 @@
                         </div>
                     @endcan
                     {{-- entery section end  --}}
+<hr class="sb-divider">
 
                     @can('Activity')
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                             style=" ." data-bs-target="#collapsemkt" aria-expanded="false"
                             aria-controls="collapsemkt">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-clipboard-list"></i></div>
                             Activity
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
@@ -713,7 +728,7 @@
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                             style=" ." data-bs-target="#collapsesetting" aria-expanded="false"
                             aria-controls="collapsesetting">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-gear"></i></div>
                             Setting
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>

@@ -355,6 +355,36 @@ $salebill_items=inventory::withinFY('entry_date')->where('firm_id',Auth::user()-
 
  return view('entery.sale.sale_print_view',compact('salebill_header','salebill_items'));
 
+}   
+
+Public function sale_print_view2($voucher_no){
+    $salebill_header = voucher::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->with('account')->where('voucher_type','Sale')->where('voucher_no',$voucher_no)->first(); 
+   $salebill_items=inventory::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->where('voucher_no',$salebill_header->voucher_no)
+   ->where('voucher_type','Sale')
+   ->get();
+
+ return view('entery.sale.sale_print_view2',compact('salebill_header','salebill_items'));
+
+   }  
+   
+Public function sale_print_view3($voucher_no){
+    $salebill_header = voucher::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->with('account')->where('voucher_type','Sale')->where('voucher_no',$voucher_no)->first(); 
+   $salebill_items=inventory::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->where('voucher_no',$salebill_header->voucher_no)
+   ->where('voucher_type','Sale')
+   ->get();
+
+ return view('entery.sale.sale_print_view3',compact('salebill_header','salebill_items'));
+
+   }   
+   
+Public function sale_print_view4($voucher_no){
+    $salebill_header = voucher::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->with('account')->where('voucher_type','Sale')->where('voucher_no',$voucher_no)->first(); 
+   $salebill_items=inventory::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->where('voucher_no',$salebill_header->voucher_no)
+   ->where('voucher_type','Sale')
+   ->get();
+
+ return view('entery.sale.sale_print_view4',compact('salebill_header','salebill_items'));
+
    }   
    /**
      * Display the specified resource.

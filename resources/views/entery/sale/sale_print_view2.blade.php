@@ -121,7 +121,7 @@
         </div>
 
         <div class="alt-invoice-tag">
-            TAX INVOICE
+            SALE INVOICE
         </div>
     </div>
 

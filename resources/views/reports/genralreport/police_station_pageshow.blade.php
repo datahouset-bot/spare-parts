@@ -55,7 +55,7 @@
 
     <div class="card my-1">
         <div class="card-header">
-        <h4>Police Station Report  <h4>       </div>
+        <h4>customer Details Report  <h4>       </div>
        <div class="container mt-1" id="account_select_form">
         <form action="{{ url('police_station_report_result') }}" method="POST">
             @csrf

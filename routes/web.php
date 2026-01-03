@@ -631,6 +631,9 @@ Route::resource('sales', SaleController::class);
 Route::get('print_sale_select/{id}', [App\Http\Controllers\SaleController::class, 'print_sale_select']);
 route::get('sale_print_view/{id}', [App\Http\Controllers\SaleController::class, 'sale_print_view']);
 route::get('sale_print_view2/{id}', [App\Http\Controllers\SaleController::class, 'sale_print_view2']);
+route::get('sale_print_view3/{id}', [App\Http\Controllers\SaleController::class, 'sale_print_view3']);
+
+route::get('sale_print_view4/{id}', [App\Http\Controllers\SaleController::class, 'sale_print_view4']);
 
 // Route::get('print_select',[App\Http\Controllers\SaleController::class, 'print_select']);
 Route::resource('banquets', BanquetController::class);

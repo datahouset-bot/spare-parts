@@ -53,6 +53,27 @@
             padding-right: 1px;
             padding-left: 1px;
         }
+        .select2-container--default .select2-selection--single {
+    height: 38px;
+    padding: 6px 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.select2-selection__rendered {
+    line-height: 24px !important;
+}
+
+.select2-selection__arrow {
+    height: 36px;
+}
+
+.select2-results__option[id*="__add_new__"] {
+    font-weight: bold;
+    color: #0d6efd;
+    border-top: 1px solid #ddd;
+}
 
 
         /* input css  */
@@ -175,18 +196,24 @@
                         </div>
                     </div>
                     
-                    <div class="col-md-3  text-center row ">
-                        {{-- <div class="form-group"> --}}
-                            <select name="account_id" id="account_id" class="form-select" required>
-                                <option selected disabled>Select Party</option>
-                                @foreach ($accountdata as $record)
-                                    <option value="{{ $record->id }}">{{ $record->account_name }}</option>
-                                @endforeach
-                            </select>
-                            {{-- <label class="floating-label" for="account_id">Account Name</label> --}}
-                        {{-- </div> --}}
-                    </div>
-                    
+                  <div class="col-md-3">
+    <div class="input-group">
+        <select name="account_id"
+                id="account_id"
+                class="form-control select-party"
+                required>
+            <option></option>
+            @foreach ($accountdata as $record)
+                <option value="{{ $record->id }}">
+                    {{ $record->account_name }}
+                </option>
+            @endforeach
+              <option value="__add_new__">➕ Add New Party</option>
+        </select>
+
+      
+    </div>
+</div>
 
                 </div>
                 <div class="row no-gutter" name="itementery">
@@ -382,10 +409,20 @@
             placeholder: "Select Item",
             allowClear: true
         });
-        $("#account_id").select2({
-            placeholder: "Select Account",
-            allowClear: true
-        });
+       $('#account_id').select2({
+        placeholder: "Search Party...",
+        allowClear: true,
+        width: '100%'
+    });
+
+    // Detect "Add New Party" click
+    $('#account_id').on('select2:select', function (e) {
+        let value = e.params.data.id;
+
+        if (value === '__add_new__') {
+            window.location.href = "{{ url('/accountform') }}";
+        }
+    });
         $("#batch_id").select2({
             placeholder: "batch",
             allowClear: true

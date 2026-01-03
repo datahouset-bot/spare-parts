@@ -89,7 +89,7 @@
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-shield-alt"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Police Station Report</span>
+                            <span class="ms-2" style="width: 90%;">Customer Details</span>
                         </a>
                     </div>
                 </div>
