@@ -25,7 +25,7 @@ return new class extends Migration
     $table->datetime('checkout_time')->nullable();
 // additional fields if needed
 $table->string('Date')->nullable();
-$table->string('af2')->nullable();
+$table->string('Remark')->nullable();
 $table->string('af3')->nullable();
 $table->string('af4')->nullable();
 $table->string('af5')->nullable();

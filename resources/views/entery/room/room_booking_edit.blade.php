@@ -191,7 +191,7 @@
                             <div class="col-lg-12">
                                 <div class="card  mt-1">
                                     <div class="card-header">
-                                        <h5 class="text-center font-weight-light my-1">Modify Room Booking </h5>
+                                        <h5 class="text-center font-weight-light my-1">SLOT EDIT</h5>
                                     </div>
                                     <div class="card-body">
 
@@ -292,8 +292,8 @@
                                             <div class="row justify-content-centerm-3">
                                                 <div class="col-md-8">
                                                     <div class="row form-group">
-                                                      <div class="col-md-3"><span class="requierdfield">*</span>
-                                                        <label for="label1">Room Booking No </label>
+                                                      <div class="col-md-4 mt-2"><span class="requierdfield">*</span>
+                                                        <label for="label1">REGISTRATION no</label>
                                                         <input type="text" name="booking_no"class=" form-control"
                                                             id="" class="" value="{{ $new_bill_no }}"
                                                             readonly>
@@ -302,8 +302,8 @@
                                                             value="{{ $new_voucher_no }}" readonly>
 
                                                     </div>
-                                                    <div class="col-md-3"><span class="requierdfield">*</span>
-                                                        <label for="booking_date">Booking Date</label>
+                                                    <div class="col-md-4 mt-2"><span class="requierdfield">*</span>
+                                                        <label for="booking_date">Date</label>
                                                         <input class="form-control  " id="booking_date"
                                                             type="text" name="booking_date"
                                                             value="{{ \Carbon\Carbon::parse($roombookings_first->booking_date)->format('d-m-Y') }}" />
@@ -314,8 +314,8 @@
                                                         </span>
                                                     </div>
 
-                                                    <div class="col-md-3"><span class="requierdfield">*</span>
-                                                        <label for="booking_time">Booking Time</label>
+                                                    <div class="col-md-4 mt-2"><span class="requierdfield">*</span>
+                                                        <label for="booking_time">Time</label>
                                                         @php
                                                             $currentTime = \Carbon\Carbon::now()->format('H:i');
                                                         @endphp
@@ -328,7 +328,7 @@
                                                         </span>
 
                                                     </div>
-                                                    <div class="col-md-3"><span class="requierdfield">*</span>
+                                                 {{--   <div class="col-md-3"><span class="requierdfield">*</span>
                                                         <label for="checkin_date">Check In Date</label>
                                                         <input class="form-control " id="checkin_date"
                                                             type="text" name="checkin_date"
@@ -377,7 +377,7 @@
                                                         </span>
                                                     </div>
 
-                                                    <div class="col-md-3">
+                                                    {{-- <div class="col-md-3">
                                                         <span class="requierdfield">*</span><label
                                                             for="commited_days">No Of Days</label>
                                                         <input class="form-control" id="commited_days" type="text"
@@ -389,8 +389,8 @@
                                                             @enderror
                                                         </span>
 
-                                                    </div>
-                                                    <div class="col-md-3"><span class="requierdfield">*</span>
+                                                    </div> --}}
+                                                    {{-- <div class="col-md-3"><span class="requierdfield">*</span>
                                                         <label for="no_of_guest">No Of Guest</label>
                                                         <input class="form-control" id="no_of_guest" type="text"
                                                             name="no_of_guest" value="{{$roombookings_first->no_of_guest}}"
@@ -400,8 +400,8 @@
                                                                 {{ $message }}
                                                             @enderror
                                                         </span>
-                                                    </div>
-                                                        <div class="col-md-3">
+                                                    </div> --}}
+                                                        {{-- <div class="col-md-3">
                                                             <span class="requierdfield">*</span>
                                                             <label for="business_source">Business Source</label>
                                                             <select name="business_source_id" id="business_source_id"
@@ -422,9 +422,9 @@
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
-                                                        </div>
+                                                        </div>  --}}
 
-                                                        <div class="col-md-6">
+                                                        <div class="col-md-4 mt-2">
                                                             <span class="requierdfield">*</span>
                                                             <label for="package">Package</label>
                                                             <select name="package_id" id="package_id" class="form-select"
@@ -449,8 +449,34 @@
                                                             </span>
                                                         </div>
 
-                                                        <div class="col-md-4">
-                                                            <label for="checkin_remark1">Remark 1</label>
+                                                         <div class="col-md-4 mt-4">
+                                                            <label for="vehicle_no">Vehicle No</label>
+                                                            <input class="form-control" id="vehicle_no" type="text"
+                                                                name="vehicle_no" value="{{ $roombookings_first->bookingaf1 }}"
+                                                                />
+                                                            <span class="text-danger">
+                                                                @error('vehicle_no')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                        </div>
+
+                                                       <div class="col-md-4 mt-4">
+                                                        
+                                                            <label for="parking_no">SlotNo </label>
+                                                            <input class="form-control" id="parking_no" type="text"
+                                                                name="parking_no" value="{{ $roombookings_first->bookingaf2 }}"
+                                                                />
+                                                            <span class="text-danger">
+                                                                @error('parking_no')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+
+                                                        </div>
+
+                                                        <div class="col-md-4 mt-4">
+                                                            <label for="checkin_remark1">Booking Remark</label>
                                                             <input class="form-control" id="checkin_remark1"
                                                                 type="text" name="checkin_remark1"
                                                                 value="{{ $roombookings_first->bookingaf3 }}" />
@@ -459,6 +485,19 @@
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
+                                                        </div>
+
+                                                           <div class="col-md-4 mt-4">
+                                                            <label for="gst_no">Chassis NO </label>
+                                                            <input class="form-control" id="gst_no" type="text"
+                                                                name="gst_no"
+                                                                value="{{ $roombookings_first->gst_no }}" />
+                                                            <span class="text-danger">
+                                                                @error('gst_no')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+
                                                         </div>
 
 
@@ -473,9 +512,9 @@
                                                         <thead>
                                                             <tr>
                                                                 <th># </th>
-                                                                <th>Room No </th>
-                                                                <th>Room Type</th>
-                                                                <th>Tariff</th>
+                                                                <th>Slot No </th>
+                                                                <th>Payment Type</th>
+                                                                <th>amount</th>
 
                                                             </tr>
                                                         </thead>
@@ -562,11 +601,12 @@
 
 
                                             {{-- 3rd row start for guest detail +valuadded                             --}}
-                                            <div class="row justify-content-centerm-3 my-3">
+                                              <div class="row justify-content-centerm-3 my-3">
                                                 <div class="col-md-8">
                                                     <div class="row form-group">
-                                                        <div class="col-md-6"><span class="requierdfield">*</span>
-                                                            <label for="guest_name">Guest Name </label>
+                                                        <div class="col-md-4">
+                                                            <span class="requierdfield">*</span>
+                                                            <label for="guest_name">Customer Name </label>
                                                             <input class="form-control" id="guest_name" type="text"
                                                                 name="guest_name"
                                                                 value="{{ $roombookings_first->guest_name }}"
@@ -579,29 +619,29 @@
 
 
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-4 ">
                                                             <label for="guest_address">Address Line 1</label>
                                                             <input class="form-control" id="guest_address" type="text"
                                                                 name="guest_address"
-                                                                value="{{ $roombookings_first->address }}" />
+                                                                value="{{ $roombookings_first->guest_address }}" />
                                                             <span class="text-danger">
                                                                 @error('guest_address')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-4">
                                                             <label for="guest_address2">Address Line 2</label>
                                                             <input class="form-control" id="guest_address2"
                                                                 type="text" name="guest_address2"
-                                                                value="{{ $roombookings_first->address2 }}" />
+                                                                value="{{ $roombookings_first->guest_address2 }}" />
                                                             <span class="text-danger">
                                                                 @error('guest_address2')
                                                                     {{ $message }}
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-4">
                                                             <label for="guest_city">City</label>
                                                             <input class="form-control" id="guest_city" type="text"
                                                                 name="guest_city"
@@ -612,7 +652,7 @@
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-4">
                                                             <label for="guest_state">State</label>
                                                             <input class="form-control" id="guest_state" type="text"
                                                                 name="guest_state"
@@ -623,10 +663,10 @@
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-4">
                                                             <label for="guest_contery">Country</label>
                                                             <input class="form-control" id="guest_contery" type="text"
-                                                                name="guest_contery" value="" />
+                                                                name="guest_contery" value="{{ $roombookings_first->guest_contery }}" />
                                                             <span class="text-danger">
                                                                 @error('guest_contery')
                                                                     {{ $message }}
@@ -748,18 +788,7 @@
                                                         </div>
 
 
-                                                        <div class="col-md-3">
-                                                            <label for="gst_no">GST NO </label>
-                                                            <input class="form-control" id="gst_no" type="text"
-                                                                name="gst_no"
-                                                                value="{{ $roombookings_first->gst_no }}" />
-                                                            <span class="text-danger">
-                                                                @error('gst_no')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-
-                                                        </div>
+                                                     
                                                         <div class="col-md-3">
                                                             <label for="guest_id_pic">Document Image </label>
                                                             <input class="form-control" id="guest_id_pic" type="file"
@@ -770,7 +799,7 @@
                                                                 @enderror
                                                             </span>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        {{-- <div class="col-md-3">
                                                             <label for="guest_pic">Guest Image </label>
                                                             <input class="form-control" id="guest_pic" type="file"
                                                                 name="guest_pic" value="{{ old('guest_pic') }}" />
@@ -780,7 +809,7 @@
                                                                 @enderror
                                                             </span>
 
-                                                        </div>
+                                                        </div> --}}
 
 
                                                     </div>

@@ -305,31 +305,45 @@
             url: '/batchs/' + item_id,
             type: 'GET',
             dataType: 'json',
+         
             success: function(response) {
-                if (response.status === 200) {
-                    var batchrecords = response.batchrecords;
 
-                    batchrecords.forEach(function(record) {
-                        var row = '<tr>';
+    console.log("Fetch Response:", response);   // FULL response log
 
-                        visibleFields.forEach(function(field) {
-                            row += `<td>${record[field] ?? ''}</td>`;
-                        });
+    if (response.status === 200) {
 
-                        row += `
-                            <td>
-                                <button class="btn btn-info btn-sm edit-record" data-id="${record.id}">Edit</button>
-                                <button class="btn btn-danger btn-sm delete-record" data-id="${record.id}">Delete</button>
-                            </td>
-                        `;
+        var batchrecords = response.batchrecords;
 
-                        row += '</tr>';
-                        $('#batch_record tbody').append(row);
-                    });
-                } else {
-                    alert('Failed to fetch records');
-                }
-            },
+        if (!batchrecords || batchrecords.length === 0) {
+            console.warn("⚠️ No record found in database for Item ID:", item_id);
+            $('#batch_record tbody').html(`<tr><td colspan="100%" class="text-center text-danger">No Record Found</td></tr>`);
+            return;
+        }
+
+        batchrecords.forEach(function(record) {
+            console.log("Record Row:", record);   // Each row log
+
+            var row = '<tr>';
+            visibleFields.forEach(function(field) {
+                row += `<td>${record[field] ?? ''}</td>`;
+            });
+
+            row += `
+                <td>
+                    <button class="btn btn-info btn-sm edit-record" data-id="${record.id}">Edit</button>
+                    <button class="btn btn-danger btn-sm delete-record" data-id="${record.id}">Delete</button>
+                </td>
+            `;
+            row += '</tr>';
+
+            $('#batch_record tbody').append(row);
+        });
+
+    } else {
+        console.error("Fetch failed:", response);
+    }
+},
+
             error: function() {
                 alert('Error fetching records');
             }
@@ -371,6 +385,7 @@
                 rack: $('#rack').val(),
                 _token: '{{ csrf_token() }}'
             };
+   console.log("📤 Posting Data to Controller:", data);
 
             let url = '/batchs';
             let method = 'POST';
@@ -390,8 +405,12 @@
                         fetchAndDisplayRecords($('#item_id').val());
                         $('#batch_form')[0].reset();
                         $('#editing_id').val('');
+                     console.error("Record save succesfully", response);
+                        
                     } else {
-                        alert('Save failed');
+
+                         console.error("❌ Save Failed:", response);
+                                                 alert('Save failed');
                     }
                 },
                 error: function() {
@@ -467,4 +486,4 @@
 
 
 
-@endsection
+                                @endsection

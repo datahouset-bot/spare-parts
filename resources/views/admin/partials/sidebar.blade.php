@@ -1,15 +1,121 @@
-<style>/* Main menu hover (Dashboard, Master, Entry, Report, etc.) */
+<style>/* ===============================
+   PRO SIDEBAR BASE
+================================ */
+.sb-sidenav {
+    background: linear-gradient(180deg, #0b1d33 0%, #061526 100%);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.35);
+}
+
+/* ===============================
+   MAIN LINKS
+================================ */
+.sb-sidenav .nav-link {
+    color: #cfd8e3 !important;
+    font-size: 19px;
+    padding: 10px 18px;
+    margin: 4px 10px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.25s ease;
+    position: relative;
+}
+
+/* ICON */
+.sb-sidenav .sb-nav-link-icon i {
+    font-size: 16px;
+    color: #8fa3bf;
+    min-width: 18px;
+    transition: color 0.25s ease;
+}
+
+/* ===============================
+   HOVER EFFECT (PRO STYLE)
+================================ */
 .sb-sidenav .nav-link:hover {
-    background-color: rgba(0, 255, 0, 0.20) !important;   /* Soft green overlay */
+    background: rgba(255, 255, 255, 0.08);
     color: #ffffff !important;
-    padding-left: 28px;
-    border-left: 4px solid #00ff55;
-    transition: all 0.25s ease-in-out;
+}
+
+.sb-sidenav .nav-link:hover i {
+    color: #4fc3f7;
+}
+
+/* ===============================
+   ACTIVE LINK
+================================ */
+.sb-sidenav .nav-link.active {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #ffffff !important;
+    font-weight: 600;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+}
+
+.sb-sidenav .nav-link.active i {
+    color: #ffffff;
+}
+
+/* ===============================
+   SECTION HEADINGS
+================================ */
+.sb-sidenav-menu-heading {
+    color: #6b8dbd;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 18px 22px 8px;
+    text-transform: uppercase;
+}
+
+/* ===============================
+   SUBMENU CONTAINER
+================================ */
+.sb-sidenav-menu-nested {
+    margin-left: 10px;
+}
+
+/* SUBMENU LINKS */
+.sb-sidenav-menu-nested .nav-link {
+    font-size: 19px;
+    padding: 8px 16px 8px 42px;
+    margin: 3px 10px;
+    color: #b9c7dc !important;
+}
+
+/* SUBMENU HOVER */
+.sb-sidenav-menu-nested .nav-link:hover {
+    background: rgba(255,255,255,0.06);
+    color: #ffffff !important;
+}
+
+/* ===============================
+   DROPDOWN ARROW
+================================ */
+.sb-sidenav-collapse-arrow i {
+    font-size: 18px;
+    opacity: 0.6;
+    transition: transform 0.25s ease;
+}
+
+/* Rotate arrow */
+.nav-link:not(.collapsed) .sb-sidenav-collapse-arrow i {
+    transform: rotate(90deg);
+}
+
+/* ===============================
+   FOOTER
+================================ */
+.sb-sidenav-footer {
+    background: rgba(185, 176, 176, 0.25);
+    color:red;
+    font-size: 18px;
+    padding: 12px 18px;
+    border-top: 1px solid rgba(255,255,255,0.05);
 }
 
 </style>
-
-
 
 
 <div id="layoutSidenav">
@@ -17,47 +123,41 @@
         <nav class="sb-sidenav accordion sb-sidenav-primary" id="sidenavAccordion" style="background-color:rgb(3, 43, 3)">
             <div class="sb-sidenav-menu">
                 <div class="nav">
-                   <div class="sb-sidenav-menu-heading"></div>
+                    <div class="sb-sidenav-menu-heading"></div>
 
-    {{-- SPARE PARTS MENUS HERE --}}
+                    {{-- SPARE PARTS MENUS HERE --}}
 
 
-{{-- If user has Crusher Module → redirect to crusher dashboard --}}
-@can('Crusher Module')
-    <a class="nav-link fs-3"
-        href="{{ url('/crusher') }}"
-        style="color: white">
-        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-    REPORTS
-    </a>
+                    {{-- If user has Crusher Module → redirect to crusher dashboard --}}
+                    @can('Crusher Module')
+                        <a class="nav-link fs-3" href="{{ url('/crusher') }}" style="color: white">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            REPORTS
+                        </a>
 
-{{-- If user has Attendance Module → redirect to check-in/out --}}
-@elseif(auth()->user()->can('Attendance Module'))
+                        {{-- If user has Attendance Module → redirect to check-in/out --}}
+                    @elseif(auth()->user()->can('Attendance Module'))
+                        <a class="nav-link fs-3" href="{{ url('/attendancecheckin') }}" style="color: white">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
 
-    <a class="nav-link fs-3"
-        href="{{ url('/attendancecheckin') }}"
-        style="color: white">
-        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-        Dashboard
-    </a>
-
-{{-- Default Dashboard --}}
-@else
-    <a class="nav-link fs-3"
-        href="{{ url('/home') }}"
-        style="color: white">
-        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-        Dashboard
-    </a>
-@endcan
+                        {{-- Default Dashboard --}}
+                    @else
+                        <a class="nav-link fs-3" href="{{ url('/home') }}" style="color: white">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+                    @endcan
 
 
 
-                
+
                     {{-- page section  --}}
                     @can('Master')
-                        <a class="nav-link collapsed " href="#" data-bs-toggle="collapse" style="color: white; font-size:27px;"
-                            data-bs-target="#collapsemaster" aria-expanded="false" aria-controls="collapsemaster">
+                        <a class="nav-link collapsed " href="#" data-bs-toggle="collapse"
+                            style=" ." data-bs-target="#collapsemaster" aria-expanded="false"
+                            aria-controls="collapsemaster">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                             Master
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -66,79 +166,95 @@
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
 
-  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"  style="color: white; font-size:22px;"
-                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
-                                    aria-controls="pagesCollapseError">
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    style=" " data-bs-target="#pagesCollapseError"
+                                    aria-expanded="false" aria-controls="pagesCollapseError">
                                     Account Master
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="{{ url('/account') }}"style="color: white; font-size:24px;">Account</a>
-                                        <a class="nav-link" href="{{ url('/accountgroups') }}"  style="color: white; font-size:24px;">Account Group</a>
-                                        <a class="nav-link" href="{{ url('/primarygroups') }}"  style="color: white; font-size:24px;">Primary Group</a>
+                                        <a class="nav-link"
+                                            href="{{ url('/account') }}"style=" ">Account</a>
+                                        <a class="nav-link" href="{{ url('/accountgroups') }}"
+                                            style=" ">Account Group</a>
+                                        <a class="nav-link" href="{{ url('/primarygroups') }}"
+                                            style=" ">Primary Group</a>
                                     </nav>
                                 </div>
 
-@cannot('Crusher Module')
-    
-
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" style="color: white; font-size:22px;"
-                                    data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-                                    aria-controls="pagesCollapseAuth">
-                                    Item Master
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav" >
-                                        <a class="nav-link" href={{ url('item') }} style="color: white; font-size:24px;">Item</a>
-                                        <a class="nav-link" href={{ url('company') }}  style="color: white; font-size:24px;">Company</a>
-                                        <a class="nav-link" href={{ url('itemgroups') }}  style="color: white; font-size:24px;">Group</a>
-                                        <a class="nav-link" href={{ url('units') }} style="color: white; font-size:24px;">Unit</a>
-                                    </nav>
-                                </div>
-                              
-                                {{-- @can('Hotel Module') --}}
+                                @cannot('Crusher Module')
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                        data-bs-target="#room" aria-expanded="false" aria-controls="room" style="color: white; font-size:22px;">
+                                        style=" " data-bs-target="#pagesCollapseAuth"
+                                        aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                        Item Master
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
+                                        data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href={{ url('item') }}
+                                                style=" ">Item</a>
+                                            <a class="nav-link" href={{ url('company') }}
+                                                style=" ">Company</a>
+                                            <a class="nav-link" href={{ url('itemgroups') }}
+                                                style=" ">Group</a>
+                                            <a class="nav-link" href={{ url('units') }}
+                                                style=" ">Unit</a>
+                                        </nav>
+                                    </div>
+
+                                    {{-- @can('Hotel Module') --}}
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                        data-bs-target="#room" aria-expanded="false" aria-controls="room"
+                                        style=" ">
                                         Service Master
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
-                                {{-- @endcan --}}
-                                <div class="collapse" id="room" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="{{ url('/packages') }}" style="color: white; font-size:24px;">Service Type</a>
-                                        <a class="nav-link" href="{{ url('/roomtypes') }}" style="color: white; font-size:24px;">Service Plan</a>
-                                        <a class="nav-link" href="{{ url('/rooms') }}"  style="color: white; font-size:24px;">Slot</a>
-                                    </nav>
-                                </div>
+                                    {{-- @endcan --}}
+                                    <div class="collapse" id="room" aria-labelledby="headingOne"
+                                        data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="{{ url('/packages') }}"
+                                                style=" ">Service Type</a>
+                                            <a class="nav-link" href="{{ url('/roomtypes') }}"
+                                                style=" ">Service Plan</a>
+                                            <a class="nav-link" href="{{ url('/rooms') }}"
+                                                style=" ">Slot</a>
+                                        </nav>
+                                    </div>
 
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#gst" style="color:white; font-size:22px;"
-                                    aria-expanded="false" aria-controls="gst">
-                                    Other
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="gst" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        @can('Restaurant Module')
-                                            <a class="nav-link" href="{{ url('/tables') }}"  style="color: white; font-size:24px;">Table</a>
-                                        @endcan
-                                        <a class="nav-link" href="{{ url('/godowns') }}"  style="color: white; font-size:24px;">Godown (Store)</a>
-                                        <a class="nav-link" href="{{ url('/account') }}" style="color: white; font-size:24px;">Locker</a>
-                                        <a class="nav-link" href="{{ url('/gstmasters') }}"  style="color: white; font-size:24px;">GST,TAX,VAT</a>
-                                 
-                                            <a class="nav-link" href="{{ url('/businesssources') }}" style="color: white; font-size:24px;">Vehicle Type</a>
-                                            <a class="nav-link" href="{{ url('/othercharges') }}"  style="color: white; font-size:24px;">Other Charge</a>
-                                 
-                                        <a class="nav-link" href="{{ url('/voucher_types') }}"  style="color: white; font-size:24px;">Voucher Type</a>
-                                    </nav>
-                                </div>
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                        data-bs-target="#gst" style="color:white; " aria-expanded="false"
+                                        aria-controls="gst">
+                                        Other
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="gst" aria-labelledby="headingOne"
+                                        data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            @can('Restaurant Module')
+                                                <a class="nav-link" href="{{ url('/tables') }}"
+                                                    style=" ">Table</a>
+                                            @endcan
+                                            <a class="nav-link" href="{{ url('/godowns') }}"
+                                                style=" ">Godown (Store)</a>
+                                            <a class="nav-link" href="{{ url('/account') }}"
+                                                style=" ">Locker</a>
+                                            <a class="nav-link" href="{{ url('/gstmasters') }}"
+                                                style=" ">GST,TAX,VAT</a>
 
-@endcannot
+                                            <a class="nav-link" href="{{ url('/businesssources') }}"
+                                                style=" ">Vehicle Type</a>
+                                            <a class="nav-link" href="{{ url('/othercharges') }}"
+                                                style=" ">Other Charge</a>
+
+                                            <a class="nav-link" href="{{ url('/voucher_types') }}"
+                                                style=" ">Voucher Type</a>
+                                        </nav>
+                                    </div>
+                                @endcannot
 
                             </nav>
 
@@ -146,81 +262,94 @@
                         </div>
                     @endcan
 
-{{-- =============================================== for cctv visit=============================================================================== --}}
+                    {{-- =============================================== for cctv visit=============================================================================== --}}
 
-                             
-   
 
-{{-- ================================================================================================================================================== --}}
+
+
+                    {{-- ================================================================================================================================================== --}}
 
                     @can('Entry')
                         {{-- Entery section end  --}}
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#entery" style="color: white; font-size:27px;"
-                            aria-expanded="false" aria-controls="entery">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#entery"
+                            style=" ." aria-expanded="false" aria-controls="entery">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                             Entry
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                    
+
                         <div class="collapse" id="entery" aria-labelledby="headingTwo"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-{{-- ======================================================================================================= --}}
+                                {{-- ======================================================================================================= --}}
 
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#shownew" aria-expanded="false"
-                                    aria-controls="shownew" style="color:white; font-size:22px;">
+
+
+
+                                @if (auth()->user()->can('Crusher Module'))
+                                    {{-- CRUSHER MENUS HERE --}}
+                                    {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                        style="color:white; " data-bs-target="#crush"
+                                        aria-expanded="false" aria-controls="crush">
+                                        Crusher
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="crush" aria-labelledby="headingOne"
+                                        data-bs-parent="#sidenavAccordionPages"> --}}
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="{{ url('crusher/create') }}"
+                                                style=" ">New Entry</a>
+                                            <a class="nav-link" href="{{ url('/crusher') }}"
+                                                style=" ">Challan Details</a>
+                                            {{-- <a class="nav-link" href="{{ url('/vehicledetail') }}"
+                                                style=" ">Vehicle Details</a> --}}
+                                            {{-- <a class="nav-link" href="{{ url('vehicledetail/create') }}" style=" ">Vehicle Entry</a> --}}
+                                        </nav>
+                                    {{-- </div> --}}
+                                @endif
+                                @cannot('Crusher Module')
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                        data-bs-target="#shownew" aria-expanded="false" aria-controls="shownew"
+                                        style="color:white; ">
                                         <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                    Visits
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="shownew" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        {{-- <a class="nav-link" href={{ url('/amcform') }} style="color: white; font-size:24px;">New Entry</a> --}}
-                                         <a class="nav-link" href="{{ url('/cctv') }}"  style="color: white; font-size:24px;">New Entry</a>
-                                    </nav>
-                                </div>
+                                        Visits
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="shownew" aria-labelledby="headingOne"
+                                        data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            {{-- <a class="nav-link" href={{ url('/amcform') }} style=" ">New Entry</a> --}}
+                                            <a class="nav-link" href="{{ url('cctv/create') }}"
+                                                style=" ">New Entry</a>
+                                                <a class="nav-link" href="{{ url('/cctv') }}"
+                                                style=" ">Data </a>
 
-        
-  
-@if(auth()->user()->can('Crusher Module'))
-    {{-- CRUSHER MENUS HERE --}}
-       <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"  style="color:white; font-size:22px;"
-                                    data-bs-target="#crush" aria-expanded="false" aria-controls="crush">
-                                    Crusher
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="crush" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url('crusher/create') }}" style="color: white; font-size:20px;">New Entry</a>
-                                    <a class="nav-link" href="{{ url('/crusher') }}" style="color: white; font-size:20px;">Challan Details</a>
-                                    <a class="nav-link" href="{{ url('/vehicledetail') }}" style="color: white; font-size:20px;">Vehicle Details</a>
-                                    {{-- <a class="nav-link" href="{{ url('vehicledetail/create') }}" style="color: white; font-size:20px;">Vehicle Entry</a> --}}
-                                    </nav>
-                                </div>
+                                        </nav>
+                                    </div>
 
-@endif
-         @cannot('Crusher Module')   
-                          
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseAuth" aria-expanded="false"  style="color: white; font-size:22px;"
-                                    aria-controls="pagesCollapseAuth">
-                                    Vehical Service
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href={{ url('roombooking_home') }}  style="color: white; font-size:24px;"> Book Slot</a>
-                                        <a class="nav-link" href={{ url('roomcheckins') }}  style="color: white; font-size:24px;">Job Card</a>
-                                        <a class="nav-link" href={{ url('roomservices') }}  style="color: white; font-size:24px;">Stock Issue </a>
-                                        <a class="nav-link" href={{ url('foodbills') }}  style="color: white; font-size:24px;">Invoice</a>
-                                        <a class="nav-link" href={{ url('roomcheckouts') }}  style="color: white; font-size:24px;">Gate Pass </a>
-                                    </nav>
-                                </div>
-                                {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#bed" aria-expanded="false" aria-controls="bed">
+
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                        data-bs-target="#pagesCollapseAuth" aria-expanded="false"
+                                        style=" " aria-controls="pagesCollapseAuth">
+                                        Vehical Service
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
+                                        data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href={{ url('roombooking_home') }}
+                                                style=" "> Book Slot</a>
+                                            <a class="nav-link" href={{ url('roomcheckins') }}
+                                                style=" ">Job Card</a>
+                                            <a class="nav-link" href={{ url('roomservices') }}
+                                                style=" ">Stock Issue </a>
+                                            <a class="nav-link" href={{ url('foodbills') }}
+                                                style=" ">Invoice</a>
+                                            <a class="nav-link" href={{ url('roomcheckouts') }}
+                                                style=" ">Gate Pass </a>
+                                        </nav>
+                                    </div>
+                                    {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#bed" aria-expanded="false" aria-controls="bed">
                                 Dormitory
                                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                              </a>
@@ -234,7 +363,7 @@
                                  </nav>
                              </div> --}}
 
-                                {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                     data-bs-target="#pagesCollapseError" aria-expanded="false"
                                     aria-controls="pagesCollapseError">
                                     Spare_parts
@@ -251,7 +380,7 @@
                                     </nav>
                                 </div> --}}
 
-                                {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#Banquet" aria-expanded="false" aria-controls="Banquet">
+                                    {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#Banquet" aria-expanded="false" aria-controls="Banquet">
                                 Banquet Hall 
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
@@ -263,60 +392,76 @@
                                 </nav>
                             </div> --}}
 
-    
-
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#inventory" aria-expanded="false" aria-controls="inventory"  style="color: white; font-size:22px;">
-                                    Transection
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="inventory" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                       <a class="nav-link" href="{{ url('/sales') }}"  style="color: white; font-size:24px;">Sale Invoice</a>
-                                       <a class="nav-link" href="{{ url('/sales') }}"  style="color: white; font-size:24px;">Quotation</a>
-                                       <a class="nav-link" href="{{ url('/sales') }}" style="color: white; font-size:24px;">Estimate Sale</a>
-                                       <a class="nav-link" href="{{ url('/sales') }}"   style="color: white; font-size:24px;">Sale Order</a>
-                                      <a class="nav-link" href="{{ url('/sales') }}" style="color: white; font-size:24px;">Sale Return</a>
-                                        <a class="nav-link" href="{{ url('/purchases') }}" style="color: white; font-size:24px;">Purchase</a>
-                                         <a class="nav-link" href="{{ url('/purchases') }}" style="color: white; font-size:24px;">Purchase Order</a>
-                                         <a class="nav-link" href="{{ url('/purchases') }}"  style="color: white; font-size:24px;">Purchase Challan</a>
-                                         <a class="nav-link" href="{{ url('/purchases') }}"  style="color: white; font-size:24px;">Purchase Return</a>
-
-                                      <a class="nav-link" href="{{ url('/stocktransfers') }}" style="color: white; font-size:24px;">Stock Transfer</a>
- 
-                                    </nav>
-                                </div>
 
 
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"  style="color:white; font-size:22px;"
-                                    data-bs-target="#gst" aria-expanded="false" aria-controls="gst">
-                                    Fund
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="gst" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url('/reciepts') }}" style="color: white; font-size:24px;">Reciept</a>
-                                    <a class="nav-link" href="{{ url('/payments') }}"  style="color: white; font-size:24px;">Payment</a>
-                                    <a class="nav-link" href="{{ url('/purchases') }}" style="color: white; font-size:24px;">Countra</a>
-                                    <a class="nav-link" href="{{ url('/purchases') }}" style="color: white; font-size:24px;">Journal Entry</a>
-                                    <a class="nav-link" href="{{ url('/purchases') }}" style="color: white; font-size:24px;">Bank Entry</a>
-                                    </nav>
-                                </div>
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                        data-bs-target="#inventory" aria-expanded="false" aria-controls="inventory"
+                                        style=" ">
+                                        Transection
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="inventory" aria-labelledby="headingOne"
+                                        data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="{{ url('/sales') }}"
+                                                style=" ">Sale Invoice</a>
+                                            <a class="nav-link" href="{{ url('/sales') }}"
+                                                style=" ">Quotation</a>
+                                            <a class="nav-link" href="{{ url('/sales') }}"
+                                                style=" ">Estimate Sale</a>
+                                            <a class="nav-link" href="{{ url('/sales') }}"
+                                                style=" ">Sale Order</a>
+                                            <a class="nav-link" href="{{ url('/sales') }}"
+                                                style=" ">Sale Return</a>
+                                            <a class="nav-link" href="{{ url('/purchases') }}"
+                                                style=" ">Purchase</a>
+                                            <a class="nav-link" href="{{ url('/purchases') }}"
+                                                style=" ">Purchase Order</a>
+                                            <a class="nav-link" href="{{ url('/purchases') }}"
+                                                style=" ">Purchase Challan</a>
+                                            <a class="nav-link" href="{{ url('/purchases') }}"
+                                                style=" ">Purchase Return</a>
 
-    @endcannot             
+                                            <a class="nav-link" href="{{ url('/stocktransfers') }}"
+                                                style=" ">Stock Transfer</a>
+
+                                        </nav>
+                                    </div>
+
+
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                        style="color:white; " data-bs-target="#gst" aria-expanded="false"
+                                        aria-controls="gst">
+                                        Fund
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="gst" aria-labelledby="headingOne"
+                                        data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="{{ url('/reciepts') }}"
+                                                style=" ">Reciept</a>
+                                            <a class="nav-link" href="{{ url('/payments') }}"
+                                                style=" ">Payment</a>
+                                            <a class="nav-link" href="{{ url('/purchases') }}"
+                                                style=" ">Countra</a>
+                                            <a class="nav-link" href="{{ url('/purchases') }}"
+                                                style=" ">Journal Entry</a>
+                                            <a class="nav-link" href="{{ url('/purchases') }}"
+                                                style=" ">Bank Entry</a>
+                                        </nav>
+                                    </div>
+                                @endcannot
                             </nav>
                         </div>
-         
+
                     @endcan
 
 
 
 
                     @can('ReportList')
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#report" style="color: white; font-size:27px;"
-                            aria-expanded="false" aria-controls="report">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#report"
+                            style=" ." aria-expanded="false" aria-controls="report">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                             Report
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -325,8 +470,9 @@
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                 @can('Hotel Module')
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" style="color:white; font-size:22px;"
-                                        data-bs-target="#room_reprt" aria-expanded="false" aria-controls="room_reprt">
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                        style="color:white; " data-bs-target="#room_reprt"
+                                        aria-expanded="false" aria-controls="room_reprt">
                                         Room Report
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
@@ -334,18 +480,24 @@
                                 <div class="collapse" id="room_reprt" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href={{ url('booking_calendar') }} style="color: white; font-size:24px;">Booking Calendar</a>
-                                        <a class="nav-link" href={{ url('roombooking_home') }} style="color: white; font-size:24px;">Booking Register</a>
-                                        <a class="nav-link" href={{ url('roomcheckins') }} style="color: white; font-size:24px;">Check In Register</a>
-                                        <a class="nav-link" href={{ url('foodbills') }} style="color: white; font-size:24px;">Room Food Bill</a>
-                                        <a class="nav-link" href={{ url('advace_receipt') }} style="color: white; font-size:24px;">Advance Reciept Register</a>
-                                        <a class="nav-link" href={{ url('roomcheckout_register') }} style="color: white; font-size:24px;">Check Out Register</a>
+                                        <a class="nav-link" href={{ url('booking_calendar') }}
+                                            style=" ">Booking Calendar</a>
+                                        <a class="nav-link" href={{ url('roombooking_home') }}
+                                            style=" ">Booking Register</a>
+                                        <a class="nav-link" href={{ url('roomcheckins') }}
+                                            style=" ">Check In Register</a>
+                                        <a class="nav-link" href={{ url('foodbills') }}
+                                            style=" ">Room Food Bill</a>
+                                        <a class="nav-link" href={{ url('advace_receipt') }}
+                                            style=" ">Advance Reciept Register</a>
+                                        <a class="nav-link" href={{ url('roomcheckout_register') }}
+                                            style=" ">Check Out Register</a>
                                     </nav>
                                 </div>
                                 @can('Restaurant Module')
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" 
-                                        data-bs-target="#reta_report" aria-expanded="false" aria-controls="reta_report" 
-                                        style="color:white; font-size:22px;">
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                        data-bs-target="#reta_report" aria-expanded="false" aria-controls="reta_report"
+                                        style="color:white; ">
                                         Restaurant
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
@@ -353,8 +505,11 @@
                                     <div class="collapse" id="reta_report" aria-labelledby="headingOne"
                                         data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="{{ url('/table_foodbills') }}"style="color: white; font-size:24px;">Restaurant Register</a>
-                                            <a class="nav-link" href={{ url('kichen_dashboard') }} style="color: white; font-size:24px;">Kichen Dashoard </a>
+                                            <a class="nav-link"
+                                                href="{{ url('/table_foodbills') }}"style=" ">Restaurant
+                                                Register</a>
+                                            <a class="nav-link" href={{ url('kichen_dashboard') }}
+                                                style=" ">Kichen Dashoard </a>
 
                                         </nav>
                                     </div>
@@ -373,18 +528,25 @@
                             </div> --}}
 
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#stock_report" aria-expanded="false" aria-controls="stock_report" style="color:white; font-size:22px;">
+                                    data-bs-target="#stock_report" aria-expanded="false" aria-controls="stock_report"
+                                    style="color:white; ">
                                     Stock Report
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="stock_report" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="{{ url('/inventories') }}"style="color: white; font-size:24px;">Stock Status </a>
-                                        <a class="nav-link" href="{{ url('/store_wise_stock') }}" style="color: white; font-size:24px;">Store Wise Stock </a>
-                                        <a class="nav-link" href="{{ url('/purchases') }}" style="color: white; font-size:24px;">Stock In Register</a>
-                                        <a class="nav-link" href="{{ url('/sales') }}" style="color: white; font-size:24px;">Stock Out Register</a>
-                                        <a class="nav-link" href="{{ url('/stocktransfers') }}" style="color: white; font-size:24px;">Stock Transfer
+                                        <a class="nav-link"
+                                            href="{{ url('/inventories') }}"style=" ">Stock
+                                            Status </a>
+                                        <a class="nav-link" href="{{ url('/store_wise_stock') }}"
+                                            style=" ">Store Wise Stock </a>
+                                        <a class="nav-link" href="{{ url('/purchases') }}"
+                                            style=" ">Stock In Register</a>
+                                        <a class="nav-link" href="{{ url('/sales') }}"
+                                            style=" ">Stock Out Register</a>
+                                        <a class="nav-link" href="{{ url('/stocktransfers') }}"
+                                            style=" ">Stock Transfer
                                             Register</a>
 
                                     </nav>
@@ -392,20 +554,26 @@
 
 
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#gst" aria-expanded="false" aria-controls="gst" style="color:white; font-size:22px;">
+                                    data-bs-target="#gst" aria-expanded="false" aria-controls="gst"
+                                    style="color:white; ">
                                     Fund
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="gst" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="{{ url('/ledgers') }}"style="color: white; font-size:24px;">Ledger Report</a>
-                                        <a class="nav-link" href="{{ url('/outstanding_receivable') }}" style="color: white; font-size:24px;">Outstanding
+                                        <a class="nav-link"
+                                            href="{{ url('/ledgers') }}"style=" ">Ledger
+                                            Report</a>
+                                        <a class="nav-link" href="{{ url('/outstanding_receivable') }}"
+                                            style=" ">Outstanding
                                             Receivable</a>
-                                        <a class="nav-link" href="{{ url('/outstanding_payable') }}" style="color: white; font-size:24px;">Oustanding
+                                        <a class="nav-link" href="{{ url('/outstanding_payable') }}"
+                                            style=" ">Oustanding
                                             Payable</a>
                                         @can('Day End Report')
-                                            <a class="nav-link" href="{{ url('/dayend_report') }}" style="color: white; font-size:24px;">Day End Report</a>
+                                            <a class="nav-link" href="{{ url('/dayend_report') }}"
+                                                style=" ">Day End Report</a>
                                         @endcan
 
 
@@ -414,14 +582,17 @@
                                 </div>
 
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#otherreport" aria-expanded="false" aria-controls="otherreport" style="color:white; font-size:22px;">
+                                    data-bs-target="#otherreport" aria-expanded="false" aria-controls="otherreport"
+                                    style="color:white; ">
                                     Other Report
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="otherreport" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="{{ url('/item_wise_sale_report_view') }}"style="color: white; font-size:24px;">Item Wise
+                                        <a class="nav-link"
+                                            href="{{ url('/item_wise_sale_report_view') }}"style=" ">Item
+                                            Wise
                                             Sale </a>
 
 
@@ -434,8 +605,9 @@
 
                     @can('Membership')
                         {{-- entery  section  start  --}}
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" style="color: white; font-size:27px;"
-                            data-bs-target="#collapsePages1" aria-expanded="false" aria-controls="collapsePages1">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                            style=" ." data-bs-target="#collapsePages1" aria-expanded="false"
+                            aria-controls="collapsePages1">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                             {{ $compinfofooter->ct2 }}
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -445,26 +617,33 @@
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                     data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-                                    aria-controls="pagesCollapseAuth" style="color:white; font-size:22px;">
+                                    aria-controls="pagesCollapseAuth" style="color:white; ">
                                     {{ $compinfofooter->ct2 }} Entry
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href={{ url('/amcform') }} style="color: white; font-size:24px;">New
+                                        <a class="nav-link" href={{ url('/amcform') }}
+                                            style=" ">New
                                             {{ $compinfofooter->ct2 }}&nbsp; Entry</a>
-                                        <a class="nav-link" href={{ url('/amclist') }} style="color: white; font-size:24px;">{{ $compinfofooter->ct2 }}&nbsp;
+                                        <a class="nav-link" href={{ url('/amclist') }}
+                                            style=" ">{{ $compinfofooter->ct2 }}&nbsp;
                                             Register </a>
-                                        <a class="nav-link" href={{ url('/amclist_end_month') }} style="color: white; font-size:24px;">Month Wise End
+                                        <a class="nav-link" href={{ url('/amclist_end_month') }}
+                                            style=" ">Month Wise End
                                             &nbsp;{{ $compinfofooter->ct2 }} </a>
-                                        <a class="nav-link"
-                                            href={{ url('/amclist_due') }} style="color: white; font-size:24px;">{{ $compinfofooter->ct2 }}&nbsp; Due list </a>
-                                        <a class="nav-link" href={{ url('/amclist_due_month') }} style="color: white; font-size:24px;">Month WiseDue
+                                        <a class="nav-link" href={{ url('/amclist_due') }}
+                                            style=" ">{{ $compinfofooter->ct2 }}&nbsp; Due
+                                            list </a>
+                                        <a class="nav-link" href={{ url('/amclist_due_month') }}
+                                            style=" ">Month WiseDue
                                             &nbsp;{{ $compinfofooter->ct2 }} </a>
-                                        <a class="nav-link"
-                                            href={{ url('/amc_inactive') }} style="color: white; font-size:24px;">{{ $compinfofooter->ct2 }}&nbsp; Inactive </a>
-                                        <a class="nav-link" href={{ url('/amc_month_inactive') }} style="color: white; font-size:24px;">Month Wise Inactive </a>
+                                        <a class="nav-link" href={{ url('/amc_inactive') }}
+                                            style=" ">{{ $compinfofooter->ct2 }}&nbsp;
+                                            Inactive </a>
+                                        <a class="nav-link" href={{ url('/amc_month_inactive') }}
+                                            style=" ">Month Wise Inactive </a>
 
 
                                     </nav>
@@ -477,11 +656,16 @@
                                     <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
                                         data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="{{ url('/testshowform') }}" style="color: white; font-size:24px;">Test Form </a>
-                                            <a class="nav-link" href="#" style="color: white; font-size:24px;">Pending Service</a>
-                                            <a class="nav-link" href="#" style="color: white; font-size:24px;">New Enquiry</a>
-                                            <a class="nav-link" href="#" style="color: white; font-size:24px;">Follow Up</a>
-                                            <a class="nav-link" href="#" style="color: white; font-size:24px;">Demo List </a>
+                                            <a class="nav-link" href="{{ url('/testshowform') }}"
+                                                style=" ">Test Form </a>
+                                            <a class="nav-link" href="#" style=" ">Pending
+                                                Service</a>
+                                            <a class="nav-link" href="#" style=" ">New
+                                                Enquiry</a>
+                                            <a class="nav-link" href="#" style=" ">Follow
+                                                Up</a>
+                                            <a class="nav-link" href="#" style=" ">Demo
+                                                List </a>
 
 
                                         </nav>
@@ -493,8 +677,9 @@
                     {{-- entery section end  --}}
 
                     @can('Activity')
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" style="color: white; font-size:27px;"
-                            data-bs-target="#collapsemkt" aria-expanded="false" aria-controls="collapsemkt">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                            style=" ." data-bs-target="#collapsemkt" aria-expanded="false"
+                            aria-controls="collapsemkt">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                             Activity
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -503,17 +688,20 @@
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseAuth" aria-expanded="false" style="color:white; font-size:22px;"
-                                    aria-controls="pagesCollapseAuth">
+                                    data-bs-target="#pagesCollapseAuth" aria-expanded="false"
+                                    style="color:white; " aria-controls="pagesCollapseAuth">
                                     Task & Enquiry
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href={{ url('todolist') }} style="color: white; font-size:24px;">To Do (Task)</a>
-                                        <a class="nav-link" href={{ url('coldcall') }} style="color: white; font-size:24px;">New Enquiry</a>
-                                        <a class="nav-link" href={{ url('followup_list') }} style="color: white; font-size:24px;">Follow-Up</a>
+                                        <a class="nav-link" href={{ url('todolist') }}
+                                            style=" ">To Do (Task)</a>
+                                        <a class="nav-link" href={{ url('coldcall') }}
+                                            style=" ">New Enquiry</a>
+                                        <a class="nav-link" href={{ url('followup_list') }}
+                                            style=" ">Follow-Up</a>
                                     </nav>
                                 </div>
 
@@ -522,8 +710,9 @@
 
                     @can('Setting')
 
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" style="color: white; font-size:27px;"
-                            data-bs-target="#collapsesetting" aria-expanded="false" aria-controls="collapsesetting">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                            style=" ." data-bs-target="#collapsesetting" aria-expanded="false"
+                            aria-controls="collapsesetting">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                             Setting
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -533,39 +722,51 @@
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                     data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-                                    aria-controls="pagesCollapseAuth" style="color:white; font-size:22px;">
+                                    aria-controls="pagesCollapseAuth" style="color:white; ">
                                     Company Setting
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href={{ url('company_info_form') }} style="color: white; font-size:24px;">Company Info </a>
-                                        <a class="nav-link" href={{ url('comp_pic_form') }} style="color: white; font-size:24px;">Company Logo</a>
-                                        <a class="nav-link" href={{ url('comp_info_footer') }} style="color: white; font-size:24px;">Other Details</a>
-                                        <a class="nav-link" href={{ url('optionlists') }} style="color: white; font-size:24px;">Option List</a>
-                                        <a class="nav-link" href={{ url('whatsapp_sms') }} style="color: white; font-size:24px;">Whats app & SMS </a>
+                                        <a class="nav-link" href={{ url('company_info_form') }}
+                                            style=" ">Company Info </a>
+                                        <a class="nav-link" href={{ url('comp_pic_form') }}
+                                            style=" ">Company Logo</a>
+                                        <a class="nav-link" href={{ url('comp_info_footer') }}
+                                            style=" ">Other Details</a>
+                                        <a class="nav-link" href={{ url('optionlists') }}
+                                            style=" ">Option List</a>
+                                        <a class="nav-link" href={{ url('whatsapp_sms') }}
+                                            style=" ">Whats app & SMS </a>
                                         @can('Hotel Module')
-                                            <a class="nav-link" href={{ route('businesssettings.create') }} style="color: white; font-size:24px;">Business
+                                            <a class="nav-link" href={{ route('businesssettings.create') }}
+                                                style=" ">Business
                                                 Setting</a>
-                                            <a class="nav-link" href="{{ url('financialyears') }}" style="color: white; font-size:24px;">Finacial Year </a>
+                                            <a class="nav-link" href="{{ url('financialyears') }}"
+                                                style=" ">Finacial Year </a>
                                         @endcan
 
                                         @if (auth()->check() && auth()->user()->email === 'datahouset@gmail.com')
                                             @can('sql_query')
-                                                <a class="nav-link" href={{ url('sql_query') }} style="color: white; font-size:24px;">Sql Query</a>
+                                                <a class="nav-link" href={{ url('sql_query') }}
+                                                    style=" ">Sql Query</a>
                                             @endcan
 
-                                            <a class="nav-link" href="{{ url('softwarecompanies') }}" style="color: white; font-size:24px;">Software
+                                            <a class="nav-link" href="{{ url('softwarecompanies') }}"
+                                                style=" ">Software
                                                 Companies</a>
 
-                                            <a class="nav-link" href="{{ url('super_comp_lists') }}" style="color: white; font-size:24px;">Super Compny List
+                                            <a class="nav-link" href="{{ url('super_comp_lists') }}"
+                                                style=" ">Super Compny List
                                             </a>
 
-                                            <a class="nav-link" href="{{ url('mantinace_mode') }}" style="color: white; font-size:24px;">Maintenancemode
+                                            <a class="nav-link" href="{{ url('mantinace_mode') }}"
+                                                style=" ">Maintenancemode
                                             </a>
-                                            
-                                            <a class="nav-link" href="{{ url('clear-cache') }}" style="color: white; font-size:24px;">Clear-Cache
+
+                                            <a class="nav-link" href="{{ url('clear-cache') }}"
+                                                style=" ">Clear-Cache
                                             </a>
                                         @endif
 
@@ -580,31 +781,36 @@
                                     </nav>
                                 </div>
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#usersetting" aria-expanded="false" aria-controls="usersetting" style="color:white; font-size:22px;">
+                                    data-bs-target="#usersetting" aria-expanded="false" aria-controls="usersetting"
+                                    style="color:white; ">
                                     User Setting
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="usersetting" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="{{ url('/roles') }}" style="color: white; font-size:24px;">Roles & Permission </a>
+                                        <a class="nav-link" href="{{ url('/roles') }}"
+                                            style=" ">Roles & Permission </a>
 
                                     </nav>
                                 </div>
 
-                                                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#attendance" aria-expanded="false" aria-controls="attendance" style="color:white; font-size:22px;">
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#attendance" aria-expanded="false" aria-controls="attendance"
+                                    style="color:white; ">
                                     Attendance
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="attendance" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="{{ url('/attendance_index') }}" style="color: white; font-size:24px;">Mark Attendance </a>
+                                        <a class="nav-link" href="{{ url('/attendance_index') }}"
+                                            style=" ">Mark Attendance </a>
 
                                     </nav>
-                                <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="{{ url('/attendance_report') }}" style="color: white; font-size:24px;">attendance_report </a>
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="{{ url('/attendance_report') }}"
+                                            style=" ">attendance_report </a>
 
                                     </nav>
                                 </div>
@@ -612,11 +818,12 @@
                         </div>
                     @endcan
 
-     @can('help')
-                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" style="color: white; font-size:27px;"
-                            data-bs-target="#collapsehelp" aria-expanded="false" aria-controls="collapsehelp">
+                    @can('help')
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                            style=" ." data-bs-target="#collapsehelp" aria-expanded="false"
+                            aria-controls="collapsehelp">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                        Help
+                            Help
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="collapsehelp" aria-labelledby="headingTwo"
@@ -624,19 +831,24 @@
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                     data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-                                    aria-controls="pagesCollapseAuth" style="color:white; font-size:22px;">
-                                   Software Training
+                                    aria-controls="pagesCollapseAuth" style="color:white; ">
+                                    Software Training
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href={{ url('helps') }} style="color: white; font-size:24px;">Video Help  </a>
-                                        <a class="nav-link" href={{ url('#') }} style="color: white; font-size:24px;">Article</a>
-                                        <a class="nav-link" href={{ url('#') }} style="color: white; font-size:24px;">On Call</a>
-                                        <a class="nav-link" href={{ url('#') }} style="color: white; font-size:24px;">WhatsApp </a>
-                                        <a class="nav-link" href="https://dht.datahouseerp.com/todo_by_customer" style="color: white; font-size:24px;">Support Request</a>
-                                       
+                                        <a class="nav-link" href={{ url('helps') }}
+                                            style=" ">Video Help </a>
+                                        <a class="nav-link" href={{ url('#') }}
+                                            style=" ">Article</a>
+                                        <a class="nav-link" href={{ url('#') }}
+                                            style=" ">On Call</a>
+                                        <a class="nav-link" href={{ url('#') }}
+                                            style=" ">WhatsApp </a>
+                                        <a class="nav-link" href="https://dht.datahouseerp.com/todo_by_customer"
+                                            style=" ">Support Request</a>
+
 
 
 
@@ -644,30 +856,29 @@
                                 </div>
                             </nav>
                         </div>
-                           @endcan
-                        
-       
-
-
-@if(auth()->user()->can('Attendance Module'))
-   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"  style="color:white; font-size:22px;"
-                                    data-bs-target="#attandence" aria-expanded="false" aria-controls="attandence">
-                                Attendance
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="attandence" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                    {{-- <a class="nav-link" href="{{ url('attendances') }}" style="color: white; font-size:20px;">Employee registration</a> --}}
-                                 <a class="nav-link" href="{{ url('attendances/create') }}" style="color: white; font-size:20px;">Employee Details</a>
-                                    <a class="nav-link" href="{{ url('attendancecheckin') }}" style="color: white; font-size:20px;">Check In/Out</a>
-                                    <a class="nav-link" href="{{ url('attendancephoto') }}" style="color: white; font-size:20px;">Attendance Records</a>
-                                </div>
-@endif
+                    @endcan
 
 
 
+
+                @if (auth()->user()->can('Attendance Module'))
+                     <a class="nav-link" href="{{ url('attendancecheckin') }}"
+                                style=" ">Check In/Out</a>
+                        @can('create role')
+                                  <a class="nav-link" href="{{ url('attendancephoto') }}"
+                                style=" ">Attendance Records</a>
+                        <a  class="nav-link" href="{{ url('attendances') }}"  style=" ">
+                        Add New Employee</a>
+                        @endcan
+                        @can('view user')
+                            <a class="nav-link" href="{{ url('attendances/create') }}"
+                                style=" ">Employee Details</a>
+                        @endcan
                       
+                    @endif
+
+
+
                 </div>
 
 
@@ -676,7 +887,7 @@
 
 
 
-            <div class="sb-sidenav-footer" style="color: black; font-size:20px;">
+            <div class="sb-sidenav-footer" style="color: black; ">
                 <div class="small">Logged in as:</div>
                 {{-- AMC Management Software  --}}
                 {{ $compinfofooter->ct2 }}

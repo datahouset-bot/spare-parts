@@ -9,22 +9,23 @@ use App\Models\package;
 use App\Models\roomtype;
 use App\Models\gstmaster;
 use App\Models\optionlist;
+use App\Models\componyinfo;
 use App\Models\othercharge;
 use App\Models\roombooking;
+use App\Models\WhatsappSms;
 use App\Models\accountgroup;
 use App\Models\voucher_type;
-use App\Models\WhatsappSms;
-use App\Models\componyinfo;
 use Illuminate\Http\Request;
 use App\Models\businesssource;
+use App\Models\softwarecompany;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreroombookingRequest;
 use App\Http\Requests\UpdateroombookingRequest;
-use App\Models\softwarecompany;
 
 class RoombookingController extends Controller
 {
@@ -132,8 +133,13 @@ class RoombookingController extends Controller
         $packageCharge = $package ? $package->other_name : null; // Ensure package is not null
 
         // Format check-in and check-out datetime
-        $formattedCheckinDateTime = Carbon::createFromFormat('d-m-Y H:i', "$checkinDate $checkinTime")->format('Y-m-d H:i:s');
-        $formattedCheckoutDateTime = Carbon::createFromFormat('d-m-Y H:i', "$checkoutDate $checkoutTime")->format('Y-m-d H:i:s');
+       $formattedCheckinDateTime = Carbon::parse(
+    $request->checkin_date . ' ' . $request->checkin_time
+)->format('Y-m-d H:i:s');
+
+$formattedCheckoutDateTime = Carbon::parse(
+    $request->checkout_date . ' ' . $request->checkout_time
+)->format('Y-m-d H:i:s');
 
         // Fetch rooms available for booking
         $rooms = Room::with(['roomtype.gstmaster', 'roomtype.package'])
@@ -478,19 +484,13 @@ class RoombookingController extends Controller
         }
 
         $validated = $request->validate([
-            'booking_no' => 'required|string',
-            'voucher_no' => 'required|string',
-            'booking_date' => 'required|date',
-            'booking_time' => 'required|date_format:H:i',
-            'checkin_date' => 'required|date',
-            'checkin_time' => 'required|date_format:H:i',
-            'checkout_date' => 'required|date',
-            'checkout_time' => 'required|date_format:H:i',
-            'no_of_guest' => 'required|integer',
-            'business_source_id' => 'required',
-            'package_id' => 'required|exists:packages,id',
-            'guest_name' => 'required|string',
-            'guest_mobile' => 'required|string',
+           
+       
+        'package_id' => 'nullable|exists:packages,id',
+        'guest_name' => 'nullable|string',
+        'guest_mobile' => 'nullable|string',
+
+
         ]);
         $posting_acc_ids = $request->posting_acc_id;  // Array of account IDs
         $booking_amounts = $request->booking_amount;  // Array of amounts
@@ -502,20 +502,16 @@ class RoombookingController extends Controller
             $this->create_account($request);
         }
 
-        $date_variable = $request->booking_date;
-        $parsed_date = Carbon::createFromFormat('d-m-Y', $date_variable);
-        $formatted_booking_date = $parsed_date->format('Y-m-d');
-        $validatedData['booking_date'] = $formatted_booking_date;
+     $formatted_booking_date = Carbon::parse($request->booking_date)->toDateString();
 
-        $date_variable = $request->checkin_date;
-        $parsed_date = Carbon::createFromFormat('d-m-Y', $date_variable);
-        $formatted_checkin_date = $parsed_date->format('Y-m-d');
-        $validatedData['checkin_date'] = $formatted_checkin_date;
+$formatted_checkin_date = $request->checkin_date
+    ? Carbon::parse($request->checkin_date)->toDateString()
+    : null;
 
-        $date_variable = $request->checkout_date;
-        $parsed_date = Carbon::createFromFormat('d-m-Y', $date_variable);
-        $formatted_checkout_date = $parsed_date->format('Y-m-d');
-        $validatedData['checkout_date'] = $formatted_checkout_date;
+$formatted_checkout_date = $request->checkout_date
+    ? Carbon::parse($request->checkout_date)->toDateString()
+    : null;
+
         if ($request->hasFile('guest_id_pic')) {
             $image1 = $request->guest_id_pic;
             $name = $image1->getClientOriginalName();
@@ -845,7 +841,7 @@ if ($roomnos->isNotEmpty()) {
     public function show(Request $request, $id)
     {   //this is function for show all detail of rooms only  when we select any room using ajex 
         if ($request->ajax()) {
-            \Log::info('AJAX request received');
+            Log::info('AJAX request received');
         }
 
         $room = Room::with(['roomtype.gstmaster', 'roomtype.package'])->where('firm_id', Auth::user()->firm_id)->find($id);

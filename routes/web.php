@@ -57,6 +57,7 @@ use App\Http\Controllers\BusinesssourceController;
 use App\Http\Controllers\CompinfofooterController;
 use App\Http\Controllers\BusinesssettingController;
 use App\Http\Controllers\photoattendancecontroller;
+use App\Http\Controllers\LabelsettingController;
 use App\Http\Controllers\SoftwarecompanyController;
 use App\Http\Controllers\attendancesalarycontroller;
 
@@ -131,6 +132,7 @@ Route::resource('super_comp_lists', SuperCompListController::class);
 Route::get('seed/{firm_id}', [App\Http\Controllers\SuperCompListController::class, 'seed']);
 Route::get('remainingseed/{firm_id}', [App\Http\Controllers\SuperCompListController::class, 'remainingseed']);
 Route::get('accountseed/{firm_id}', [App\Http\Controllers\SuperCompListController::class, 'accountseed']);
+Route::get('batchlabel_seed/{firm_id}', [App\Http\Controllers\SuperCompListController::class, 'batchlabel_seed']);
 Route::get('format_seed/{firm_id}', [App\Http\Controllers\SuperCompListController::class, 'format_seed']);
 Route::get('trandelete/{firm_id}', [App\Http\Controllers\SuperCompListController::class, 'trandelete']);
 Route::get('room_transection_delete/{firm_id}', [App\Http\Controllers\SuperCompListController::class, 'room_transection_delete']);
@@ -160,6 +162,8 @@ Route::get('/itemformview/{id}', [App\Http\Controllers\ItemController::class, 'i
 Route::get('item_dt', [App\Http\Controllers\ItemController::class, 'item_dt']);
 
 Route::get('/searchitem/{item_id}', [ItemController::class, 'searchitem']);
+Route::get('/searchitem_batch/{item_id}', [ItemController::class, 'searchitem_batch']);
+Route::post('/items/import', [ItemController::class, 'importItems'])->name('items.import');
 
 // master Route---Comapny-----------------------------------------------
 Route::get('/company', [App\Http\Controllers\CompanyController::class, 'index'])->name('company');
@@ -198,9 +202,14 @@ Route::get('/amc_view2/{id}', [App\Http\Controllers\AmcController::class, 'amc_v
 
 Route::get('/amc_format/{id}', [App\Http\Controllers\AmcController::class, 'amc_format']);
 
-
+// =====================================================================================
 
 Route::resource('cctv',cctvController::class);
+Route::get('cctv/{id}/pdf', [cctvController::class, 'pdf'])
+     ->name('cctv.pdf');
+
+
+// ============================================================================================
 
 Route::get('amcform', [App\Http\Controllers\AmcController::class, 'create'])->name('amcform');
 Route::get('amclist', [App\Http\Controllers\AmcController::class, 'amclist'])->name('amclist');
@@ -293,6 +302,7 @@ Route::get('searchbox', [App\Http\Controllers\TestController::class, 'searchbox'
 Route::get('searchAccount', [App\Http\Controllers\TestController::class, 'searchAccount']);
 //------------------------------roommaster------------------------------------------------
 Route::resource('packages', PackageController::class);
+
 Route::resource('businesssources', BusinesssourceController::class);
 Route::resource('roomtypes', RoomtypeController::class);
 Route::resource('gstmasters', GstmasterController::class);
@@ -381,14 +391,14 @@ Route::POST('/outstanding_payable_result', [App\Http\Controllers\LedgerControlle
 
 Route::get('/reciepts', [App\Http\Controllers\LedgerController::class, 'reciepts']);
 Route::get('/reciepts_format/{id}', [App\Http\Controllers\LedgerController::class, 'reciepts_format']);
-route::get('receipt_print_view/{id}', [App\Http\Controllers\ledgerController::class, 'slip_print_view']);
+route::get('receipt_print_view/{id}', [App\Http\Controllers\LedgerController::class, 'slip_print_view']);
 Route::post('reciept_store', [App\Http\Controllers\LedgerController::class, 'reciept_store']);
 
 Route::post('ledger_show', [App\Http\Controllers\LedgerController::class, 'ledger_show']);
 
 Route::get('/payments', [App\Http\Controllers\LedgerController::class, 'payments']);
 Route::get('/payment_format/{id}', [App\Http\Controllers\LedgerController::class, 'payment_format']);
-route::get('payment_print_view/{id}', [App\Http\Controllers\ledgerController::class, 'payment_print_view']);
+route::get('payment_print_view/{id}', [App\Http\Controllers\LedgerController::class, 'payment_print_view']);
 
 Route::post('payment_store', [App\Http\Controllers\LedgerController::class, 'payment_store']);
 Route::get('payment_delete/{id}', [App\Http\Controllers\LedgerController::class, 'payment_delete']);
@@ -566,8 +576,9 @@ route::put('vehicledetailupdate/{id}', [App\Http\Controllers\Crushercontroller::
     ->name('vehicledetail.update');
 //=================================================attandance APP=================================================================
 route::resource('attendances',photoattendancecontroller::class)->names  ('attendances');
-route::get('attendancecheckin', [App\Http\Controllers\photoattendancecontroller::class, 'showform']);
-Route::get('/employeename/{id}', [photoattendanceController::class, 'getEmployeeName']);
+route::get('attendancecheckin', [App\Http\Controllers\photoattendancecontroller::class, 'showform'])->name('attendance.checkin');
+Route::get('/employeename/{id}', [photoattendancecontroller::class, 'getEmployeeName']);
+
 route::resource('attendancephoto', attendancecheck::class)->names  ('attendancephoto');
 // Route::get('/attendance-status', [Attendancecheck::class, 'attendanceStatus'])
 //      ->name('attendance.status');
@@ -579,6 +590,13 @@ Route::post('/attendance/update-status',
 )->name('attendancephoto.updateStatus');
 
 Route::get('employee/print/{id}', [photoattendanceController::class, 'print'])->name('employee.print');
+Route::put('/advance-salary/{id}', [photoattendancecontroller::class, 'updateAdvance'])
+     ->name('advance.update');
+Route::put(
+    '/salary-monthly/{id}',
+    [photoattendancecontroller::class, 'updateMonthlySalary']
+)->name('salary.monthly.update');
+
 
 
 
@@ -605,7 +623,8 @@ Route::get('fetchItemRecords_inventory/{id}', [App\Http\Controllers\PurchaseCont
 
 Route::resource('sales', SaleController::class);
 Route::get('print_sale_select/{id}', [App\Http\Controllers\SaleController::class, 'print_sale_select']);
-route::get('sale_print_view/{id}', [App\Http\Controllers\saleController::class, 'sale_print_view']);
+route::get('sale_print_view2/{id}', [App\Http\Controllers\SaleController::class, 'sale_print_view2']);
+route::get('sale_print_view/{id}', [App\Http\Controllers\SaleController::class, 'sale_print_view']);
 // Route::get('print_select',[App\Http\Controllers\SaleController::class, 'print_select']);
 Route::resource('banquets', BanquetController::class);
 Route::get('/backup', [BackupController::class, 'runBackup']);

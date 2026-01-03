@@ -25,7 +25,8 @@ class photoattendance extends Model
         'terms',
         'photo',
         'Buffer_time',
-        'id'
+        'id',
+        'designation'
     ];
     public function latestAdvance()
 {

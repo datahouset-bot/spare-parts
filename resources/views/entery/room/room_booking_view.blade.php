@@ -56,7 +56,7 @@ include(public_path('cdn/cdn.blade.php'));
         }
 
         .cust_info{
-            background-color: aquamarine;
+            background-color:whitesmoke;
             width: 50%; /* Adjusted width to accommodate for separation */
             padding: 5px;
             box-sizing: border-box;
@@ -65,7 +65,7 @@ include(public_path('cdn/cdn.blade.php'));
 
         .voucher_info {
             width: 50%;
-            background-color: lightblue;
+            background-color: beige;
             text-align: left;
             padding: 5px;
         }
@@ -109,7 +109,7 @@ include(public_path('cdn/cdn.blade.php'));
          
         }
         .voucher_head{
-            background-color: yellow;
+            background-color: beige;
             display: grid;
             grid-template-columns: 30% 70%;
         }
@@ -125,7 +125,7 @@ include(public_path('cdn/cdn.blade.php'));
             font-size: x-large;
         }
         .company_info{
-            background-color:#FFD700;
+            background-color:beige;
             display: grid;
             grid-template-columns: 1fr 4fr 1fr;
             border: 1px solid black;
@@ -239,7 +239,7 @@ align-content: :flex-end;
 
         <div class= "voucher_head">
             <div class= "gst_no" > GST NO:{{ $componyinfo->cominfo_gst_no }}</div>
-            <div class="bill_head">Room Booking Slip</div>
+            <div class="bill_head">spare parts Slip</div>
 
 
         </div>
@@ -257,8 +257,8 @@ align-content: :flex-end;
             <div class="page_header">
             <div class="info-container">
                 <div class="cust_info">
-                    <span class="heading">Guest Detail</span><br>
-                    <span>Guest Name:{{ $roombooking->guest_name }}</span><br>
+                    <span class="heading">Customer Detail</span><br>
+                    <span>customer Name:{{ $roombooking->guest_name }}</span><br>
                     <span>Add:{{ $roombooking->guest_address }}</span><br>
                     <span>city:{{ $roombooking->guest_city }}</span><br>
                     <span>State:{{ $roombooking->guest_state }}</span><br>
@@ -269,8 +269,8 @@ align-content: :flex-end;
                     
                 </div>
                 <div class="voucher_info">
-                    <span class="heading">Booking Detail</span><br>
-                    <span>Booking No : {{ $roombooking->booking_no }}</span><br>
+                    <span class="heading">Service Detail</span><br>
+                    <span>REGISTRATION No : {{ $roombooking->booking_no }}</span><br>
                     <span>Booking Date:{{ $roombooking->booking_date }}</span><br>
                     <span>Booking Time:{{ $roombooking->booking_time }}</span><br>
                     <span>Expected Check In Date: {{ \Carbon\Carbon::parse($roombooking->checkin_date)->format('d-m-y') }}   
@@ -291,12 +291,12 @@ align-content: :flex-end;
                 <thead>
                     
                     <tr>
-                        <th class="th_detail">Room No </th>
-                        <th class="th_detail"> Total Room</th>
-                        <th class="th_detail">Room Type </th>
-                        <th class="th_detail"> No of Guest </th>
-                        <th class="th_detail">Commited Days</th>
-                        <th class="th_detail">Tariff</th>
+                        <th class="th_detail">SLOT NO </th>
+                        <th class="th_detail"> Total Vehicle</th>
+                        <th class="th_detail">Service Type </th>
+                        <th class="th_detail"> Vehicle no</th>
+                        <th class="th_detail">CHASSIS NO</th>
+                        <th class="th_detail">Charge</th>
 
 
                     </tr>
@@ -320,13 +320,13 @@ align-content: :flex-end;
                         @endphp
                         
                         @foreach ($uniqueRoomTypes as $roomType)
-                            {{ $roomType }} &nbsp;,
+                            {{ $roomType }} &nbsp;
                         @endforeach
                         
 
                         </td>
                         <td class="td_detail">{{ $roombooking->no_of_guest }}</td>
-                        <td class="td_detail">{{ $roombooking->commited_days }}</td>
+                        <td class="td_detail">{{ $roombooking->gst_no }}</td>
                         <td class="td_detail">{{ $roombooking->room_tariff_perday }}</td>
                     </tr>
 
@@ -344,7 +344,7 @@ align-content: :flex-end;
                         <th class="th_detail">Total Amount</th>
                         <th class="th_detail">Booking Amount</th>
                         <th class="th_detail">Payment Refrance No</th>
-                        <th class="th_detail">Refrance No </th>
+                        <th class="th_detail">Refrence No </th>
                         <th class="th_detail">Agent </th>
                     </tr>
                 </thead>

@@ -23,6 +23,7 @@
   <button class="btn btn-primary" onclick="window.location.href='{{ url('/remainingseed',$firm_id) }}'">Remaing Seed</button>
   
   <button class="btn btn-info" onclick="window.location.href='{{ url('/format_seed',$firm_id) }}'">Format Seed</button>
+  <button class="btn btn-info" onclick="window.location.href='{{ url('/batchlabel_seed',$firm_id) }}'">Batch Lable </button>
   <button class="btn btn-danger" onclick="window.location.href='{{ url('/softwarecomapny_show',$firm_id) }}'">Software company edit </button>
 
   

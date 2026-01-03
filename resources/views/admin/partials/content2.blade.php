@@ -102,23 +102,6 @@ body {
 ===================================================== */
 
 /* Prevent flex containers from affecting next rows */
-.col-md-6.d-flex {
-    flex-wrap: wrap !important;
-}
-
-/* Force the row containing Recent Sale + Outstanding
-   onto a new line below everything */
-.row.mt-4 {
-    clear: both !important;
-    display: flex !important;
-    width: 100%;
-}
-
-/* Ensure columns behave correctly */
-.row.mt-4 > [class*="col-"] {
-    float: none !important;
-    display: block;
-}
 
 /* Desktop: keep Recent Sale & Outstanding side-by-side */
 @media (min-width: 992px) {
@@ -477,27 +460,12 @@ body {
                     </div>
                 </div>
             @endcan   
-          @can('Only_Whatsapp')
+          
+
               <!-- =========================
     MOBILE NUMBER SECTION
 ========================= -->
-<div class="row mt-3">
-    <div class="col-md-6"></div> <!-- left empty -->
-
-    <div class="col-md-6 d-flex justify-content-end align-items-center gap-2">
-        <div style="width:220px;">
-            <input type="text" class="form-control"
-                   id="mobile" name="mobile"
-                   placeholder="Enter mobile number"
-                   autocomplete="off">
-        </div>
-
-        <a href="#" id="whatsapp-link">
-            <i class="fa fa-bullhorn" style="font-size:40px;color:green"></i>
-        </a>
-@endcan
       
-
             {{-- <div class="row">
                 <div class="col-xl-6">
                     <div class="card mb-4">
@@ -617,7 +585,7 @@ body {
                 </div>
                 @endcan
                 <div class="col-md-6 d-flex">
-                    <div class="col-md-3">
+                    {{-- <div class="col-md-3">
                         <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Enter mobile number" autocomplete="off">
                     </div>
                     <div class="col-md-2 mx-2">
@@ -625,7 +593,7 @@ body {
                         <a href="#" id="whatsapp-link" target="_blank">
                             <i class="fa fa-bullhorn" style="font-size:40px;color:green"></i>
                         </a>
-                    </div>
+                    </div> --}}
                     @can('Hotel Module')
             
                     <div class="col-md-2">
@@ -644,21 +612,24 @@ body {
                     </div>
 
                     @endcan
+                  @if(
+    !Auth::user()->can('Attendance Module') &&
+    !Auth::user()->can('Crusher Module')
+)
 
 <div class="row mt-4">
 
     <!-- =========================
         RECENT SALES (LEFT)
     ========================== -->
-  <div class="col-xl-6 col-lg-12 mb-4" id="recent-sales-section">
-
-        <div class="card">
+    <div class="col-xl-6 col-lg-12 mb-4" id="recent-sales-section">
+        <div class="card h-100">
             <div class="card-header bg-success text-white fw-bold">
                 <i class="fas fa-box-open me-2"></i> Recent Sales
             </div>
 
             <div class="card-body p-0" style="max-height:350px; overflow:auto;">
-                <table class="table table-striped table-hover align-middle mb-0" style="min-width:800px;">
+                <table class="table table-striped table-hover align-middle mb-0">
                     <thead class="table-light text-center sticky-top">
                         <tr>
                             <th>#</th>
@@ -669,104 +640,124 @@ body {
                         </tr>
                     </thead>
 
-                    @php $r1 = 0; @endphp
                     <tbody class="text-center">
+                        @php $r1 = 0; @endphp
                         @foreach($sales as $item)
-                        <tr>
-                            <td>{{ ++$r1 }}</td>
-                            <td>{{ \Carbon\Carbon::parse($item->voucher_date)->format('d-m-y') }}</td>
-                            <td>{{ $item->account->account_name ?? 'N/A' }}</td>
-                            <td>{{ $item->voucher_bill_no }}</td>
-                            <td class="fw-bold text-danger">
-                                {{ number_format($item->total_net_amount, 2) }}
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>{{ ++$r1 }}</td>
+                                <td>{{ \Carbon\Carbon::parse($item->voucher_date)->format('d-m-y') }}</td>
+                                <td>{{ $item->account->account_name ?? 'N/A' }}</td>
+                                <td>{{ $item->voucher_bill_no }}</td>
+                                <td class="fw-bold text-danger">
+                                    {{ number_format($item->total_net_amount, 2) }}
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
 
             <div class="card-footer text-end">
-                <a href="{{ url('/sales') }}" class="btn btn-xs btn-success">
+                <a href="{{ url('/sales') }}" class="btn btn-sm btn-success">
                     View All Sales
                 </a>
             </div>
         </div>
     </div>
-<div class="col-xl-6 col-lg-12 mb-4">
-    <div class="row">
 
-        <!-- =========================
-            OUTSTANDING PAYABLE
-        ========================== -->
-        <div class="col-md-10 mb-3">
-            <div class="card h-100">
-                <div class="card-header bg-danger text-white fw-bold">
-                    <i class="fas fa-file-invoice-dollar me-2"></i>
-                    Outstanding Payable
-                </div>
+    <!-- =========================
+        RIGHT SIDE (PAYABLE + CHART)
+    ========================== -->
+    <div class="col-xl-6 col-lg-12 mb-4">
+        <div class="row">
 
-                <div class="card-body p-0" style="max-height:280px; overflow:auto;">
-                    <table class="table table-striped table-hover mb-0">
-                        <thead class="table-light text-center sticky-top">
-                        </thead>
-                        @php
-                              $totalbalance=0;
-                            @endphp
+            <!-- Outstanding Payable -->
+            <div class="col-12 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-danger text-white fw-bold">
+                        <i class="fas fa-file-invoice-dollar me-2"></i>
+                        Outstanding Payable
+                    </div>
 
-                        <tbody class="text-center">
-                            @foreach($outstandingPayables as $i => $acc)
-                            <tr>
-                                {{-- <td>{{ $i + 1 }}</td> --}}
-                                   @php
+                    <div class="card-body p-0" style="max-height:280px; overflow:auto;">
+                        <table class="table table-striped table-hover mb-0 text-center">
+                            @php $totalbalance = 0; @endphp
 
-if($acc->balnce_type === 'Dr'){
-        $balance = $acc->op_balnce + $acc->total_debit - $acc->total_credit;
-            }
-    else{
-        $balance =  $acc->total_debit-$acc->op_balnce  - $acc->total_credit;
-        
-        }
-        $totalbalance+=$balance;
-        $balanceDisplay = abs($balance) . ($balance >= 0 ? ' Dr' : ' Cr');
-                                @endphp
-                            </tr>
-                                        
-                            @endforeach
-                                              <tr>
-                                <td>Total</td>
-                                <td></td>
-                                @php
-                                         $totalbalanceDisplay = abs($totalbalance) . ($totalbalance >= 0 ? ' Dr' : ' Cr');
- 
-                                @endphp
-                                <td>{{$totalbalanceDisplay}}</td>
-                                <td></td> 
-                                </tr>    
-                        </tbody>
-                    </table>
+                            <tbody>
+                                @foreach($outstandingPayables as $acc)
+                                    @php
+                                        if ($acc->balnce_type === 'Dr') {
+                                            $balance = $acc->op_balnce + $acc->total_debit - $acc->total_credit;
+                                        } else {
+                                            $balance = $acc->total_debit - $acc->op_balnce - $acc->total_credit;
+                                        }
+                                        $totalbalance += $balance;
+                                    @endphp
+                                @endforeach
+
+                                <tr class="fw-bold">
+                                    <td>Total</td>
+                                    <td>
+                                        {{ abs($totalbalance) }} {{ $totalbalance >= 0 ? 'Dr' : 'Cr' }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- =========================
-            PURCHASE BAR GRAPH
-        ========================== -->
-        <div class="col-md-10 mb-3">
-            <div class="card h-100">
-                <div class="card-header bg-primary text-white fw-bold">
-                    <i class="fas fa-cart-plus me-2"></i>
-                    Purchase Amount
-                </div>
+            <!-- Purchase Bar Chart -->
+            <div class="col-12">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white fw-bold">
+                        <i class="fas fa-cart-plus me-2"></i>
+                        Purchase Amount
+                    </div>
 
-                <div class="card-body">
-                    <canvas id="purchaseBarChart" style="height:240px;"></canvas>
+                    <div class="card-body">
+                        <canvas id="purchaseBarChart" style="height:240px;"></canvas>
+                    </div>
                 </div>
             </div>
-        </div>
 
+        </div>
+    </div>
+
+</div>
+
+@endif
+
+@can('Crusher Module')
+<div class="row justify-content-center my-4">
+    <div class="col-xl-12 col-lg-12 col-md-12 text-center">
+        <div class="card">
+            <a href="{{ route('crusher.index') }}"
+               class="btn btn-success d-flex align-items-center justify-content-center"
+               style="height:90px; font-size:22px; font-weight:800; border-radius:16px;">
+                
+                <i class="fas fa-user-clock me-3" style="font-size:34px; align:center;"></i>
+                Material Challan Details
+            </a>
+        </div>
     </div>
 </div>
+@endcan
+@can('Attendance Module')
+<div class="row justify-content-center my-4">
+    <div class="col-xl-12 col-lg-8 col-md-10 text-center">
+        <div class="card">
+            <a href="{{ route('attendance.checkin') }}"
+               class="btn btn-success d-flex align-items-center justify-content-center"
+               style="height:90px; font-size:22px; font-weight:800; border-radius:16px;">
+                
+                <i class="fas fa-user-clock me-3" style="font-size:34px;"></i>
+                Check-In / Check-Out
+            </a>
+        </div>
+    </div>
+</div>
+@endcan
 
     </div>
 </div>
@@ -829,19 +820,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 <script>
-                    // First Button: Only mobile number
-                    document.getElementById("whatsapp-link").addEventListener("click", function (event) {
-                        event.preventDefault(); // Prevents the link from navigating immediately
-                        var mobileNumber = document.getElementById("mobile").value;
+                    // // First Button: Only mobile number
+                    // document.getElementById("whatsapp-link").addEventListener("click", function (event) {
+                    //     event.preventDefault(); // Prevents the link from navigating immediately
+                    //     var mobileNumber = document.getElementById("mobile").value;
                 
-                        if (mobileNumber) {
-                            // Redirect to WhatsApp with the entered mobile number
-                            var whatsappUrl = "https://wa.me/91" + mobileNumber;
-                            window.open(whatsappUrl, "_blank"); // Opens the link in a new tab
-                        } else {
-                            alert("Please enter a valid mobile number.");
-                        }
-                    });
+                    //     if (mobileNumber) {
+                    //         // Redirect to WhatsApp with the entered mobile number
+                    //         var whatsappUrl = "https://wa.me/91" + mobileNumber;
+                    //         window.open(whatsappUrl, "_blank"); // Opens the link in a new tab
+                    //     } else {
+                    //         alert("Please enter a valid mobile number.");
+                    //     }
+                    // });
                 
                     // Second Button: Mobile number + message
                     document.getElementById("send-message").addEventListener("click", function (event) {

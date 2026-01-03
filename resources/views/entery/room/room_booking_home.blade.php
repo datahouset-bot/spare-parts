@@ -84,7 +84,7 @@
                      <td>{{$record->guest_name}}</td>
                      <td>{{$record->guest_mobile}}</td>
                      <td scope="col">{{ \Carbon\Carbon::parse($record->booking_date)->format('d-m-y') }}</td>
-                     <td scope="col">{{ \Carbon\Carbon::parse($record->checkin_date)->format('d-m-y') }}</td>
+                     {{-- <td scope="col">{{ \Carbon\Carbon::parse($record->checkin_date)->format('d-m-y') }}</td> --}}
                      <td scope="col">{{ $record->checkin_time }}</td>
                      {{-- <td scope="col">{{ \Carbon\Carbon::parse($record->checkout_date)->format('d-m-y') }}</td>
                      <td scope="col">{{ $record->checkout_time }}</td>
