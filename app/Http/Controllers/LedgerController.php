@@ -217,7 +217,26 @@ public function payment_print_view2($voucher_no)
     
      return view('entery.payment.payment_print_view2',compact('ledgers','account_names') );
 }
-// ===============================================================================================================================================================
+// ================================================================================thirt print view===============================================================================
+public function payment_print_view3($voucher_no)
+{
+     $account_names=account::where('firm_id',Auth::user()->firm_id)
+        ->orderBy('account_name','asc')->get();
+
+        $ledgers = Ledger::withinFY('entry_date')->whereIn('id', function ($query) {
+            $query->select(DB::raw('MIN(id)'))
+                  ->from('ledgers')
+                  ->where('transaction_type', 'Payments')
+                  ->where('firm_id', Auth::user()->firm_id) // Filter by firm_id in the subquery
+                  ->groupBy('voucher_no');
+        })
+        ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
+        ->get();
+
+    
+     return view('entery.payment.payment_print_view3',compact('ledgers','account_names') );
+}
+// =======================================================================================================================================================
 
     public function reciept_store(Request $request)
     { 

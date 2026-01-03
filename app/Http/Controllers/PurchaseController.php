@@ -653,15 +653,15 @@ class PurchaseController extends CustomBaseController
         }
     }
     public function purchase_show($voucher_no){
-          $fromtlist = optionlist::where('firm_id', Auth::user()->firm_id)
+$fromtlist = optionlist::where('firm_id', Auth::user()->firm_id)
             ->where('option_type', 'purchase')
             ->orderBy('updated_at', 'desc')
             ->get();
     return view('entery.purchase.purchase_print_format', compact( 'fromtlist','voucher_no'));        
 
     }
-   public function purchase_print_view($voucher_no){
-   $voucher_header = voucher::where('voucher_no', $voucher_no)
+public function purchase_print_view($voucher_no){
+$voucher_header = voucher::where('voucher_no', $voucher_no)
         ->where('firm_id',Auth::user()->firm_id)
             ->first();
 
@@ -672,6 +672,38 @@ class PurchaseController extends CustomBaseController
             ->get();
             $account_detail=account::where('account_name','purchase')  ->first();
 
- return view('entery.purchase.purchase_print_view',compact('voucher_header','voucher_items','account_detail'));
-   }
+return view('entery.purchase.purchase_print_view',compact('voucher_header','voucher_items','account_detail'));
 }
+
+public function purchase_print_view2($voucher_no)
+{
+$voucher_header = voucher::where('voucher_no', $voucher_no)
+        ->where('firm_id',Auth::user()->firm_id)
+            ->first();
+
+        $voucher_items = inventory::where('voucher_no', $voucher_no)
+        ->where('firm_id',Auth::user()->firm_id)
+        ->where('voucher_type','Purchase')
+
+            ->get();
+            $account_detail=account::where('account_name','purchase')  ->first();
+
+return view('entery.purchase.purchase_print_view2',compact('voucher_header','voucher_items','account_detail'));
+}
+
+public function purchase_print_view3($voucher_no)
+{
+$voucher_header = voucher::where('voucher_no', $voucher_no)
+        ->where('firm_id',Auth::user()->firm_id)
+            ->first();      
+            $voucher_items = inventory::where('voucher_no', $voucher_no)
+        ->where('firm_id',Auth::user()->firm_id)
+        ->where('voucher_type','Purchase')
+
+            ->get();
+            $account_detail=account::where('account_name','purchase')  ->first();
+
+return view('entery.purchase.purchase_print_view3',compact('voucher_header','voucher_items','account_detail'));
+}
+}
+

@@ -277,7 +277,7 @@ background-color:white;
         <div class="page">
 
             <div class="company_info">
-                <div class="logo1">&nbsp;<img src="{{ asset('storage\app\public\image\\' . $pic->logo) }}" alt="qr_code" width="80px">
+                <div class="logo1">&nbsp;<img src="{{ asset('storage\app\public\image\\' . $pic->logo) }}" alt="qr_code" width="90%">
                 </div>
                 <div class="firm_detail">
                     <h4>{{ $componyinfo->cominfo_firm_name }}</h4>
@@ -288,8 +288,8 @@ background-color:white;
                         Mobile&nbsp;{{ $componyinfo->cominfo_mobile }} 
                  
                 </div>
-                <div class="logo2"><img src="{{ asset('storage\app\public\image\\' . $pic->brand) }}" alt="qr_code" width="80px">
-                </div>
+                {{-- <div class="logo2"><img src="{{ asset('storage\app\public\image\\' . $pic->brand) }}" alt="qr_code" width="80px">
+                </div> --}}
             </div>
             <div class="page_header">
                 <div class="info-container">
@@ -416,12 +416,8 @@ background-color:white;
                 </div>
 
             </div>
-
-
-
             <div style="background-color: white" class="my-1">&nbsp;</div>
-
-            {{-- <div class="voucher_footer">
+            <div class="voucher_footer">
                 <div class="terms "style="background-color:#e6ecff">
                     <h5>Terms & Conditions</h5>
                     <span>{{ $compinfofooter->terms }}</span>
@@ -435,36 +431,18 @@ background-color:white;
                     <span>Bank Branch:{{ $compinfofooter->bank_branch }}</span><br>
                 </div>
                 <div class="qr_code"style="background-color:#e6ecff">
-                    <span>Bank Name:{{ $compinfofooter->upiid }}</span><br>
+                    <span>Bank id:{{ $compinfofooter->upiid }}</span><br>
                     &nbsp;<img src="/storage/image/{{ $pic->qrcode }}" alt="qr_code" width="80px">
-                    
-
-
                 </div>
                 <div class="comp_sign"style="background-color:#e6ecff">
 
                     &nbsp;<img src="{{ asset('storage/image/' . $pic->seal) }}" alt="qr_code" width="80px">
                 </div>
-
-
-
-
-
-            </div> --}}
-
-
-
-
-
-
+            </div>
             <div class="button-container my-2">
                 <button class="btn btn-success btn-lg" onclick="window.print()">Print</button>
             </div>
-
-
-
         </div>
-
     </body>
 
     </html>

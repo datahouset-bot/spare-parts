@@ -147,10 +147,56 @@ body {
     margin-top: 40px;
 }
 
-/* ================= PRINT ================= */
-@media print {
-    button { display: none; }
+/* ==============footer======================= */
+  .voucher_footer {
+                background-color: bisque;
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                border: 1px solid black;
+                margin-bottom: 0px;
+            }
+
+            .terms {
+                grid-column: 1 / 3;
+                height: 100px;
+                text-align: center;
+            }
+
+            .bank_detail {
+                text-align: left;
+                height: 120px;
+                border-top: 1px solid;
+                padding: 1px;
+                font-size: 15px;
+            }
+
+            .comp_sign {
+
+                border-left: 1px solid;
+                text-align: center;
+
+            }
+
+
+            .qr_code {
+                border-left: 1px solid;
+                border-top: 1px solid;
+                text-align: center;
+
+            }
+
+            .for_companyname {
+                border-left: 1px solid;
+                text-align: center;
+            }
+/* ================= PRINT ================= */@media print {
+    .no-print,
+    .no-print * {
+        display: none !important;
+        visibility: hidden !important;
+    }
 }
+
 </style>
 </head>
 
@@ -220,6 +266,29 @@ body {
         <strong>Authorized Signatory</strong><br>
         <span>For {{ $componyinfo->cominfo_firm_name }}</span>
     </div>
+      {{-- ======================Voucher Footer============================ --}}
+    <div class="voucher_footer">
+                <div class="terms "style="background-color:#e6ecff">
+                    <h5>Terms & Conditions</h5>
+                    <span>{{ $compinfofooter->terms }}</span>
+                </div>
+                <div class="for_companyname"style="background-color:#e6ecff"><span>For
+                        {{ $componyinfo->cominfo_firm_name }}</span><br></div>
+                <div class="bank_detail"style="background-color:#e6ecff">
+                    <span>Bank Name:{{ $compinfofooter->bank_name }}</span><br>
+                    <span>Bank A/C No :{{ $compinfofooter->bank_ac_no }}</span><br>
+                    <span>Bank IFSC:{{ $compinfofooter->bank_ifsc }}</span><br>
+                    <span>Bank Branch:{{ $compinfofooter->bank_branch }}</span><br>
+                </div>
+                <div class="qr_code"style="background-color:#e6ecff">
+                    <span>Bank id:{{ $compinfofooter->upiid }}</span><br>
+                    &nbsp;<img src="/storage/image/{{ $pic->qrcode }}" alt="qr_code" width="80px">
+                </div>
+                <div class="comp_sign"style="background-color:#e6ecff">
+
+                    &nbsp;<img src="{{ asset('storage/image/' . $pic->seal) }}" alt="qr_code" width="80px">
+                </div>
+            </div>
 
     {{-- ================= PRINT ================= --}}
   <div class="button-container mt-3 text-center no-print">

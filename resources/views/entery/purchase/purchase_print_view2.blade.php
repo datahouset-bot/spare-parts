@@ -64,156 +64,162 @@ if (!function_exists('amountInWords')) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>KOT</title>
 <style>
+
+/* ================= PAGE SIZE ================= */
 @page {
-    size: A6;
-    margin: 10mm;
+    size: A4;
+    margin: 12mm;
 }
 
+/* ================= BASE ================= */
 body {
     margin: 0;
     font-family: "Times New Roman", serif;
+    font-size: 15px;
+    background: #f5f5f5;
 }
 
 /* ================= PAGE ================= */
 .page {
-    width: 80%;
-    margin: auto;
-    margin-top: 10px;
+    width: 210mm;              /* A4 WIDTH */
+    min-height: 297mm;         /* A4 HEIGHT */
+    margin: 20px auto;
+    background: #fff;
     border: 1px solid #000;
-    padding: 10px;
+    padding: 12mm;
+    box-sizing: border-box;
 }
 
 /* ================= HEADER ================= */
 .company_info {
     display: grid;
-    grid-template-columns: 1fr 4fr 1fr;
-    border-bottom: 1px solid #000;
-    padding-bottom: 5px;
+    grid-template-columns: 100px 1fr 100px;
+    align-items: center;
+    border-bottom: 2px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.company_info img {
+    max-width: 90px;
 }
 
 .firm_detail {
     text-align: center;
+    font-size: 15px;
+}
+
+.firm_detail h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.firm_detail h4 {
+    margin: 4px 0;
+    font-size: 18px;
 }
 
 /* ================= INFO ================= */
 .info-container {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
 }
 
 .cust_info {
-    width: 50%;
-    font-size: 18px;
+    font-size: 15px;
+    line-height: 1.5;
 }
 
 .voucher_info {
-    width: 50%;
-    font-size: 18px;
+    font-size: 15px;
     text-align: right;
+    line-height: 1.5;
 }
 
 /* ================= HALF PAYMENT ================= */
 .half_pay {
-    border: 1px solid #000;
-    padding: 15px;
-    margin-top: 10px;
+    border: 2px dashed #000;
+    padding: 12px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 20px 0;
 }
 
 /* ================= AMOUNT ================= */
 .amount-box {
-    width: 50%;
+    width: 45%;
     margin-left: auto;
-    border: 1px solid #000;
-    padding: 10px;
+    border: 2px solid #000;
+    padding: 12px;
+    text-align: right;
 }
 
 .amount-box h3 {
-    margin: 5px 0;
+    margin-top: 10px;
+    font-size: 18px;
 }
 
 /* ================= SIGN ================= */
 .signature-box {
-    width: 40%;
-    margin-left: auto;
     margin-top: 50px;
-    text-align: center;
+    text-align: right;
+    font-size: 14px;
 }
 
 .signature-line {
+    width: 200px;
     border-top: 1px solid #000;
-    margin-top: 40px;
+    margin-left: auto;
+    margin-bottom: 5px;
 }
-/* ==============footer======================= */
-  .voucher_footer {
-                background-color: bisque;
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                border: 1px solid black;
-                margin-bottom: 0px;
-            }
 
-            .terms {
-                grid-column: 1 / 3;
-                height: 100px;
-                text-align: center;
-            }
+/* ================= FOOTER ================= */
+.voucher_footer {
+    margin-top: 20px;
+    border: 1px solid #000;
+}
 
-            .bank_detail {
-                text-align: left;
-                height: 120px;
-                border-top: 1px solid;
-                padding: 1px;
-                font-size: 15px;
-            }
+.terms {
+    padding: 10px;
+    border-bottom: 1px solid #000;
+    text-align: center;
+    font-weight: bold;
+}
 
-            .comp_sign {
+.bank_detail,
+.for_companyname,
+.qr_code,
+.comp_sign {
+    padding: 10px;
+    border-top: 1px solid #000;
+    text-align: center;
+    font-size: 14px;
+}
 
-                border-left: 1px solid;
-                text-align: center;
-
-            }
-
-
-            .qr_code {
-                border-left: 1px solid;
-                border-top: 1px solid;
-                text-align: center;
-
-            }
-
-            .for_companyname {
-                border-left: 1px solid;
-                text-align: center;
-            }
 /* ================= PRINT ================= */
 @media print {
-
-    html, body {
-        width: 210mm;
-        height: auto;
-        margin: 0;
-        padding: 0;
+    body {
+        background: none;
     }
 
     .page {
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 10mm !important;
-        border: 1px solid #000 !important;
-        box-sizing: border-box;
-        page-break-inside: avoid;
+        margin: 0;
+        border: 1px solid #000;
     }
 
-    /* Hide print button */
-   .no-print,
+    .no-print,
     .no-print * {
         display: none !important;
-        visibility: hidden !important;
     }
 }
 
 </style>
+
+
     
     </head>
 

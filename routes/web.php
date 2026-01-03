@@ -398,7 +398,9 @@ Route::post('ledger_show', [App\Http\Controllers\LedgerController::class, 'ledge
 
 Route::get('/payments', [App\Http\Controllers\LedgerController::class, 'payments']);
 Route::get('/payment_format/{id}', [App\Http\Controllers\LedgerController::class, 'payment_format']);
-route::get('payment_print_view/{id}', [App\Http\Controllers\LedgerController::class, 'payment_print_view']);
+route::get('payment_print_view/{id}', [App\Http\Controllers\ledgerController::class, 'payment_print_view']);
+route::get('payment_print_view2/{id}', [App\Http\Controllers\ledgerController::class, 'payment_print_view2']);
+route::get('payment_print_view3/{id}', [App\Http\Controllers\ledgerController::class, 'payment_print_view3']);
 
 Route::post('payment_store', [App\Http\Controllers\LedgerController::class, 'payment_store']);
 Route::get('payment_delete/{id}', [App\Http\Controllers\LedgerController::class, 'payment_delete']);
@@ -562,6 +564,8 @@ Route::post('vehicledetailstore', [App\Http\Controllers\Crushercontroller::class
 Route::post('crusher/addstore', [Crushercontroller::class, 'crusher_addstore'])
     ->name('crusher.addstore');
 
+
+// ---------------------------------vehicle detail C------------------------------------
 Route::get('vehicledetail', [Crushercontroller::class, 'vehicledetailindex'])
     ->name('vehicledetail.index');
 
@@ -604,6 +608,8 @@ Route::put(
 Route::resource('purchases', PurchaseController::class);
 Route::get('purchases_show/{id}',[App\Http\Controllers\purchasecontroller::class,'purchase_show']);
 Route::get('purchase_print_view/{id}',[App\Http\Controllers\purchasecontroller::class,'purchase_print_view']);
+Route::get('purchase_print_view2/{id}',[App\Http\Controllers\purchasecontroller::class,'purchase_print_view2']);
+Route::get('purchase_print_view3/{id}',[App\Http\Controllers\purchasecontroller::class,'purchase_print_view3']);
 Route::resource('inventories', InventoryController::class);
 Route::resource('stocktransfers', StocktransferController::class);
 route::get('purchase_view/{id}',[App\Http\Controllers\StocktransferController::class,'purchase_view']);
@@ -623,8 +629,9 @@ Route::get('fetchItemRecords_inventory/{id}', [App\Http\Controllers\PurchaseCont
 
 Route::resource('sales', SaleController::class);
 Route::get('print_sale_select/{id}', [App\Http\Controllers\SaleController::class, 'print_sale_select']);
-route::get('sale_print_view2/{id}', [App\Http\Controllers\SaleController::class, 'sale_print_view2']);
 route::get('sale_print_view/{id}', [App\Http\Controllers\SaleController::class, 'sale_print_view']);
+route::get('sale_print_view2/{id}', [App\Http\Controllers\SaleController::class, 'sale_print_view2']);
+
 // Route::get('print_select',[App\Http\Controllers\SaleController::class, 'print_select']);
 Route::resource('banquets', BanquetController::class);
 Route::get('/backup', [BackupController::class, 'runBackup']);
