@@ -10,6 +10,25 @@ include(public_path('cdn/cdn.blade.php'));
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="jquery/master.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
+
+
+    <style>
+      /* ===== PDF style section heading ===== */
+.section-heading {
+    background: #000;
+    color: #fff;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 10px 0;
+    margin: 25px 0 15px 0;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+    </style>
+
+
 <div class="card my-1 ">
  <div class="row ">
 
@@ -23,70 +42,43 @@ include(public_path('cdn/cdn.blade.php'));
                                 <div class="card  mt-1">
                                     <div class="card-header"><h5 class="text-center font-weight-light my-1">New Visit Entry </h5></div>
                                     <div class="card-body">
-                                   
-
-
-
-
-                                            <form action="{{url('/amccreat')}}" method="POST">
+                                <form action="{{ route('cctv.store') }}" method="POST">
                                               @csrf
                                      
+<div class="section-heading">
+    Customer Service Report
+</div>
+@if ($errors->any())
+    <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+            <div>{{ $error }}</div>
+        @endforeach
+    </div>
+@endif
+
 
                                             <div class="row mb-3">
                                               <div class="col-md-4 mt-4">
                                                 <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control " id="CSR" type="text"  />
-                                                    <span class="text-danger">
-                                                        @error('csr')
-                                                        {{$message}}
-                                                        @enderror
-                                                    </span>
+                                                <input class="form-control" id="CSR" name="csr" type="text" />
                                                     <label for="csr">CSR</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-4 mt-4">
                                                 <div class="form-floating mb-3 mb-md-0">
                                                     <input class="form-control date" id="date" type="text" name="date" value="{{ date('Y-m-d') }}" />
-                                                    <span class="text-danger">
-                                                        @error('date')
-                                                        {{$message}}
-                                                        @enderror
-                                                    </span>
                                                     <label for="date"> Date</label>
                                                 </div>
                                               </div>
 
-                                        <div class="col-md-3 mt-4">
-                                        <label for="cust_name_id">Select Customer Name  </label>
-                                          <div class="form-floating mb-3 mb-md-0">
+                                               <div class="col-md-4 mt-4">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                         <input class="form-control" id="cust_name" type="text" name="cust_name" />
+                                                <label for="priority">Customer Name</label>                                              
+                                            </div>
+                                        </div>
 
-                                             
-                                            <select  name ="cust_name_id" id ="account_id"class="mycustomer form-select" aria-label="Default select example">
-                                              <option  value ="" selected disabled>Select Customer</option>
-                                            @foreach ($accountdata as $record )
-                                              
-                                          
-                                              <option value={{$record['id']}}>{{$record['account_name']}} </option>
-                                              @endforeach
-                                            </select>
-                                            <span class="text-danger"> 
-                                              @error('cust_name_id')
-                                              {{$message}}
-                                                  
-                                              @enderror
-                                            </span>
-
-                                             
-                                          </div>
-                                          <span class="text-danger"> 
-                                            @error('room_no')
-                                            {{$message}}
-                                                
-                                            @enderror
-                                          </span>
-                                        
-
-                                      </div>
+                                     
                                     <div class="col-md-4 mt-4">
                                             <div class="form-floating mb-3 mb-md-0">
                                               <input class="form-control" id="address" type="text" name="address" />
@@ -103,82 +95,23 @@ include(public_path('cdn/cdn.blade.php'));
 
                                         <div class="col-md-4 mt-4">
                                             <div class="form-floating mb-3 mb-md-0">
-                                              <input class="form-control" id="State" type="text" name="State" />
+                                              <input class="form-control" id="state" type="text" name="state" />
                                                 <label for="priority">State</label>                                              
                                             </div>
                                         </div>
 
                                         <div class="col-md-4 mt-4">
                                             <div class="form-floating mb-3 mb-md-0">
-                                              <input class="form-control" id="City" type="text" name="City" />
-                                                <label for="priority">City</label>                                              
+                                              <input class="form-control" name="product" type="text" />
+                                                <label for="priority">Product</label>                                              
                                             </div>
                                         </div>
                                       
                                       
-                                      
-                                      <div class="col-md-4 mt-4">
-                                        <div class="form-floating mb-3 mb-md-0">
-                                           
-                                          <select name="amc_product_id" Id ="amc_product_id"class="form-select" aria-label="Default select example">
-                                            <option selected disabled>Select Product </option>
-                                            @foreach ($itemdata as $record)
-                                            <option value={{ $record['id']}}>{{ $record['item_name']}}</option>                                                          
-                                            @endforeach
-
-              
-                                          </select>
-                                            <label for="amc_product_id">Product   </label>
-                                           
-                                        </div>
-                                        <span class="text-danger"> 
-                                          @error('amc_product_id')
-                                          {{$message}}
-                                              
-                                          @enderror
-                                        </span>
-
-                                    </div>    
-                                    
-                                     <div class="col-md-4 mt-4">
-                                        <div class="form-floating mb-3 mb-md-0">
-                                          <input class="form-control" id="remark2" type="text" name="remark2" value="{{ old('remark2') }}" />
-                                            <label for="priority">Problem Reported</label>
-                                           
-                                        </div>
-                                       
-
-                                    </div>    
-
-                                           
-                                                <div class="col-md-4 mt-4">
-                                                  <div class="form-floating mb-3 mb-md-0">
-                                                   
-                                                    <select name="amc_status" Id ="amc_status"class="form-select" aria-label="Default select example">
-                                                      <option selected disabled>Select System Down</option>
-                                                      
-                                                      <option value="Yes">Yes</option>
-                                                      <option value="No">NO</option>       
-                                                      {{-- <option value="Unknown">Unknown </option>              --}}
-                                                      
-                                                    </select>
-                                                      <label for="amc_status">System status </label>
-                                                    
-                                                  </div>
-                                                  <span class="text-danger"> 
-                                                    @error('amc_status')
-                                                    {{$message}}
-                                                        
-                                                    @enderror
-                                                  </span>
-    
-                                              </div>    
-  
-                                            
-                                              <div class="col-md-4 mt-4">
+                                        <div class="col-md-4 mt-4">
                                                 <div class="form-floating mb-3 mb-md-0">
                                                  
-                                                  <select name="payment_status" Id ="payment_status"class="form-select" aria-label="Default select example">
+                                                  <select name="status" Id ="status"class="form-select" aria-label="Default select example">
                                                     <option selected disabled>Select Status </option>
                                                     
                                                     <option value="Warranty">Warranty</option>
@@ -186,55 +119,53 @@ include(public_path('cdn/cdn.blade.php'));
                                                     {{-- <option value="Unknown">Unknown </option>              --}}
                                                     
                                                   </select>
-                                                    <label for="payment_status">Status of Call  </label>
+                                                    <label for="status">Status of Call  </label>
                                                    
                                                 </div>
-                                                <span class="text-danger"> 
-                                                  @error('payment_status')
-                                                  {{$message}}
-                                                      
-                                                  @enderror
-                                                </span>
-  
                                             </div>    
-                                                                                    
-                                            <div class="col-md-4 mt-4">
-                                              <div class="form-floating mb-3 mb-md-0">
-                                               
-                                                <select name="priority" Id ="priority"class="form-select" aria-label="Default select example">
-                                                  <option selected disabled> select Equipement </option>
-                                                  
-                                                  <option value="Gold">Gold</option>
-                                                  <option value="Platinum">Platinum</option>       
-                                                  <option value="Silver">Silver</option>             
-                                                  <option value="Bronze">Bronze</option>                                                                     
-                                               
-                                                </select>
-                                             
-                                                  <label for="priority">Equipment type </label>
-                                                 
-                                              </div>
-                                              <span class="text-danger"> 
-                                                @error('priority')
-                                                {{$message}}
-                                                    
-                                                @enderror
-                                              </span>
 
-                                          </div> 
+                                            <div class="section-heading">
+                                            Nature of Problem
+                                            </div>
+
+                                    
+                                    <div class="col-md-4 mt-4">
+                                        <div class="form-floating mb-3 mb-md-0">
+                                          <input class="form-control" id="problem" type="text" name="problem" value="{{ old('problem') }}" />
+                                            <label for="priority">Problem Reported</label>
+                                        </div>
+                                    </div>    
+                                                <div class="col-md-4 mt-4">
+                                                  <div class="form-floating mb-3 mb-md-0">
+                                                    <select name="system" Id ="system"class="form-select" aria-label="Default select example">
+                                                      <option selected disabled>Select System Down</option>
+                                                      <option value="Yes">Yes</option>
+                                                      <option value="No">NO</option>       
+                                                    </select>
+                                                      <label for="system">System status </label>
+                                                    
+                                                  </div>
+                                              </div>    
+  
+                                            
+                                            
+                                             <div class="col-md-4 mt-4">
+    <div class="form-floating mb-3 mb-md-0">
+        <input class="form-control" id="equipment_type" type="text" name="equipment_type" />
+        <label>Equipment Type</label>
+    </div>
+</div>
+
                                             <div class="col-md-4 mt-4">
                                         <div class="form-floating mb-3 mb-md-0">
-                                          <input class="form-control" id="remark2" type="text" name="remark2" value="{{ old('remark2') }}" />
+                                          <input class="form-control" id="Make" type="text" name="make" />
                                             <label for="priority">Make</label>
-                                           
                                         </div>
-                                       
-
                                     </div>    
 
                                           <div class="col-md-4 mt-4">
                                             <div class="form-floating mb-3 mb-md-0">
-                                              <input class="form-control" id="amc_amount" type="text" name="amc_amount" value="{{ old('amc_amount') }}" />
+                                              <input class="form-control" id="serial_no" type="text" name="serial_no"  />
                                                 <label for="priority">Serial no </label>
                                                
                                             </div>
@@ -245,54 +176,43 @@ include(public_path('cdn/cdn.blade.php'));
 
                                         <div class="col-md-4 mt-4">
                                           <div class="form-floating mb-3 mb-md-0">
-                                            <input class="form-control" id="remark1" type="text" name="remark1" value="{{ old('remark1') }}" />
+                                            <input class="form-control" id="reported" type="text" name="reported"/>
                                               <label for="priority">Call Reported by </label>
-                                             
                                           </div>
-                                          <span class="text-danger"> 
-                                            @error('remark1')
-                                            {{$message}}
-                                                
-                                            @enderror
-                                          </span>
-
                                       </div>
                                       
                                       <div class="col-md-4 mt-4">
                                         <div class="form-floating mb-3 mb-md-0">
-                                          <input class="form-control" id="remark2" type="text" name="remark2" value="{{ old('remark2') }}" />
+                                          <input class="form-control" id="location" type="text" name="location"  />
                                             <label for="priority">Location of installation </label>
-                                           
                                         </div>
-                                        <span class="text-danger"> 
-                                          @error('remark2')
-                                          {{$message}}
-                                              
-                                          @enderror
-                                        </span>
-
                                     </div>
-                                       <div class="col-md-4 mt-4">
+
+                                      <div class="col-md-4 mt-4">
                                             <div class="form-floating mb-3 mb-md-0">
-                                              <input class="form-control" id="City" type="date" name="City" />
+                                              <input class="form-control" id="sDate" type="date" name="sDate" />
                                                 <label for="priority">Date</label>                                              
                                             </div>
                                         </div>
-                                           <div class="col-md-4 mt-4">
+
+                                      <div class="col-md-4 mt-4">
                                             <div class="form-floating mb-3 mb-md-0">
-                                              <input class="form-control" id="City" type="time" name="City" />
+                                              <input class="form-control" id="time" type="time" name="time" />
                                                 <label for="priority">TIME</label>                                              
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4 mt-4">
+                                        <div class="section-heading">
+                                        Service Details
+                                        </div>
+                                        <div class="col-md-12 mt-4">
                                         <div class="form-floating mb-3 mb-md-0">
-                                          <input class="form-control" id="remark2" type="text" name="remark2" value="{{ old('remark2') }}" />
+                                          <input class="form-control" id="rendered" type="text" name="rendered" value="{{ old('rendered') }}" />
                                             <label for="priority">Service rendered </label>
                                            
                                         </div>
                                         <span class="text-danger"> 
-                                          @error('remark2')
+                                          @error('rendered')
                                           {{$message}}
                                               
                                           @enderror
@@ -330,19 +250,6 @@ include(public_path('cdn/cdn.blade.php'));
 
                   </div>
         </div>
-      </div> 
-         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!-- Select2 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    <script>
-        $("#account_id").select2({
-            placeholder: "Select Account",
-            allowClear: true
-        });
-    </script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
-    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-    <script src="{{ global_asset('/general_assets\js\form.js') }}"></script>
+      </div>
 
 @endsection

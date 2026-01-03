@@ -43,7 +43,7 @@
 
 <div class="main-box">
 
-    <h3 class="text-center mb-4 fw-bold">Hotel Staff Attendance</h3>
+    <h3 class="text-center mb-4 fw-bold">{{$componyinfo->cominfo_firm_name}}</h3>
     {{-- SUCCESS MESSAGE --}}
 @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -69,7 +69,7 @@
     <select id="emp_id" name="emp_id" class="form-select form-select-lg">
         <option value="">Select EP ID</option>
         @foreach ($employees as $emp)
-            <option value="{{ $emp->id }}">{{ $emp->id }} {{ $emp->name }}</option>
+            <option value="{{ $emp->id }}">{{ $emp->af5 }} &nbsp;||&nbsp; {{ $emp->name }}</option>
         @endforeach
     </select>
 </div>
@@ -78,6 +78,13 @@
             <input type="text" id="emp_name" name="emp_name" class="form-control form-control-lg"
                    placeholder="EP Name" readonly>
         </div>
+<div class="text-center mb-4">
+    <img id="emp_photo"
+         width="180"
+         class="rounded shadow mb-2"
+         style="display:none;">
+</div>
+
 
         {{-- Hidden inputs for migration --}}
         <input type="hidden" id="checkin_photo" name="checkin_photo">
@@ -143,14 +150,30 @@ $(document).ready(function() {
 let captureType = ""; // checkin OR checkout
 
 // Auto-fill employee name
-$('#emp_id').change(function () {
+$('#emp_id').on('change', function () {
     let id = $(this).val();
-    if(id) {
-        $.get('/employeename/' + id, function (res) {
-            $('#emp_name').val(res.name);
-        });
+
+    if (!id) {
+        $('#emp_name').val('');
+        $('#emp_photo').hide().attr('src', '');
+        return;
     }
+
+    $.get('/employeename/' + id, function (res) {
+        $('#emp_name').val(res.name);
+
+        if (res.photo) {
+            $('#emp_photo')
+                .attr('src', res.photo)
+                .show();
+        } else {
+            $('#emp_photo')
+                .hide()
+                .attr('src', '');
+        }
+    });
 });
+
 
 // Check-in button
 $('#checkinBtn').click(function () {

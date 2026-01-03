@@ -2,6 +2,16 @@
 
 @section('pagecontent')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{{-- DATATABLE CSS --}}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+{{-- JQUERY (required for DataTable) --}}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+{{-- DATATABLE JS --}}
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
 
 <div class="container mt-4">
 <h2 class="fw-bold mb-4 text-center">
@@ -18,33 +28,32 @@
 
 {{-- DATE RANGE FILTER --}}
 <form method="GET" action="{{ route('attendancephoto.index') }}" class="mb-3">
-    <div class="row g-2 justify-content-center">
+  <div class="row g-2 justify-content-center">
 
-        <div class="col-md-3">
-            <label class="fw-bold">From Date</label>
-            <input
-                type="date"
-                name="from_date"
-                class="form-control"
-                value="{{ $fromDate ?? request('from_date') }}">
-        </div>
-
-        <div class="col-md-3">
-            <label class="fw-bold">To Date</label>
-            <input
-                type="date"
-                name="to_date"
-                class="form-control"
-                value="{{ $toDate ?? request('to_date') }}">
-        </div>
-
-        <div class="col-md-2 d-flex align-items-end">
-            <button class="btn btn-primary w-100">
-                View
-            </button>
-        </div>
-
+    <div class="col-md-3">
+        <label class="fw-bold">From Date</label>
+        <input type="date" name="from_date" class="form-control"
+               value="{{ $fromDate ?? request('from_date') }}">
     </div>
+
+    <div class="col-md-3">
+        <label class="fw-bold">To Date</label>
+        <input type="date" name="to_date" class="form-control"
+               value="{{ $toDate ?? request('to_date') }}">
+    </div>
+
+    <div class="col-md-3">
+        <label class="fw-bold">Select Month</label>
+        <input type="month" name="month" class="form-control"
+               value="{{ request('month') }}">
+    </div>
+
+    <div class="col-md-2 d-flex align-items-end">
+        <button class="btn btn-primary w-100">View</button>
+    </div>
+
+</div>
+
 </form>
 
 
@@ -52,7 +61,8 @@
 <div class="card shadow">
 <div class="card-body p-0">
 
-<table class="table table-bordered table-hover mb-0 text-center align-middle">
+<table id="attendanceTable"
+       class="table table-bordered table-hover mb-0 text-center align-middle">
 <thead class="table-dark">
 <tr>
     <th>SL</th>
@@ -73,12 +83,13 @@
 @foreach ($attendanceData as $index => $item)
 <tr>
 <td>{{ $index + 1 }}</td>
-<td>{{ $item['emp_id'] }}</td>
+<td>{{ $item['af5'] }}</td>
 <td>{{ $item['emp_name'] }}</td>
 
 <td>
 @if($item['checkin_photo'])
-<img src="{{ asset('storage/attendance/checkin/'.$item['checkin_photo']) }}" width="70">
+<img src="{{ asset('storage\app\public\account_image\\'.$item['checkin_photo'] ) }}"   width="80px">
+
 @else <span class="text-muted">No Photo</span> @endif
 </td>
 
@@ -86,7 +97,7 @@
 
 <td>
 @if($item['checkout_photo'])
-<img src="{{ asset('storage/attendance/checkout/'.$item['checkout_photo']) }}" width="70">
+<img src="{{ asset('storage\app\public\account_image\\'.$item['checkout_photo']) }}" width="80pxs">
 @else <span class="text-muted">No Photo</span> @endif
 </td>
 
@@ -180,6 +191,34 @@ Edit
 </form>
 </div>
 </div>
+<script>
+$(document).ready(function () {
+    $('#attendanceTable').DataTable({
+        pageLength: 25,
+        lengthMenu: [10, 25, 50, 100],
+        ordering: true,
+        searching: true,
+        responsive: true,
+        scrollX: true,
+        language: {
+            search: "Search:",
+            lengthMenu: "Show _MENU_ entries",
+            info: "Showing _START_ to _END_ of _TOTAL_ entries",
+            paginate: {
+                next: "Next",
+                previous: "Previous"
+            }
+        }
+    });
+});
+</script>
+
+<script>
+$('input[name="month"]').on('change', function () {
+    $('input[name="from_date"]').val('');
+    $('input[name="to_date"]').val('');
+});
+</script>
 
 <script>
 document.getElementById('editAttendanceModal')

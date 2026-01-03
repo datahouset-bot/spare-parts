@@ -65,35 +65,35 @@
                             </span>
                           </div>
                           
-                          <div class="col-md-12 mt-2">
-                            <div class="form-floating mb-3 mb-md-0">
+                        <!--  <div class="col-md-12 mt-2">-->
+                        <!--    <div class="form-floating mb-3 mb-md-0">-->
                              
-                              <select name="head_group" Id ="head_group"class="form-select" aria-label="Default select example">
-                                <option selected disabled>Select Head Group </option>
+                        <!--      <select name="head_group" Id ="head_group"class="form-select" aria-label="Default select example">-->
+                        <!--        <option selected disabled>Select Head Group </option>-->
                                 
-                                <option value="Spare_parts">Spare_parts</option>
-                                <option value="labour">labour</option>       
-                                <option value="Bike">Bike</option>
-                                <option value="Car">Car</option>
-                                {{-- <option value="Laundry">Laundry</option>   --}}
-                                <option value="Other">Other</option>
+                        <!--        <option value="Spare_parts">Spare_parts</option>-->
+                        <!--        <option value="labour">labour</option>       -->
+                        <!--        <option value="Bike">Bike</option>-->
+                        <!--        <option value="Car">Car</option>-->
+                        <!--        {{-- <option value="Laundry">Laundry</option>   --}}-->
+                        <!--        <option value="Other">Other</option>-->
 
 
                                 
-                              </select>
-                                <label for="head_group">Head Group  </label>
+                        <!--      </select>-->
+                        <!--        <label for="head_group">Head Group  </label>-->
                                
-                            </div>
-                            <span class="text-danger"> 
-                              @error('head_group')
-                              {{$message}}
+                        <!--    </div>-->
+                        <!--    <span class="text-danger"> -->
+                        <!--      @error('head_group')-->
+                        <!--      {{$message}}-->
                                   
-                              @enderror
-                            </span>
+                        <!--      @enderror-->
+                        <!--    </span>-->
 
-                        </div>    
+                        <!--</div>    -->
 
-                        </div>
+                        <!--</div>-->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Save </button>

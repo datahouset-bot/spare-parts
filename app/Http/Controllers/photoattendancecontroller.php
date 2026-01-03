@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
+use App\Models\SalaryPayment;
 use App\Models\photoattendance;
 use App\Models\attendancesalary;
 use Illuminate\Support\Facades\DB;
@@ -13,16 +14,33 @@ use Illuminate\Support\Facades\Validator;
 
 class photoattendancecontroller extends Controller
 {
-    public function index()
+     public function index()
     {
-        return view('photoattendancee.attendance_index');
+        $employeeWithTerms = photoattendance::whereNotNull('terms_text')
+            ->latest()
+            ->first();
+return view('photoattendancee.attendance_index', compact(
+    'employeeWithTerms',
+));
     }
 
-    public function create()
-    {
-      $employees = photoattendance::with(['latestAdvance'])->latest()->get();
-        return view('photoattendancee.attendance_view', compact('employees'));
-    }
+
+    // public function create()
+    // {
+    //   $employees = photoattendance::with(['latestAdvance'])->latest()->get();
+    //     $nextEmpId = $this->generateEmployeeId();
+    //     return view('photoattendancee.attendance_view', compact('employees','nextEmpId'));
+    // }
+public function create()
+{
+    $employees = photoattendance::latest()->get();
+
+
+    return view('photoattendancee.attendance_view', compact(
+        'employees',
+    ));
+}
+
 
     public function showform()
     {
@@ -134,7 +152,10 @@ foreach (CarbonPeriod::create($start, $end) as $date) {
         ]);
     }
 }
-
+$salaryPayment = SalaryPayment::where('employee_id', $employee->id)
+    ->where('month', $selectedMonth)
+    ->where('year', $selectedYear)
+    ->first();
 
     /* ===============================
        COUNTS
@@ -142,29 +163,36 @@ foreach (CarbonPeriod::create($start, $end) as $date) {
     $presentDays = $attendance->whereIn('status', ['present', 'late'])->count();
     $absentDays  = $attendance->where('status', 'absent')->count();
     $totalDays   = $attendance->count();
+return view('photoattendancee.attendance_show', compact(
+    'employee',
+    'advances',
+    'totalAdvance',
+    'attendance',
+    'presentDays',
+    'absentDays',
+    'totalDays',
+    'selectedMonth',
+    'salaryPayment'
+));
 
-    return view('photoattendancee.attendance_show', compact(
-        'employee',
-        'advances',
-        'totalAdvance',
-        'attendance',
-        'presentDays',
-        'absentDays',
-        'totalDays',
-        'selectedMonth'
-    ));
 }
 
 
     // =====================================================================================
 
-    public function getEmployeeName($id)
-    {
-        $employee = photoattendance::find($id);
-        return response()->json([
-            'name' => $employee ? $employee->name : null
-        ]);
-    }
+  public function getEmployeeName($id)
+{
+    $employee = photoattendance::find($id);
+
+    return response()->json([
+        'name'  => $employee?->name,
+        'photo' => $employee && $employee->photo
+            ? asset('storage/app/public/room_image/' . $employee->photo)
+            : null,   // 👈 IMPORTANT
+    ]);
+}
+
+
     public function store(Request $request)
 {
     $validate = Validator::make($request->all(), [
@@ -185,8 +213,8 @@ foreach (CarbonPeriod::create($start, $end) as $date) {
         'terms_text'      => 'nullable|string',
         'terms'           => 'required',
 
-        'photo'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        'document_file'   => 'nullable|mimes:jpg,jpeg,png,pdf|max:4096',
+        'photo'           => 'nullable|image|mimes:jpg,jpeg,',
+        'document_file'   => 'nullable|mimes:jpg,jpeg,png',
     ]);
 
     if ($validate->fails()) {
@@ -209,16 +237,13 @@ $documentName = null;
 if ($request->hasFile('document_file')) {
     $document     = $request->file('document_file');
     $documentName = time().'_'.$document->getClientOriginalName();
-    $document->storeAs('public/attendance/documents', $documentName);
+    $document->storeAs('public\item_image', $documentName);
 }
 
+$employee = new photoattendance();
+$employee->af5 = $request->emp_id; // user typed value
 
-    // SAVE EMPLOYEE
-    $employee = new photoattendance();
 
-    if ($request->emp_id) {
-        $employee->emp_id = $request->emp_id; // ✅ FIXED
-    }
 
     $employee->name            = $request->name;
     $employee->email           = $request->email;
@@ -232,6 +257,7 @@ if ($request->hasFile('document_file')) {
     $employee->salary_amount   = $request->salary_amount;
     $employee->date_of_joining = $request->date_of_joining;
     $employee->document_type   = $request->document_type;
+    $employee->af6   = $request->designation;
 
     $employee->terms_text      = $request->terms_text;
     $employee->terms           = 1;
@@ -249,16 +275,22 @@ if ($request->hasFile('document_file')) {
 
     $employee->save();
 
-    return redirect()->back()->with('success', 'Employee Registered Successfully!');
+    return redirect()
+    ->route('attendances.create')
+    ->with('success', 'Employee Registered Successfully!');
 }
 
 
 // ===================================================================================================
-    public function edit($id)
-    {
-        $employee = photoattendance::findOrFail($id);
-        return view('photoattendancee.attendance_edit', compact('employee'));
-    }
+   public function edit($id)
+{
+    $employee = photoattendance::findOrFail($id);
+ // keep existing ID
+
+    return view('photoattendancee.attendance_edit', compact(
+        'employee'
+    ));
+}
 
 public function update(Request $request, $id)
 {
@@ -281,8 +313,8 @@ public function update(Request $request, $id)
         'terms_text'      => 'nullable|string',
         'terms'           => 'nullable',
 
-        'photo'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        'document_file'   => 'nullable|mimes:jpg,jpeg,png,pdf|max:4096',
+        'photo'           => 'nullable|image|mimes:jpg,jpeg,png',
+        'document_file'   => 'nullable|mimes:jpg,jpeg,png',
     ]);
 
     if ($validate->fails()) {
@@ -292,6 +324,7 @@ public function update(Request $request, $id)
     /* ============================
        UPDATE BASIC FIELDS
     ============================ */
+    $employee->af5        =$request->emp_id;
     $employee->name            = $request->name;
     $employee->email           = $request->email;
     $employee->mobile          = $request->mobile;
@@ -303,6 +336,7 @@ public function update(Request $request, $id)
     $employee->date_of_joining = $request->date_of_joining;
     $employee->document_type   = $request->document_type;
     $employee->Buffer_time     = $request->buffer_time;
+    $employee->af6 = $request->designation;
 
     $employee->terms_text      = $request->terms_text;
     $employee->terms           = $request->has('terms') ? 1 : 0;
@@ -314,12 +348,12 @@ public function update(Request $request, $id)
   if ($request->hasFile('photo')) {
 
     if ($employee->photo) {
-        Storage::delete('public/attendance/photos/'.$employee->photo);
+        Storage::delete('public\room_image'.$employee->photo);
     }
 
     $photo     = $request->file('photo');
     $photoName = time().'_'.$photo->getClientOriginalName();
-    $photo->storeAs('public/attendance/photos', $photoName);
+    $photo->storeAs('public\room_image', $photoName);
 
     $employee->photo = $photoName;
 }
@@ -331,12 +365,12 @@ public function update(Request $request, $id)
    if ($request->hasFile('document_file')) {
 
     if ($employee->document_submit) {
-        Storage::delete('public/attendance/documents/'.$employee->document_submit);
+        Storage::delete('public\item_image'.$employee->document_submit);
     }
 
     $document     = $request->file('document_file');
     $documentName = time().'_'.$document->getClientOriginalName();
-    $document->storeAs('public/attendance/documents', $documentName);
+    $document->storeAs('public\item_image', $documentName);
 
     $employee->document_submit = $documentName;
 }
@@ -357,14 +391,14 @@ public function destroy($id)
     // DELETE PHOTO (STORAGE)
     // ==========================
     if ($employee->photo) {
-        Storage::delete('public/attendance/photos/' . $employee->photo);
+        Storage::delete('public\room_image' . $employee->photo);
     }
 
     // ==========================
     // DELETE DOCUMENT (STORAGE)
     // ==========================
     if ($employee->document_submit) {
-        Storage::delete('public/attendance/documents/' . $employee->document_submit);
+        Storage::delete('public\item_image' . $employee->document_submit);
     }
 
     $employee->delete();
@@ -392,4 +426,62 @@ attendancesalary::create([
 
     return back()->with('success', 'Advance Salary Added Successfully!');
 }
+
+// ===============================================advance salary edit===============================================================
+public function updateAdvance(Request $request, $id)
+{
+    $request->validate([
+        'advance_salary' => 'required|numeric',
+        'date'           => 'required|date',
+        'remark'         => 'nullable|string',
+    ]);
+
+    $advance = attendancesalary::findOrFail($id);
+
+    $advance->advance_salary = $request->advance_salary;
+    $advance->date           = $request->date;
+    $advance->remark         = $request->remark;
+
+    $advance->save();
+
+    return back()->with('success', 'Advance Salary Updated Successfully!');
+}
+
+// ============================================= update salary status=============================================================
+public function updateSalaryStatus(Request $request, $id)
+{
+    $employee = photoattendance::findOrFail($id);
+
+    $employee->salary_status = $request->has('salary_status')
+        ? 'paid'
+        : 'unpaid';
+
+    $employee->save();
+
+    return back()->with('success', 'Salary status updated');
+}
+
+
+public function updateMonthlySalary(Request $request, $id)
+{
+    SalaryPayment::updateOrCreate(
+        [
+            'employee_id' => $id,
+            'month'       => $request->month,
+            'year'        => $request->year,
+        ],
+        [
+            'status' => $request->has('status') ? 'paid' : 'unpaid',
+        ]
+    );
+
+    return back()->with('success', 'Salary status updated for selected month');
+}
+
+public function print($id){
+    $employee = photoattendance::findOrFail($id);
+    return view('photoattendancee.attendance_print',compact('employee'));
+}
+
+
 }

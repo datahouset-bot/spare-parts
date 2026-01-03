@@ -136,6 +136,10 @@ class AccountController extends CustomBaseController
             
             }
 
+
+         else{
+            $gst_code = NULL;
+         }
         if ($validator->passes()) {
             $account = new account;
             $account->firm_id = Auth::user()->firm_id;
@@ -275,8 +279,9 @@ class AccountController extends CustomBaseController
             $account->phone = $request->phone;
             $account->mobile = $request->mobile;
             $account->person_name = $request->person_name;
-            $account->gst_no = $request->gst_no;
-            $account->gst_code = $gst_code;
+            $account->gst_no   = $request->gst_no;
+            $account->gst_code = !empty($request->gst_no) ? substr($request->gst_no, 0, 2) : null;
+
 
 
 

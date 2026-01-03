@@ -93,118 +93,11 @@ return view('crusher.cresher_entry', compact('account','nextSlip','vehicle'));
     /**
      * Store a newly created resource in storage.
      */
- public function store(Request $request)
-{
-
-
-    $validate = Validator::make($request->all(), [
-
-        'date'              => 'required|date',
-        'time'              => 'required',
-        'search_id'         => 'required|numeric',       // PARTY
-        'vehicle_id'        => 'required|numeric',
-        'vehicle_no'        => 'required|string',
-        'party_name'        => 'required|string',
-        'vehicle_measure'   => 'required',
-
-        'Material'          => 'required|string',
-        'Quantity'          => 'required|numeric',
-
-        'Rate'              => 'nullable|numeric',
-        'unit'              => 'nullable|string',
-
-        'Royalty_Quantity'  => 'nullable|numeric',
-        'Royalty_Rate'      => 'nullable|numeric',
-        'Royalty'           => 'nullable|numeric',
-
-        'total'             => 'nullable|numeric',
-
-        'address'           => 'nullable|string',
-        'phone'             => 'nullable|string',
-        'remark'            => 'nullable|string',
-'pic'               => 'required',   
-     // max 2MB
-    ]);
-
-    if (!$validate->passes()) {
-        return response()->json([
-            'errors' => $validate->errors(),
-            'message' => 'Validation failed'
-        ], 422);
-    }
-
-    // Generate Slip No
-    $lastSlip = cresher::max('slip_no');
-    $slipNo = $lastSlip ? $lastSlip + 1 : 1;
-
-    $crusher = new cresher();
-
-    // BASIC
-    $crusher->slip_no         = $slipNo;
-    $crusher->date            = $request->date;
-    $crusher->time            = $request->time;
-
-    // FIXED: acc_id correct column
-    $crusher->acc_id          = $request->search_id;
-
-    // VEHICLE
-    $crusher->vehicle_id      = $request->vehicle_id;
-    $crusher->vehicle_no      = $request->vehicle_no;
-    $crusher->party_name      = $request->party_name;
-    $crusher->vehicle_measure = $request->vehicle_measure;
-
-    // MATERIAL
-    $crusher->Material        = $request->Material;
-    $crusher->Materialremark  = $request->Materialremark;
-    $crusher->Quantity        = $request->Quantity;
-    $crusher->Rate            = $request->Rate;
-    $crusher->unit            = $request->unit;
-
-    // ROYALTY
-    $crusher->Royalty_Quantity = $request->Royalty_Quantity;
-    $crusher->Royalty_Rate     = $request->Royalty_Rate;
-    $crusher->Royalty          = $request->Royalty;
-
-    // TOTAL
-    $crusher->Total        = $request->total;
-
-    // CONTACT
-    $crusher->address      = $request->address;
-    $crusher->phone        = $request->phone;
-    $crusher->remark       = $request->remark;
-
-    // IMAGE (camera or file)
-    if ($request->hasFile('pic')) 
-    {
-        $folder = public_path('uploads/crusher');
-
-        if (!file_exists($folder)) {
-            mkdir($folder, 0777, true);
-        }
-
-        $file = $request->file('pic');
-
-        $filename = time().'_'.$file->getClientOriginalName();
-        $file->move($folder, $filename);
-
-        $crusher->pic = $filename;
-    }
-
-    $crusher->save();
-
-    return response()->json([
-        'message' => 'Material challan saved successfully!',
-        'slip_no' => $slipNo,
-    ], 200);
-}
-
-    /**
-     * Display the specified resource.
-     */
+ 
    public function show($id)
 {
     $crusher = Cresher::findOrFail($id);
-    return view('crusher.cresher_show', compact('crusher'));
+    return view('crusher.cresher_print', compact('crusher'));
 }
     /**
      * Show the form for editing the specified resource.
@@ -233,6 +126,85 @@ public function vehicledetailedit($id)
         ->route('vehicledetail.index')
         ->with('success', 'Vehicle detail deleted successfully!');
 }
+// ============================store for cresher====================================
+public function store(Request $request)
+{
+    // ================= VALIDATION =================
+    $request->validate([
+
+        'pic'               => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
+
+    // ================= CREATE =================
+    $crusher = new Cresher();
+
+    // Auto slip number
+    $crusher->slip_no = (Cresher::max('slip_no') ?? 0) + 1;
+
+    // Basic
+    $crusher->date = $request->date;
+    $crusher->time = $request->time;
+    $crusher->acc_id          = $request->search_id;
+
+    // Party & Vehicle
+    $crusher->party_name      = $request->party_name;
+    $crusher->vehicle_no      = $request->vehicle_no;
+    $crusher->vehicle_measure = $request->vehicle_measure;
+
+    // Material
+    $crusher->Material       = $request->Material;
+    $crusher->Materialremark = $request->Materialremark;
+    $crusher->unit           = $request->unit;
+    $crusher->Quantity       = $request->Quantity;
+    $crusher->Rate           = $request->Rate;
+
+    // Royalty
+    $crusher->Royalty_Quantity = $request->Royalty_Quantity;
+    $crusher->Royalty_Rate     = $request->Royalty_Rate;
+    $crusher->Royalty          = $request->Royalty;
+
+    // Financial
+    $crusher->Total       = $request->total;
+
+    // Contact
+    $crusher->address = $request->address;
+    $crusher->phone   = $request->phone;
+
+    // Remark
+    $crusher->remark = $request->remark;
+
+    // Operators (your af fields)
+    $crusher->af3 = $request->loader;
+    $crusher->af4 = $request->Driver;
+    $crusher->af5 = $request->supervisor;
+
+    // ================= IMAGE =================
+    if ($request->hasFile('pic')) {
+
+        $folder = public_path('public/employees');
+
+        if (!file_exists($folder)) {
+            mkdir($folder, 0777, true);
+        }
+
+        $file = $request->file('pic');
+        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $file->move($folder, $filename);
+
+        $crusher->pic = $filename;
+    }
+
+    // ================= SAVE =================
+    $crusher->save();
+
+    // ================= AJAX RESPONSE =================
+    return response()->json([
+        'success' => true,
+        'message' => 'Material Challan saved successfully',
+        'id'      => $crusher->id
+    ]);
+}
+
 // ==============================to update vehicle detail============================
 public function vehicledetailupdate(Request $request, $id)
 {
@@ -267,36 +239,83 @@ public function update(Request $request, $id)
 {
     $crusher = Cresher::findOrFail($id);
 
-    // fields
+    // ================= VALIDATION =================
+    $request->validate([
+       
+        'Rate'             => 'nullable|numeric',
+        'Royalty'          => 'nullable|numeric',
+        'Total'            => 'nullable|numeric',
+        'address'          => 'nullable|string',
+        'phone'            => 'nullable|string|max:20',
+        'remark'           => 'nullable|string',
+
+        // 🔹 operator fields
+        'loader'           => 'nullable|string|max:255',
+        'driver'           => 'nullable|string|max:255',
+        'supervisor'       => 'nullable|string|max:255',
+
+    ]);
+
+    // ================= BASIC =================
+    $crusher->date  = $request->date;
+    $crusher->time  = $request->time;
+
+    // ================= VEHICLE =================
+    $crusher->vehicle_no      = $request->vehicle_no;
     $crusher->party_name      = $request->party_name;
     $crusher->vehicle_measure = $request->vehicle_measure;
+
+    // ================= MATERIAL =================
     $crusher->Material        = $request->Material;
+    $crusher->Materialremark  = $request->Materialremark;
+    $crusher->unit            = $request->unit;
     $crusher->Quantity        = $request->Quantity;
     $crusher->Rate            = $request->Rate;
-    $crusher->Royalty         = $request->Royalty;
-    $crusher->Total           = $request->total;
-    $crusher->phone           = $request->phone;
-    $crusher->remark          = $request->remark;
 
-    // image
+    // ================= ROYALTY =================
+    $crusher->Royalty_Quantity = $request->Royalty_Quantity;
+    $crusher->Royalty_Rate     = $request->Royalty_Rate;
+    $crusher->Royalty          = $request->Royalty;
+
+    // ================= FINANCIAL =================
+    $crusher->Total = $request->Total;
+
+    // ================= CONTACT =================
+    $crusher->address = $request->address;
+    $crusher->phone   = $request->phone;
+
+    // ================= REMARK =================
+    $crusher->remark = $request->remark;
+
+    // ================= OPERATOR DETAILS (FIXED) =================
+    $crusher->af3 = $request->loader;
+    $crusher->af4 = $request->driver;
+    $crusher->af5 = $request->supervisor;
+
+    // ================= IMAGE =================
     if ($request->hasFile('pic')) {
-        if ($crusher->pic && file_exists(public_path('uploads/crusher/'.$crusher->pic))) {
-            @unlink(public_path('uploads/crusher/'.$crusher->pic));
+
+        $folder = public_path('public/employees');
+
+        if ($crusher->pic && file_exists($folder.'/'.$crusher->pic)) {
+            unlink($folder.'/'.$crusher->pic);
         }
 
         $file = $request->file('pic');
-        $filename = time().'_'.$file->getClientOriginalName();
-        $file->move(public_path('uploads/crusher'), $filename);
+        $filename = time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
+        $file->move($folder, $filename);
 
         $crusher->pic = $filename;
     }
 
-    $crusher->save();  // ✅ single save
+    // ================= SAVE =================
+    $crusher->save();
 
     return redirect()
         ->route('crusher.index')
-        ->with('success', 'Challan updated successfully!');
+        ->with('success', 'Material Challan updated successfully!');
 }
+
 
     /**
      * Remove the specified resource from storage.

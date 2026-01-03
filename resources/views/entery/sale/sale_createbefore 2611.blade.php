@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="jquery/master.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
-    <style>
+        <style>
 
         .no-gutter,
         .form-control {
@@ -74,7 +74,31 @@
     }
     </style>
     
+<style>
+    #sold_item_record {
+    width: 100% !important;
+}
 
+.table-responsive {
+    width: 100% !important;
+    overflow-x: auto;
+}
+.row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+  .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    #sold_item_record, .table-responsive {
+        width: 100% !important;
+    }
+    .container-fluid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+</style>
 
     <script>
         $(document).ready(function() {
@@ -83,7 +107,8 @@
         });
     </script>
 
-    <div class="container ">
+    <div class="container-fluid px-0" style="max-width: 100% !important;">
+
         @if (session('message'))
             <div class="alert alert-primary">
                 {{ session('message') }}
@@ -96,9 +121,10 @@
         @endif
 
 
-        <div class="card my-3">
+        <div class="card my-3 w-100" style="border-radius: 0;">
+
             <div class="card-header">
-                New Stock Issue
+                Sale invoice
                 <a href="{{ url('temp_item_delete/' . Auth::user()->id) }}" class="btn btn-success">Add New</a>
                 <a href="{{ url('store_to_sale/' . Auth::user()->id) }}" class="btn btn-primary">Save</a>
             </div>
@@ -110,7 +136,6 @@
 
                 </div>
             </div> --}}
-
             <ul id="save_form_errorlist"></ul>
             <form id="item_entry">
                 <div class="row no-gutter" name="kot_header">
@@ -125,6 +150,7 @@
                     {{-- <input type="hidden" class="form-control" id="total_item_dis_amt" name="total_item_dis_amt" > --}}
 
                     {{-- hidden input close  --}}
+
 
                     <div class="col-md-2 col-4 text-center">
                         <div class="form-group">
@@ -174,8 +200,8 @@
                             <label class="floating-label" for="voucher_bill_no">Bill No</label>
                         </div>
                     </div>
-                    
-                    <div class="col-md-3  text-center row ">
+                
+                    <div class="col-md-2 col-3  text-center  ">
                         {{-- <div class="form-group"> --}}
                             <select name="account_id" id="account_id" class="form-select" required>
                                 <option selected disabled>Select Party</option>
@@ -187,11 +213,11 @@
                         {{-- </div> --}}
                     </div>
                     
-
                 </div>
+                
                 <div class="row no-gutter" name="itementery">
-                    <div class="col-md-3   ">
-                        <div class="input-group">
+                    <div class="col-md-2 col-3">
+                        <div class="form-group">
 
                             <select id="item_id" name="item_id" class="js-states form-control">
                                 <option disabled selected>Select Item</option>
@@ -207,20 +233,6 @@
                             @enderror
                         </span>
                     </div>
-                    <div class="col-md-3   ">
-                        <div class="input-group">
-
-                            <select id="batch_id" name="batch_id" class="js-states form-control">
-                                <option disabled selected>Batch</option>
-                            </select>
-                            
-                        </div>
-                        <span class="text-danger">
-                            @error('cust_name_id')
-                                {{ $message }}
-                            @enderror
-                        </span>
-                    </div>
 
                     <div class="col-md-1 col-3 text-center">
                         <div class="form-group">
@@ -228,7 +240,6 @@
                             <label class="floating-label" for="qty">QTY</label>
                         </div>
                     </div>
-                    
                     <div class="col-md-2 col-3 text-center">
                         <div class="form-group">
                             <input type="text" class="form-control" id="rate" name="rate" placeholder=" " required>
@@ -243,7 +254,7 @@
                             <label class="floating-label" for="amount">Basic</label>
                         </div>
                     </div>
-                    
+                
                     <div class="col-md-1 col-3 text-center">
                         <div class="form-group">
                             <input type="text" class="form-control" id="dis_p" name="dis_p" placeholder=" ">
@@ -251,13 +262,13 @@
                         </div>
                     </div>
                     
-                    <div class="col-md-2 col-3 text-center">
+                    {{-- <div class="col-md-2 col-3 text-center">
                         <div class="form-group">
                             <input type="text" class="form-control" id="dis_amt" name="dis_amt" placeholder=" ">
                             <label class="floating-label" for="dis_amt">Dis Amt</label>
                         </div>
                     </div>
-                    
+                     --}}
                     <div class="col-md-2 col-3 col-sm-2text-center">
                         <div class="form-group">
                             <input type="text" class="form-control" id="total_item_dis_amt" name="total_item_dis_amt" placeholder=" ">
@@ -287,7 +298,6 @@
                             <label class="floating-label" for="net_item_amt">Net</label>
                         </div>
                     </div>
-                    
                     <div class="col-md-2  col-3  text-center">
 
                         <button type="submit" name="additem" id ="additem"class="btn btn-success ">+</button>
@@ -298,8 +308,8 @@
 
             </form>
 
-            <div class="row  mx-2 table-scrollable">
-                <table id ="sold_item_record"class="table table-striped  table-responsive ">
+            <div class="row my-2 mx-2">
+                <table id ="sold_item_record"class="table table-striped  table-responsive">
                     <thead class="table-dark">
                         <tr>
                             <td>S.No</td>
@@ -326,19 +336,17 @@
                     <tfoot class="table-dark">
                         <tr>
                             <td>Total </td>
-                            <td><input type="text" class="footer_input" name="total_records" id="total_records"></td>
-                            <td><input type="text" class="footer_input" name="total_qty"id="total_qty"></td>
+                            <td ><input type="text" class="footer_input" name="total_records" id="total_records"></td>
+                            <td ><input type="text" class="footer_input" name="total_qty"id="total_qty"></td>
                             <td></td>
-                            <td><input type="text" class="footer_input" name="total_amount"id="total_amount"></td>
+                            <td ><input type="text" class="footer_input" name="total_amount"id="total_amount"></td>
                             <td></td>
                             <td></td>
-                            <td><input type="text" class="footer_input"
-                                    name="total_bill_discount"id="total_bill_discount"></td>
-                            <td><input type="text" class="footer_input"id="total_bill_taxable"
-                                    name="total_bill_taxable" id="total_bill_taxable"></td>
+                            <td ><input type="text" class="footer_input" name="total_bill_discount"id="total_bill_discount"></td>
+                            <td><input type="text" class="footer_input"id="total_bill_taxable"name="total_bill_taxable" id="total_bill_taxable"></td>
                             <td id=""></td>
-                            <td><input type="text" class="footer_input"name="total_bill_gst" id="total_bill_gst"></td>
-                            <td><input type="text" class="footer_input"name="total_bill_net" id="total_bill_net"></td>
+                            <td><input type="text" class="footer_input"name ="total_bill_gst"id ="total_bill_gst"></td>
+                            <td><input type="text" class="footer_input"name ="total_bill_net"id ="total_bill_net"></td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -386,11 +394,6 @@
             placeholder: "Select Account",
             allowClear: true
         });
-        $("#batch_id").select2({
-            placeholder: "batch",
-            allowClear: true
-        });
-        
     </script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
@@ -435,86 +438,6 @@
             });
         });
     </script>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#item_id').change(function() {
-            var item_id = $(this).val();
-
-            console.log(item_id);
-
-
-            $.ajax({
-                url: '/searchitem_batch/' + item_id,
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    console.log(response);
-
-
-
-                    if (response.batch_info && response.batch_info.length > 0) {
-            // Example: populate a dropdown or list
-            let options = '<option value="">Select Batch</option>';
-            response.batch_info.forEach(function(batch) {
-                options += `<option value="${batch.id}"><td>${batch.batch_no}</td> (${batch.batch_af1} (${batch.batch_mrp}) (${batch.batch_sale_rate} )</option>`;
-            });
-
-            $('#batch_id').html(options); // Assuming you have a <select id="batch_select">
-            
-            // Optional: display execution time somewhere
-            // $('#query_time').text('Query time: ' + response.execution_time_ms);
-
-        } else {
-            $('#batch_id').html('<option value="">NA</option>');
-        }
-
-
-
-                }
-
-
-            });
-
-        });
-    });
-</script>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#batch_id').change(function() {
-            var batch_id = $(this).val();
-
-            console.log(batch_id);
-
-
-            $.ajax({
-                url: '/searchbatch/' + batch_id,
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    console.log(response);
-
-
-
-                    if (response.searched_batch_info) {
-                        $('#rate').val(response.searched_batch_info.batch_sale_rate);
-                        $('#display_rate').text(response.searched_batch_info.batch_sale_rate);
-                        
-                        
-                    } 
-
-
-
-                }
-
-
-            });
-
-        });
-    });
-</script>
-    
     {{-- script for amount  rate*amount calculation --}}
     <script>
         $(document).ready(function() {
@@ -560,10 +483,10 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var account_id = $('#account_id').val();
+             var account_id = $('#account_id').val();
+  
 
-
-
+            
             // Function to handle form submission and AJAX request
             function itementry() {
                 var data = {
@@ -587,8 +510,8 @@
                     'gst_amt': $('#gst_amt').val(),
                     'net_item_amt': $('#net_item_amt').val(),
                     'total_item_dis_amt': $('#total_item_dis_amt').val(),
-                    'godown_id': $('#godown_id').val(),
-                    'gstmaster_id': $('#gstmaster_id').val()
+                    'godown_id':$('#godown_id').val(),
+                    'gstmaster_id':$('#gstmaster_id').val()
 
 
                 };
@@ -654,10 +577,10 @@
                             var itemRecords = response.itemrecords;
                             var totalQty = 0;
                             var totalAmount = 0;
-                            var total_bill_discount = 0;
-                            var total_bill_taxable = 0;
-                            var total_bill_gst = 0;
-                            var total_bill_net = 0;
+                            var total_bill_discount=0;
+                            var total_bill_taxable=0;
+                            var total_bill_gst=0;
+                            var total_bill_net=0;
 
 
 
@@ -667,8 +590,8 @@
                                 var amount = record.qty * record.rate;
                                 totalQty += parseFloat(record.qty);
                                 totalAmount += parseFloat(amount);
-                                total_bill_discount += parseFloat(record.total_discount);
-                                total_bill_taxable += parseFloat(record.total_amount);
+                                total_bill_discount+=parseFloat(record.total_discount);
+                                total_bill_taxable+=parseFloat(record.total_amount);
                                 total_bill_gst += parseFloat(record.total_gst);
                                 total_bill_net += parseFloat(record.item_net_value);
 
@@ -716,22 +639,22 @@
             }
 
             // Delete Record Handler
-            $(document).on('click', '.delete-record', function() {
+            $(document).on('click', '.delete-record', function () {
                 var recordId = $(this).data('id');
                 console.log("Deleting record:", recordId);
-
+    
                 $.ajax({
                     url: '/delete_kot_temprecord/' + recordId,
                     type: 'GET',
                     dataType: 'json',
-                    success: function(response) {
+                    success: function (response) {
                         console.log(response);
                         var user_id = $("#user_id").val();
                         if (user_id) {
                             fetchAndDisplayRecords(user_id);
                         }
                     },
-                    error: function() {
+                    error: function () {
                         alert('Error deleting record');
                     }
                 });
@@ -799,5 +722,7 @@
             console.log("fetching record function");
         });
     </script>
-    <script></script>
+    <script>
+            
+    </script>
 @endsection

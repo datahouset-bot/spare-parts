@@ -15,39 +15,58 @@ class attendancecheck extends Controller
     /**
      * Display a listing of the resource.
      */
+
 public function index(Request $request)
 {
-    // ✅ Validate date range
+    // ✅ Validate
     $request->validate([
         'from_date' => 'nullable|date',
         'to_date'   => 'nullable|date|after_or_equal:from_date',
+        'month'     => 'nullable|date_format:Y-m',
     ]);
 
+    // =========================
+    // DATE LOGIC (FIXED)
+    // =========================
+  if ($request->filled('from_date') || $request->filled('to_date')) {
+
+    // 📆 DATE FILTER
     $fromDate = $request->from_date ?? now()->format('Y-m-d');
     $toDate   = $request->to_date   ?? now()->format('Y-m-d');
 
-    $employees = photoattendance::all();
+} elseif (!empty($request->month)) {
 
-    $period = CarbonPeriod::create($fromDate, $toDate);
+    // 📅 MONTH FILTER
+    $fromDate = Carbon::parse($request->month)->startOfMonth()->format('Y-m-d');
+    $toDate   = Carbon::parse($request->month)->endOfMonth()->format('Y-m-d');
+
+} else {
+
+    // 🕒 DEFAULT TODAY
+    $fromDate = now()->format('Y-m-d');
+    $toDate   = now()->format('Y-m-d');
+}
+
+    $employees = photoattendance::all();
+    $period    = CarbonPeriod::create($fromDate, $toDate);
 
     $attendanceData = [];
 
     foreach ($employees as $emp) {
-
         foreach ($period as $date) {
 
             $attendance = attendancecheckin::where('emp_id', $emp->id)
                 ->whereDate('date', $date->format('Y-m-d'))
                 ->first();
 
-            $status       = "Absent";
-            $lateMessage  = "";
+            $status      = "Absent";
+            $lateMessage = "";
 
             $checkin_time  = $attendance?->checkin_time ?? "--";
             $checkout_time = $attendance?->checkout_time ?? "--";
 
-            $checkin_photo  = $attendance?->checkin_photo ?? null;
-            $checkout_photo = $attendance?->checkout_photo ?? null;
+            $checkin_photo  = $attendance?->checkin_photo;
+            $checkout_photo = $attendance?->checkout_photo;
 
             if ($attendance) {
 
@@ -86,6 +105,8 @@ public function index(Request $request)
             $attendanceData[] = [
                 'date'           => $date->format('Y-m-d'),
                 'emp_id'         => $emp->id,
+                'af5'            => $emp->af5,
+                'af6'            => $emp->af6,
                 'emp_name'       => $emp->name,
                 'checkin_time'   => $checkin_time,
                 'checkout_time'  => $checkout_time,
@@ -104,7 +125,6 @@ public function index(Request $request)
         'toDate'
     ));
 }
-
 
 
     /**
@@ -153,10 +173,9 @@ $data = base64_decode(
 $filename = time().'_checkin.png';
 
 Storage::put(
-    'public/attendance/checkin/'.$filename,
+    'public/account_image/'.$filename,
     $data
 );
-
 $attendance->checkin_photo = $filename;
 
         $attendance->checkin_time = $request->checkin_time;
@@ -191,7 +210,7 @@ $data = base64_decode(
 $filename = time().'_checkout.png';
 
 Storage::put(
-    'public/attendance/checkout/'.$filename,
+    'public/account_image/'.$filename,
     $data
 );
 

@@ -41,7 +41,7 @@ class SaleController extends CustomBaseController
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+ public function create()
     {
         $voucher_record=voucher::where('firm_id', Auth::user()->firm_id)->where('voucher_type','Sale')->count();
         if ($voucher_record > 0) {
