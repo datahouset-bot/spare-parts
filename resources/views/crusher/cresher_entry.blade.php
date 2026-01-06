@@ -270,7 +270,7 @@
                 {{-- RST --}}
 <div class="col-md-4 col-12">
     <label>RST</label>
-    <input class="form-control" id="rst" type="number" step="0.01" name="rst" placeholder=" RST">
+    <input class="form-control" id="rst" type="text" step="0.01" name="rst" placeholder=" RST">
 </div>
 
                 <div class="col-md-4 col-12">

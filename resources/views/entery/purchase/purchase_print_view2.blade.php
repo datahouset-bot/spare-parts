@@ -65,15 +65,15 @@ if (!function_exists('amountInWords')) {
         <title>KOT</title>
 <style>
 
-/* ================= PAGE SIZE ================= */
-@page {
+/* ================= PAGE SIZE ================= */@page {
     size: A4;
-    margin: 12mm;
+    margin: 10mm;
 }
 
 /* ================= BASE ================= */
 body {
     margin: 0;
+    padding: 0;
     font-family: "Times New Roman", serif;
     font-size: 15px;
     background: #f5f5f5;
@@ -81,15 +81,14 @@ body {
 
 /* ================= PAGE ================= */
 .page {
-    width: 210mm;              /* A4 WIDTH */
-    min-height: 297mm;         /* A4 HEIGHT */
-    margin: 20px auto;
+    width: 250mm;
+    min-height: 150mm;
+    margin: 0 auto;
     background: #fff;
     border: 1px solid #000;
-    padding: 12mm;
+    padding: 10mm;
     box-sizing: border-box;
 }
-
 /* ================= HEADER ================= */
 .company_info {
     display: grid;
@@ -209,14 +208,13 @@ body {
     .page {
         margin: 0;
         border: 1px solid #000;
+        box-shadow: none;
     }
 
-    .no-print,
-    .no-print * {
+    .no-print {
         display: none !important;
     }
 }
-
 </style>
 
 
@@ -296,11 +294,18 @@ body {
         <span>For {{ $componyinfo->cominfo_firm_name }}</span>
     </div>
     {{-- ======================Voucher Footer============================ --}}
-    <div class="voucher_footer">
-                <div class="terms "style="background-color:#e6ecff">
-                    <h5>Terms & Conditions</h5>
-                    <span>{{ $compinfofooter->terms }}</span>
-                </div>
+   {{-- <div class="voucher_footer">
+    <div class="terms" style="background-color:#e6ecff">
+        <h5>Terms & Conditions</h5>
+
+        <ul style="padding-left:18px; margin-top:6px;">
+            @foreach(preg_split("/\r\n|\r|\n/", (string)($compinfofooter->terms ?? '')) as $term)
+                @if(trim($term) !== '')
+                    <li>{{ trim($term) }}</li>
+                @endif
+            @endforeach
+        </ul>
+    </div>
                 <div class="for_companyname"style="background-color:#e6ecff"><span>For
                         {{ $componyinfo->cominfo_firm_name }}</span><br></div>
                 <div class="bank_detail"style="background-color:#e6ecff">
@@ -317,7 +322,7 @@ body {
 
                     &nbsp;<img src="{{ asset('storage/image/' . $pic->seal) }}" alt="qr_code" width="80px">
                 </div>
-            </div>
+            </div> --}}
 
     {{-- ================= PRINT ================= --}}
   <div class="button-container mt-3 text-center no-print">

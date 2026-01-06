@@ -239,6 +239,17 @@ table td {
                                         </span>
 
                                     </div>
+                                    <div class="col-md-12">
+                                        <label for="reciept_discount">Discount </label>
+                                        <input type="text" class ="form-control " placeholder=" Discount"
+                                            name="receipt_discount">
+                                        <span class="text-danger">
+                                            @error('receipt_discount')
+                                                {{ $message }}
+                                            @enderror
+                                        </span>
+
+                                    </div>
 
                                     <div class="col-md-12">
                                         <label for="receipt_remark">Remark </label>

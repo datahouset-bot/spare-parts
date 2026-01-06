@@ -103,20 +103,18 @@
 
         });
     </script>
-
     <div class="container ">
         @if (session('message'))
             <div class="alert alert-primary">
                 {{ session('message') }}
             </div>
         @endif
+
         @if (session('error'))
             <div class="alert alert-danger ">
                 {{ session('error') }}
             </div>
         @endif
-
-
         <div class="card my-3">
             <div class="card-header">
                 New Stock Issue
@@ -146,7 +144,6 @@
                     {{-- <input type="hidden" class="form-control" id="total_item_dis_amt" name="total_item_dis_amt" > --}}
 
                     {{-- hidden input close  --}}
-
                     <div class="col-md-2 col-4 text-center">
                         <div class="form-group">
                             <input type="text" class="form-control date" id="voucher_date" name="voucher_date" required>
@@ -171,7 +168,6 @@
                             <label class="floating-label" for="godown_id">Godown</label>
                         </div>
                     </div>
-                    
                     <div class="col-md-2 col-4 text-center">
                         <div class="form-group">
                             <select name="terms" id="terms" class="form-select" required>
@@ -180,7 +176,6 @@
                             </select>
                             <label class="floating-label" for="terms">Terms</label>
                         </div>
-                       
                     </div>
                     <div class="col-md-1 col-4 text-center ">
                         <div class="form-group">
@@ -196,7 +191,7 @@
                         </div>
                     </div>
                     
-                  <div class="col-md-3">
+            <div class="col-md-3">
     <div class="input-group">
         <select name="account_id"
                 id="account_id"
@@ -208,13 +203,11 @@
                     {{ $record->account_name }}
                 </option>
             @endforeach
-              <option value="__add_new__">➕ Add New Party</option>
+            <option value="__add_new__">➕ Add New Party</option>
         </select>
 
-      
     </div>
 </div>
-
                 </div>
                 <div class="row no-gutter" name="itementery">
                     <div class="col-md-3   ">
@@ -223,8 +216,8 @@
                             <select id="item_id" name="item_id" class="js-states form-control">
                                 <option disabled selected>Select Item</option>
                                 @foreach ($itemdata as $record)
-                                    <option value={{ $record['id'] }}>
-                                        {{ $record['item_name'] }}||{{ $record['item_barcode'] }} </option>
+                                <option value={{ $record['id'] }}>
+                                {{ $record['item_name'] }}||{{ $record['item_barcode'] }} </option>
                                 @endforeach
                             </select>
                         </div>
@@ -341,7 +334,6 @@
                             <td>GST%</td>
                             <td>GST Amt</td>
                             <td>Net Value </td>
-
                             <td></td>
                             <td></td>
                         </tr>

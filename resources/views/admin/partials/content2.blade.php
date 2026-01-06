@@ -697,6 +697,40 @@ body {
                     </div>
                 </div>
             </div>
+<div class="col-12 mb-4">
+    <div class="card h-100">
+        <div class="card-header bg-success text-white fw-bold">
+            <i class="fas fa-money-bill-wave me-2"></i>
+            Outstanding Receivable
+        </div>
+
+        <div class="card-body p-0" style="max-height:280px; overflow:auto;">
+            <table class="table table-striped table-hover mb-0 text-center">
+                @php $totalReceivable = 0; @endphp
+
+                <tbody>
+                    @foreach($outstandingReceivables as $acc)
+                        @php
+                            if ($acc->balnce_type === 'Cr') {
+                                $balance = $acc->op_balnce + $acc->total_credit - $acc->total_debit;
+                            } else {
+                                $balance = $acc->total_credit - $acc->op_balnce - $acc->total_debit;
+                            }
+                            $totalReceivable += $balance;
+                        @endphp
+                    @endforeach
+
+                    <tr class="fw-bold">
+                        <td>Total</td>
+                        <td>
+                            {{ abs($totalReceivable) }} {{ $totalReceivable >= 0 ? 'Cr' : 'Dr' }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
             <!-- Purchase Bar Chart -->
             <div class="col-12">

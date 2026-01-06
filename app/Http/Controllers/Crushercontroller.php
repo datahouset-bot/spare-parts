@@ -31,6 +31,8 @@ public function store(Request $request)
     $request->validate([
 
         'pic'               => 'required |image|mimes:jpg,jpeg,png|max:2048',
+        'Quantity'        => 'required',
+        'Material'        => 'required',
     ]);
 
     // ================= CREATE =================

@@ -154,6 +154,28 @@ class HomeController extends CustomBaseController
             return $account->outstanding_amount < 0;
         })
         ->sortBy('outstanding_amount'); // highest payable first
+
+        // outstanding receivable data show
+        $outstandingReceivables = $accounts
+    ->map(function ($account) {
+
+        if ($account->balnce_type === 'Cr') {
+            $balance = $account->op_balnce
+                     + $account->total_credit
+                     - $account->total_debit;
+        } else { // Dr
+            $balance = $account->total_debit
+                     - $account->total_credit
+                     - $account->op_balnce;
+        }
+
+        $account->outstanding_amount = $balance;
+        return $account;
+    })
+    ->filter(function ($account) {
+        return $account->outstanding_amount > 0; // RECEIVABLE
+    })
+    ->sortByDesc('outstanding_amount'); // highest receivable first
 // show purchase data 
 
 
@@ -188,7 +210,7 @@ class HomeController extends CustomBaseController
 
             }
             else{
-                return view('home', compact('purchaseChart','outstandingPayables','roomcheckin','sales','currentDate','vacantroom','occupiedroom' ,'dirtyroom','daysDifference','amcCount', 'dueAmcCount','pendingTask','todayFollowup' ,'kot_Unprinted','Rkot_Unprinted','financialyear'));    
+                return view('home', compact('purchaseChart','outstandingPayables','outstandingReceivables','roomcheckin','sales','currentDate','vacantroom','occupiedroom' ,'dirtyroom','daysDifference','amcCount', 'dueAmcCount','pendingTask','todayFollowup' ,'kot_Unprinted','Rkot_Unprinted','financialyear'));    
             }
         }
         else{

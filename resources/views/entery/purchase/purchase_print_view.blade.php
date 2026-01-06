@@ -190,7 +190,7 @@ body {
 @media print {
 
     html, body {
-        width: 210mm;
+        width: 370mm;
         height: auto;
         margin: 0;
         padding: 0;
@@ -290,7 +290,7 @@ body {
         <span>For {{ $componyinfo->cominfo_firm_name }}</span>
     </div>
     {{-- ======================Voucher Footer============================ --}}
-    <div class="voucher_footer">
+    {{-- <div class="voucher_footer">
                 <div class="terms "style="background-color:#e6ecff">
                     <h5>Terms & Conditions</h5>
                     <span>{{ $compinfofooter->terms }}</span>
@@ -311,7 +311,7 @@ body {
 
                     &nbsp;<img src="{{ asset('storage/image/' . $pic->seal) }}" alt="qr_code" width="80px">
                 </div>
-            </div>
+            </div> --}}
 
     {{-- ================= PRINT ================= --}}
   <div class="button-container mt-3 text-center no-print">

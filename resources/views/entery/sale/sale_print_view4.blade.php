@@ -198,10 +198,18 @@ body{
 
     {{-- FOOTER --}}
     <div class="doc-footer">
-        <div class="doc-box">
-            <strong>Terms & Conditions</strong><br>
-            {{ $compinfofooter->terms }}
-        </div>
+       <div class="doc-box">
+    <strong>Terms & Conditions</strong>
+
+    <ol style="padding-left:18px; margin-top:6px;">
+        @foreach(preg_split("/\r\n|\r|\n/", (string)($compinfofooter->terms ?? '')) as $term)
+            @if(trim($term) !== '')
+                <li>{{ trim($term) }}</li>
+            @endif
+        @endforeach
+    </ol>
+</div>
+
 
         <div class="doc-box">
             <strong>Bank Details</strong><br>

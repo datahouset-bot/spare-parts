@@ -73,10 +73,10 @@
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
                         <a href="{{url('/outstanding_payable')}}" class="btn btn-primary d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex" style="width: 15%;">
                                 <i class="fas fa-file-invoice-dollar"></i>
                             </span>
-                            <span class="ms-2" style="width: 90%;">Outstanding Payable</span>
+                            <span class="ms-2" style="width: 85%;">Outstanding Payable</span>
                         </a>
                     </div>
                 </div>

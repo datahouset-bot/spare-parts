@@ -297,6 +297,7 @@ public function payment_print_view3($voucher_no)
                 $ledger->credit = $request->receipt_amount;           
                 $ledger->amount = $request->receipt_amount;
                 $ledger->remark = $request->receipt_remark;  
+                $ledger->la1 = $request->receipt_discount;
                 $ledger->simpal_amount = "-" . $request->receipt_amount;
                 $ledger->userid = Auth::user()->id; // Assign the authenticated user's ID
                 $ledger->username = Auth::user()->name;
@@ -320,7 +321,8 @@ public function payment_print_view3($voucher_no)
                 $ledger->primary_group_name = $paymentmode->accountgroup->primaryGroup->primary_group_name;
                 $ledger->debit = $request->receipt_amount;
                 $ledger->amount = $request->receipt_amount;
-                $ledger->remark = $request->receipt_remark;  
+                $ledger->remark = $request->receipt_remark; 
+                $ledger->la1 = $request->receipt_discount; 
                 $ledger->simpal_amount = "+" . $request->receipt_amount;
                 $ledger->userid = Auth::user()->id; 
                 $ledger->username = Auth::user()->name;

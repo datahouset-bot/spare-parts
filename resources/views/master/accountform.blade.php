@@ -55,8 +55,6 @@
                                 {{ $message }}
                             @enderror
                         </span>
-
-
                     </div>
                 </div>
                 <div class="col-md-6 mt-2">
@@ -69,29 +67,20 @@
                             @enderror
                         </span>
                         <label for="op_balnce">Opening Balance </label>
-
                     </div>
-
                 </div>
-
-
 
                 <div class="col-md-4 mt-2">
 
 
                     <div class="form-floating mb-3 mb-md-0">
-
-
                         <select name="balnce_type" Id ="balnce_type"class="form-select"
                             aria-label="Default select example">
                             <option selected disabled>Select</option>
-
                             <option value="Dr">Dr</option>
                             <option value="Cr">Cr</option>
-
                         </select>
                         <label for="balnce_type">Balance Type </label>
-
                         <span class="text-danger">
                             @error('balnce_type')
                                 {{ $message }}
@@ -109,9 +98,7 @@
                             @enderror
                         </span>
                         <label for="address">Address</label>
-
                     </div>
-
                 </div>
                 <div class="col-md-4 mt-2">
                     <div class="form-floating mb-3 mb-md-0">

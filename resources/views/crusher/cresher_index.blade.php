@@ -24,7 +24,7 @@
         {{-- ACTION BAR --}}
         <div class="card-footer d-flex justify-content-between align-items-center">
 
-            @can('delete user')
+            {{-- @can('delete user')
             <form action="{{ route('crusher.destroy', 'all') }}"
                   method="POST"
                   onsubmit="return confirm('⚠️ Are you sure you want to DELETE ALL challans? This cannot be undone!')">
@@ -34,7 +34,7 @@
                     🗑️ Delete All
                 </button>
             </form>
-            @endcan
+            @endcan --}}
 
             <a href="{{ route('crusher.create') }}" class="btn btn-success">
                 + Add New Challan
@@ -48,29 +48,29 @@
                        class="table table-bordered table-striped table-hover align-middle text-center"
                        style="width:100%">
                     <thead class="table-dark">
-                        <tr>
+                        <tr>  
                             <th>#</th>
                             <th>Slip No</th>
+                              <th>RST No</th>
                             <th>Date</th>
                             <th>Time</th>
                             <th>Vehicle No</th>
-                            <th>Party</th>
+                            <th>Party Name</th>
 
                             @can('view user')
                                 <th>Vehicle Measure</th>
                                 <th>Material</th>
-                                 <th>Material Remark</th>
-                                 <th>Address</th>
-                                <th>Phone</th>
                                 <th>Qty</th>
                                 <th>Rate</th>
-                                 <th>Total</th>
+                                 <th> Material Total</th>
                                  <th>Royalty Quantity</th>
                                  <th>Royalty Rate</th>
                                 <th>Royalty Total</th>
                                    <th>Grand Total</th>
-                                   <th>RST</th>
+                                  <th>Material Remark</th>
                                 <th>Remarks</th>
+                                <th>Address</th>
+                                <th>Phone</th>
                                 <th>Image</th>
                             @endcan
 
@@ -83,6 +83,7 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $item->slip_no }}</td>
+                                   <td>{{ ($item->af7)}}</td>
                             <td>{{ \Carbon\Carbon::parse($item->date)->format('d-m-Y') }}</td>
                           <td>{{ \Carbon\Carbon::parse($item->time)->format('h:i A') }}</td>
                             <td>{{ $item->vehicle_no }}</td>
@@ -91,9 +92,7 @@
                             @can('view user')
                                 <td>{{ $item->vehicle_measure }}</td>
                                  <td>{{ $item->Material }}</td>
-                                 <td>{{ $item->Materialremark }}</td>
-                                <td>{{ $item->address }}</td>
-                                <td>{{ $item->phone }}</td>
+                               
                                
                                 <td>{{ $item->Quantity }}</td>
                                 <td>{{ number_format($item->Rate, 2) }}</td>
@@ -102,8 +101,10 @@
                                <td>{{ number_format($item->Royalty_Rate, 2) }}</td>
                                   <td>{{ number_format($item->Royalty, 2) }}</td>
                                      <td>{{ number_format($item->af8, 2) }}</td>
-                                     <td>{{ ($item->af7)}}</td>
+                                     <td>{{ $item->Materialremark }}</td>
                                 <td>{{ $item->remark }}</td>
+                                <td>{{ $item->address }}</td>
+                                <td>{{ $item->phone }}</td>
                                 <td>
                                     @if($item->pic)
                                         <img src="{{ asset('storage/app/public/account_image/'.$item->pic) }}"

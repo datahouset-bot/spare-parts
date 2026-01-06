@@ -67,12 +67,11 @@ class SaleController extends CustomBaseController
  
        }
 
-       $godowns=godown::where('firm_id', Auth::user()->firm_id)->get();
-       $sundry_SundryCreditors_id = accountgroup::where('firm_id', Auth::user()->firm_id)
-       ->where('account_group_name', 'Sundry Debtors')->first();
-
-   $accountdata = account::where('firm_id', Auth::user()->firm_id)->where('account_group_id', $sundry_SundryCreditors_id->id)->get();   
-       $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
+$godowns=godown::where('firm_id', Auth::user()->firm_id)->get();
+$sundry_SundryCreditors_id = accountgroup::where('firm_id', Auth::user()->firm_id)
+->where('account_group_name', 'Sundry Debtors')->first();
+$accountdata = account::where('firm_id', Auth::user()->firm_id)->where('account_group_id', $sundry_SundryCreditors_id->id)->get();   
+$itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
 
        return view('entery.sale.sale_create', compact('new_bill_no','new_voucher_no','accountdata','itemdata','godowns'));
 

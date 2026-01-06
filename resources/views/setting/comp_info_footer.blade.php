@@ -397,13 +397,15 @@
                                                 </div>
                                             </div>
 
-                                                                                        
-                                                <div class="input-group mb-3 mb-md-0">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">Terms &amp; Conditions</span>
-                                                    </div>
-                                                    <textarea rows="4" cols="50" name="terms" class="form-control" aria-label="With textarea">{{ $compinfofooter->terms }}</textarea>
-                                                </div>
+<div class="input-group mb-3 mb-md-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Terms &amp; Conditions</span>
+    </div>
+
+    <textarea rows="6"cols="50" name="terms" class="form-control"
+    placeholder="Enter ONE term per line&#10;"
+    >{{ old('terms', $compinfofooter->terms) }}</textarea>
+</div>
 
 
                                                 <div class="mt-4 mb-0">

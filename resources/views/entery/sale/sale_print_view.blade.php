@@ -167,19 +167,24 @@ background-color:white;
 
             }
 
-            .voucher_footer {
-                background-color: bisque;
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                border: 1px solid black;
-                margin-bottom: 0px;
-            }
+           .voucher_footer {
+    background-color: bisque;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows: auto;     /* AUTO HEIGHT */
+    border: 1px solid black;
+}
 
-            .terms {
-                grid-column: 1 / 3;
-                height: 100px;
-                text-align: center;
-            }
+
+          .terms {
+    grid-column: 1 / 3;
+    min-height: 100px;        /* initial height */
+    height: auto;             /* AUTO GROW */
+    padding: 6px;
+    text-align: left;
+    overflow: visible;        /* allow expansion */
+}
+
 
             .bank_detail {
                 text-align: left;
@@ -263,6 +268,14 @@ background-color:white;
                     padding: 0 !important;
                 }
             }
+            .terms ol {
+    margin: 4px 0;
+}
+
+.terms li {
+    margin-bottom: 2px;
+}
+
         </style>
 
 
@@ -418,10 +431,22 @@ background-color:white;
             </div>
             <div style="background-color: white" class="my-1">&nbsp;</div>
             <div class="voucher_footer">
-                <div class="terms "style="background-color:#e6ecff">
-                    <h5>Terms & Conditions</h5>
-                    <span>{{ $compinfofooter->terms }}</span>
-                </div>
+                <div class="terms" style="background-color:#e6ecff">
+    <h5>Terms & Conditions</h5>
+
+    @if(!empty($compinfofooter->terms))
+        @php
+            $terms = array_filter(array_map('trim', explode("\n", $compinfofooter->terms)));
+        @endphp
+
+        <ol style="padding-left:18px; font-size:13px; text-align:left;">
+            @foreach($terms as $term)
+                <li>{{ $term }}</li>
+            @endforeach
+        </ol>
+    @endif
+</div>
+
                 <div class="for_companyname"style="background-color:#e6ecff"><span>For
                         {{ $componyinfo->cominfo_firm_name }}</span><br></div>
                 <div class="bank_detail"style="background-color:#e6ecff">

@@ -182,12 +182,6 @@ class AccountController extends CustomBaseController
 
     }
 
-
-
-
-
-
-
     public function destroy(Account $account, $id)
     {
         // Check if the account is used in a ledger
@@ -281,10 +275,6 @@ class AccountController extends CustomBaseController
             $account->person_name = $request->person_name;
             $account->gst_no   = $request->gst_no;
             $account->gst_code = !empty($request->gst_no) ? substr($request->gst_no, 0, 2) : null;
-
-
-
-
             $account->address = $request->address;
             $account->email = $request->email;
             $account->account_af1 = $request->account_af1;  //guest firm name 
@@ -299,7 +289,6 @@ class AccountController extends CustomBaseController
             $account->account_pic1 = $account_pic1;
             $account->account_birthday = $request->account_birthday;
             $account->account_anniversary = $request->account_anniversary;
-
             $account->account_code = $request->account_code;
             $account->account_cr_days = $request->account_cr_days;
             $account->account_salsman = $request->account_salsman;
@@ -309,7 +298,6 @@ class AccountController extends CustomBaseController
             return redirect('account');
         } else {
             return redirect()->back()->withInput()->withErrors($validator);
-
         }
     }
 
