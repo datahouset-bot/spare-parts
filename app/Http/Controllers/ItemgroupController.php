@@ -45,15 +45,13 @@ class ItemgroupController extends CustomBaseController
         'required',
         'unique:itemgroups,item_group,NULL,id,firm_id,' . auth()->user()->firm_id,
     ],
-           
-            'head_group'=>'required'
              
             ]);
             if ($validator->passes()) {
                 $itemgroup = new itemgroup;
                 $itemgroup->firm_id=Auth::user()->firm_id;
                 $itemgroup->item_group = $request->item_group;
-                $itemgroup->head_group=$request->head_group;
+                // $itemgroup->head_group=$request->head_group;
 
                 $itemgroup->save();
         

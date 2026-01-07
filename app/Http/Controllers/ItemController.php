@@ -94,13 +94,13 @@ class ItemController extends CustomBaseController
     ],
             'item_barcode' => 'nullable|numeric',
             'mrp' => 'required|numeric',
-            'sale_rate' => 'required|numeric',
+            'sale_rate' => 'nullable|numeric',
              'sale_rate_a' => 'nullable|numeric',
             'sale_rate_b' => 'nullable|numeric',
             'sale_rate_c' => 'nullable|numeric',
             'purchase_rate' => 'nullable|numeric',
-             'group_id'=>'required',
-            'company_id'=>'required',
+             'group_id'=>'nullable',
+            'company_id'=>'nullable',
              'item_gst_id'=>'required|numeric',
             'unit_id' => 'required|numeric',
         ]);
@@ -128,7 +128,7 @@ class ItemController extends CustomBaseController
             $item->sale_rate_b = $request->sale_rate_b;
             $item->sale_rate_c = $request->sale_rate_c;
             $item->purchase_rate = $request->purchase_rate;
-            $item->short_name = $request->short_name;
+            // $item->short_name = $request->short_name;
             if (is_null($request->item_barcode)) {
                 $last_item = Item::
                 where('firm_id',Auth::user()->firm_id)->orderByRaw('CAST(id AS UNSIGNED) DESC')->first();

@@ -121,7 +121,7 @@
                   <tr>
                     <th scope="col">S.No</th>
                     <th scope="col"> Item Group  </th>
-                    <th scope="col"> Item  Head Group  </th>
+                    {{-- <th scope="col"> Item  Head Group  </th> --}}
                     <th scope="col"></th>
                     <th scope="col"></th>
                   </tr>
@@ -137,7 +137,7 @@
                     {{-- <th scope="row">{{$record['id']}}</th> --}}
                     <th scope="row">{{$r1=$r1+1}}</th>
                     <td>{{$record['item_group']}}</td>
-                    <td>{{$record['head_group']}}</td>
+                    {{-- <td>{{$record['head_group']}}</td> --}}
 
 
                     <td><a href="{{('showediteditemgroups/'.$record['id']) }}"   ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a></td>
