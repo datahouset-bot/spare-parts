@@ -202,6 +202,11 @@
                     <label>Rate</label>
                     <input class="form-control" id="Rate" type="text" name="Rate">
                 </div>
+ <!-- Total -->
+                <div class="col-md-4 col-12">
+                    <label>Total</label>
+                    <input class="form-control" id="total" type="text" name="total">
+                </div>
 
                  <div class="col-md-4 col-12">
                     <label>Material Remark</label>
@@ -223,16 +228,11 @@
 
                 <!-- Royalty -->
                 <div class="col-md-4 col-12">
-                    <label>Royalty</label>
+                    <label>Royalty Total</label>
                     <input class="form-control" id="Royalty" type="text" name="Royalty">
                 </div>
 
-                <!-- Total -->
-                <div class="col-md-4 col-12">
-                    <label>Total</label>
-                    <input class="form-control" id="total" type="text" name="total">
-                </div>
-
+               
                 {{-- grandtotal --}}
                  <div class="col-md-4 col-12">
                     <label>Grand Total</label>
@@ -568,34 +568,34 @@ $(function() {
     $('#vehicle_no').val(s.data('vehicle-no'));
 });
 
-    function calc() {
+   function calcTotal() {
         let q = parseFloat($('#Quantity').val()) || 0;
         let r = parseFloat($('#Rate').val()) || 0;
 
-        $('#total').val((q * r ).toFixed(2));
+        $('#total').val((q * r).toFixed(2));
+        updateGrandTotal();
     }
-    $('#Quantity,#Rate').on('input', calc);
 
-
-    function royalty() {
+    function calcRoyalty() {
         let q = parseFloat($('#Royalty_Quantity').val()) || 0;
         let r = parseFloat($('#Royalty_Rate').val()) || 0;
 
-        $('#Royalty').val((q * r ).toFixed(2));
+        $('#Royalty').val((q * r).toFixed(2));
+        updateGrandTotal();
     }
-    $('#Royalty_Quantity,#Royalty_Rate').on('input', royalty);
-    
-    function grandtotal() {
-        let t = parseFloat($('#total').val()) || 0;
-        let ro = parseFloat($('#Royalty').val()) || 0;
 
-        $('#grand_total').val((t + ro ).toFixed(2));
-    }
-    $('#total,#Royalty').on('input', grandtotal);
+    $('#Quantity, #Rate').on('input', calcTotal);
+    $('#Royalty_Quantity, #Royalty_Rate').on('input', calcRoyalty);
+   
 
+    function updateGrandTotal() {
+    let total   = parseFloat($('#total').val()) || 0;
+    let royalty = parseFloat($('#Royalty').val()) || 0;
+
+    $('#grand_total').val((total + royalty).toFixed(2));
+}
 });
 </script>
-
 <script>
     $('#search_id').change(function () {
     let selected = $(this).find(":selected");

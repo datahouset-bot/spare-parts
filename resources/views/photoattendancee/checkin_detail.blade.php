@@ -169,19 +169,29 @@ Edit
 <h5>Edit Attendance</h5>
 <button class="btn-close" data-bs-dismiss="modal"></button>
 </div>
-
 <div class="modal-body">
+
+<label>Check-In Time</label>
+<input type="time" name="checkin_time" id="modal_checkin_time"
+       class="form-control mb-2">
+
+<label>Check-Out Time</label>
+<input type="time" name="checkout_time" id="modal_checkout_time"
+       class="form-control mb-2">
+
 <label>Status</label>
 <select name="status" id="modal_status" class="form-select mb-2">
-<option value="Present">Present</option>
-<option value="Absent">Absent</option>
-<option value="Half Day">Half Day</option>
-<option value="Late">Late</option>
+    <option value="Present">Present</option>
+    <option value="Absent">Absent</option>
+    <option value="Half Day">Half Day</option>
+    <option value="Late">Late</option>
 </select>
 
 <label>Remark</label>
 <input type="text" name="Remark" id="modal_Remark" class="form-control">
+
 </div>
+
 
 <div class="modal-footer">
 <button class="btn btn-success">Update</button>
@@ -219,7 +229,6 @@ $('input[name="month"]').on('change', function () {
     $('input[name="to_date"]').val('');
 });
 </script>
-
 <script>
 document.getElementById('editAttendanceModal')
 .addEventListener('show.bs.modal', function (e) {
@@ -229,9 +238,11 @@ document.getElementById('editAttendanceModal')
     modal_emp_id.value = b.dataset.emp;
     modal_date.value   = b.dataset.date;
     modal_status.value = b.dataset.status;
-
-    // data-remark always becomes lowercase
     modal_Remark.value = b.dataset.remark ?? '';
+
+    // NEW
+    modal_checkin_time.value  = b.dataset.checkin ?? '';
+    modal_checkout_time.value = b.dataset.checkout ?? '';
 });
 </script>
 

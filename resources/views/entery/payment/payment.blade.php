@@ -12,8 +12,24 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+<style>
+/* ============================================ */
+/* payment mode css */
+/* ============================================
+/* Keep select2 + button on same row */
+.payment-mode-group {
+    display: flex;
+}
 
+.payment-mode-group .select2-container {
+    flex: 1 1 auto !important;
+    width: auto !important;
+}
 
+.payment-mode-group .btn {
+    white-space: nowrap;
+}
+</style>
     <script>
         $(document).ready(function() {
             let table = new DataTable('#remindtable');
@@ -84,36 +100,60 @@
 
                                 </div>
             <div class="col-md-12">
-                                        <label for="payment_mode_id">Payment Mode </label>
-                                        <select id="payment_mode_id" name="payment_mode_id"
-                                            class="form-control myitemgroup form-select">
-                                            <option value="" disabled selected>Select Paymnt Mode</option>
-                                            @foreach ($paymentmodes as $paymentmode)
-                                                <option value="{{ $paymentmode->id }}">{{ $paymentmode->account_name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger">
-                                            @error('payment_mode_id')
-                                                {{ $message }}
-                                            @enderror
-                                        </span>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="account_id">Account</label>
-                                        <select id="account_id" name="account_id"
-                                            class="form-control myitemgroup form-select">
-                                            <option value="" disabled selected>Select Account</option>
-                                            @foreach ($account_names as $record)
-                                                <option value="{{ $record->id }}">{{ $record->account_name }}|| {{ $record->mobile }}</option>
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger">
-                                            @error('account_id')
-                                                {{ $message }}
-                                            @enderror
-                                        </span>
-                                    </div>
+    <label for="payment_mode_id">Payment Mode</label>
+
+    <div class="input-group payment-mode-group">
+        <select id="payment_mode_id" name="payment_mode_id"
+                class="form-control myitemgroup form-select">
+            <option value="" disabled selected>Select Payment Mode</option>
+
+            @foreach ($paymentmodes as $paymentmode)
+                <option value="{{ $paymentmode->id }}">
+                    {{ $paymentmode->account_name }}
+                </option>
+            @endforeach
+        </select>
+
+        <button type="button"
+                class="btn btn-outline-primary"
+                id="addPaymentModeBtn"
+                title="Add New Payment Mode">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+
+    <span class="text-danger">
+        @error('payment_mode_id') {{ $message }} @enderror
+    </span>
+</div>
+
+                        <div class="col-md-12">
+    <label for="account_id">Account</label>
+
+    <div class="input-group payment-mode-group">
+        <select id="account_id" name="account_id"
+                class="form-control myitemgroup form-select">
+            <option value="" disabled selected>Select Account</option>
+
+            @foreach ($account_names as $record)
+                <option value="{{ $record->id }}">
+                    {{ $record->account_name }} || {{ $record->mobile }}
+                </option>
+            @endforeach
+        </select>
+
+        <button type="button"
+                class="btn btn-outline-primary"
+                id="addAccountBtn"
+                title="Add New Account">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+
+    <span class="text-danger">
+        @error('account_id') {{ $message }} @enderror
+    </span>
+</div>
                                 <div class="col-md-12">
                                     <label for="reciept_amount">Amount </label>
                                     <input type="text" class ="form-control " placeholder=" Amount"
@@ -262,5 +302,41 @@
     });
 </script>
 
+<script>
+$(document).on('select2:select', '#account_id', function (e) {
+    let value = e.params.data.id;
+
+    if (value === '__add_new__') {
+        // close dropdown
+        $('#account_id').val(null).trigger('change');
+
+        // open account form
+        window.open('/accountform', '_blank');
+    }
+});
+</script>
+
+<script>
+$('#addAccountBtn').on('click', function () {
+    window.open('/accountform', '_blank');
+});
+$('#account_id, #payment_mode_id').select2({
+    dropdownParent: $('#myModal'),
+    width: 'resolve'
+});
+
+</script>
+
+
+<script>
+    $('#payment_mode_id').select2({
+    dropdownParent: $('#myModal'),
+    width: 'resolve'
+});
+$('#addPaymentModeBtn').on('click', function () {
+    window.open('/accountform', '_blank');
+});
+
+</script>
 
 @endsection

@@ -55,7 +55,7 @@
                         <label>Party Name</label>
                         <input type="text" name="party_name"
                                class="form-control"
-                               value="{{ $crusher->party_name }}">
+                               value="{{ $crusher->party_name }}" readonly>
                     </div>
 
                     {{-- VEHICLE --}}
@@ -63,14 +63,14 @@
                         <label>Vehicle No</label>
                         <input type="text" name="vehicle_no"
                                class="form-control"
-                               value="{{ $crusher->vehicle_no }}">
+                               value="{{ $crusher->vehicle_no }}" readonly>
                     </div>
 
                     <div class="col-md-4">
                         <label>Vehicle Measure</label>
                         <input type="text" name="vehicle_measure"
                                class="form-control"
-                               value="{{ $crusher->vehicle_measure }}">
+                               value="{{ $crusher->vehicle_measure }}" readonly>
                     </div>
 
                     {{-- MATERIAL --}}
@@ -128,6 +128,16 @@
                                class="form-control"
                                value="{{ $crusher->Rate }}">
                     </div>
+                     {{-- TOTAL --}}
+                    <div class="col-md-4">
+                        <label>Total</label>
+                        <input type="text"
+                               id="Total"
+                               name="Total"
+                               class="form-control"
+                               value="{{ $crusher->Total }}"
+                               readonly>
+                    </div>
 
                     {{-- ROYALTY --}}
                     <div class="col-md-4">
@@ -149,7 +159,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label>Royalty</label>
+                        <label>Royalty Total</label>
                         <input type="number" step="0.01"
                                id="Royalty"
                                name="Royalty"
@@ -157,16 +167,7 @@
                                value="{{ $crusher->Royalty }}">
                     </div>
 
-                    {{-- TOTAL --}}
-                    <div class="col-md-4">
-                        <label>Total</label>
-                        <input type="text"
-                               id="Total"
-                               name="Total"
-                               class="form-control"
-                               value="{{ $crusher->Total }}"
-                               readonly>
-                    </div>
+                   
                     <div class="col-md-4">
                         <label>Grand total</label>
                         <input type="text"
@@ -181,21 +182,21 @@
                         <label>RST</label>
                         <input type="text" name="rst" 
                                class="form-control"
-                               value="{{ $crusher->af7 }}">
+                               value="{{ $crusher->af7 }}" readonly>
                     </div>
                     {{-- CONTACT --}}
                     <div class="col-md-4">
                         <label>Phone</label>
                         <input type="text" name="phone"
                                class="form-control"
-                               value="{{ $crusher->phone }}">
+                               value="{{ $crusher->phone }}" readonly>
                     </div>
 
                     <div class="col-md-4">
                         <label>Address</label>
                         <input type="text" name="address"
                                class="form-control"
-                               value="{{ $crusher->address }}">
+                               value="{{ $crusher->address }}" readonly>
                     </div>
 <div class="col-md-4">
     <label>Loader Operator</label>
@@ -259,21 +260,39 @@
 <script>
 $(function () {
 
-    function calc() {
-        let q  = parseFloat($('#Quantity').val()) || 0;
-        let r  = parseFloat($('#Rate').val()) || 0;
+    function calculateTotal() {
+        let q = parseFloat($('#Quantity').val()) || 0;
+        let r = parseFloat($('#Rate').val()) || 0;
+
+        let total = q * r;
+        $('#Total').val(total.toFixed(2));
+
+        updateGrandTotal();
+    }
+
+    function calculateRoyalty() {
         let rq = parseFloat($('#Royalty_Quantity').val()) || 0;
         let rr = parseFloat($('#Royalty_Rate').val()) || 0;
 
         let royalty = rq * rr;
         $('#Royalty').val(royalty.toFixed(2));
 
-        let total = (q * r) + royalty;
-        $('#Total').val(total.toFixed(2));
+        updateGrandTotal();
     }
 
-    $('#Quantity,#Rate,#Royalty_Quantity,#Royalty_Rate').on('input', calc);
+    function updateGrandTotal() {
+        let total   = parseFloat($('#Total').val()) || 0;
+        let royalty = parseFloat($('#Royalty').val()) || 0;
+
+        $('#grand_total').val((total + royalty).toFixed(2));
+    }
+
+    // 🔄 Trigger recalculation
+    $('#Quantity, #Rate').on('input', calculateTotal);
+    $('#Royalty_Quantity, #Royalty_Rate').on('input', calculateRoyalty);
+
 });
 </script>
+
 
 @endsection

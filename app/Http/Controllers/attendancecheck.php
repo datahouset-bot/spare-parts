@@ -267,14 +267,16 @@ $attendance->checkout_photo = $filename;
     {
         //
     }
-    public function updateStatus(Request $request)
+   public function updateStatus(Request $request)
 {
-    $request->validate([
-        'emp_id' => 'required',
-        'date'   => 'required',
-        'status' => 'required',
-        'Remark' => 'nullable|string'
-    ]);
+  $request->validate([
+    'emp_id'        => 'required',
+    'date'          => 'required|date',
+    'status'        => 'required',
+    'checkin_time'  => 'nullable|date_format:H:i',
+    'checkout_time' => 'nullable|date_format:H:i',
+    'Remark'        => 'nullable|string|max:255'
+]);
 
     $attendance = attendancecheckin::where('emp_id', $request->emp_id)
         ->whereDate('date', $request->date)
@@ -289,28 +291,17 @@ $attendance->checkout_photo = $filename;
         $attendance->date     = $request->date;
     }
 
-    // RESET
-    $attendance->checkin_time  = null;
-    $attendance->checkout_time = null;
+    // ✅ MANUAL TIMES ONLY
+    $attendance->checkin_time = $request->checkin_time
+        ? $request->date . ' ' . $request->checkin_time . ':00'
+        : null;
 
-    $checkinDateTime  = $request->date . ' ';
-    $checkoutDateTime = $request->date . ' ';
+    $attendance->checkout_time = $request->checkout_time
+        ? $request->date . ' ' . $request->checkout_time . ':00'
+        : null;
 
-    if ($request->status == 'Present') {
-        $attendance->checkin_time  = $checkinDateTime . '09:00:00';
-        $attendance->checkout_time = $checkoutDateTime . '18:00:00';
-    }
-
-    if ($request->status == 'Half Day') {
-        $attendance->checkin_time = $checkinDateTime . '09:00:00';
-    }
-
-    if ($request->status == 'Late') {
-        $attendance->checkin_time  = $checkinDateTime . '10:30:00';
-        $attendance->checkout_time = $checkoutDateTime . '18:00:00';
-    }
-
-    // ✅ SAVE Remark
+    // STATUS + REMARK
+    $attendance->af3 = $request->status;
     $attendance->Remark = $request->Remark;
 
     $attendance->save();

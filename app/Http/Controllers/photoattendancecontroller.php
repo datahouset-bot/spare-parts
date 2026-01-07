@@ -44,11 +44,9 @@ public function create()
 
     public function showform()
     {
-        $employees = photoattendance::select('id', 'name')->get();
+        $employees = photoattendance::select('id', 'af5', 'name')->get();
         return view('photoattendancee.checkinindex', compact('employees'));
     }
-
-
     //============ SHOW EMPLOYEE ATTENDANCE/salary/and all DETAILS===========================
 public function show($id)
 {

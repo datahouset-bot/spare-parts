@@ -25,7 +25,22 @@
 .card {
     border-radius: 10px;
 }
+/* ============================================ */
+/* payment mode css */
+/* ============================================
+/* Keep select2 + button on same row */
+.payment-mode-group {
+    display: flex;
+}
 
+.payment-mode-group .select2-container {
+    flex: 1 1 auto !important;
+    width: auto !important;
+}
+
+.payment-mode-group .btn {
+    white-space: nowrap;
+}
 /* ============================================
    MODAL RESPONSIVENESS
 ============================================ */
@@ -114,6 +129,12 @@ table td {
     min-height: 38px !important;
     padding-top: 3px !important;
 }
+.select2-results__option[data-add="true"] {
+    color: #0d6efd !important;
+    font-weight: 600;
+    border-top: 1px solid #ddd;
+}
+
 
 /* For mobile: dropdown inside modal */
 @media (max-width: 768px) {
@@ -196,38 +217,64 @@ table td {
                                         <input type="text" class ="form-control date" name="entry_date" @cannot('Change_Date&Time')readonly data-restrict="true"  @endcannot>
 
                                     </div>
-                                    <div class="col-md-12">
-                                        <label for="payment_mode_id">Payment Mode </label>
-                                        <select id="payment_mode_id" name="payment_mode_id"
-                                            class="form-control myitemgroup form-select">
-                                            <option value="" disabled selected>Select Paymnt Mode</option>
-                                            @foreach ($paymentmodes as $paymentmode)
-                                                <option value="{{ $paymentmode->id }}">{{ $paymentmode->account_name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger">
-                                            @error('payment_mode_id')
-                                                {{ $message }}
-                                            @enderror
-                                        </span>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="account_id">Account</label>
-                                        <select id="account_id" name="account_id"
-                                            class="form-control myitemgroup form-select">
-                                            <option value="" disabled selected>Select Account</option>
-                                            @foreach ($account_names as $record)
-                                                <option value="{{ $record->id }}">{{ $record->account_name }}|| {{ $record->mobile }}</option>
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger">
-                                            @error('account_id')
-                                                {{ $message }}
-                                            @enderror
-                                        </span>
-                                    </div>
+                                  
+                                       <div class="col-md-12">
+    <label for="payment_mode_id">Payment Mode</label>
 
+    <div class="input-group payment-mode-group">
+        <select id="payment_mode_id" name="payment_mode_id"
+                class="form-control myitemgroup form-select">
+            <option value="" disabled selected>Select Payment Mode</option>
+
+            @foreach ($paymentmodes as $paymentmode)
+                <option value="{{ $paymentmode->id }}">
+                    {{ $paymentmode->account_name }}
+                </option>
+            @endforeach
+        </select>
+
+        <button type="button"
+                class="btn btn-outline-primary"
+                id="addPaymentModeBtn"
+                title="Add New Payment Mode">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+
+    <span class="text-danger">
+        @error('payment_mode_id') {{ $message }} @enderror
+    </span>
+</div>
+
+                        <div class="col-md-12">
+    <label for="account_id">Account</label>
+
+    <div class="input-group payment-mode-group">
+        <select id="account_id" name="account_id"
+                class="form-control myitemgroup form-select">
+            <option value="" disabled selected>Select Account</option>
+
+            @foreach ($account_names as $record)
+                <option value="{{ $record->id }}">
+                    {{ $record->account_name }} || {{ $record->mobile }}
+                </option>
+            @endforeach
+        </select>
+
+        <button type="button"
+                class="btn btn-outline-primary"
+                id="addAccountBtn"
+                title="Add New Account">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+
+    <span class="text-danger">
+        @error('account_id') {{ $message }} @enderror
+    </span>
+</div>
+
+                                        
                                     <div class="col-md-12">
                                         <label for="reciept_amount">Amount </label>
                                       <input type="text" class="form-control" id="receipt_amount" 
@@ -237,6 +284,8 @@ table td {
                                                 {{ $message }}
                                             @enderror
                                         </span>
+                                        <input type="hidden" id="original_amount">
+
 
                                     </div>
                                     <div class="col-md-12">
@@ -394,32 +443,69 @@ table td {
         });
     });
 </script>
-
 <script>
 $(document).ready(function () {
 
+    // Store original amount when user types
+    $('#receipt_amount').on('input', function () {
+        let value = parseFloat($(this).val());
+        if (!isNaN(value)) {
+            $('#original_amount').val(value);
+        }
+    });
+
     function calculateDiscount() {
-        let amount = parseFloat($('#receipt_amount').val()) || 0;
+        let originalAmount  = parseFloat($('#original_amount').val()) || 0;
         let discountPercent = parseFloat($('#receipt_discount').val()) || 0;
+
+        // If discount cleared → restore original
+        if (discountPercent === 0 || $('#receipt_discount').val() === '') {
+            $('#receipt_amount').val(originalAmount.toFixed(2));
+            return;
+        }
 
         if (discountPercent > 100) {
             alert('Discount cannot be more than 100%');
             $('#receipt_discount').val('');
+            $('#receipt_amount').val(originalAmount.toFixed(2));
             return;
         }
 
-        let discountValue = (amount * discountPercent) / 100;
-        let finalAmount = amount - discountValue;
+        let discountValue = (originalAmount * discountPercent) / 100;
+        let finalAmount   = originalAmount - discountValue;
 
         $('#receipt_amount').val(finalAmount.toFixed(2));
     }
 
-    $('#receipt_discount').on('keyup change', function () {
-        calculateDiscount();
-    });
+    $('#receipt_discount').on('keyup change', calculateDiscount);
 
 });
 </script>
+
+<script>
+$('#addAccountBtn').on('click', function () {
+    window.open('/accountform', '_blank');
+});
+$('#account_id, #payment_mode_id').select2({
+    dropdownParent: $('#myModal'),
+    width: 'resolve'
+});
+
+</script>
+
+
+<script>
+    $('#payment_mode_id').select2({
+    dropdownParent: $('#myModal'),
+    width: 'resolve'
+});
+$('#addPaymentModeBtn').on('click', function () {
+    window.open('/accountform', '_blank');
+});
+
+</script>
+
+
 
 
 @endsection

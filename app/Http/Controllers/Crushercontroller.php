@@ -33,6 +33,8 @@ public function store(Request $request)
         'pic'               => 'required |image|mimes:jpg,jpeg,png|max:2048',
         'Quantity'        => 'required',
         'Material'        => 'required',
+        'vehicle_no'      => 'required',
+        'party_name'      => 'required',
     ]);
 
     // ================= CREATE =================
