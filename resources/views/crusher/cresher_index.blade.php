@@ -105,13 +105,18 @@
                                 <td>{{ $item->remark }}</td>
                                 <td>{{ $item->address }}</td>
                                 <td>{{ $item->phone }}</td>
-                                <td>
-                                    @if($item->pic)
-                                        <img src="{{ asset('storage/app/public/account_image/'.$item->pic) }}"
-                                             width="45" height="45"
-                                             style="border-radius:8px; object-fit:cover;">
-                                    @endif
-                                </td>
+                               <td>
+    @if($item->pic)
+        <a href="{{ asset('storage/app/public/account_image/'.$item->pic) }}"
+           target="_blank"
+           class="btn btn-sm btn-info text-white">
+            View
+        </a>
+    @else
+        <span class="text-muted">No Image</span>
+    @endif
+</td>
+
                             @endcan
 
                             <td>

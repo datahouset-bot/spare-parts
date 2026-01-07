@@ -230,8 +230,8 @@ table td {
 
                                     <div class="col-md-12">
                                         <label for="reciept_amount">Amount </label>
-                                        <input type="text" class ="form-control " placeholder=" Amount"
-                                            name="receipt_amount">
+                                      <input type="text" class="form-control" id="receipt_amount" 
+                                      placeholder=" Amount" name="receipt_amount">
                                         <span class="text-danger">
                                             @error('receipt_amount')
                                                 {{ $message }}
@@ -241,8 +241,8 @@ table td {
                                     </div>
                                     <div class="col-md-12">
                                         <label for="reciept_discount">Discount </label>
-                                        <input type="text" class ="form-control " placeholder=" Discount"
-                                            name="receipt_discount">
+                                       <input type="text" class="form-control" id="receipt_discount"
+                                        placeholder=" Discount (%)" name="receipt_discount">
                                         <span class="text-danger">
                                             @error('receipt_discount')
                                                 {{ $message }}
@@ -303,6 +303,7 @@ table td {
                             <th scope="col"> Payment Mode </th>
                             <th scope="col"> Account Name </th>
                             <th scope="col"> Amount</th>
+                            <th scope="col">Discount</th>
                             <th scope="col"> Remark</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
@@ -323,6 +324,7 @@ table td {
                                 <td>{{ $ledger->payment_mode_name }}</td>
                                 <td>{{ $ledger->account_name }}</td>
                                 <td>{{ $ledger->amount }}</td>
+                                <td>{{ $ledger->la1 }}%</td>    
                                 <td>{{ $ledger->remark }}</td>
 
 
@@ -391,6 +393,32 @@ table td {
             }
         });
     });
+</script>
+
+<script>
+$(document).ready(function () {
+
+    function calculateDiscount() {
+        let amount = parseFloat($('#receipt_amount').val()) || 0;
+        let discountPercent = parseFloat($('#receipt_discount').val()) || 0;
+
+        if (discountPercent > 100) {
+            alert('Discount cannot be more than 100%');
+            $('#receipt_discount').val('');
+            return;
+        }
+
+        let discountValue = (amount * discountPercent) / 100;
+        let finalAmount = amount - discountValue;
+
+        $('#receipt_amount').val(finalAmount.toFixed(2));
+    }
+
+    $('#receipt_discount').on('keyup change', function () {
+        calculateDiscount();
+    });
+
+});
 </script>
 
 

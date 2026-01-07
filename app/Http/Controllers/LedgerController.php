@@ -90,24 +90,24 @@ public function reciepts_format($voucher_no){
         return view('entery.reciept.receipt_format_print', compact('voucher_no', 'fromtlist'));
 }
 // ====================================print reepit print===============================================
-public function slip_print_view($voucher_no) 
+public function slip_print_view($voucher_no)
 {
-        $account_names=account::where('firm_id',Auth::user()->firm_id)
-        ->orderBy('account_name','asc')->get();
-        $subquery = Ledger::select(DB::raw('MIN(id)'))
-        ->where('transaction_type', 'Receipts') // Apply this filter before grouping
-        ->where('firm_id',Auth::user()->firm_id)
-        ->groupBy('voucher_no');
-    
-    $ledgers = Ledger::withinFY('entry_date')->where('firm_id',Auth::user()->firm_id)
-         ->whereIn('id', $subquery)
-        ->orderByRaw('CAST(voucher_no AS UNSIGNED) DESC')
+    $account_names = account::where('firm_id', Auth::user()->firm_id)
+        ->orderBy('account_name', 'asc')
         ->get();
-    
 
-    return view('entery.reciept.reciept_print_view', compact('account_names','ledgers') );
+    $ledgers = Ledger::withinFY('entry_date')
+        ->where('firm_id', Auth::user()->firm_id)
+        ->where('transaction_type', 'Receipts')
+        ->where('voucher_no', $voucher_no)   // ✅ THIS WAS MISSING
+        ->orderBy('id', 'asc')
+        ->get();
+
+    return view(
+        'entery.reciept.reciept_print_view',
+        compact('account_names', 'ledgers', 'voucher_no')
+    );
 }
-
 
 
 // ===========================Payment============================================================
@@ -303,30 +303,6 @@ public function payment_print_view3($voucher_no)
                 $ledger->username = Auth::user()->name;
                 $ledger->save();
 
-
-                $ledger = new ledger;
-                $ledger->firm_id=Auth::user()->firm_id;
-                
-                $ledger->voucher_no = $request->voucher_no;
-                $ledger->reciept_no = $request->reciept_no;
-                $ledger->entry_date =  $formatted_entry_date;
-                $ledger->transaction_type =$request->transaction_type  ;
-                $ledger->payment_mode_id = $request->payment_mode_id;
-                $ledger->payment_mode_name = $accountname->account_name;                
-                $ledger->account_id = $request->payment_mode_id;
-                $ledger->account_name = $paymentmode->account_name;
-                $ledger->account_group_id =$paymentmode->account_group_id ;
-                $ledger->account_group_name = $paymentmode->accountgroup->account_group_name;
-                $ledger->primary_group_id = $paymentmode->accountgroup->primary_group_id;
-                $ledger->primary_group_name = $paymentmode->accountgroup->primaryGroup->primary_group_name;
-                $ledger->debit = $request->receipt_amount;
-                $ledger->amount = $request->receipt_amount;
-                $ledger->remark = $request->receipt_remark; 
-                $ledger->la1 = $request->receipt_discount; 
-                $ledger->simpal_amount = "+" . $request->receipt_amount;
-                $ledger->userid = Auth::user()->id; 
-                $ledger->username = Auth::user()->name;
-                $ledger->save();
         
                 return redirect('/reciepts')->with('message', 'entery saved created successfully!');
             } else {
