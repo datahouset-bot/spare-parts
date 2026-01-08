@@ -3,6 +3,14 @@
 @section('pagecontent')
 <div class="container mt-4">
     <div class="card shadow">
+    @php
+    $isAdmin = in_array(strtolower(Auth::user()->name), [
+        'admin',
+        'super admin'
+    ]);
+@endphp
+
+
 
         <div class="card-header bg-primary text-white text-center fw-bold">
             Edit Material Challan
@@ -20,7 +28,7 @@
                     <div class="col-md-4">
                         <label>Slip No</label>
                         <input class="form-control"
-                               value="{{ $crusher->slip_no }}" readonly>
+                               value="{{ $crusher->slip_no }}" {{ $isAdmin ? '' : 'readonly' }}>
                     </div>
 
                     {{-- DATE --}}
@@ -55,7 +63,7 @@
                         <label>Party Name</label>
                         <input type="text" name="party_name"
                                class="form-control"
-                               value="{{ $crusher->party_name }}" readonly>
+                               value="{{ $crusher->party_name }}" {{ $isAdmin ? '' : 'readonly' }}>
                     </div>
 
                     {{-- VEHICLE --}}
@@ -63,14 +71,14 @@
                         <label>Vehicle No</label>
                         <input type="text" name="vehicle_no"
                                class="form-control"
-                               value="{{ $crusher->vehicle_no }}" readonly>
+                               value="{{ $crusher->vehicle_no }}" {{ $isAdmin ? '' : 'readonly' }}>
                     </div>
 
                     <div class="col-md-4">
                         <label>Vehicle Measure</label>
                         <input type="text" name="vehicle_measure"
                                class="form-control"
-                               value="{{ $crusher->vehicle_measure }}" readonly>
+                               value="{{ $crusher->vehicle_measure }}" {{ $isAdmin ? '' : 'readonly' }}>
                     </div>
 
                     {{-- MATERIAL --}}
@@ -98,12 +106,12 @@
                     </div>
 <div class="col-md-4">
     <label>Payment Type</label>
-    <select name="payment_type" class="form-select">
+    <select name="payment_type" class="form-select" {{ $isAdmin ? '' : 'disabled' }}>
         <option value="">-- Select --</option>
-        <option value="Cash" {{ $crusher->af6 == 'Cash' ? 'selected' : '' }}>
+        <option value="Cash" {{ $crusher->af6 == 'Cash' ? 'selected' : '' }} >
             Cash
         </option>
-        <option value="Credit" {{ $crusher->af6 == 'Credit' ? 'selected' : '' }}>
+        <option value="Credit" {{ $crusher->af6 == 'Credit' ? 'selected' : '' }} >
             Credit
         </option>
     </select>
@@ -136,7 +144,7 @@
                                name="Total"
                                class="form-control"
                                value="{{ $crusher->Total }}"
-                               readonly>
+                               {{ $isAdmin ? '' : 'readonly' }}>
                     </div>
 
                     {{-- ROYALTY --}}
@@ -175,28 +183,28 @@
                                name="grand_total"
                                class="form-control"
                                value="{{ $crusher->af8 }}"
-                               readonly>
+                               {{ $isAdmin ? '' : 'readonly' }}>
                     </div>
                     {{-- ====rst============ --}}
                         <div class="col-md-4">
                         <label>RST</label>
                         <input type="text" name="rst" 
                                class="form-control"
-                               value="{{ $crusher->af7 }}" readonly>
+                               value="{{ $crusher->af7 }}" {{ $isAdmin ? '' : 'readonly' }}>
                     </div>
                     {{-- CONTACT --}}
                     <div class="col-md-4">
                         <label>Phone</label>
                         <input type="text" name="phone"
                                class="form-control"
-                               value="{{ $crusher->phone }}" readonly>
+                               value="{{ $crusher->phone }}" {{ $isAdmin ? '' : 'readonly' }}>
                     </div>
 
                     <div class="col-md-4">
                         <label>Address</label>
                         <input type="text" name="address"
                                class="form-control"
-                               value="{{ $crusher->address }}" readonly>
+                               value="{{ $crusher->address }}" {{ $isAdmin ? '' : 'readonly' }}>
                     </div>
 <div class="col-md-4">
     <label>Loader Operator</label>
