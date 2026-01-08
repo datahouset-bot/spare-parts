@@ -4,7 +4,7 @@
    GLOBAL POLISH
 ================================ */
 body {
-    background: #f4f6f9;
+    background:gray;
 }
 
 /* ===============================
@@ -30,7 +30,7 @@ body {
     background: linear-gradient(90deg, #ffffff, #f9fafb);
     padding: 14px 16px;
     border-radius: 10px;
-    box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 12px 12px rgba(243, 2, 2, 0.);
     font-size: 14px;
 }
 
@@ -47,7 +47,7 @@ body {
 
 .card:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 14px 30px rgba(0,0,0,0.22);
+    box-shadow: 0 30px 40px #35b8dd;
 }
 
 /* ===============================
@@ -104,9 +104,7 @@ body {
 /* Prevent flex containers from affecting next rows */
 
 /* Desktop: keep Recent Sale & Outstanding side-by-side */
-.row.mt-4 {
-    row-gap: 1.5rem;
-}
+
 
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -574,7 +572,7 @@ body {
                             <i class="fa fa-bullhorn" style="font-size:40px;color:green"></i>
                         </a>
                     </div> --}}
-                    @can('Hotel Module')
+                    {{-- @can('Hotel Module')
             
                     <div class="col-md-2">
                         <!-- Second Button: Send message to WhatsApp -->
@@ -591,17 +589,17 @@ body {
                         <a href="{{ url('/pushInventory') }}" id="send-message" class="btn btn-warning mx-1"> <i class="fas fa-cloud-upload-alt" style="font-size:18px;"></i> &nbsp;Push Room Inventory</a>
                     </div>
 
-                    @endcan
-                  @if(
+                    @endcan --}}
+            @if(
     !Auth::user()->can('Attendance Module') &&
     !Auth::user()->can('Crusher Module')
 )
 
+{{-- ======================= MAIN DASHBOARD ROW ======================= --}}
 <div class="row mt-4">
 
-    <!-- =========================
-        RECENT SALES (LEFT)
-    ========================== -->
+
+    {{-- ================= LEFT : RECENT SALES ================= --}}
     <div class="col-xl-6 col-lg-12 mb-4" id="recent-sales-section">
         <div class="card h-100">
             <div class="card-header bg-success text-white fw-bold">
@@ -609,8 +607,8 @@ body {
             </div>
 
             <div class="card-body p-0" style="max-height:350px; overflow:auto;">
-                <table class="table table-striped table-hover align-middle mb-0">
-                    <thead class="table-light text-center sticky-top">
+                <table class="table table-striped table-hover mb-0 text-center">
+                    <thead class="table-light sticky-top">
                         <tr>
                             <th>#</th>
                             <th>Date</th>
@@ -619,141 +617,94 @@ body {
                             <th>Amount</th>
                         </tr>
                     </thead>
-
-                    <tbody class="text-center">
+                    <tbody>
                         @php $r1 = 0; @endphp
                         @foreach($sales as $item)
-                            <tr>
-                                <td>{{ ++$r1 }}</td>
-                                <td>{{ \Carbon\Carbon::parse($item->voucher_date)->format('d-m-y') }}</td>
-                                <td>{{ $item->account->account_name ?? 'N/A' }}</td>
-                                <td>{{ $item->voucher_bill_no }}</td>
-                                <td class="fw-bold text-danger">
-                                    {{ number_format($item->total_net_amount, 2) }}
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>{{ ++$r1 }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->voucher_date)->format('d-m-y') }}</td>
+                            <td>{{ $item->account->account_name ?? 'N/A' }}</td>
+                            <td>{{ $item->voucher_bill_no }}</td>
+                            <td class="fw-bold text-danger">
+                                {{ number_format($item->total_net_amount, 2) }}
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
 
             <div class="card-footer text-end">
-                <a href="{{ url('/sales') }}" class="btn btn-sm btn-success">
-                    View All Sales
-                </a>
+                <a href="{{ url('/sales') }}" class="btn btn-sm btn-success">View All Sales</a>
             </div>
         </div>
     </div>
 
-    <!-- =========================
-        RIGHT SIDE (PAYABLE + CHART)
-    ========================== -->
-  <div class="col-xl-6 col-lg-12 mb-4 d-flex flex-column gap-4">
-            <!-- Outstanding Payable -->
-            <div class="col-12 mb-4">
-                <div class="card h-100">
-                    <div class="card-header bg-danger text-white fw-bold">
-                        <i class="fas fa-file-invoice-dollar me-2"></i>
-                        Outstanding Payable
-                    </div>
+    {{-- ================= RIGHT : PAYABLE + RECEIVABLE + PURCHASE ================= --}}
+    <div class="col-xl-6 col-lg-12 d-flex flex-column gap-4">
 
-                    <div class="card-body p-0" style="max-height:280px; overflow:auto;">
-                        <table class="table table-striped table-hover mb-0 text-center">
-                            @php $totalbalance = 0; @endphp
-
-                            <tbody>
-                                @foreach($outstandingPayables as $acc)
-                                    @php
-                                        if ($acc->balnce_type === 'Dr') {
-                                            $balance = $acc->op_balnce + $acc->total_debit - $acc->total_credit;
-                                        } else {
-                                            $balance = $acc->total_debit - $acc->op_balnce - $acc->total_credit;
-                                        }
-                                        $totalbalance += $balance;
-                                    @endphp
-                                @endforeach
-
-                                <tr class="fw-bold">
-                                    <td>Total</td>
-                                    <td>
-                                        {{ abs($totalbalance) }} {{ $totalbalance >= 0 ? 'Dr' : 'Cr' }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        {{-- Outstanding Payable --}}
+        <div class="card">
+            <div class="card-header bg-danger text-white fw-bold">
+                <i class="fas fa-file-invoice-dollar me-2"></i> Outstanding Payable
             </div>
-<div class="col-12 mb-4">
-    <div class="card h-100">
-        <div class="card-header bg-success text-white fw-bold">
-            <i class="fas fa-money-bill-wave me-2"></i>
-            Outstanding Receivable
+            <div class="card-body p-0">
+                <table class="table table-striped mb-0 text-center">
+                    @php $totalbalance = 0; @endphp
+                    @foreach($outstandingPayables as $acc)
+                        @php
+                            $balance = $acc->balnce_type === 'Dr'
+                                ? $acc->op_balnce + $acc->total_debit - $acc->total_credit
+                                : $acc->total_debit - $acc->op_balnce - $acc->total_credit;
+                            $totalbalance += $balance;
+                        @endphp
+                    @endforeach
+                    <tr class="fw-bold">
+                        <td>Total</td>
+                        <td>{{ abs($totalbalance) }} {{ $totalbalance >= 0 ? 'Dr' : 'Cr' }}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
-        <div class="card-body p-0" style="max-height:280px; overflow:auto;">
-            <table class="table table-striped table-hover mb-0 text-center">
-                @php $totalReceivable = 0; @endphp
-
-                <tbody>
+        {{-- Outstanding Receivable --}}
+        <div class="card">
+            <div class="card-header bg-success text-white fw-bold">
+                <i class="fas fa-money-bill-wave me-2"></i> Outstanding Receivable
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped mb-0 text-center">
+                    @php $totalReceivable = 0; @endphp
                     @foreach($outstandingReceivables as $acc)
                         @php
-                            if ($acc->balnce_type === 'Cr') {
-                                $balance = $acc->op_balnce + $acc->total_credit - $acc->total_debit;
-                            } else {
-                                $balance = $acc->total_credit - $acc->op_balnce - $acc->total_debit;
-                            }
+                            $balance = $acc->balnce_type === 'Cr'
+                                ? $acc->op_balnce + $acc->total_credit - $acc->total_debit
+                                : $acc->total_credit - $acc->op_balnce - $acc->total_debit;
                             $totalReceivable += $balance;
                         @endphp
                     @endforeach
-
                     <tr class="fw-bold">
                         <td>Total</td>
-                        <td>
-                            {{ abs($totalReceivable) }} {{ $totalReceivable >= 0 ? 'Cr' : 'Dr' }}
-                        </td>
+                        <td>{{ abs($totalReceivable) }} {{ $totalReceivable >= 0 ? 'Cr' : 'Dr' }}</td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-            <!-- Purchase Bar Chart -->
-            <div class="col-12">
-                <div class="card h-100">
-                    <div class="card-header bg-primary text-white fw-bold">
-                        <i class="fas fa-cart-plus me-2"></i>
-                        Purchase Amount
-                    </div>
-
-                    <div class="card-body">
-                        <canvas id="purchaseBarChart" style="height:240px;"></canvas>
-                    </div>
-                </div>
+                </table>
             </div>
-
-            <div class="col-12 mt-4">
-   
-</div>
-<div class="card">
-    <div class="card-header bg-dark text-white fw-bold text-center">
-        <i class="fas fa-chart-pie me-2"></i>
-        Business Overview
-    </div>
-
-    <div class="card-body d-flex justify-content-center align-items-center"
-         style="min-height:300px;">
-        <canvas id="summaryPieChart" style="max-width:260px;"></canvas>
-    </div>
-</div>
         </div>
+
+        {{-- Purchase Chart --}}
+        <div class="card">
+            <div class="card-header bg-primary text-white fw-bold">
+                <i class="fas fa-cart-plus me-2"></i> Purchase Amount
+            </div>
+            <div class="card-body">
+                <canvas id="purchaseBarChart" style="height:260px;"></canvas>
+            </div>
+        </div>
+
     </div>
-    
-
 </div>
-
 @endif
+
 
 @can('Crusher Module')
 <div class="row justify-content-center my-4">
@@ -906,65 +857,3 @@ document.addEventListener("DOMContentLoaded", function () {
             setInterval(getCurrentTime, 1000);
         });
     </script>
-{{-- ======================================piechart of all data ============================================= --}}
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    const pctx = document.getElementById('summaryPieChart');
-    if (!pctx) return;
-
-    new Chart(pctx, {
-        type: 'pie',
-        data: {
-            labels: [
-                'Sale',
-                'Purchase',
-                'Receipt',
-                'Payment'
-            ],
-            datasets: [{
-                data: [
-                    {{ $saleTotal ?? 0 }},
-                    {{ $purchaseTotal ?? 0 }},
-                    {{ $receiptTotal ?? 0 }},
-                    {{ $paymentTotal ?? 0 }}
-                ],
-                backgroundColor: [
-                    '#22c55e', // Sale - Green
-                    '#ef4444', // Purchase - Red
-                    '#0ea5e9', // Receipt - Blue
-                    '#f59e0b'  // Payment - Orange
-                ],
-                borderWidth: 1
-            }]
-        },
-       options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: {
-            position: 'bottom',
-            labels: {
-                boxWidth: 14,
-                padding: 16,
-                font: {
-                    size: 13,
-                    weight: '600'
-                }
-            }
-        },
-        tooltip: {
-            callbacks: {
-                label: function(ctx) {
-                    return ctx.label + ': ₹ ' + ctx.raw.toLocaleString();
-                }
-            }
-        }
-    }
-}
-
-    });
-
-});
-</script>
-{{-- ======================================piechart of all data ============================================= --}}

@@ -42,7 +42,7 @@
                     <div class="col-md-4">
                         <label>Time</label>
                         <input type="time" name="time" class="form-control"
-                               value="{{ $crusher->time }}">
+                               value="{{ $crusher->time }}" {{ $isAdmin ? '' : 'readonly' }}>
                     </div>
 
                     {{-- ACCOUNT --}}

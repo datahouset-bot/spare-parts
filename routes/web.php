@@ -31,6 +31,7 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\shownewController;
 use App\Http\Controllers\FollowupController;
 use App\Http\Controllers\FoodbillController;
+use App\Http\Controllers\overviewcontroller;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RoomtypeController;
 use App\Http\Controllers\WhatsAppController;
@@ -48,6 +49,7 @@ use App\Http\Controllers\RoomserviceController;
 use App\Http\Controllers\VoucherTypeController;
 use App\Http\Controllers\WhatsappSmsController;
 use App\Http\Controllers\AccountgroupController;
+use App\Http\Controllers\LabelsettingController;
 use App\Http\Controllers\PrimarygroupController;
 use App\Http\Controllers\RoomcheckoutController;
 use App\Http\Controllers\FinancialyearController;
@@ -57,7 +59,6 @@ use App\Http\Controllers\BusinesssourceController;
 use App\Http\Controllers\CompinfofooterController;
 use App\Http\Controllers\BusinesssettingController;
 use App\Http\Controllers\photoattendancecontroller;
-use App\Http\Controllers\LabelsettingController;
 use App\Http\Controllers\SoftwarecompanyController;
 use App\Http\Controllers\attendancesalarycontroller;
 
@@ -89,6 +90,10 @@ Route::get('/clear-cache', function () {
 Route::get('/admin', function () {
     return view('home22');
 });
+
+Route::get('/overview', [overviewcontroller::class, 'index'])
+    ->name('overview.index');
+
 
 Route::get('/TESTHOME', function () {
     return view('index');

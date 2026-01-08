@@ -109,8 +109,6 @@
 <span class="badge bg-success">Present</span>
 @elseif($item['status']=='Late')
 <span class="badge bg-warning text-dark">Late</span>
-@elseif($item['status']=='Half Day')
-<span class="badge bg-warning text-dark">Half Day</span>
 @else
 <span class="badge bg-danger">Absent</span>
 @endif
@@ -118,11 +116,13 @@
 
 {{-- LATE MESSAGE + REMARK --}}
 <td class="text-start px-2">
-@if($item['status']=='Late' && !empty($item['late_message']))
-    <span class="fw-bold text-warning">
+@if(!empty($item['late_message']))
+    <span class="fw-bold
+        {{ $item['status']=='Late' ? 'text-warning' : 'text-success' }}">
         {{ $item['late_message'] }}
     </span><br>
 @endif
+
 
 @if(!empty($item['Remark']))
     <small class="text-danger fw-bold">
@@ -142,9 +142,12 @@
     data-date="{{ $item['date'] }}"
     data-status="{{ $item['status'] }}"
     data-remark="{{ $item['Remark'] }}"
+    data-checkin="{{ $item['checkin_time'] != '--' ? \Carbon\Carbon::parse($item['checkin_time'])->format('H:i') : '' }}"
+    data-checkout="{{ $item['checkout_time'] != '--' ? \Carbon\Carbon::parse($item['checkout_time'])->format('H:i') : '' }}"
 >
 Edit
 </button>
+
 </td>
 </tr>
 @endforeach

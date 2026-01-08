@@ -71,35 +71,20 @@ public function index(Request $request)
             if ($attendance) {
 
                 if ($attendance->checkin_time && !$attendance->checkout_time) {
-                    $status = "Half Day";
+                    $status = "Present";
                 }
 
                 if ($attendance->checkin_time && $attendance->checkout_time) {
                     $status = "Present";
                 }
 
-                $bufferTime = $emp->Buffer_time
-                    ? $emp->Buffer_time . ":00"
-                    : "09:30:00";
+              if ($attendance && $attendance->checkin_time) {
+    [$status, $lateMessage] = $this->calculateStatusAndMessage(
+        $emp,
+        $attendance->checkin_time
+    );
+}
 
-                if ($attendance->checkin_time) {
-
-                    $checkinOnly = date("H:i:s", strtotime($attendance->checkin_time));
-
-                    if ($checkinOnly > $bufferTime && $status !== "Absent") {
-
-                        $status = "Late";
-
-                        $lateSeconds = strtotime($checkinOnly) - strtotime($bufferTime);
-
-                        $hours   = floor($lateSeconds / 3600);
-                        $minutes = floor(($lateSeconds % 3600) / 60);
-
-                        $lateMessage = $hours > 0
-                            ? "Late by {$hours} hr {$minutes} min"
-                            : "Late by {$minutes} min";
-                    }
-                }
             }
 
             $attendanceData[] = [
@@ -273,9 +258,9 @@ $attendance->checkout_photo = $filename;
     'emp_id'        => 'required',
     'date'          => 'required|date',
     'status'        => 'required',
-    'checkin_time'  => 'nullable|date_format:H:i',
+    'checkin_time'  => 'required|date_format:H:i',
     'checkout_time' => 'nullable|date_format:H:i',
-    'Remark'        => 'nullable|string|max:255'
+    'Remark'        => 'required|string|max:255'
 ]);
 
     $attendance = attendancecheckin::where('emp_id', $request->emp_id)
@@ -301,12 +286,77 @@ $attendance->checkout_photo = $filename;
         : null;
 
     // STATUS + REMARK
+  $emp = photoattendance::find($request->emp_id);
+
+if ($attendance->checkin_time) {
+    [$status, $message] = $this->calculateStatusAndMessage(
+        $emp,
+        $attendance->checkin_time
+    );
+
+    $attendance->af3 = $status;
+
+    // If admin typed custom remark, keep it
+    $attendance->Remark = $request->Remark ?: $message;
+} else {
     $attendance->af3 = $request->status;
     $attendance->Remark = $request->Remark;
+}
+
 
     $attendance->save();
 
     return back()->with('success', 'Attendance updated successfully');
 }
+
+
+
+
+private function calculateStatusAndMessage($emp, $checkinDateTime)
+{
+    if (!$checkinDateTime) {
+        return ['Absent', ''];
+    }
+
+    $checkinOnly = date("H:i:s", strtotime($checkinDateTime));
+
+    $reportTime = $emp->Report_time
+        ? $emp->Report_time . ":00"
+        : "09:00:00";
+
+    $bufferTime = $emp->Buffer_time
+        ? $emp->Buffer_time . ":00"
+        : "09:30:00";
+
+    // 🔴 LATE
+    if ($checkinOnly > $bufferTime) {
+
+        $diff = strtotime($checkinOnly) - strtotime($bufferTime);
+        $h = floor($diff / 3600);
+        $m = floor(($diff % 3600) / 60);
+
+        return [
+            'Late',
+            $h > 0 ? "Late by {$h} hr {$m} min" : "Late by {$m} min"
+        ];
+    }
+
+    // 🟢 EARLY
+    if ($checkinOnly < $reportTime) {
+
+        $diff = strtotime($reportTime) - strtotime($checkinOnly);
+        $h = floor($diff / 3600);
+        $m = floor(($diff % 3600) / 60);
+
+        return [
+            'Present',
+            $h > 0 ? "Early by {$h} hr {$m} min" : "Early by {$m} min"
+        ];
+    }
+
+    // 🟡 ON TIME
+    return ['Present', 'On time'];
+}
+
 
 }

@@ -163,16 +163,29 @@
                 <div class="section-title">Tax & Unit</div>
 
                 <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Unit</label>
-                        <select name="unit_id" class="form-select">
-                            <option value="">Select Unit</option>
-                            @foreach($unit as $u)
-                                <option value="{{ $u->id }}">{{ $u->primary_unit_name }}</option>
-                            @endforeach
-                        </select>
-                        @error('unit_id') <small class="text-danger">{{ $message }}</small> @enderror
-                    </div>
+                   <div class="col-md-6">
+    <label class="form-label">Unit</label>
+
+    <div class="input-group">
+        <select name="unit_id" id="unit_id" class="form-select">
+            <option value="">Select Unit</option>
+            @foreach($unit as $u)
+                <option value="{{ $u->id }}">{{ $u->primary_unit_name }}</option>
+            @endforeach
+        </select>
+
+        <button type="button"
+                class="btn btn-outline-primary"
+                id="addUnitBtn"
+                title="Add New Unit">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+
+    @error('unit_id')
+        <small class="text-danger">{{ $message }}</small>
+    @enderror
+</div>
 
                     <div class="col-md-6">
                         <label class="form-label">GST / Tax</label>
@@ -223,5 +236,10 @@ $('#addGroupBtn').on('click', function () {
 });
 </script>
 
+<script>
+$('#addUnitBtn').on('click', function () {
+    window.open('/units', '_blank'); // 🔁 change URL if needed
+});
+</script>
 
 @endsection
