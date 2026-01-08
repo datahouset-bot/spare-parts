@@ -104,19 +104,8 @@ body {
 /* Prevent flex containers from affecting next rows */
 
 /* Desktop: keep Recent Sale & Outstanding side-by-side */
-@media (min-width: 992px) {
-    .row.mt-4 > .col-xl-6 {
-        width: 50%;
-        float: left;
-    }
-}
-
-/* Mobile: stack both tables */
-@media (max-width: 991px) {
-    .row.mt-4 > .col-xl-6 {
-        width: 100%;
-        float: none;
-    }
+.row.mt-4 {
+    row-gap: 1.5rem;
 }
 
 </style>
@@ -659,9 +648,7 @@ body {
     <!-- =========================
         RIGHT SIDE (PAYABLE + CHART)
     ========================== -->
-    <div class="col-xl-6 col-lg-12 mb-4">
-        <div class="row">
-
+  <div class="col-xl-6 col-lg-12 mb-4 d-flex flex-column gap-4">
             <!-- Outstanding Payable -->
             <div class="col-12 mb-4">
                 <div class="card h-100">
@@ -746,8 +733,23 @@ body {
                 </div>
             </div>
 
+            <div class="col-12 mt-4">
+   
+</div>
+<div class="card">
+    <div class="card-header bg-dark text-white fw-bold text-center">
+        <i class="fas fa-chart-pie me-2"></i>
+        Business Overview
+    </div>
+
+    <div class="card-body d-flex justify-content-center align-items-center"
+         style="min-height:300px;">
+        <canvas id="summaryPieChart" style="max-width:260px;"></canvas>
+    </div>
+</div>
         </div>
     </div>
+    
 
 </div>
 
@@ -904,4 +906,65 @@ document.addEventListener("DOMContentLoaded", function () {
             setInterval(getCurrentTime, 1000);
         });
     </script>
+{{-- ======================================piechart of all data ============================================= --}}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
+    const pctx = document.getElementById('summaryPieChart');
+    if (!pctx) return;
+
+    new Chart(pctx, {
+        type: 'pie',
+        data: {
+            labels: [
+                'Sale',
+                'Purchase',
+                'Receipt',
+                'Payment'
+            ],
+            datasets: [{
+                data: [
+                    {{ $saleTotal ?? 0 }},
+                    {{ $purchaseTotal ?? 0 }},
+                    {{ $receiptTotal ?? 0 }},
+                    {{ $paymentTotal ?? 0 }}
+                ],
+                backgroundColor: [
+                    '#22c55e', // Sale - Green
+                    '#ef4444', // Purchase - Red
+                    '#0ea5e9', // Receipt - Blue
+                    '#f59e0b'  // Payment - Orange
+                ],
+                borderWidth: 1
+            }]
+        },
+       options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            position: 'bottom',
+            labels: {
+                boxWidth: 14,
+                padding: 16,
+                font: {
+                    size: 13,
+                    weight: '600'
+                }
+            }
+        },
+        tooltip: {
+            callbacks: {
+                label: function(ctx) {
+                    return ctx.label + ': ₹ ' + ctx.raw.toLocaleString();
+                }
+            }
+        }
+    }
+}
+
+    });
+
+});
+</script>
+{{-- ======================================piechart of all data ============================================= --}}

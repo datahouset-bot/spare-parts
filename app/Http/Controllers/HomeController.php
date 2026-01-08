@@ -176,15 +176,37 @@ class HomeController extends CustomBaseController
         return $account->outstanding_amount > 0; // RECEIVABLE
     })
     ->sortByDesc('outstanding_amount'); // highest receivable first
+
+
 // show purchase data 
-
-
     $purchaseChart = voucher::with('account')
     ->where('firm_id', Auth::user()->firm_id)
     ->where('voucher_type', 'Purchase')
     ->orderBy('voucher_no', 'desc')
     ->take(7)
     ->get();
+// ======================Pie chart detail============================
+$saleTotal = DB::table('vouchers')
+    ->where('firm_id', Auth::user()->firm_id)
+    ->where('voucher_type', 'Sale')
+    ->sum('total_net_amount');
+
+// PURCHASE TOTAL
+$purchaseTotal = DB::table('vouchers')
+    ->where('firm_id', Auth::user()->firm_id)
+    ->where('voucher_type', 'Purchase')
+    ->sum('total_net_amount');
+
+// RECEIPT TOTAL
+$receiptTotal = DB::table('ledgers')
+    ->where('firm_id', Auth::user()->firm_id)
+    ->sum('amount');
+
+// PAYMENT TOTAL
+$paymentTotal = DB::table('ledgers')
+    ->where('firm_id', Auth::user()->firm_id)
+    ->sum('amount');
+
 
 
                 $user = Auth::user();
@@ -210,7 +232,10 @@ class HomeController extends CustomBaseController
 
             }
             else{
-                return view('home', compact('purchaseChart','outstandingPayables','outstandingReceivables','roomcheckin','sales','currentDate','vacantroom','occupiedroom' ,'dirtyroom','daysDifference','amcCount', 'dueAmcCount','pendingTask','todayFollowup' ,'kot_Unprinted','Rkot_Unprinted','financialyear'));    
+                return view('home', compact('purchaseChart','outstandingPayables', 'saleTotal',
+                'purchaseTotal','receiptTotal','paymentTotal','outstandingReceivables',
+                'roomcheckin','sales','currentDate','vacantroom','occupiedroom' ,'dirtyroom','daysDifference','amcCount', 
+                'dueAmcCount','pendingTask','todayFollowup' ,'kot_Unprinted','Rkot_Unprinted','financialyear'));    
             }
         }
         else{
