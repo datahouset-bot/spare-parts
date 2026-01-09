@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Carbon;
+use App\Traits\HasFinancialYear;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class cresher extends Model
 {
     use HasFactory;
+    use HasFinancialYear;
     protected $fillable = [
         'slip_no',
         'date',
@@ -31,5 +35,6 @@ class cresher extends Model
         'remark',
         'pic',
 ];
+  
 
 }

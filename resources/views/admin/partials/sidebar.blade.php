@@ -754,13 +754,13 @@
                                             style=" ">Option List</a>
                                         <a class="nav-link" href={{ url('whatsapp_sms') }}
                                             style=" ">Whats app & SMS </a>
-                                        @can('Hotel Module')
+                                    
                                             <a class="nav-link" href={{ route('businesssettings.create') }}
                                                 style=" ">Business
                                                 Setting</a>
                                             <a class="nav-link" href="{{ url('financialyears') }}"
                                                 style=" ">Finacial Year </a>
-                                        @endcan
+                                    
 
                                         @if (auth()->check() && auth()->user()->email === 'datahouset@gmail.com')
                                             @can('sql_query')

@@ -31,6 +31,44 @@
             border: 2px solid blue;
             padding-left: 3px;
         }
+        /* ===============================
+   FORM UI ENHANCEMENT
+================================ */
+.card {
+    border-radius: 12px;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #0d6efd, #084298);
+    color: #fff;
+}
+
+.form-group {
+    position: relative;
+}
+
+.floating-label {
+    position: absolute;
+    top: -8px;
+    left: 10px;
+    background: #fff;
+    padding: 0 6px;
+    font-size: 12px;
+    color: #0d6efd;
+}
+
+.input-group .btn {
+    border-radius: 0 6px 6px 0;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.btn-icon {
+    padding: 6px 10px;
+}
+
     </style>
 
     <div class="container ">
@@ -70,35 +108,49 @@
         </div>
     </div>
 
-    <div class="col-md-3 mt-2">
-        <div class="form-group">
+   <div class="col-md-3 mt-2">
+    <div class="form-group">
+        <label class="floating-label">Company</label>
+
+        <div class="input-group">
             <select name="company_id" id="company" class="mycompany form-select" required>
                 <option value="" disabled>Select Company</option>
                 @foreach ($companydata as $record)
-                    <option value="{{ $record['id'] }}" {{ isset($data) && $data->company_id == $record['id'] ? 'selected' : '' }}>
+                    <option value="{{ $record['id'] }}" {{ $data->company_id == $record['id'] ? 'selected' : '' }}>
                         {{ $record['comp_name'] }}
                     </option>
                 @endforeach
             </select>
-            <label class="floating-label" for="company">Company</label>
-            <span class="text-danger">@error('company_id'){{ $message }}@enderror</span>
+
+            <a href="{{ url('/company/create') }}" class="btn btn-outline-primary btn-icon" title="Add Company">
+                <i class="fa fa-plus"></i>
+            </a>
         </div>
     </div>
+</div>
+
 
     <div class="col-md-3 mt-2">
-        <div class="form-group">
+    <div class="form-group">
+        <label class="floating-label">Item Group</label>
+
+        <div class="input-group">
             <select name="group_id" id="myitemgroup" class="myitemgroup form-select" required>
                 <option value="" disabled>Select Group</option>
                 @foreach ($itemgroupdata as $record)
-                    <option value="{{ $record['id'] }}" {{ isset($data) && $data->group_id == $record['id'] ? 'selected' : '' }}>
+                    <option value="{{ $record['id'] }}" {{ $data->group_id == $record['id'] ? 'selected' : '' }}>
                         {{ $record['item_group'] }}
                     </option>
                 @endforeach
             </select>
-            <label class="floating-label" for="myitemgroup">Item Group</label>
-            <span class="text-danger">@error('group_id'){{ $message }}@enderror</span>
+
+            <a href="{{ url('/itemgroup/create') }}" class="btn btn-outline-primary btn-icon" title="Add Item Group">
+                <i class="fa fa-plus"></i>
+            </a>
         </div>
     </div>
+</div>
+
 
     @php
         $fields = [
@@ -122,19 +174,26 @@
     @endforeach
 
     <div class="col-md-2 mt-2">
-        <div class="form-group">
+    <div class="form-group">
+        <label class="floating-label">Unit</label>
+
+        <div class="input-group">
             <select name="unit_id" id="unit" class="form-select" required>
-                <option disabled selected>Select Unit</option>
+                <option disabled>Select Unit</option>
                 @foreach ($unit as $u)
-                    <option value="{{ $u->id }}" {{ isset($data) && $data->unit_id == $u->id ? 'selected' : '' }}>
+                    <option value="{{ $u->id }}" {{ $data->unit_id == $u->id ? 'selected' : '' }}>
                         {{ $u->primary_unit_name }}
                     </option>
                 @endforeach
             </select>
-            <label class="floating-label" for="unit">Unit</label>
-            <span class="text-danger">@error('unit_id'){{ $message }}@enderror</span>
+
+            <a href="{{ url('/unit/create') }}" class="btn btn-outline-primary btn-icon" title="Add Unit">
+                <i class="fa fa-plus"></i>
+            </a>
         </div>
     </div>
+</div>
+ 
 
     <div class="col-md-2 mt-2">
         <div class="form-group">

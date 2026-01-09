@@ -7,6 +7,7 @@ use App\Models\account;
 use App\Models\cresher;
 use Illuminate\Http\Request;
 use App\Models\vehicledetail;
+use App\Models\voucher_type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -23,89 +24,110 @@ class Crushercontroller extends Controller
   /**
      * Show the form for creating a new resource.
      */
-
-// ============================store for cresher====================================
 public function store(Request $request)
 {
     // ================= VALIDATION =================
     $request->validate([
-
-        'pic'               => 'required |image|mimes:jpg,jpeg,png|max:2048',
-        'Quantity'        => 'required',
-        'Material'        => 'required',
-        'vehicle_no'      => 'required',
-        'party_name'      => 'required',
+        'pic'        => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        'Quantity'   => 'required',
+        'Material'   => 'required',
+        'vehicle_no' => 'required',
+        'party_name' => 'required',
     ]);
+
+    $firmId = Auth::user()->firm_id;
+
+    // ================= SLIP / VOUCHER LOGIC (LIKE CHECK-IN) =================
+    $crusherCount = Cresher::withinFY('date')
+        ->where('firm_id', $firmId)
+        ->count();
+        dd($crusherCount);
+
+    $voucherType = voucher_type::where('firm_id', $firmId)
+        ->where('voucher_type_name', 'Crusher')
+        ->firstOrFail();
+
+    if ($crusherCount > 0) {
+
+        $lastRecord = Cresher::withinFY('date')
+            ->where('firm_id', $firmId)
+            ->orderByRaw('CAST(slip_no AS UNSIGNED) DESC')
+            ->first();
+
+        $newSlipNo = ((int) $lastRecord->slip_no) + 1;
+
+    } else {
+
+        $newSlipNo = (int) $voucherType->numbring_start_from;
+    }
+
+    $billNo =
+        ($voucherType->voucher_prefix ?? '') .
+        $newSlipNo .
+        ($voucherType->voucher_suffix ?? '');
 
     // ================= CREATE =================
     $crusher = new Cresher();
 
-    // Auto slip number
-    $crusher->slip_no = (Cresher::max('slip_no') ?? 0) + 1;
+    $crusher->firm_id = $firmId;
+    $crusher->slip_no = $newSlipNo;
+    $crusher->bill_no = $billNo;
 
-    // Basic
-    $crusher->date = $request->date;
-    $crusher->time = $request->time;
-    $crusher->acc_id          = $request->search_id;
+    // ================= BASIC =================
+    $crusher->date   = $request->date;
+    $crusher->time   = $request->time;
+    $crusher->acc_id = $request->search_id;
 
-    // Party & Vehicle
+    // ================= PARTY & VEHICLE =================
     $crusher->party_name      = $request->party_name;
     $crusher->vehicle_no      = $request->vehicle_no;
     $crusher->vehicle_measure = $request->vehicle_measure;
+    $crusher->vehicle_id      = $request->vehicle_id ?: null;
 
-    // Material
+    // ================= MATERIAL =================
     $crusher->Material       = $request->Material;
     $crusher->Materialremark = $request->Materialremark;
     $crusher->unit           = $request->unit;
     $crusher->Quantity       = $request->Quantity;
     $crusher->Rate           = $request->Rate;
 
-    // Royalty
+    // ================= ROYALTY =================
     $crusher->Royalty_Quantity = $request->Royalty_Quantity;
     $crusher->Royalty_Rate     = $request->Royalty_Rate;
     $crusher->Royalty          = $request->Royalty;
 
-    // Financial
-    $crusher->Total       = $request->total;
+    // ================= FINANCIAL =================
+    $crusher->Total = $request->total;
+    $crusher->af7   = $request->rst;
+    $crusher->af8   = $request->grand_total;
 
-    // Contact
+    // ================= CONTACT =================
     $crusher->address = $request->address;
     $crusher->phone   = $request->phone;
 
-    // Remark
-    $crusher->remark = $request->remark;
-    // ================= VEHICLE ID (SAFE DEFAULT) =================
-$crusher->vehicle_id = $request->vehicle_id ?: null;
-
-
-    // Operators (your af fields)
+    // ================= OPERATORS =================
     $crusher->af3 = $request->loader;
     $crusher->af4 = $request->Driver;
     $crusher->af5 = $request->supervisor;
     $crusher->af6 = $request->payment_type;
-$crusher->af7          = $request->rst;
-$crusher->af8  = $request->grand_total;
 
+    // ================= REMARK =================
+    $crusher->remark = $request->remark;
 
     // ================= IMAGE =================
- if ($request->hasFile('pic')) {
+    if ($request->hasFile('pic')) {
+        $pic = $request->pic;
+        $name = $pic->getClientOriginalName();
+        $pic->storeAs('public/account_image', $name);
+        $crusher->pic = $name;
+    }
 
-    $pic_image = $request->pic;
-    $name = $pic_image->getClientOriginalName();
-
-    $pic_image->storeAs('public/account_image', $name);
-
-    $crusher->pic = $name;
-}
-
-// ================= SAVE =================
-$crusher->save();
-
+    // ================= SAVE =================
+    $crusher->save();
 
     // ================= AJAX RESPONSE =================
     return response()->json([
-        'success' => true,
-        'message' => 'Material Challan saved successfully',
+        'success'  => true,
         'redirect' => route('crusher.show', $crusher->id),
     ]);
 }
@@ -281,13 +303,56 @@ public function vehicledetailcreate()
     {
         return view('crusher.vehicledetail_entry');
     }
+public function create()
+{
+    $firmId = Auth::user()->firm_id;
 
-    public function create()
-    {   $vehicle = vehicledetail::get();
-        $account = account::where('firm_id', Auth::user()->firm_id)->get();
-        $nextSlip = (cresher::max('slip_no') ?? 0) + 1;
-return view('crusher.cresher_entry', compact('account','nextSlip','vehicle'));
+    // ================= VEHICLE & ACCOUNTS =================
+    $vehicle = vehicledetail::get();
+    $account = account::where('firm_id', $firmId)->get();
+
+    // ================= VOUCHER TYPE =================
+    $voucherType = voucher_type::where('firm_id', $firmId)
+        ->where('voucher_type_name', 'Crusher')
+        ->first();
+
+    if (!$voucherType) {
+        abort(500, 'Crusher voucher type not configured');
     }
+
+    // ================= CHECK EXISTING CRUSHER RECORDS (FY) =================
+    $crusherCount = cresher::withinFY('date')
+        ->where('firm_id', $firmId)
+        ->count();
+        dd($crusherCount);
+
+    if ($crusherCount > 0) {
+
+        $lastRecord = cresher::withinFY('date')
+            ->where('firm_id', $firmId)
+            ->orderByRaw('CAST(slip_no AS UNSIGNED) DESC')
+            ->first();
+
+        $nextSlip = ((int)$lastRecord->slip_no) + 1;
+
+    } else {
+
+        // start from voucher type config
+        $nextSlip = (int)$voucherType->numbring_start_from;
+    }
+
+    // ================= BILL NO =================
+    $billNo =
+        ($voucherType->voucher_prefix ?? '') .
+        $nextSlip .
+        ($voucherType->voucher_suffix ?? '');
+
+    // ================= VIEW =================
+    return view(
+        'crusher.cresher_entry',
+        compact('account', 'vehicle', 'nextSlip', 'billNo')
+    );
+}
 
     /**
      * Store a newly created resource in storage.

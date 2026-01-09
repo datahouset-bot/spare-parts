@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
 
             // ===== BASIC INFO =====
+              $table->string('firm_id')->nullable();
             $table->unsignedBigInteger('slip_no')->nullable();
             $table->date('date')->nullable();
             $table->time('time')->nullable();
@@ -66,6 +67,12 @@ $table->foreign('vehicle_id')
             $table->string('af5')->nullable();
             $table->string('af6')->nullable();
             $table->string('af7')->nullable();
+            $table->string('af8')->nullable();
+            $table->string('af9')->nullable();
+            $table->string('af10')->nullable();
+            $table->string('af11')->nullable();
+            $table->string('af12')->nullable();
+            $table->string('af13')->nullable();
 
             // ===== SYSTEM =====
             $table->timestamps();

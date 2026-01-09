@@ -18,6 +18,10 @@
         <div class="card-body form-group">
             <form action="{{ url('/create_account') }}" method="POST"enctype="multipart/form-data">
                 @csrf
+                @if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+@endif
+
 
             <div id="detail_a" class="row">
                 <div class="col-md-8">
