@@ -174,7 +174,7 @@ class AccountController extends CustomBaseController
             $account->account_route = $request->account_route;
             $account->account_attachment1 = $request->account_attachment1;
             $account->save();
-            return redirect()->back()->with('message', 'Account is created successfully.');
+            return redirect()->back()->with('success', 'Account is created successfully.');
         } else {
             return redirect('/accountform')->withInput()->withErrors($validator);
 

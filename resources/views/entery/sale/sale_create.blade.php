@@ -9,6 +9,105 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="jquery/master.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
+
+
+    <style>
+        /* =====================================================
+   GLOBAL FORM ALIGNMENT SYSTEM
+===================================================== */
+
+/* Reset spacing */
+.form-control,
+.form-select {
+    height: 38px !important;
+    padding: 6px 10px !important;
+    font-size: 14px;
+}
+
+/* Label consistency */
+label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+/* Uniform form group */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Prevent row overflow */
+.row {
+    margin-bottom: 8px;
+}
+
+/* Fix Select2 height & alignment */
+.select2-container {
+    width: 100% !important;
+}
+
+.select2-container--default .select2-selection--single {
+    height: 38px !important;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+}
+
+/* Select2 text alignment */
+.select2-selection__rendered {
+    line-height: 24px !important;
+}
+
+/* Plus button */
+.btn-plus {
+    height: 38px;
+    width: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    white-space: nowrap;
+}
+
+/* Flex row for Select + Plus */
+.input-with-plus {
+    display: flex;
+    gap: 6px;
+}
+
+/* Prevent wrap issues */
+.input-with-plus > * {
+    flex-shrink: 0;
+}
+
+/* Inputs grid spacing */
+.col-md-1,
+.col-md-2,
+.col-md-3,
+.col-md-4 {
+    margin-bottom: 8px;
+}
+
+/* Floating label fix (optional) */
+.floating-label {
+    font-size: 12px;
+}
+
+/* Table polish */
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+/* Mobile fix */
+@media (max-width: 768px) {
+    .btn-plus {
+        width: 100%;
+    }
+}
+
+    </style>
     <style>
 
         .no-gutter,
@@ -93,6 +192,21 @@
     .wide-dropdown .select2-dropdown {
         width: 80vw !important;
     }
+
+    .btn-plus {
+    height: 38px;
+    width: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+/* Make Select2 fill available width */
+.select2-container {
+    width: 100% !important;
+}
+
     </style>
     
 
@@ -191,56 +305,76 @@
                         </div>
                     </div>
                     
-            <div class="col-md-3">
-    <div class="input-group">
-        <select name="account_id"
-                id="account_id"
-                class="form-control select-party"
-                required>
-            <option></option>
-            @foreach ($accountdata as $record)
-                <option value="{{ $record->id }}">
-                    {{ $record->account_name }}
-                </option>
-            @endforeach
-            <option value="__add_new__">➕ Add New Party</option>
-        </select>
+         <div class="col-md-3">
+    <label class="fw-semibold">Party</label>
 
+    <div class="d-flex align-items-center gap-1">
+        <div class="flex-grow-1">
+            <select name="account_id"
+                    id="account_id"
+                    class="form-control select-party"
+                    required>
+                <option></option>
+                @foreach ($accountdata as $record)
+                    <option value="{{ $record->id }}">
+                        {{ $record->account_name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <a href="{{ url('/accountform') }}"
+           class="btn btn-outline-primary btn-plus"
+           title="Add Party"
+           target="_blank">
+            <i class="fa fa-plus"></i>
+        </a>
     </div>
 </div>
-                </div>
-                <div class="row no-gutter" name="itementery">
-                    <div class="col-md-3   ">
-                        <div class="input-group">
 
-                            <select id="item_id" name="item_id" class="js-states form-control">
-                                <option disabled selected>Select Item</option>
-                                @foreach ($itemdata as $record)
-                                <option value={{ $record['id'] }}>
-                                {{ $record['item_name'] }}||{{ $record['item_barcode'] }} </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <span class="text-danger">
-                            @error('cust_name_id')
-                                {{ $message }}
-                            @enderror
-                        </span>
-                    </div>
-                    <div class="col-md-3   ">
-                        <div class="input-group">
+               <div class="col-md-3">
+    <label class="fw-semibold">Item</label>
 
-                            <select id="batch_id" name="batch_id" class="js-states form-control">
-                                <option disabled selected>Batch</option>
-                            </select>
-                            
-                        </div>
-                        <span class="text-danger">
-                            @error('cust_name_id')
-                                {{ $message }}
-                            @enderror
-                        </span>
-                    </div>
+    <div class="d-flex align-items-center gap-1">
+        <div class="flex-grow-1">
+            <select id="item_id" name="item_id" class="js-states form-control">
+                <option disabled selected>Select Item</option>
+                @foreach ($itemdata as $record)
+                    <option value="{{ $record['id'] }}">
+                        {{ $record['item_name'] }} || {{ $record['item_barcode'] }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <a href="{{ url('/itemform') }}"
+           class="btn btn-outline-success btn-plus"
+           title="Add Item"
+           target="_blank">
+            <i class="fa fa-plus"></i>
+        </a>
+    </div>
+</div>
+
+
+                 <div class="col-md-3">
+    <label class="fw-semibold">Batch</label>
+
+    <div class="d-flex align-items-center gap-1">
+        <div class="flex-grow-1">
+            <select id="batch_id" name="batch_id" class="js-states form-control">
+                <option disabled selected>Batch</option>
+            </select>
+        </div>
+
+        <a href="{{ url('/item') }}"
+           class="btn btn-outline-primary btn-plus"
+           title="Add Batch"
+           target="_blank">
+            <i class="fa fa-plus"></i>
+        </a>
+    </div>
+</div>
 
                     <div class="col-md-1 col-3 text-center">
                         <div class="form-group">

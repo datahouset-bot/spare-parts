@@ -327,7 +327,20 @@ body {
                 </div>
             </div>
         @endcan
-
+<div class="col-xl-3 col-md-6">
+    <div class="card bg-primary text-white mb-4">
+        <a href="{{ url('/roomcheckins/create') }}"
+           class="btn btn-danger d-flex align-items-center justify-content-start">
+            
+            <span class="d-flex" style="width: 10%;">
+                <i class="fas fa-tools"></i>
+            </span>
+            <span class="ms-2" style="width: 90%;">
+                <h3>Job Card</h3>
+            </span>
+        </a>
+    </div>
+</div>
 
         @can('sale')
                 <div class="col-xl-3 col-md-6">

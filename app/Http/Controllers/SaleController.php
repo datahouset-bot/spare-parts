@@ -315,12 +315,16 @@ $salebill_items=inventory::withinFY('entry_date')->where('firm_id',Auth::user()-
 ->where('voucher_no',$salebill_header->voucher_no)
 ->where('voucher_type','Sale')
 ->get();
+ $sales = voucher::withinFY('entry_date')->with('account')
+        ->where('firm_id', Auth::user()->firm_id)
+        ->where('voucher_type','Sale')->orderBy('voucher_no','desc')->get();
+        
 
  $fromtlist = optionlist::where('firm_id', Auth::user()->firm_id)
             ->where('option_type', 'sale')
             ->orderBy('updated_at', 'desc')
             ->get();
-    return view('entery.sale.sale_print_select', compact( 'salebill_header', 'salebill_items','fromtlist'));        
+    return view('entery.sale.sale_index', compact( 'salebill_header', 'salebill_items','fromtlist','sales','vouchers'));        
     
     }
     else{

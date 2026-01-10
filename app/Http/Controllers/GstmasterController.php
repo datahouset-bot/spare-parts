@@ -63,7 +63,7 @@ class GstmasterController extends CustomBaseController
 
                 $gstmaster->save();
         
-                return redirect('/gstmasters')->with('message', 'Tax/ GST created successfully!');
+                return redirect(url()->previous())->with('message', 'Tax/ GST created successfully!');
             } else {
                 return redirect('/gstmasters')->withInput()->withErrors($validator);
             }

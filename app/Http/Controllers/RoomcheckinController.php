@@ -229,16 +229,6 @@ class RoomcheckinController extends CustomBaseController
 
 
 
-        $uniqueIds = roombooking::withinFY('checkin_date')->where('checkin_voucher_no', '0')
-            ->where('firm_id', Auth::user()->firm_id)
-            ->groupBy('voucher_no')
-            ->select(DB::raw('MIN(id) as id'))
-            ->pluck('id');
-
-        $roombookings = roombooking::withinFY('checkin_date')->whereIn('id', $uniqueIds)
-            ->where('checkin_voucher_no', '=', 0)
-            ->where('firm_id', Auth::user()->firm_id)
-            ->get();
         $paymentmodes = account::where('firm_id', Auth::user()->firm_id)
             ->whereHas('accountGroup', function ($query) {
                 $query->whereIn('account_group_name', ['BANK ACCOUNT', 'Cash In Hand']);
@@ -251,7 +241,7 @@ class RoomcheckinController extends CustomBaseController
         $package = package::where('firm_id', Auth::user()->firm_id)->get();
         $othercharges = othercharge::where('firm_id', Auth::user()->firm_id)->get();
 
-
+        $slot = room::where('firm_id', Auth::user()->firm_id)->where('room_status', 'vacant')->get();
 
         $rooms = room::with(['roomtype.gstmaster', 'roomtype.package'])
             ->where('firm_id', Auth::user()->firm_id)
@@ -293,7 +283,7 @@ class RoomcheckinController extends CustomBaseController
             ->get();
 
 
-        return view('entery.room.checkin.room_checkin', compact('rooms', 'roombookings', 'businesssource', 'package', 'new_bill_no', 'new_voucher_no', 'othercharges', 'paymentmodes', 'guset_data'));
+        return view('entery.room.checkin.room_checkin', compact('rooms','slot', 'businesssource', 'package', 'new_bill_no', 'new_voucher_no', 'othercharges', 'paymentmodes', 'guset_data'));
 
     }
 
@@ -315,7 +305,7 @@ class RoomcheckinController extends CustomBaseController
             ->where('voucher_no', $id)->first();
 
         $account_details = account::where('firm_id', Auth::user()->firm_id)
-            ->where('mobile', $roombookings->guest_mobile)->first();
+;
 
 
         $account_id = $account_details->id;
@@ -704,7 +694,7 @@ return view('error.checkdate_on_fy',compact('fy_start_date','fy_end_date'));
 
                     $checkIn->guest_mobile = $request->guest_mobile;
                     $checkIn->commited_days = $request->commited_days;
-                    $checkIn->no_of_guest = $request->no_of_guest;
+                    $checkIn->checkinaf1 = $request->no_of_guest;
                     $checkIn->checkin_remark1 = $request->checkin_remark1;
                     $checkIn->checkin_remark2 = $request->checkin_remark2;
                     $checkIn->purpose_of_visit = $request->purpose_of_visit;
@@ -746,7 +736,7 @@ return view('error.checkdate_on_fy',compact('fy_start_date','fy_end_date'));
 
 
                     }
-                    $checkIn->checkinaf1 = $request->second_guest_name;
+                    // $checkIn->checkinaf1 = $request->second_guest_name;
                     $checkIn->checkinaf3 = $request->third_guest_name;
                     $checkIn->checkinaf5 = $request->second_guest_id_name;
                     $checkIn->checkinaf6 = $request->second_guest_id_no;

@@ -64,22 +64,36 @@
                               @enderror
                             </span>
                           </div>
-                          <div>
+                          <label class="form-label">Service Type</label>
 
-                            Service Type     <select  name ="roomtype_id" id ="myitemgroup"class="myitemgroup form-select" aria-label="Default select example">
-                              <option  value ="" selected disabled>Select service</option>
-                            @foreach ($data2 as $record2 )
-                                                       
-                              <option value={{$record2['id']}}>{{$record2['roomtype_name']}}&nbsp;||&nbsp; {{$record2['room_tariff']}}&nbsp;||&nbsp;{{$record2->gstmaster->taxname}}</option>
-                              @endforeach
-                            </select>
-                            <span class="text-danger"> 
-                              @error('roomtype_id')
-                              {{$message}}
-                                  
-                              @enderror
-                            </span>
-                          </div>
+<div class="input-group">
+    <select name="roomtype_id"
+            id="myitemgroup"
+            class="myitemgroup form-select">
+        <option value="" selected disabled>Select service</option>
+
+        @foreach ($data2 as $record2)
+            <option value="{{ $record2['id'] }}">
+                {{ $record2['roomtype_name'] }}
+                || {{ $record2['room_tariff'] }}
+                || {{ $record2->gstmaster->taxname }}
+            </option>
+        @endforeach
+    </select>
+
+    <!-- ➕ ADD SERVICE TYPE -->
+    <a href="{{ url('/roomtypes') }}"
+       target="_blank"
+       class="btn btn-outline-primary"
+       title="Add Service Type">
+        <i class="fa fa-plus"></i>
+    </a>
+</div>
+
+<span class="text-danger">
+    @error('roomtype_id') {{ $message }} @enderror
+</span>
+
                           {{-- <div> --}}
 {{-- 
                           SLOT no  <select  name ="room_floor" id ="myitemgroup"class="myitemgroup form-select" aria-label="Default select example">

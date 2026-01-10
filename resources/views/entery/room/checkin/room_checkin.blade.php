@@ -310,32 +310,34 @@
                                         <div class="row">
                                             <!-- Room Booking -->
                                             <div class="col-md-3 col-3 mt-4">
-                                                <div class="position-relative  col-md-4 w-75" style="border:none">
-                                                    <label for="searchCustomer" class="position-absolute "
-                                                        style="top: -22px; left: 10px;">Select Slot </label>
-                                                    <div id="searchCustomer">
-                                                        <form action="{{ url('/show_roombooking') }}" method="POST"
-                                                            class="form-inline" id="select_roombooking">
-                                                            @csrf
-                                                            <div class="input-group">
-                                                                <select name="roombooking_voucher_no"
-                                                                    id="roombooking_voucher_no" class="form-select"
-                                                                    aria-label="Default select example">
-                                                                    <option selected disabled>Select Slot Booking</option>
-                                                                    @foreach ($roombookings as $roombookings)
-                                                                        <option value="{{ $roombookings->voucher_no }}">
-                                                                            {{ $roombookings->guest_name }} -
-                                                                            {{ \Carbon\Carbon::parse($roombookings->checkin_date)->format('d-m-y') }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
+    <label class="form-label">Select Slot</label>
 
-                                                            <span id="message"></span>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
+    <div class="input-group">
+        <form action="{{ url('/show_roombooking') }}" method="POST" class="w-100 d-flex">
+            @csrf
+
+            <select name="roombooking_voucher_no"
+                    id="roombooking_voucher_no"
+                    class="form-select">
+                <option selected disabled>Select Slot Booking</option>
+                @foreach ($slot as $roombookings)
+                    <option value="{{ $roombookings->voucher_no }}">
+                        {{ $roombookings->guest_name }} -
+                        {{ \Carbon\Carbon::parse($roombookings->checkin_date)->format('d-m-y') }}
+                    </option>
+                @endforeach
+            </select>
+
+            <a href="{{ url('/rooms') }}"
+               target="_blank"
+               class="btn btn-outline-primary">
+                <i class="fa fa-plus"></i>
+            </a>
+        </form>
+    </div>
+
+    <span id="message"></span>
+</div>
 
                                             {{-- 
                                             <div class="col-md-3 mt-4">
@@ -936,20 +938,17 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4 col-4 mt-4">
-                                                                <div class="position-relative border col-md-4 w-75"
-                                                                    style="border-radius: 5px;">
-                                                                    <label
-                                                                        for="business_source"class="position-absolute bg-white px-2"
-                                                                        style="top: -22px; left: 3px;"><span
-                                                                            class="requierdfield">*</span>Vehicle
-                                                                        type</label>
+                                                                <label class="form-label">
+                                                                    <span class="requierdfield">*</span> Vehicle Type
+                                                                </label>
+                                                            
+                                                                <div class="input-group">
                                                                     <select name="business_source_id"
-                                                                        id="business_source_id" class="form-select"
-                                                                        aria-label="Default select example">
-                                                                        <option disabled
-                                                                            {{ old('business_source_id') ? '' : 'selected' }}
-                                                                            style="border: none">
-                                                                            Select Vehicle type</option>
+                                                                            id="business_source_id"
+                                                                            class="form-select">
+                                                                        <option disabled {{ old('business_source_id') ? '' : 'selected' }}>
+                                                                            Select Vehicle Type
+                                                                        </option>
                                                                         @foreach ($businesssource as $businesssource)
                                                                             <option value="{{ $businesssource->id }}"
                                                                                 {{ old('business_source_id') == $businesssource->id ? 'selected' : '' }}>
@@ -957,44 +956,51 @@
                                                                             </option>
                                                                         @endforeach
                                                                     </select>
-                                                                    <span class="text-danger">
-                                                                        @error('business_source_id')
-                                                                            {{ $message }}
-                                                                        @enderror
-                                                                    </span>
+                                                            
+                                                                    <a href="{{ url('/businesssource') }}"
+                                                                    target="_blank"
+                                                                    class="btn btn-outline-primary">
+                                                                        <i class="fa fa-plus"></i>
+                                                                    </a>
                                                                 </div>
+                                                            
+                                                                @error('business_source_id')
+                                                                    <small class="text-danger">{{ $message }}</small>
+                                                                @enderror
                                                             </div>
-                                                            <div class="col-md-4 col-4 mt-4">
-                                                                <div class="position-relative border col-md-4 w-75"
-                                                                    style="border-radius: 5px;">
-                                                                    <label
-                                                                        for="package"class="position-absolute bg-white px-2"
-                                                                        style="top: -22px; left: 4px;"><span
-                                                                            class="requierdfield">*</span>Repair
-                                                                        Type</label>
-                                                                    <select name="package_id" id="package_id"
-                                                                        class="form-select"
-                                                                        aria-label="Default select example">
-                                                                        <option disabled
-                                                                            {{ old('package_id') ? '' : 'selected' }}
-                                                                            style="border: none">
-                                                                            Select Service Type</option>
+                                                            
+                                                                <div class="col-md-4 col-4 mt-4">
+                                                                <label class="form-label">
+                                                                    <span class="requierdfield">*</span> Repair Type
+                                                                </label>
+                                                            
+                                                                <div class="input-group">
+                                                                    <select name="package_id"
+                                                                            id="package_id"
+                                                                            class="form-select">
+                                                                        <option disabled {{ old('package_id') ? '' : 'selected' }}>
+                                                                            Select Service Type
+                                                                        </option>
                                                                         @foreach ($package as $package)
                                                                             <option value="{{ $package->id }}"
                                                                                 {{ old('package_id') == $package->id ? 'selected' : '' }}>
-                                                                                {{ $package->package_name }} ||
-                                                                                {{ $package->plan_name }}
+                                                                                {{ $package->package_name }} || {{ $package->plan_name }}
                                                                             </option>
                                                                         @endforeach
                                                                     </select>
-
-                                                                    <span class="text-danger">
-                                                                        @error('package_id')
-                                                                            {{ $message }}
-                                                                        @enderror
-                                                                    </span>
+                                                            
+                                                                    <a href="{{ url('/packages') }}"
+                                                                       target="_blank"
+                                                                       class="btn btn-outline-primary">
+                                                                        <i class="fa fa-plus"></i>
+                                                                    </a>
                                                                 </div>
+                                                            
+                                                                @error('package_id')
+                                                                    <small class="text-danger">{{ $message }}</small>
+                                                                @enderror
                                                             </div>
+                                                            
                                                             <div class="col-md-3 col-3 mt-4">
                                                                 <div class="position-relative border col-md-4 w-75"
                                                                     style="border-radius: 5px;">

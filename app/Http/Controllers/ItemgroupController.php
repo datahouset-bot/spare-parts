@@ -55,7 +55,7 @@ class ItemgroupController extends CustomBaseController
 
                 $itemgroup->save();
         
-                return redirect('/itemgroups')->with('message', 'Group created successfully!');
+                return redirect()->back()->with('message', 'Group created successfully!');
             } else {
                 return redirect('/itemgroups')->withInput()->withErrors($validator);
             }

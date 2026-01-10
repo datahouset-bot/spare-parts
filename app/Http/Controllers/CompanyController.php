@@ -51,7 +51,7 @@ class CompanyController extends CustomBaseController
                 $company->comp_dis = $request->comp_dis;
                 $company->save();
         
-                return redirect('company')->with('message', 'Company created successfully!');
+                return redirect()->back()->with('message', 'Company created successfully!');
             } else {
                 return redirect('company')->withInput()->withErrors($validator);
             }

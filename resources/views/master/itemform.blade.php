@@ -187,17 +187,30 @@
     @enderror
 </div>
 
-                    <div class="col-md-6">
-                        <label class="form-label">GST / Tax</label>
-                        <select name="item_gst_id" class="form-select">
-                            <option value="">Select GST</option>
-                            @foreach($gstmaster as $g)
-                                <option value="{{ $g->id }}">{{ $g->taxname }}</option>
-                            @endforeach
-                        </select>
-                        @error('item_gst_id') <small class="text-danger">{{ $message }}</small> @enderror
-                    </div>
-                </div>
+                   <div class="col-md-6">
+    <label class="form-label">GST / Tax</label>
+
+    <div class="input-group">
+        <select name="item_gst_id" class="form-select">
+            <option value="">Select GST</option>
+            @foreach($gstmaster as $g)
+                <option value="{{ $g->id }}">{{ $g->taxname }}</option>
+            @endforeach
+        </select>
+
+        <!-- PLUS BUTTON -->
+        <a href="{{ url('/gstmasters') }}"
+           class="btn btn-outline-primary"
+           title="Add GST / Tax"
+           target="_blank">
+            <i class="fa fa-plus"></i>
+        </a>
+    </div>
+
+    @error('item_gst_id')
+        <small class="text-danger">{{ $message }}</small>
+    @enderror
+</div>
 
                 {{-- IMAGE --}}
                 <div class="section-title">Item Image</div>

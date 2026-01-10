@@ -38,29 +38,38 @@
                     </div>
                 </div>
 
-                <div class="col-md-6 mt-2">
+              <div class="col-md-6 mt-2">
+    <div class="form-group">
+        <label class="floating-label" for="account_group_id">Account Group</label>
 
+        <div class="input-group">
+            <select name="account_group_id"
+                    id="account_group_id"
+                    class="form-select"
+                    required>
+                <option value="" disabled selected>Select Account Group</option>
+                @foreach ($accountgroups as $accountgroup)
+                    <option value="{{ $accountgroup->id }}">
+                        {{ $accountgroup->account_group_name }}
+                    </option>
+                @endforeach
+            </select>
 
-                    <div class="form-floating mb-3 mb-md-0">
+            <!-- ➕ ADD BUTTON -->
+            <a href="{{ url('/accountgroups') }}"
+               class="btn btn-outline-primary btn-icon"
+               title="Add Account Group"
+               target="_blank">
+                <i class="fa fa-plus"></i>
+            </a>
+        </div>
 
+        <span class="text-danger">
+            @error('account_group_id') {{ $message }} @enderror
+        </span>
+    </div>
+</div>
 
-                        <select name="account_group_id"
-                            Id ="account_group_id"class="form-select"
-                            aria-label="Default select example">
-                            <option selected disabled>Select Account Group </option>
-                            @foreach ($accountgroups as $accountgroup)
-                            <option value="{{$accountgroup->id}}">{{$accountgroup->account_group_name}}</option>  
-                            @endforeach
-                        </select>
-                        <label for="account_group_id">Account Group </label>
-
-                        <span class="text-danger">
-                            @error('account_group_id')
-                                {{ $message }}
-                            @enderror
-                        </span>
-                    </div>
-                </div>
                 <div class="col-md-6 mt-2">
                     <div class="form-floating mb-3 mb-md-0">
                         <input class="form-control" id="op_balnce" type="text"

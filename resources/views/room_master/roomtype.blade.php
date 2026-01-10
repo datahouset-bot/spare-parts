@@ -79,23 +79,38 @@
                                         </span>
                                     </div>
                                     <div>
+    <label class="form-label">Package</label>
 
-                                        Package <select name ="package_id" id ="myitemgroup"class="myitemgroup form-select"
-                                            aria-label="Default select example">
-                                            <option value ="" selected disabled>Select Package</option>
-                                            @foreach ($data as $record)
-                                                <option value={{ $record['id'] }}>
-                                                    {{ $record['package_name'] }}&nbsp;||&nbsp;
-                                                    {{ $record['plan_name'] }}&nbsp;||&nbsp;{{ $record['other_name'] }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger">
-                                            @error('package_id')
-                                                {{ $message }}
-                                            @enderror
-                                        </span>
-                                    </div>
+    <div class="input-group">
+        <select name="package_id"
+                id="myitemgroup"
+                class="myitemgroup form-select"
+                aria-label="Default select example">
+            <option value="" selected disabled>Select Package</option>
+
+            @foreach ($data as $record)
+                <option value="{{ $record['id'] }}">
+                    {{ $record['package_name'] }}
+                    || {{ $record['plan_name'] }}
+                    || {{ $record['other_name'] }}
+                </option>
+            @endforeach
+        </select>
+
+        <!-- ➕ ADD PACKAGE -->
+        <a href="{{ url('/packages') }}"
+           class="btn btn-outline-primary"
+           target="_blank"
+           title="Add Package">
+            <i class="fa fa-plus"></i>
+        </a>
+    </div>
+
+    <span class="text-danger">
+        @error('package_id') {{ $message }} @enderror
+    </span>
+</div>
+
                                     <div>
 
                                         GST / TAX % <select name ="gst_id" id ="myitemgroup"class="myitemgroup form-select"

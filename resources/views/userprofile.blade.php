@@ -15,6 +15,7 @@
         <div class="card-body">
            <table class="table table-striped" id="remindtable">
                 <thead>
+                  @cannot('disableuserprofile')
                   <tr>
                     <th scope="col">S.No</th>
                     <th scope="col">Firm Id </th>
@@ -43,7 +44,7 @@
                   </tr>
                   @endforeach
                   
-                  
+                    @endcannot
                 </tbody>
               </table>
 

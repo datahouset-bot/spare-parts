@@ -147,90 +147,128 @@
     });
 </script>
 <script>
-    const STORAGE_KEY = 'label_presets';
+/* =========================
+   CONFIG
+========================= */
+const STORAGE_KEY = 'label_presets';
 
-    // ===== DEFAULT PRESETS =====
-    const defaultPresets = {
-        SpareParts: {
-            size: 'Part Size',
-            batch_no: 'Part No',
-            rack: 'Rack No'
-        },
-        Medical: {
-            size: 'Dosage / Size',
-            batch_no: 'Batch No',
-            exp_date: 'Expiry Date'
+/* =========================
+   LOAD PRESETS
+========================= */
+let presets = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+
+/* =========================
+   APPLY PRESET
+========================= */
+function applyPreset(map) {
+    document.querySelectorAll('tbody tr').forEach(row => {
+        const field = row.querySelector('input[name*="[field_name]"]').value.trim();
+        const replace = row.querySelector('.replaced-field');
+
+        if (map[field] !== undefined) {
+            replace.value = map[field];
         }
-    };
+    });
+}
 
-    // ===== LOAD PRESETS =====
-    let presets = JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultPresets;
+/* =========================
+   RENDER PRESET BUTTONS
+========================= */
+function renderPresetButtons() {
+    const container = document.getElementById('presetButtons');
 
-    // ===== APPLY PRESET =====
-    function applyPreset(map) {
-        document.querySelectorAll('tbody tr').forEach(row => {
-            const field = row.querySelector('input[name*="[field_name]"]').value.trim();
-            const replace = row.querySelector('.replaced-field');
+    container.querySelectorAll('.dynamic-preset').forEach(el => el.remove());
 
-            if (map[field]) {
-                replace.value = map[field];
-            }
-        });
+    Object.keys(presets).forEach(name => {
+        const group = document.createElement('div');
+        group.className = 'btn-group me-2 dynamic-preset';
+
+        // APPLY
+        const applyBtn = document.createElement('button');
+        applyBtn.type = 'button';
+        applyBtn.className = 'btn btn-outline-warning';
+        applyBtn.innerText = name;
+        applyBtn.onclick = () => applyPreset(presets[name]);
+
+        // EDIT
+        const editBtn = document.createElement('button');
+        editBtn.type = 'button';
+        editBtn.className = 'btn btn-outline-primary';
+        editBtn.innerHTML = '<i class="fa fa-edit"></i>';
+        editBtn.onclick = () => editPreset(name);
+
+        // DELETE
+        const deleteBtn = document.createElement('button');
+        deleteBtn.type = 'button';
+        deleteBtn.className = 'btn btn-outline-danger';
+        deleteBtn.innerHTML = '<i class="fa fa-trash"></i>';
+        deleteBtn.onclick = () => deletePreset(name);
+
+        group.append(applyBtn, editBtn, deleteBtn);
+        container.prepend(group);
+    });
+}
+
+/* =========================
+   SAVE / UPDATE PRESET
+========================= */
+document.getElementById('savePreset').addEventListener('click', function () {
+    const name = document.getElementById('presetName').value.trim();
+
+    if (!name) {
+        alert('Preset name is required');
+        return;
     }
 
-    // ===== RENDER PRESET BUTTONS =====
-    function renderPresetButtons() {
-        const container = document.getElementById('presetButtons');
-
-        // Remove old dynamic buttons
-        container.querySelectorAll('.dynamic-preset').forEach(b => b.remove());
-
-        Object.keys(presets).forEach(name => {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'btn btn-outline-warning dynamic-preset';
-            btn.textContent = name;
-            btn.onclick = () => applyPreset(presets[name]);
-            container.prepend(btn);
-        });
-    }
-
-    // ===== SAVE CUSTOM PRESET =====
-    document.getElementById('savePreset').addEventListener('click', function () {
-        const name = document.getElementById('presetName').value.trim();
-        if (!name) {
-            alert('Preset name required');
-            return;
+    const map = {};
+    document.querySelectorAll('.preset-input').forEach(input => {
+        if (input.value.trim()) {
+            map[input.dataset.field] = input.value.trim();
         }
-
-        const map = {};
-        document.querySelectorAll('.preset-input').forEach(input => {
-            if (input.value.trim()) {
-                map[input.dataset.field] = input.value.trim();
-            }
-        });
-
-        presets[name] = map;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(presets));
-
-        renderPresetButtons();
-
-        // Reset modal
-        document.getElementById('presetName').value = '';
-        document.querySelectorAll('.preset-input').forEach(i => i.value = '');
-
-        bootstrap.Modal.getInstance(document.getElementById('presetModal')).hide();
     });
 
-    // ===== VISIBLE YES / NO =====
-    document.getElementById('markAllYes').onclick = () =>
-        document.querySelectorAll('.is-visible-select').forEach(s => s.value = '1');
+    presets[name] = map;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(presets));
 
-    document.getElementById('markAllNo').onclick = () =>
-        document.querySelectorAll('.is-visible-select').forEach(s => s.value = '0');
-
-    // ===== INIT =====
     renderPresetButtons();
+
+    // Reset modal
+    document.getElementById('presetName').value = '';
+    document.querySelectorAll('.preset-input').forEach(i => i.value = '');
+
+    bootstrap.Modal.getInstance(document.getElementById('presetModal')).hide();
+});
+
+/* =========================
+   EDIT PRESET
+========================= */
+function editPreset(name) {
+    document.getElementById('presetName').value = name;
+
+    const map = presets[name];
+    document.querySelectorAll('.preset-input').forEach(input => {
+        input.value = map[input.dataset.field] ?? '';
+    });
+
+    new bootstrap.Modal(document.getElementById('presetModal')).show();
+}
+
+/* =========================
+   DELETE PRESET
+========================= */
+function deletePreset(name) {
+    if (!confirm(`Delete preset "${name}"?`)) return;
+
+    delete presets[name];
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(presets));
+    renderPresetButtons();
+}
+
+/* =========================
+   INIT
+========================= */
+renderPresetButtons();
 </script>
+
 
 @endsection

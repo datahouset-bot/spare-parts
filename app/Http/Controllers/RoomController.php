@@ -83,7 +83,7 @@ if ($request->hasFile('room_image3')) {
 $room->save();
 
 // Redirect back with a success message
-return redirect()->route('rooms.index')->with('message', 'Room added successfully.');
+return redirect()->route('rooms.index')->with('message', 'Slot added successfully.');
 }
 public function edit($room_id)
 {
