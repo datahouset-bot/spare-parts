@@ -90,22 +90,13 @@
                       
                       @endif
 
-
-                    
-                     <td>
-                      <button class="btn btn-sm" onclick="printRoomBooking({{ $record->voucher_no }})">
-                          <i class="fa fa-print" style="font-size:20px;color:SlateBlue"></i>
-                      </button>
-                  </td>
-                  
-
                   {{-- <td>
                     <a href="{{ url('guest_reg_print', $record->voucher_no) }}" class="btn btn-sm">
                         <i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i>
                     </a>
                 </td> --}}
                 <td>
-                      <a href="{{ url('checkin_print_format', $record->voucher_no) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
+                      <a href="{{ url('checkin_print_format', $record->voucher_no) }}" class="btn  btn-sm" ><i class="fa fa-print" style="font-size:20px;color:SlateBlue"></i></a>
                   </td> 
                   <td>
                       <a href="{{ route('roomcheckins.edit',  $record->voucher_no) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>

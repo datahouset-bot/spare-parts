@@ -9,7 +9,6 @@ use App\Models\account;
 use App\Models\package;
 use App\Models\foodbill;
 use App\Models\roomtype;
-
 use App\Models\gstmaster;
 use App\Models\optionlist;
 use App\Models\componyinfo;

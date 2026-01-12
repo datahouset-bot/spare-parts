@@ -1,5 +1,94 @@
 
 <div id="layoutSidenav_content">
+    <style>
+/* ===============================
+   DASHBOARD FINAL FIX
+================================ */
+
+#layoutSidenav_content {
+    background: #f1f5f9 !important;
+}
+
+/* Grid consistency */
+#layoutSidenav_content .row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 1.5rem;
+}
+
+/* Card container */
+#layoutSidenav_content .card {
+    border-radius: 16px;
+    border: none;
+    height: 100%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.10);
+    transition: all 0.25s ease;
+    display: flex;
+}
+
+/* Hover */
+#layoutSidenav_content .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.18);
+}
+
+/* Button = FULL CARD */
+#layoutSidenav_content .card > a.btn {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 90px;
+    font-size:25px;
+    font-weight: 700;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 22px;
+    letter-spacing: 0.3px;
+    text-align: left;
+}
+
+/* Icon fix */
+#layoutSidenav_content .card a.btn i {
+    font-size: 25px;
+    min-width: 32px;
+    text-align: center;
+}
+
+/* Text wrapping fix */
+#layoutSidenav_content .card a.btn span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Remove extra margins */
+#layoutSidenav_content .card,
+#layoutSidenav_content .card .btn {
+    margin-bottom: 0 !important;
+}
+
+/* Breadcrumb */
+#layoutSidenav_content .breadcrumb {
+    background: #fff;
+    padding: 14px 18px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    #layoutSidenav_content .card > a.btn {
+        min-height: 80px;
+        font-size: 16px;
+    }
+
+    #layoutSidenav_content .card a.btn i {
+        font-size: 24px;
+    }
+}
+
+    </style>
     <main>
         <div class="container-fluid px-4">
 
@@ -16,9 +105,9 @@
                 <!-- Booking Calendar -->
                 @can('Booking Calendar')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{ url('/booking_calendar') }}" class="btn btn-success d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-calendar-alt"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Booking Calendar</span>
@@ -29,9 +118,9 @@
                 <!-- Pending Booking for Confirmation -->
                 @can('Unconfirmed Bookings')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('/pending_booking')}}" class="btn btn-danger d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-exclamation-circle"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Unconfirmed Bookings</span>
@@ -43,9 +132,9 @@
                 <!-- Kitchen Dashboard -->
                 {{-- @can('Kitchen Dash Board')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('/kichen_dashboard')}}" class="btn btn-warning d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-utensils"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Kitchen Dash Board</span>
@@ -57,9 +146,9 @@
                 <!-- Outstanding Receivable -->
                 @can('Outstanding Receivable')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('/outstanding_receivable')}}" class="btn btn-info d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-money-bill-wave"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Outstanding Receivable</span>
@@ -71,7 +160,7 @@
                 <!-- Outstanding Payable -->
                 @can('Outstanding Payable')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('/outstanding_payable')}}" class="btn btn-primary d-flex align-items-center justify-content-start">
                             <span class="d-flex" style="width: 15%;">
                                 <i class="fas fa-file-invoice-dollar"></i>
@@ -84,9 +173,9 @@
                 <!-- Police Station Report -->
                 @can('Police Station Report')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('/police_station_report')}}" class="btn btn-warning d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-shield-alt"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Customer Details</span>
@@ -97,9 +186,9 @@
                 <!-- Item Wise Sale Report -->
                 @can('Item Wise Sale Report')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('item_wise_sale_report_view')}}" class="btn btn-dark d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-chart-line"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Item Wise Sale Report</span>
@@ -113,9 +202,9 @@
                    
 
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('dayend_report')}}" class="btn btn-danger d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-clock"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Day End Report</span>
@@ -123,9 +212,9 @@
                     </div>
                 </div>
                                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('dayend_datewise')}}" class="btn btn-info d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-clock"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Day End Date Wise</span>
@@ -139,9 +228,9 @@
                 <!-- Booking Register -->
                 @can('Booking Register')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('roombooking_register')}}" class="btn btn-success d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-book"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Booking Register</span>
@@ -153,9 +242,9 @@
                 <!-- Check-in Register -->
                 @can('Check-in Register')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('roomcheckins')}}" class="btn btn-dark d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-sign-in-alt"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Move-in Register</span>
@@ -167,9 +256,9 @@
                 @can('Room Food Bills')
                     
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('foodbills')}}" class="btn btn-warning d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-file-invoice"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Invoices Bills</span>
@@ -177,9 +266,9 @@
                     </div>
                 </div>
                  {{-- <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('fnbrerport_pageshow')}}" class="btn btn-dark d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-file-invoice"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">F & B Report</span>
@@ -194,7 +283,7 @@
                         <div class="col-xl-3 col-md-6">
                             <div class="card bg-success text-white mb-4">
                                 <a href="{{url('roomsales_report_pageshow')}}" class="btn btn-success d-flex align-items-center justify-content-start">
-                                    <span class="d-flex" style="width: 10%;">
+                                    <span class="d-flex align-items-center">
                                         <i class="fas fa-file-invoice"></i>
                                     </span>
                                     <span class="ms-2" style="width: 90%;">Service Report </span>
@@ -206,9 +295,9 @@
                 <!-- Advance Receipt Register -->
                 @can('Advance Receipt Reg')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('advace_receipt')}}" class="btn btn-info d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-receipt"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Advance Receipt Register</span>
@@ -219,9 +308,9 @@
                 <!-- Checkout Register -->
                 @can('Checkout Register')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('roomcheckout_register')}}" class="btn btn-primary d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-sign-out-alt"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;"> Moveout Register</span>
@@ -232,7 +321,7 @@
 <div class="col-xl-3 col-md-6">
     <div class="card bg-success text-white mb-4">
         <a href="{{url('payment_register_pageshow')}}" class="btn btn-success d-flex align-items-center justify-content-start">
-            <span class="d-flex" style="width: 10%;">
+            <span class="d-flex align-items-center">
                 <i class="fas fa-rupee-sign"></i> <!-- Rupee Icon -->
             </span>
             <span class="ms-2" style="width: 90%;">Payment Register</span>
@@ -243,7 +332,7 @@
 <div class="col-xl-3 col-md-6">
     <div class="card bg-warning text-white mb-4">
         <a href="{{url('reciept_register_pageshow')}}" class="btn btn-warning d-flex align-items-center justify-content-start">
-            <span class="d-flex" style="width: 10%;">
+            <span class="d-flex align-items-center">
                 <i class="fab fa-bitcoin"></i> <!-- Bitcoin Icon -->
             </span>
             <span class="ms-2" style="width: 90%;">Receipt Register</span>
@@ -253,9 +342,9 @@
 
 
                                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('guestlog')}}" class="btn btn-dark d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-sign-out-alt"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Customer Log</span>
@@ -266,9 +355,9 @@
                 <!-- Restaurant Food Bills -->
                 @can('Restaurant Food Bills')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('table_foodbills')}}" class="btn btn-success d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-utensils"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Spare Part Bills</span>
@@ -276,9 +365,9 @@
                     </div>
                 </div>
                 {{-- <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('restaurant_pageshow')}}" class="btn btn-warning d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-utensils"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Restaurant Register</span>
@@ -289,9 +378,9 @@
                 <!-- Kot Register -->
                 @can('Kot Register')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('kots')}}" class="btn btn-danger d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-receipt"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Service Bill Register</span>
@@ -302,9 +391,9 @@
                 <!-- Stock Status -->
                 @can('Stock Status')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('inventories')}}" class="btn btn-warning d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-warehouse"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Stock Status</span>
@@ -314,7 +403,7 @@
                 {{-- <div class="col-xl-3 col-md-6">
                     <div class="card bg-dark text-white mb-4">
                         <a href="{{url('liqour_stock_brand_wise')}}" class="btn btn-dark d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-warehouse"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Liqour Stock Brand Wise </span>
@@ -322,9 +411,9 @@
                     </div>
                 </div> --}}
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('item_wise_stock_pageshow')}}" class="btn btn-danger d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-warehouse"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Item Wise Stock</span>
@@ -335,9 +424,9 @@
                 <!-- Store Wise Stock -->
                 @can('Store Wise Stock')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('store_wise_stock')}}" class="btn btn-info d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-store"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Store Wise Stock</span>
@@ -349,9 +438,9 @@
                 <!-- Stock In Register -->
                 @can('Stock In Register')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('purchases')}}" class="btn btn-dark d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-arrow-down"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Stock In Register</span>
@@ -363,9 +452,9 @@
                 <!-- Stock Out Register -->
                 @can('Stock Out Register')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('sales')}}" class="btn btn-primary d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-arrow-up"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Stock Out Register</span>
@@ -376,9 +465,9 @@
                 <!-- Stock Transfer Register -->
                 @can('Stock Transfer Register')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('stocktransfers')}}" class="btn btn-success d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-exchange-alt"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Stock Transfer Register</span>
@@ -389,9 +478,9 @@
                 <!-- Item List -->
                 @can('Item List')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('item')}}" class="btn btn-warning d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-box"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Item List</span>
@@ -404,9 +493,9 @@
                 @can('Room List')
                     
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('rooms')}}" class="btn btn-dark d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-bed"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Slot List</span>
@@ -418,9 +507,9 @@
                 <!-- Account List -->
                 @can('Account List')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('account')}}" class="btn btn-danger d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-book"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Account List</span>
@@ -430,9 +519,9 @@
                 @endcan
                 @can('Handover')
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-primary text-white">
                         <a href="{{url('handover_view')}}" class="btn btn-dark d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-book"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Handover (User Shift)</span>
@@ -444,7 +533,7 @@
                 {{-- <div class="col-xl-3 col-md-6">
                     <div class="card bg-warining text-white mb-4">
                         <a href="{{url('my_checkout_register_pageshow')}}" class="btn btn-warning d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-book"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">My Check Out  Register Only</span>
@@ -456,7 +545,7 @@
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-warining text-white mb-4">
                         <a href="{{url('checkout_register_pageshow')}}" class="btn btn-primary d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-book"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">Moveout Out Register Only</span>
@@ -468,7 +557,7 @@
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-success text-white mb-4">
                         <a href="{{url('room_food_gstreport_pageshow')}}" class="btn btn-success d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-book"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">GST Report </span>
@@ -480,7 +569,7 @@
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-success text-white mb-4">
                         <a href="{{url('b2bsales_pageshow')}}" class="btn btn-dark d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-book"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">B2B Sales Room Checkout </span>
@@ -492,7 +581,7 @@
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-success text-white mb-4">
                         <a href="{{url('b2csales_pageshow')}}" class="btn btn-danger d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-book"></i>
                             </span>
                             <span class="ms-2" style="width: 90%;">B2C Sales Room Checkout </span>

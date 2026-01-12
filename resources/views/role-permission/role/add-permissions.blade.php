@@ -22,30 +22,46 @@
                             @csrf
                             @method('PUT')
 
-                            <div class="mb-3">
-                                @error('permission')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                          <div class="mb-3">
 
-                                <label for="">Permissions</label>
+    @error('permission')
+        <span class="text-danger">{{ $message }}</span>
+    @enderror
 
-                                <div class="row">
-                                    @foreach ($permissions as $permission)
-                                    <div class="col-md-2">
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                name="permission[]"
-                                                value="{{ $permission->name }}"
-                                                {{ in_array($permission->id, $rolePermissions) ? 'checked':'' }}
-                                            />
-                                            {{ $permission->name }}
-                                        </label>
-                                    </div>
-                                    @endforeach
-                                </div>
+    {{-- Select All --}}
+    <div class="form-check mb-2">
+        <input class="form-check-input" type="checkbox" id="checkAllPermissions">
+        <label class="form-check-label fw-bold" for="checkAllPermissions">
+            Check / Uncheck All Permissions
+        </label>
+    </div>
 
-                            </div>
+    <hr>
+
+    <label class="fw-semibold">Permissions</label>
+
+    <div class="row">
+        @foreach ($permissions as $permission)
+            <div class="col-md-2">
+                <div class="form-check">
+                    <input
+                        class="form-check-input permission-checkbox"
+                        type="checkbox"
+                        name="permission[]"
+                        value="{{ $permission->name }}"
+                        id="permission_{{ $permission->id }}"
+                        {{ in_array($permission->id, $rolePermissions) ? 'checked' : '' }}
+                    >
+                    <label class="form-check-label" for="permission_{{ $permission->id }}">
+                        {{ $permission->name }}
+                    </label>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+</div>
+
                             <div class="mb-3">
                                 {{-- @if (auth()->check() && (auth()->user()->email === 'datahouset@gmail.com' || auth()->user()->email === Auth::user()->firm_id.'@gmail.com')) --}}
 
@@ -59,5 +75,27 @@
         </div>
     </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkAll = document.getElementById('checkAllPermissions');
+        const checkboxes = document.querySelectorAll('.permission-checkbox');
+
+        // Check / Uncheck All
+        checkAll.addEventListener('change', function () {
+            checkboxes.forEach(cb => cb.checked = this.checked);
+        });
+
+        // Update "Check All" when individual checkbox changes
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', function () {
+                checkAll.checked = [...checkboxes].every(c => c.checked);
+            });
+        });
+
+        // On page load – set Check All if all are already checked
+        checkAll.checked = [...checkboxes].length > 0 &&
+                           [...checkboxes].every(c => c.checked);
+    });
+</script>
 
     @endsection

@@ -3,6 +3,107 @@
 /* ===============================
    GLOBAL POLISH
 ================================ */
+/* =====================================================
+   FIX: Recent Sales / Outstanding / Purchase Section
+   RESPONSIVE ONLY — NO HTML CHANGE
+===================================================== */
+
+/* Ensure equal height behavior */
+#recent-sales-section,
+#recent-sales-section + .col-xl-6 {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Desktop: side-by-side stays SAME */
+@media (min-width: 1200px) {
+    #recent-sales-section,
+    #recent-sales-section + .col-xl-6 {
+        height: 100%;
+    }
+}
+
+/* ===================== TABLET ===================== */
+@media (max-width: 991px) {
+
+    /* Stack LEFT and RIGHT blocks */
+    #recent-sales-section,
+    #recent-sales-section + .col-xl-6 {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Remove forced heights */
+    #recent-sales-section .card,
+    #recent-sales-section + .col-xl-6 .card {
+        height: auto !important;
+    }
+
+    /* Tables scroll horizontally */
+    #recent-sales-section table,
+    .col-xl-6 table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    /* Purchase chart height control */
+    #purchaseBarChart {
+        height: 220px !important;
+    }
+}
+
+/* ===================== MOBILE ===================== */
+@media (max-width: 767px) {
+
+    /* Full stacking */
+    #recent-sales-section,
+    #recent-sales-section + .col-xl-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    /* Card spacing */
+    #recent-sales-section .card,
+    .col-xl-6 .card {
+        margin-bottom: 16px;
+    }
+
+    /* Reduce header font */
+    .card-header {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+
+    /* Table text size */
+    table th,
+    table td {
+        font-size: 13px;
+        padding: 6px;
+    }
+
+    /* Chart fits screen */
+    #purchaseBarChart {
+        height: 200px !important;
+    }
+}
+
+/* ===================== SMALL MOBILE ===================== */
+@media (max-width: 480px) {
+
+    /* Smaller chart */
+    #purchaseBarChart {
+        height: 180px !important;
+    }
+
+    /* Reduce table spacing further */
+    table th,
+    table td {
+        font-size: 12px;
+        padding: 5px;
+    }
+}
+
 body {
     background:gray;
 }
@@ -56,7 +157,7 @@ body {
 .card a.btn {
     width: 100%;
     height: 75px;               /* BIG BUTTON */
-    font-size: 18px;            /* BIG TEXT */
+    font-size: 30px;            /* BIG TEXT */
     font-weight: 700;
     border-radius: 14px;
     padding: 0 18px;
@@ -71,7 +172,7 @@ body {
    ICONS – BIG & ANIMATED
 ================================ */
 .card i {
-    font-size: 26px;
+    font-size:38px;
     transition: transform 0.3s ease;
 }
 

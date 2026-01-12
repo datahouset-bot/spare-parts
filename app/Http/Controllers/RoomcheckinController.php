@@ -27,6 +27,7 @@ use App\Models\compinfofooter;
 use App\Models\softwarecompany;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
@@ -128,7 +129,7 @@ class RoomcheckinController extends CustomBaseController
             $roomcheckins = roomcheckin::query()
                 ->select(
                     'roomcheckins.voucher_no',
-                    \DB::raw('GROUP_CONCAT(roomcheckins.room_no ORDER BY roomcheckins.room_no ASC SEPARATOR ", ") as room_nos'),
+                    DB::raw('GROUP_CONCAT(roomcheckins.room_no ORDER BY roomcheckins.room_no ASC SEPARATOR ", ") as room_nos'),
                     'roomcheckins.check_in_no',
                     'roomcheckins.guest_name',
                     'roomcheckins.guest_mobile',
@@ -229,6 +230,16 @@ class RoomcheckinController extends CustomBaseController
 
 
 
+        $uniqueIds = roombooking::withinFY('checkin_date')->where('checkin_voucher_no', '0')
+            ->where('firm_id', Auth::user()->firm_id)
+            ->groupBy('voucher_no')
+            ->select(DB::raw('MIN(id) as id'))
+            ->pluck('id');
+
+        $roombookings = roombooking::withinFY('checkin_date')->whereIn('id', $uniqueIds)
+            ->where('checkin_voucher_no', '=', 0)
+            ->where('firm_id', Auth::user()->firm_id)
+            ->get();
         $paymentmodes = account::where('firm_id', Auth::user()->firm_id)
             ->whereHas('accountGroup', function ($query) {
                 $query->whereIn('account_group_name', ['BANK ACCOUNT', 'Cash In Hand']);
@@ -241,7 +252,7 @@ class RoomcheckinController extends CustomBaseController
         $package = package::where('firm_id', Auth::user()->firm_id)->get();
         $othercharges = othercharge::where('firm_id', Auth::user()->firm_id)->get();
 
-        $slot = room::where('firm_id', Auth::user()->firm_id)->where('room_status', 'vacant')->get();
+
 
         $rooms = room::with(['roomtype.gstmaster', 'roomtype.package'])
             ->where('firm_id', Auth::user()->firm_id)
@@ -283,7 +294,7 @@ class RoomcheckinController extends CustomBaseController
             ->get();
 
 
-        return view('entery.room.checkin.room_checkin', compact('rooms','slot', 'businesssource', 'package', 'new_bill_no', 'new_voucher_no', 'othercharges', 'paymentmodes', 'guset_data'));
+        return view('entery.room.checkin.room_checkin', compact('rooms', 'roombookings', 'businesssource', 'package', 'new_bill_no', 'new_voucher_no', 'othercharges', 'paymentmodes', 'guset_data'));
 
     }
 
@@ -305,7 +316,7 @@ class RoomcheckinController extends CustomBaseController
             ->where('voucher_no', $id)->first();
 
         $account_details = account::where('firm_id', Auth::user()->firm_id)
-;
+            ->where('mobile', $roombookings->guest_mobile)->first();
 
 
         $account_id = $account_details->id;
@@ -508,7 +519,7 @@ $rooms = Room::with(['roomtype.gstmaster', 'roomtype.package'])
             $account->account_af4 = $request->guest_father_name;
             $account->account_af5 = $request->guest_age;
             $account->account_af6 = $request->guest_gender;
-            $account->account_birthday = $request->account_birthday;
+            $account->account_birthday = $request->guest_age_name;
   
 
 
@@ -670,11 +681,6 @@ $rooms = Room::with(['roomtype.gstmaster', 'roomtype.package'])
 return view('error.checkdate_on_fy',compact('fy_start_date','fy_end_date'));
 
                 }
-
-
-
-
-
                 $checkin_room_ids = $request->checkin_room_id;
 
                 foreach ($checkin_room_ids as $checkin_room_id) {
@@ -694,7 +700,7 @@ return view('error.checkdate_on_fy',compact('fy_start_date','fy_end_date'));
 
                     $checkIn->guest_mobile = $request->guest_mobile;
                     $checkIn->commited_days = $request->commited_days;
-                    $checkIn->checkinaf1 = $request->no_of_guest;
+                    $checkIn->no_of_guest = $request->no_of_guest;
                     $checkIn->checkin_remark1 = $request->checkin_remark1;
                     $checkIn->checkin_remark2 = $request->checkin_remark2;
                     $checkIn->purpose_of_visit = $request->purpose_of_visit;
@@ -736,10 +742,10 @@ return view('error.checkdate_on_fy',compact('fy_start_date','fy_end_date'));
 
 
                     }
-                    // $checkIn->checkinaf1 = $request->second_guest_name;
-                    $checkIn->checkinaf3 = $request->third_guest_name;
-                    $checkIn->checkinaf5 = $request->second_guest_id_name;
-                    $checkIn->checkinaf6 = $request->second_guest_id_no;
+                    $checkIn->checkinaf1 = $request->guest_idproof_no;
+                    $checkIn->checkinaf3 = $request->guest_father_name;
+                    $checkIn->checkinaf5 = $request->guest_age;
+                    $checkIn->checkinaf6 = $request->guest_age_name;
                     $checkIn->checkinaf7 = $request->third_guest_id_name;
                     $checkIn->checkinaf8 = $request->third_guest_id_no;
                     $checkIn->checkinaf9 = $request->checkout_date;
@@ -767,9 +773,10 @@ return view('error.checkdate_on_fy',compact('fy_start_date','fy_end_date'));
                 }
 
             } else {
-                $this->create_account($request);
-                $this->store($request);
-            }
+    $this->create_account($request);
+    $this->store($request);   // ⚠️ recursive call
+}
+
 
 
 
@@ -1070,7 +1077,7 @@ return view('error.checkdate_on_fy',compact('fy_start_date','fy_end_date'));
     public function show(Request $request, $id)
     {   //this is function for show all detail when we select anychecin in checkout voucher  using ajex 
         if ($request->ajax()) {
-            \Log::info('AJAX request received');
+            Log::info('AJAX request received');
         }
         $roomcheckins = roomcheckin::withinFY('checkin_date')->where('voucher_no', $id)
             ->where('firm_id', Auth::user()->firm_id)
@@ -1190,7 +1197,7 @@ return view('error.checkdate_on_fy',compact('fy_start_date','fy_end_date'));
     public function show_selected_booking(Request $request, $id)
     {   //this is function for show all detail of rooms only  when we select any room using ajex 
         if ($request->ajax()) {
-            \Log::info('AJAX request received');
+            Log::info('AJAX request received');
         }
 
         $roombooking = roombooking::withinFY('checkin_date')->where('firm_id', Auth::user()->firm_id)

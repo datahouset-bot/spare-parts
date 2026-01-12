@@ -16,6 +16,176 @@
    
   });
 </script>
+
+<style>/* ==================================================
+   PREMIUM ERP UI – BOLD & VISUAL (SAFE OVERRIDES)
+================================================== */
+
+/* ---------- PAGE & CARD ---------- */
+body {
+    background: #f1f5f9;
+}
+
+.card {
+    border-radius: 18px;
+    border: none;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.12);
+}
+
+/* ---------- CARD HEADER ---------- */
+.card-header {
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    padding: 18px 22px;
+}
+
+/* ---------- TOP BUTTONS ---------- */
+.btn {
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 10px 20px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    border: none;
+}
+
+.btn-secondary {
+    font-weight: 600;
+}
+
+/* ---------- MODAL ---------- */
+.modal-content {
+    border-radius: 18px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #ffffff;
+    border-radius: 18px 18px 0 0;
+    padding: 16px 20px;
+}
+
+.modal-title {
+    font-size: 21px;
+    font-weight: 800;
+}
+
+/* ---------- MODAL BODY TEXT ---------- */
+.modal-body {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* ---------- INPUTS ---------- */
+.form-control {
+    height: 48px;
+    border-radius: 12px;
+    border: 2px solid #334155;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 14px;
+}
+
+.form-control:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37,99,235,0.25);
+}
+
+/* Placeholder */
+.form-control::placeholder {
+    font-weight: 500;
+    color: #64748b;
+}
+
+/* ---------- TABLE ---------- */
+.table {
+    font-size: 16px;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+}
+
+/* Table Header */
+.table thead th {
+    background: #e2e8f0;
+    font-weight: 800;
+    font-size: 15px;
+    color: #0f172a;
+    text-transform: uppercase;
+    padding: 14px 12px;
+}
+
+/* Table Body */
+.table tbody td,
+.table tbody th {
+    font-weight: 600;
+    color: #1e293b;
+    padding: 14px 12px;
+    background: #ffffff;
+}
+
+/* Hover */
+.table tbody tr:hover td {
+    background: #e0f2fe;
+}
+
+/* ---------- ACTION ICONS ---------- */
+.table .fa {
+    font-size: 22px !important;
+    transition: transform 0.25s ease;
+}
+
+.table .fa-edit {
+    color: #2563eb !important;
+}
+
+.table .fa-trash {
+    color: #dc2626 !important;
+}
+
+.table .fa:hover {
+    transform: scale(1.3);
+}
+
+/* ---------- DATATABLE SEARCH ---------- */
+.dataTables_wrapper .dataTables_filter input {
+    height: 42px;
+    border-radius: 10px;
+    border: 2px solid #334155;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 6px 12px;
+}
+
+/* ---------- PAGINATION ---------- */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    margin: 2px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+    color: #ffffff !important;
+}
+
+/* ---------- ALERTS ---------- */
+.alert {
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 12px;
+}
+
+</style>
+
 <div class="container-fluid">
   @if(session('message'))
     <div class="alert alert-primary">

@@ -66,7 +66,6 @@
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
-                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -94,19 +93,8 @@
                      {{-- <td scope="col">{{ $record->room_tariff_perday }}</td> --}}
                      {{-- <td scope="col">{{ $record->room_tariff_perday*$record->commited_days }}</td> --}}
                      <td scope="col">{{ $record->booking_amount ?? 0 }}</td>
-
-
-
-                    
                      <td>
-                      <button class="btn btn-sm" onclick="printRoomBooking({{ $record->voucher_no }})">
-                          <i class="fa fa-print" style="font-size:20px;color:SlateBlue"></i>
-                      </button>
-                  </td>
-                  
-
-                     <td>
-                      <a href="{{ url('roombooking_print_view', $record->voucher_no) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
+                      <a href="{{ url('roombooking_print_view', $record->voucher_no) }}" class="btn  btn-sm" ><i class="fa fa-print" style="font-size:20px;color:SlateBlue"></i></a>
                   </td> 
                   <td>
                       <a href="{{ route('roombookings.edit', $record->voucher_no) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>

@@ -9,22 +9,92 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 
 <style>
+    /* =====================================================
+   DARKER + PREMIUM INPUT BORDERS
+   (NO STRUCTURE CHANGE)
+===================================================== */
+
+/* Base input look */
+.form-control,
+.form-select,
+.select2-container--default .select2-selection--single {
+    border: 2px solid #2c3e50 !important;   /* Dark border */
+    background-color: #ffffff;
+    transition: all 0.25s ease;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.08);
+}
+
+/* Hover effect */
+.form-control:hover,
+.form-select:hover,
+.select2-container--default .select2-selection--single:hover {
+    border-color: #1d4ed8 !important;       /* Deep blue */
+}
+
+/* Focus effect */
+.form-control:focus,
+.form-select:focus,
+.select2-container--default.select2-container--focus 
+.select2-selection--single {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.25) !important;
+    outline: none;
+}
+
+/* Disabled */
+.form-control:disabled,
+.form-select:disabled {
+    background-color: #f1f5f9;
+    border-color: #94a3b8 !important;
+    color: #64748b;
+}
+
+/* Error state (Laravel validation) */
+.is-invalid,
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: #dc2626 !important;
+    box-shadow: 0 0 0 3px rgba(220,38,38,0.2);
+}
+
+/* Success (optional if you add later) */
+.is-valid {
+    border-color: #16a34a !important;
+    box-shadow: 0 0 0 3px rgba(22,163,74,0.2);
+}
+
+/* Select2 text color & arrow */
+.select2-selection__rendered {
+    color: #0f172a !important;
+    font-weight: 500;
+}
+
+.select2-selection__arrow b {
+    border-color: #0f172a transparent transparent transparent !important;
+}
+
+/* Input-group button alignment polish */
+.input-group .btn {
+    border-radius: 8px;
+    font-weight: 600;
+}
+
 /* ========= GLOBAL UI ========= */
 .card {
-    border-radius: 14px;
-    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    border-radius: 20px;
+    box-shadow: 0 12px 24px rgba(0,0,0,.08);
 }
 .form-label {
     font-weight: 600;
-    font-size: 13px;
-    color: #0d6efd;
+    font-size: 18px;
+    color: #0b1f3c;
 }
 .form-control,
 .form-select,
 .select2-container--default .select2-selection--single {
     height: 42px !important;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 20px;
 }
 .select2-selection__rendered {
     line-height: 42px !important;
@@ -34,9 +104,9 @@
 }
 .section-title {
     font-weight: 700;
-    font-size: 15px;
+    font-size: 20px;
     margin: 20px 0 10px;
-    border-bottom: 2px solid #e9ecef;
+    border-bottom: 2px solid #88929b;
     padding-bottom: 6px;
 }
 .image-trigger {
@@ -66,7 +136,7 @@
 
     <div class="card">
         <div class="card-header text-center fw-bold">
-            Add Item / Product
+          <h3> Add Item / Product</h3> 
         </div>
 
         <div class="card-body">

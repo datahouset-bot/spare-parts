@@ -9,7 +9,157 @@
     <script src="jquery/master.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
     
-    
+    <style>
+      /* ================================
+   GLOBAL PAGE POLISH
+================================ */
+body {
+    background: #f1f5f9;
+}
+
+/* ================================
+   CARD STYLING
+================================ */
+.card {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    color: #fff;
+    border-radius: 16px 16px 0 0;
+    padding: 16px 20px;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-weight: 700;
+}
+
+/* ================================
+   TOP BUTTON BAR
+================================ */
+.card .btn {
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.card .btn-primary {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    border: none;
+}
+
+.card .btn-info {
+    background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    border: none;
+}
+
+/* ================================
+   MODAL UI
+================================ */
+.modal-content {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    background: #1e293b;
+    color: #fff;
+    border-radius: 16px 16px 0 0;
+}
+
+.modal-title {
+    font-weight: 00;
+}
+
+.modal-body input.form-control {
+    margin-bottom: 10px;
+}
+
+/* ================================
+   INPUT POLISH
+================================ */
+.form-control {
+    border-radius: 10px;
+    border: 2px solid #334155;
+    font-size: 19px;
+}
+
+.form-control:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.25);
+}
+
+/* ================================
+   TABLE UI
+================================ */
+.table {
+    font-size: 14px;
+}
+
+.table thead {
+    background: #e2e8f0;
+}
+
+.table thead th {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f8fafc;
+}
+
+.table tbody tr:hover {
+    background-color: #e0f2fe;
+}
+
+/* ================================
+   ACTION ICONS
+================================ */
+.table .btn-sm {
+    padding: 6px 8px;
+    border-radius: 8px;
+}
+
+.table .fa-edit {
+    color: #2563eb !important;
+    transition: transform 0.2s ease;
+}
+
+.table .fa-trash {
+    color: #dc2626 !important;
+    transition: transform 0.2s ease;
+}
+
+.table .fa-edit:hover,
+.table .fa-trash:hover {
+    transform: scale(1.25);
+}
+
+/* ================================
+   DATATABLE SEARCH + PAGINATION
+================================ */
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 10px;
+    border: 2px solid #334155;
+    padding: 6px 10px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border-radius: 8px;
+    margin: 2px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: #2563eb !important;
+    color: #fff !important;
+}
+
+    </style>
 <script>
   $(document).ready(function () {
     let table = new DataTable('#remindtable');

@@ -250,6 +250,7 @@ $formattedCheckoutDateTime = Carbon::parse(
         // dd($roombookings);
         return view('entery.room.room_booking_home', compact('roombooking'));
     }
+    
     public function clear_booking()
     {
         $roombooking = roombooking::where('firm_id', Auth::user()->firm_id)->get();

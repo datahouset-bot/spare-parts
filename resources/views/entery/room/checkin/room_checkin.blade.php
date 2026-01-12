@@ -309,73 +309,35 @@
 
                                         <div class="row">
                                             <!-- Room Booking -->
-                                            <div class="col-md-3 col-3 mt-4">
-    <label class="form-label">Select Slot</label>
+                                            {{-- <div class="col-md-3 col-3 mt-4">
+                                                <div class="position-relative  col-md-4 w-75" style="border:none">
+                                                    <label for="searchCustomer" class="position-absolute "
+                                                        style="top: -22px; left: 10px;">Select Slot </label>
+                                                    <div id="searchCustomer">
+                                                        <form action="{{ url('/show_roombooking') }}" method="POST"
+                                                            class="form-inline" id="select_roombooking">
+                                                            @csrf
+                                                            <div class="input-group">
+                                                                <select name="roombooking_voucher_no"
+                                                                    id="roombooking_voucher_no" class="form-select"
+                                                                    aria-label="Default select example">
+                                                                    <option selected disabled>Select Slot Booking</option>
+                                                                    @foreach ($roombookings as $roombookings)
+                                                                        <option value="{{ $roombookings->voucher_no }}">
+                                                                            {{ $roombookings->guest_name }} -
+                                                                            {{ \Carbon\Carbon::parse($roombookings->checkin_date)->format('d-m-y') }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
 
-    <div class="input-group">
-        <form action="{{ url('/show_roombooking') }}" method="POST" class="w-100 d-flex">
-            @csrf
-
-            <select name="roombooking_voucher_no"
-                    id="roombooking_voucher_no"
-                    class="form-select">
-                <option selected disabled>Select Slot Booking</option>
-                @foreach ($slot as $roombookings)
-                    <option value="{{ $roombookings->voucher_no }}">
-                        {{ $roombookings->guest_name }} -
-                        {{ \Carbon\Carbon::parse($roombookings->checkin_date)->format('d-m-y') }}
-                    </option>
-                @endforeach
-            </select>
-
-            <a href="{{ url('/rooms') }}"
-               target="_blank"
-               class="btn btn-outline-primary">
-                <i class="fa fa-plus"></i>
-            </a>
-        </form>
-    </div>
-
-    <span id="message"></span>
-</div>
-
-                                            {{-- 
-                                            <div class="col-md-3 mt-4">
-                                                <label for="searchCustomer">Select Room Booking</label>
-                                                <div id="searchCustomer">
-                                                    <form action="{{ url('/show_roombooking') }}" method= "POST"
-                                                        class="form-inline" id ="select_roombooking">
-                                                        @csrf
-                                                        <div class="input-group">
-
-                                                            <select name="roombooking_voucher_no"
-                                                                Id ="roombooking_voucher_no"class="form-select"
-                                                                aria-label="Default select example">
-                                                                <option selected disabled>Select Room Booking </option>
-                                                                @foreach ($roombookings as $roombookings)
-                                                                    <option value="{{ $roombookings->voucher_no }}">
-                                                                        {{ $roombookings->guest_name }}-{{ \Carbon\Carbon::parse($roombookings->checkin_date)->format('d-m-y') }}
-
-                                                                    </option>
-                                                                @endforeach
-
-                                                            </select>
-                                                        </div>
-                                                        <script>
-                                                            document.getElementById('roombooking_voucher_no').addEventListener('change', function() {
-                                                                var voucherNo = this.value;
-                                                                if (voucherNo) {
-                                                                    window.location.href = '/show_booking/' + voucherNo;
-                                                                }
-                                                            });
-                                                        </script>
-
-                                                        <span id="message"></span>
-                                                    </form>
+                                                            <span id="message"></span>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div> --}}
 
-                                            <!-- Room Booking Client Picture -->
+                                  
                                             <div class="col-md-3 mt-1">
 
                                                 <div id="roomBookingClientPic">
@@ -509,14 +471,14 @@
                                                                     </span>
                                                                 </div>
                                                             </div>
-                                                                                                                       <div class="col-md-3  col-3 mt-4">
+                                                            <div class="col-md-3  col-3 mt-4">
                                                                 <div class="position-relative border col-md-4 w-75"
                                                                     style="border-radius: 4px;">
                                                                     {{-- <span class="requierdfield">*</span> --}}
                                                                     <label for="guest_mobile"
                                                                         class="position-absolute bg-transparent px-2"
                                                                         style="top: -21px; left:2px;"><span
-                                                                            class="requierdfield">*</span>Vehicle
+                                                                            class="requierdfield">*</span>Mobile
                                                                         No</label>
                                                                     <input class="form-control" id="guest_mobile"
                                                                         type="text" name="guest_mobile"
@@ -623,7 +585,7 @@
                                                             </div>
 
 
-                                                                                                                       <div class="col-md-3 mt-4">
+                                                                <div class="col-md-3 mt-4">
                                                                 <div class="position-relative border col-md-4 w-75"
                                                                     style="border-radius: 4px;">
                                                                     <label
@@ -634,6 +596,23 @@
                                                                         value="" style="border: none" />
                                                                     <span class="text-danger">
                                                                         @error('guest_pincode')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-3 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 4px;">
+                                                                    <label for="guest_contery"
+                                                                        class="position-absolute bg-white px-2"
+                                                                        style="top: -10px; left: 10px;">Nationality</label>
+                                                                    <input class="form-control" id="guest_contery"
+                                                                        type="text" name="guest_contery"
+                                                                        value="{{ old('guest_countery', $compinfofooter->country) }}"
+                                                                        style="border: none" />
+                                                                    <span class="text-danger">
+                                                                        @error('guest_contery')
                                                                             {{ $message }}
                                                                         @enderror
                                                                     </span>
@@ -859,67 +838,9 @@
                                                 <div class="col-md-8">
                                                     <div class="row form-group">
 
-                                                        {{-- <div class="col-md-6 col-6 mt-4">
-                                                            <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_name"class="position-absolute bg-transparent px-2" style="top: -21px; left: 10px;"><span class="requierdfield">*</span>Customer  Name </label>
-                                                            <input class="form-control" id="guest_name" type="text"
-                                                                name="guest_name" value="{{ old('guest_name') }}"
-                                                                autocomplete="none"  />
-                                                            <span class="text-danger">
-                                                                @error('guest_name')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        </div>
-
-                                                        <div class="col-md-6 col-6 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_father_name" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Chassis </label>
-                                                            <input class="form-control" id="guest_father_name" type="text"
-                                                                name="guest_father_name" value="{{ old('guest_father_name') }}"
-                                                                autocomplete="none" />
-                                                            <span class="text-danger">
-                                                                @error('guest_father_name')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-
-                                                        </div>
-                                                        </div> --}}
+                                                  
                                                         <div class="row g-0">
-                                                            {{-- <div class="col-md-3 col-3 mt-4">
-                                                                <div class="position-relative border col-md-4 w-75"
-                                                                    style="border-radius: 4px;">
-                                                                    <label for="guest_age"
-                                                                        class="position-absolute bg-white px-2"
-                                                                        style="top: -10px; left: 10px;">Invoice
-                                                                        type</label>
-                                                                    <input class="form-control" id="guest_age"
-                                                                        type="text" name="guest_age"
-                                                                        value="{{ old('guest_age') }}"
-                                                                        autocomplete="none" style="border: none" />
-                                                                    <span class="text-danger">
-                                                                        @error('guest_age')
-                                                                            {{ $message }}
-                                                                        @enderror
-                                                                    </span>
-
-
-                                                                </div>
-                                                            </div> --}}
-                                                            {{-- <div class="col-md-3 mt-4">
-                                                                <div class="position-relative border col-md-4 w-75"
-                                                                    style="border-radius: 4px;">
-                                                                    <label
-                                                                        for="label1"class="position-absolute bg-white px-1"
-                                                                        style="top: -14px; left: 10px;">MODEL</label>
-                                                                    <input type="text" class=" form-control"id=""
-                                                                        name="comming_from" class=""
-                                                                        value="{{ old('comming_from') }}"
-                                                                        style="border: none">
-                                                                </div>
-                                                            </div> --}}
+                                                       
                                                                 <div class="col-md-4 col-4 mt-4">
                                                                 <div class="position-relative border col-md-4 w-75"
                                                                     style="border-radius: 5px;">
@@ -938,17 +859,20 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4 col-4 mt-4">
-                                                                <label class="form-label">
-                                                                    <span class="requierdfield">*</span> Vehicle Type
-                                                                </label>
-                                                            
-                                                                <div class="input-group">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 5px;">
+                                                                    <label
+                                                                        for="business_source"class="position-absolute bg-white px-2"
+                                                                        style="top: -22px; left: 3px;"><span
+                                                                            class="requierdfield">*</span>Vehicle
+                                                                        type</label>
                                                                     <select name="business_source_id"
-                                                                            id="business_source_id"
-                                                                            class="form-select">
-                                                                        <option disabled {{ old('business_source_id') ? '' : 'selected' }}>
-                                                                            Select Vehicle Type
-                                                                        </option>
+                                                                        id="business_source_id" class="form-select"
+                                                                        aria-label="Default select example">
+                                                                        <option disabled
+                                                                            {{ old('business_source_id') ? '' : 'selected' }}
+                                                                            style="border: none">
+                                                                            Select Vehicle type</option>
                                                                         @foreach ($businesssource as $businesssource)
                                                                             <option value="{{ $businesssource->id }}"
                                                                                 {{ old('business_source_id') == $businesssource->id ? 'selected' : '' }}>
@@ -956,51 +880,44 @@
                                                                             </option>
                                                                         @endforeach
                                                                     </select>
-                                                            
-                                                                    <a href="{{ url('/businesssource') }}"
-                                                                    target="_blank"
-                                                                    class="btn btn-outline-primary">
-                                                                        <i class="fa fa-plus"></i>
-                                                                    </a>
+                                                                    <span class="text-danger">
+                                                                        @error('business_source_id')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
                                                                 </div>
-                                                            
-                                                                @error('business_source_id')
-                                                                    <small class="text-danger">{{ $message }}</small>
-                                                                @enderror
                                                             </div>
-                                                            
-                                                                <div class="col-md-4 col-4 mt-4">
-                                                                <label class="form-label">
-                                                                    <span class="requierdfield">*</span> Repair Type
-                                                                </label>
-                                                            
-                                                                <div class="input-group">
-                                                                    <select name="package_id"
-                                                                            id="package_id"
-                                                                            class="form-select">
-                                                                        <option disabled {{ old('package_id') ? '' : 'selected' }}>
-                                                                            Select Service Type
-                                                                        </option>
+                                                            <div class="col-md-4 col-4 mt-4">
+                                                                <div class="position-relative border col-md-4 w-75"
+                                                                    style="border-radius: 5px;">
+                                                                    <label
+                                                                        for="package"class="position-absolute bg-white px-2"
+                                                                        style="top: -22px; left: 4px;"><span
+                                                                            class="requierdfield">*</span>Repair
+                                                                        Type</label>
+                                                                    <select name="package_id" id="package_id"
+                                                                        class="form-select"
+                                                                        aria-label="Default select example">
+                                                                        <option disabled
+                                                                            {{ old('package_id') ? '' : 'selected' }}
+                                                                            style="border: none">
+                                                                            Select Service Type</option>
                                                                         @foreach ($package as $package)
                                                                             <option value="{{ $package->id }}"
                                                                                 {{ old('package_id') == $package->id ? 'selected' : '' }}>
-                                                                                {{ $package->package_name }} || {{ $package->plan_name }}
+                                                                                {{ $package->package_name }} ||
+                                                                                {{ $package->plan_name }}
                                                                             </option>
                                                                         @endforeach
                                                                     </select>
-                                                            
-                                                                    <a href="{{ url('/packages') }}"
-                                                                       target="_blank"
-                                                                       class="btn btn-outline-primary">
-                                                                        <i class="fa fa-plus"></i>
-                                                                    </a>
+
+                                                                    <span class="text-danger">
+                                                                        @error('package_id')
+                                                                            {{ $message }}
+                                                                        @enderror
+                                                                    </span>
                                                                 </div>
-                                                            
-                                                                @error('package_id')
-                                                                    <small class="text-danger">{{ $message }}</small>
-                                                                @enderror
                                                             </div>
-                                                            
                                                             <div class="col-md-3 col-3 mt-4">
                                                                 <div class="position-relative border col-md-4 w-75"
                                                                     style="border-radius: 5px;">
@@ -1043,14 +960,14 @@
                                                                 <div class="position-relative border col-md-4 w-75"
                                                                     style="border-radius: 4px;">
                                                                     <label
-                                                                        for="guest_age"class="position-absolute bg-white px-2"
+                                                                        for="guest_age_name"class="position-absolute bg-white px-2"
                                                                         style="top: -10px; left: 10px;">Engine no</label>
-                                                                    <input class="form-control" id="guest_age"
-                                                                        type="text" name="guest_age"
-                                                                        value="{{ old('guest_age') }}"
+                                                                    <input class="form-control" id="guest_age_name"
+                                                                        type="text" name="guest_age_name"
+                                                                        value="{{ old('guest_age_name') }}"
                                                                         autocomplete="none" style="border: none" />
                                                                     <span class="text-danger">
-                                                                        @error('guest_age')
+                                                                        @error('guest_age_name')
                                                                             {{ $message }}
                                                                         @enderror
                                                                     </span>
@@ -1075,78 +992,13 @@
                                                                     </span>
                                                                 </div>
                                                             </div>
-                                                            {{-- <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="guest_gender" class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">Guest Gender </label>
-<select class="form-control" id="guest_gender" name="guest_gender">
-    <option value="" style="border: none">-- Select Gender --</option>
-    <option value="Male" {{ old('guest_gender') == 'Male' ? 'selected' : '' }}>Male</option>
-    <option value="Female" {{ old('guest_gender') == 'Female' ? 'selected' : '' }}>Female</option>
-    <option value="Other" {{ old('guest_gender') == 'Other' ? 'selected' : '' }}>Other</option>
-</select>
-
+                                                     
                                                         </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                        <div class="position-relative border col-md-4 w-75" style="border-radius: 4px;">
-                                                            <label for="account_birthday"class="position-absolute bg-white px-2" style="top: -10px; left: 10px;">DOB </label>
-                                                            <input class="form-control" id="account_birthday" type="date"
-                                                                name="account_birthday" value="{{ old('account_birthday') }}"
-                                                                autocomplete="none" />
-                                                            <span class="text-danger">
-                                                                @error('account_birthday')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-
-                                                        </div>
-                                                        </div> --}}
-                                                            
-                                                        </div>
-                                                        {{-- <div class="col-md-3">
-                                                            <label for="guest_address2">Address Line 2</label>
-                                                            <input class="form-control" id="guest_address2"
-                                                                type="text" name="guest_address2"
-                                                                value="{{ old('guest_address2') }}" />
-                                                            <span class="text-danger">
-                                                                @error('guest_address2')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div> --}}
+                                                    
                                                         <div class="row g-0">
                                                         
-{{-- 
-                                                            <div class="col-md-3 mt-4 ">
-                                                                <div class="position-relative border col-md-4 w-75"
-                                                                    style="border-radius: 4px;">
-                                                                    <label
-                                                                        for="guest_city"class="position-absolute bg-white px-2"
-                                                                        style="top: -10px; left: 10px;">City</label>
-                                                                    <input class="form-control" id="guest_city"
-                                                                        type="text" name="guest_city"
-                                                                        value="{{ old('guest_city') }}"
-                                                                        style="border: none" />
-                                                                    <span class="text-danger">
-                                                                        @error('guest_city')
-                                                                            {{ $message }}
-                                                                        @enderror
-                                                                    </span>
-                                                                </div>
-                                                            </div> --}}
-                                                            
-                                                        </div>
-                                                        {{-- <div class="col-md-3">
-                                                            <label for="guest_contery">Country</label>
-                                                            <input class="form-control" id="guest_contery" type="text"
-                                                                name="guest_contery"
-                                                                value="{{ old('guest_countery', $compinfofooter->country) }}" />
-                                                            <span class="text-danger">
-                                                                @error('guest_contery')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div> --}}
+
+                                                       
                                                         <div class="row g-0">
  
 
@@ -1215,7 +1067,9 @@
                                                                     style="border-radius: 4px;">
                                                                     <label
                                                                         for="guest_idproof_no"class="position-absolute bg-white px-1"
-                                                                        style="top: -14px; left: 10px;">Driver Name
+                                                                        style="top: -14px; left: 10px;"><span
+                                                                            class="requierdfield">*</span>
+                                                                        Vehicle no
                                                                     </label>
                                                                     <input class="form-control" id="guest_idproof_no"
                                                                         type="text" name="guest_idproof_no"
@@ -1230,77 +1084,19 @@
                                                             </div>
 
 
-                                                                                                                        <div class="col-md-3 mt-4">
-                                                                <div class="position-relative border col-md-4 w-75"
-                                                                    style="border-radius: 4px;">
-                                                                    <label for="guest_contery"
-                                                                        class="position-absolute bg-white px-2"
-                                                                        style="top: -10px; left: 10px;">Driver Mobile No</label>
-                                                                    <input class="form-control" id="guest_contery"
-                                                                        type="text" name="guest_contery"
-                                                                        value="{{ old('guest_countery', $compinfofooter->country) }}"
-                                                                        style="border: none" />
-                                                                    <span class="text-danger">
-                                                                        @error('guest_contery')
-                                                                            {{ $message }}
-                                                                        @enderror
-                                                                    </span>
-                                                                </div>
-                                                            </div>
+                                                            
 
                                                             
 
                                                         </div>
 
-                                                        {{-- <div class="col-md-3 ">
-                                                            <label for="label1">GOING TO</label>
-                                                            <input type="text" class=" form-control"id=""
-                                                                name="going_to" class=""
-                                                                value="{{ old('going_to') }}">
-                                                        </div> --}}
+                                                       
                                                         <div class="row g-0">
-                                                            {{-- <div class="col-md-3 col-3 mt-4">
-                                                                <div class="position-relative border col-md-4 w-75"
-                                                                    style="border-radius: 4px;">
-                                                                    <label
-                                                                        for="guest_idproof"class="position-absolute bg-white px-1"
-                                                                        style="top: -14px; left: 10px;">Document Name
-                                                                    </label>
-                                                                    <input class="form-control" id="guest_idproof"
-                                                                        type="text" name="guest_idproof"
-                                                                        value="{{ old('guest_idproof') }}"
-                                                                        style="border: none" />
-                                                                    <span class="text-danger">
-                                                                        @error('guest_idproof')
-                                                                            {{ $message }}
-                                                                        @enderror
-                                                                    </span>
-                                                                </div>
-                                                            </div> --}}
+                                                          
 
 
                                                            
-                                                            {{-- <div class="col-md-3">
-                                                            <label for="guest_id_pic">Document Image </label>
-                                                            <input class="form-control" id="guest_id_pic" type="file"
-                                                                name="guest_id_pic" value="" />
-                                                            <span class="text-danger">
-                                                                @error('guest_id_pic')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label for="guest_pic">Guest Image </label>
-                                                            <input class="form-control" id="guest_pic" type="file"
-                                                                name="guest_pic" value="{{ old('guest_pic') }}" />
-                                                            <span class="text-danger">
-                                                                @error('guest_pic')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-
-                                                        </div> --}}
+                                                   
                                                             <div class="col-md-3 col-3 mt-4">
                                                                 <div class="position-relative border col-md-4 w-75"
                                                                     style="border-radius: 4px;">
@@ -1816,247 +1612,11 @@
                                                             </script>
 
                                                         </div>
-                                                        {{-- <div class="col-md-3">
-                                                        <label for="second_guest_name">2nd Guest Name  </label>
-                                                        <input class="form-control" id="second_guest_name" type="text"
-                                                            name="second_guest_name" value="{{ old('second_guest_name') }}" />
-                                                        <span class="text-danger">
-                                                            @error('second_guest_name')
-                                                                {{ $message }}
-                                                            @enderror
-                                                        </span>
-
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label for="second_guest_id_name"> 2nd Guest Id Name  </label>
-                                                        <input class="form-control" id="second_guest_id_name" type="text"
-                                                            name="second_guest_id_name" value="{{ old('second_guest_id_name') }}" />
-                                                        <span class="text-danger">
-                                                            @error('second_guest_id_name')
-                                                                {{ $message }}
-                                                            @enderror
-                                                        </span>
-
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label for="second_guest_id_no"> 2nd Guest Id No  </label>
-                                                        <input class="form-control" id="second_guest_id_no" type="text"
-                                                            name="second_guest_id_no" value="{{ old('second_guest_id_no') }}" />
-                                                        <span class="text-danger">
-                                                            @error('second_guest_id_no')
-                                                                {{ $message }}
-                                                            @enderror
-                                                        </span>
-
-                                                    </div> --}}
-
-                                                        <!--second guest image -->
-
-
-                                                        <!----3rd guest documnt --->
-
-                                                        {{-- <div class="col-md-3">
-                                                            <label for="third_guest_name">3rd Guest Name  </label>
-                                                            <input class="form-control" id="third_guest_name" type="text"
-                                                                name="third_guest_name" value="{{ old('third_guest_name') }}" />
-                                                            <span class="text-danger">
-                                                                @error('third_guest_name')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-    
+                                                    
                                                         </div>
-                                                        <div class="col-md-3">
-                                                            <label for="third_guest_id_name">3rd Guest  Id Name  </label>
-                                                            <input class="form-control" id="third_guest_id_name" type="text"
-                                                                name="third_guest_id_name" value="{{ old('third_guest_id_name') }}" />
-                                                            <span class="text-danger">
-                                                                @error('third_guest_id_name')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-    
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label for="third_guest_id_no">3rd Guest  Id No  </label>
-                                                            <input class="form-control" id="third_guest_id_no" type="text"
-                                                                name="third_guest_id_no" value="{{ old('third_guest_id_no') }}" />
-                                                            <span class="text-danger">
-                                                                @error('third_guest_id_no')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </span>
-    
-                                                        </div> --}}
-                                                        <div class="col-md-3 col-3 mt-4">
-                                                            <div class="position-relative border col-md-4 w-75"
-                                                                style="border-radius: 4px;">
-                                                                <label for="third_guest_id_pic_trigger"
-                                                                    class="position-absolute bg-white px-2"
-                                                                    style="top: -10px; left: 10px;"> Image 4</label>
-                                                                <input class="form-control"
-                                                                    id="third_guest_id_pic_trigger" type="text"
-                                                                    readonly placeholder="Click to upload or capture"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#thirdFileUploadModal"
-                                                                    style="border: none" />
-                                                                <span class="text-danger">
-                                                                    @error('third_guest_id_pic')
-                                                                        {{ $message }}
-                                                                    @enderror
-                                                                </span>
-                                                            </div>
-
-                                                            <!-- Modal -->
-                                                            <div class="modal fade" id="thirdFileUploadModal"
-                                                                tabindex="-1" aria-labelledby="thirdFileUploadModalLabel"
-                                                                aria-hidden="true">
-                                                                <div class="modal-dialog modal-dialog-centered modal-sm">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h5 class="modal-title"
-                                                                                id="thirdFileUploadModalLabel">Upload
-                                                                                Document</h5>
-                                                                            <button type="button" class="btn-close"
-                                                                                data-bs-dismiss="modal"
-                                                                                aria-label="Close"></button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <!-- Drag and Drop -->
-                                                                            <div class="mb-3">
-                                                                                <label for="third_guest_id_pic"
-                                                                                    class="form-label">Drag & Drop</label>
-                                                                                <div id="thirdDropZone"
-                                                                                    style="border: 2px dashed #007bff; padding: 15px; text-align: center; cursor: pointer; font-size: 14px;">
-                                                                                    Drag & drop a file here or click
-                                                                                </div>
-                                                                            </div>
-                                                                            <!-- Select from Gallery -->
-                                                                            <div class="mb-3">
-                                                                                <label for="third_guest_id_pic"
-                                                                                    class="form-label">Select from
-                                                                                    Gallery</label>
-                                                                                <input type="file"
-                                                                                    id="third_guest_id_pic"
-                                                                                    name="third_guest_id_pic"
-                                                                                    class="form-control" />
-                                                                            </div>
-                                                                            <!-- Webcam Capture -->
-                                                                            <div class="mb-3">
-                                                                                <label for="third_webcam"
-                                                                                    class="form-label">Capture from
-                                                                                    Webcam</label>
-                                                                                <div>
-                                                                                    <video id="third_webcam" autoplay
-                                                                                        style="width: 100%; max-height: 150px;"></video>
-                                                                                    <button id="thirdCaptureBtn"
-                                                                                        class="btn btn-primary btn-sm mt-2">Capture</button>
-                                                                                    <canvas id="thirdCanvas"
-                                                                                        style="display: none;"></canvas>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                            <button type="button"
-                                                                                class="btn btn-secondary btn-sm"
-                                                                                id="closeBtn">Close</button>
-                                                                            <button type="button"
-                                                                                class="btn btn-primary btn-sm"
-                                                                                id="saveBtn">Save</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <script>
-                                                                $(document).ready(function() {
-                                                                    const $thirdGuestIdPicInput = $('#third_guest_id_pic');
-                                                                    const $thirdTriggerInput = $('#third_guest_id_pic_trigger');
-                                                                    const $thirdCaptureBtn = $('#thirdCaptureBtn');
-                                                                    const $thirdWebcam = $('#third_webcam')[0];
-                                                                    const $thirdCanvas = $('#thirdCanvas')[0];
-                                                                    const $thirdModal = $('#thirdFileUploadModal');
-                                                                    const $thirdDropZone = $('#thirdDropZone');
-                                                                    const $thirdSaveForm = $('#saveForm'); // Adjust if necessary
-
-                                                                    // Hide modal and remove buttons
-                                                                    function closeThirdModal() {
-                                                                        $thirdModal.modal('hide');
-                                                                    }
-
-                                                                    // Update input field and close modal
-                                                                    function updateThirdInputAndCloseModal(fileName) {
-                                                                        $thirdTriggerInput.val(fileName);
-                                                                        closeThirdModal();
-                                                                    }
-
-                                                                    // Handle Drag-and-Drop
-                                                                    $thirdDropZone.on('click', function() {
-                                                                        $thirdGuestIdPicInput.trigger('click');
-                                                                    });
-
-                                                                    $thirdGuestIdPicInput.on('change', function() {
-                                                                        if (this.files.length > 0) {
-                                                                            const fileName = this.files[0].name;
-                                                                            updateThirdInputAndCloseModal(fileName);
-                                                                        }
-                                                                    });
-
-                                                                    // Handle Webcam Capture
-                                                                    $thirdCaptureBtn.on('click', function(e) {
-                                                                        e.preventDefault();
-
-                                                                        const context = $thirdCanvas.getContext('2d');
-                                                                        $thirdCanvas.width = $thirdWebcam.videoWidth;
-                                                                        $thirdCanvas.height = $thirdWebcam.videoHeight;
-                                                                        context.drawImage($thirdWebcam, 0, 0, $thirdWebcam.videoWidth, $thirdWebcam.videoHeight);
-
-                                                                        // Generate a unique file name by appending timestamp or random string
-                                                                        const uniqueFileName = 'doc-id-cap-' + Date.now() + '.jpg'; // Example using timestamp
-
-                                                                        $thirdCanvas.toBlob((blob) => {
-                                                                            const file = new File([blob], uniqueFileName, {
-                                                                                type: 'image/jpeg'
-                                                                            }); // Use the unique file name
-                                                                            const dataTransfer = new DataTransfer();
-                                                                            dataTransfer.items.add(file);
-                                                                            $thirdGuestIdPicInput[0].files = dataTransfer.files;
-
-                                                                            updateThirdInputAndCloseModal(file.name);
-                                                                        });
-                                                                    });
-
-                                                                    // Start Webcam
-                                                                    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                                                                        navigator.mediaDevices.getUserMedia({
-                                                                            video: true
-                                                                        }).then((stream) => {
-                                                                            $thirdWebcam.srcObject = stream;
-                                                                        });
-                                                                    }
-
-                                                                    // Ensure main body is active after modal close
-                                                                    $thirdModal.on('hidden.bs.modal', function() {
-                                                                        $('body').removeClass('modal-open'); // Remove modal-open class
-                                                                        $('.modal-backdrop').remove(); // Remove leftover backdrop
-                                                                        $('body').css('overflow', ''); // Reset to default behavior
-
-                                                                        // 2. Check for and remove custom scrollbars implemented during modal display:
-                                                                        const customScrollbars = document.querySelectorAll('.custom-scrollbar');
-                                                                        customScrollbars.forEach(scrollbar => scrollbar.remove());
-
-                                                                        // 3. If using a JavaScript library for managing scrollbars, call its reset function:
-                                                                        if (typeof myScrollbarLibrary.resetScrollbar === 'function') {
-                                                                            myScrollbarLibrary.resetScrollbar(); // Example: PerfectScrollbar.resetScrollbar()
-                                                                        }
-
-                                                                        // 4. For reliable cross-browser compatibility, consider additional methods:
-                                                                        //    - document.documentElement.style.overflow = 'auto';
-                                                                        //    - document.body.style.overflow = 'auto';
-                                                                        //    (Use these if the above methods don't work consistently)
-                                                                        $thirdSaveForm.focus(); // Bring focus back to the form
-                                                                    });
-                                                                });
-                                                            </script>
+                                            
+                                                     
+                                                      
 
 
                                                         </div>
@@ -2064,55 +1624,7 @@
 
                                                 </div>
 
-                                                {{-- <div class="col-md-4" id ="payment_selection_box">
-                                          <h5>Payment Detail</h5>
-                                          <table id="room_selection" class="table table-striped table-responsive">
-                                            <thead>
-                                              <tr>
-                                                <th> </th>
-                                                <th>Amount</th>
-                                   
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              <tr>
-                                                <td>Per Day Room Tariff</td>
-                                                <td><input type="text" id="room_tariff_perday" name="room_tariff_perday" class="amount_input" readonly></td>
-                                              </tr>
-                                              <tr>
-                                                <td>Booking Advance</td>
-                                                <td>     </td>
-                                              </tr>
-                                  
-                                              <tr>
-                                                <td><select name="posting_acc_id" id="posting_acc_id">
-                                                <option value="" selected disabled>Select Mode</option>
-                                                @foreach ($paymentmodes as $paymentmode)
-                                                <option value="{{$paymentmode->id}}" >{{$paymentmode->account_name}}</option>
-                                                  
-                                                @endforeach  
-                                  
-                                  
-                                                </select></td>
-                                                <td>
-                                                <input type="text" class="amount_input" id="booking_amount" name="booking_amount" autocomplete="off">
-                                                </td>
-                                              </tr>
-                                  
-                                              <tr>
-                                                <td>Payment Refance</td>
-                                                <td><input type="text" name="voucher_payment_ref"class="amount_input"autocomplete="off"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>Payment Remark</td>
-                                                <td><input type="text"  name="voucher_payment_remark" class="amount_input" autocomplete="off"></td>
-                                              </tr>
-                                  
-                                                 
-                                  
-                                            </tbody>
-                                           </table>
-                                        </div>   --}}
+                                        
 
                                                 <div class="col-md-4">
                                                     <h5>Payment Detail</h5>
@@ -2178,30 +1690,8 @@
                                                     </table>
                                                 </div>
 
-                                                {{-- <script>
-                                                    // JavaScript to dynamically add more payment modes
-                                                    document.getElementById('add_payment_mode').addEventListener('click', function() {
-                                                        let paymentBody = document.getElementById('payment_mode_body');
-                                                        let newRow = `
-                                              <tr>
-                                                  <td>
-                                                      <select name="posting_acc_id[]" class="posting_acc_id">
-                                                          <option value="" selected disabled>Select Mode</option>
-                                                          @foreach ($paymentmodes as $paymentmode)
-                                                          <option value="{{ $paymentmode->id }}">{{ $paymentmode->account_name }}</option>
-                                                          @endforeach
-                                                      </select>
-                                                  </td>
-                                                  <td>
-                                                      <input type="text" class="amount_input" name="booking_amount[]" autocomplete="off">
-                                                  </td>
-                                              </tr>`;
-
-                                                        paymentBody.insertAdjacentHTML('beforeend', newRow);
-                                                    });
-                                                </script> --}}
-                                                <script>
-                                                    // Function to calculate the total amount
+                                             <script>
+                                                  
                                                     function calculateTotalAmount() {
                                                         let total = 0;
                                                         document.querySelectorAll('.amount_input[name="booking_amount[]"]').forEach(function(input) {
@@ -2275,79 +1765,7 @@
 
                                                         <div class="col-md-4 mt-4">
                                                             <div class="form-floating mb-3 mb-md-0">
-                                                                {{--                                              
-                                            <select name="room_id" Id ="room_id"class="form-select" aria-label="Default select example">
-                                              <option selected disabled>Select Room No </option>
-                                              @foreach ($rooms as $room)
-                                                    <option value="{{ $room->id }}">
-                                                        {{ $room->room_no }}
-                                                       
-                                                    </option>
-                                              @endforeach
-                
-                                            </select>
-                                              <label for="room_id">Room No   </label>
-                                             
-                                          </div>
-                                          <span class="text-danger"> 
-                                            @error('room_no')
-                                            {{$message}}
-                                                
-                                            @enderror
-                                          </span>
-
-                                      </div>       
-                                            
-  --}}
-
-
-
-                                                                {{-- 
-                                          <div class="col-md-4 mt-4">
-                                            <div class="form-floating mb-3 mb-md-0">
-                                              <input class="form-control" id="advance_amount" type="text" name="advance_amount" value="{{ old('advance_amount') }}" />
-                                                <label for="priority">Advance Amount  </label>
-                                               
-                                            </div>
-                                            <span class="text-danger"> 
-                                              @error('advance_amount')
-                                              {{$message}}
-                                                  
-                                              @enderror
-                                            </span>
-
-                                        </div> --}}
-
-
-
-
-
-
-                                                                <div class="row">
-
-                                                                </div>
-                                                            </DIV>
-
-
-
-                                                            {{-- <input type="text" name ="room_no" id="room_no" value="" >
-                                               <input type="text" name ="room_tariff" id="room_tariff" value="" >
-                                               <input type="text" name ="room_dis" id="room_dis" value="" >
-                                               <input type="text" name ="package_name" id="package_name" value="" >
-                                               <input type="text" name ="plan_name" id="plan_name" value="" >
-                                               <input type="text" name ="taxname" id="taxname" value="" >
-                                               <input type="text" name ="sgst" id="sgst" value="" >
-                                               <input type="text" name ="cgst" id="cgst" value="" >
-                                               <input type="text" name ="igst" id="igst" value="" >
-                                               <input type="text" name ="vat" id="vat" value="" >
-                                               <input type="text" name ="tax1" id="tax1" value="" >
-                                               <input type="text" name ="tax2" id="tax2" value="" >
-                                               <input type="text" name ="tax3" id="tax3" value="" >
-                                               <input type="text" name ="tax4" id="tax4" value="" >
-                                               <input type="text" name ="tax5" id="tax5" value="" > --}}
-
-
-
+                                                         
 
                                                         </div>
 
@@ -2918,12 +2336,6 @@
                             $('#guest_email').val('');
                         }
                         if (response.customer_info) {
-                            $('#guest_mobile').val(response.customer_info.mobile).prop(
-                                'readonly', true);
-                        } else {
-                            $('#guest_mobile').val('');
-                        }
-                        if (response.customer_info) {
                             $('#guest_address').val(response.customer_info.address);
                         } else {
                             $('#guest_address').val('');
@@ -2937,6 +2349,11 @@
                             $('#guest_state').val(response.customer_info.state);
                         } else {
                             $('#guest_state').val('');
+                        }
+                        if(response.customer_info){
+                            $('#guest_mobile').val(response.customer_info.mobile);
+                        }else{
+                            $('#guest_mobile').val('');
                         }
                         if (response.customer_info) {
                             $('#guest_contery').val(response.customer_info.nationality);

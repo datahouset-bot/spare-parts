@@ -50,7 +50,7 @@
                     <th scope="col">S.No</th>
                     <th scope="col"> Bill No    </th>
                     <th scope="col"> Vehicle No   </th>                 
-                    <th scope="col"> chaches No   </th>
+                    <th scope="col"> Slot No   </th>
                     <th scope="col"> customer Name </th>
                     <th scope="col"> Contact No </th>
                     {{-- <th scope="col"> Check in Date </th>--}}
@@ -58,7 +58,6 @@
                     <th scope="col"> Total Days  </th>
                     <th scope="col">  Bill Amount  </th>
                     <th scope="col">Print</th>
-                    <th scope="col">View</th>
                     <th scope="col">EDIT</th>
                     <th scope="col">Message</th>
                     <th scope="col"></th>
@@ -89,18 +88,8 @@
                      {{-- <td scope="col">{{ \Carbon\Carbon::parse($record['checkout_date'])->format('d-m-y') }}</td> --}}
                      <td>{{$record['no_of_days']}}</td>
                      <td>{{$record['total_billamount']}}</td>
-
-
-                    
                      <td>
-                      <button class="btn btn-sm" onclick="printRoomBooking({{url('checkout_vh_no', $record['checkout_voucher_no'])  }})">
-                          <i class="fa fa-print" style="font-size:20px;color:SlateBlue"></i>
-                      </button>
-                  </td>
-                  
-
-                     <td>
-                      <a href="{{ url('checkout_print_view', $record['checkout_voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
+                      <a href="{{ url('checkout_print_view', $record['checkout_voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-print" style="font-size:20px;color:SlateBlue"></i></a>
                   </td> 
                   <td>
                       <a href="{{ url('roomcheckouts/' . $record['checkout_voucher_no'] . '/edit') }}" class="btn btn-sm">
