@@ -42,7 +42,7 @@ class CompanyController extends CustomBaseController
         'required',
         'unique:companies,comp_name,NULL,id,firm_id,' . auth()->user()->firm_id,
     ],
-             'comp_dis' => 'numeric', // Assuming you meant "float", you can use numeric instead.
+// Assuming you meant "float", you can use numeric instead.
             ]);
             if ($validator->passes()) {
                 $company = new Company;

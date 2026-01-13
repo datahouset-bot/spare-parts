@@ -298,6 +298,10 @@ $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
          $purchase->item_net_amount=$net_voucher_amount;  
          $purchase->simpal_qty=-($record->qty);  
          $purchase->stock_out=$record->qty;
+         $purchase->invent_af1 = $record->remark_1;
+         $purchase->invent_af2 = $record->remark_2;
+         $purchase->invent_af3 = $record->remark_3;
+
         $purchase->save();
 
     }
@@ -307,7 +311,6 @@ $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
     $tempkots_delete->delete();
    $vouchers=voucher::with('account')->get();
 
- 
 $salebill_header = voucher::with('account')
 ->where('firm_id',Auth::user()->firm_id)
 ->where('voucher_type','Sale')->orderBy('voucher_no','desc')->first();
@@ -319,13 +322,12 @@ $salebill_items=inventory::withinFY('entry_date')->where('firm_id',Auth::user()-
         ->where('firm_id', Auth::user()->firm_id)
         ->where('voucher_type','Sale')->orderBy('voucher_no','desc')->get();
         
-
- $fromtlist = optionlist::where('firm_id', Auth::user()->firm_id)
+           $fromtlist = optionlist::where('firm_id', Auth::user()->firm_id)
             ->where('option_type', 'sale')
             ->orderBy('updated_at', 'desc')
             ->get();
-    return view('entery.sale.sale_index', compact( 'salebill_header', 'salebill_items','fromtlist','sales','vouchers'));        
-    
+            $voucher_no=$salebill_header->voucher_no;
+    return view('entery.sale.sale_print_select', compact( 'fromtlist','voucher_no')); 
     }
     else{
         return back()->with('error', 'Nothing  To Save  ');
@@ -396,16 +398,76 @@ Public function sale_print_view4($voucher_no){
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($voucher_no)
-    {
-         // find by voucher_no instead of id
-        $sale = voucher::where('voucher_no', $voucher_no)->firstOrFail();
+  public function edit($voucher_no)
+{
+    $sale = voucher::where('voucher_no', $voucher_no)
+        ->where('firm_id', Auth::user()->firm_id)
+        ->firstOrFail();
 
-        // all parties for dropdown
-        $accounts = Account::orderBy('account_name')->get();
+    // 🔴 CLEAR OLD TEMP (safety)
+    tempentry::where('user_id', Auth::user()->id)->delete();
 
-        return view('entery.sale.sale_edit', compact('sale', 'accounts'));
+    // 🔴 LOAD EXISTING ITEMS INTO TEMPENTRY
+    $items = inventory::where('voucher_no', $voucher_no)
+        ->where('voucher_type', 'Sale')
+        ->where('firm_id', Auth::user()->firm_id)
+        ->get();
+
+ foreach ($items as $item) {
+    tempentry::create([
+        'firm_id'          => Auth::user()->firm_id,
+        'user_id'          => Auth::user()->id,
+        'user_name'        => Auth::user()->name,
+
+        'voucher_no'       => $sale->voucher_no,
+        'voucher_type'     => 'Sale',
+        'voucher_date'     => $sale->voucher_date,
+        'bill_no'          => $sale->voucher_bill_no,
+        'entry_date'       => $sale->voucher_date,
+
+        'item_id'          => $item->item_id,
+        'item_name'        => $item->item_name,
+        'qty'              => $item->qty,                // 🔴 FIXED
+        'rate'             => $item->rate,
+        'amount'           => $item->item_basic_amount,
+
+        'total_discount'   => $item->total_discount,
+        'total_amount'     => $item->item_basic_amount,
+
+        // 🔴 GST FIELDS (VERY IMPORTANT)
+        'item_gst_name'    => $item->gst_id,
+        'item_gst_id'      => $item->gst_item_percent,
+        'total_gst'        => $item->gst_item_amount,
+
+        'item_net_value'   => $item->item_net_amount,
+
+        'account_id'       => $sale->account_id,
+        'temp_af1'         => $item->godown_id,
+    ]);
     }
+
+
+    // 🔴 SAME DATA AS CREATE
+    $godowns = godown::where('firm_id', Auth::user()->firm_id)->get();
+
+    $sundry = accountgroup::where('firm_id', Auth::user()->firm_id)
+        ->where('account_group_name', 'Sundry Debtors')
+        ->first();
+
+    $accountdata = account::where('firm_id', Auth::user()->firm_id)
+        ->where('account_group_id', $sundry->id)
+        ->get();
+
+    $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
+
+    return view('entery.sale.sale_edit', compact(
+        'sale',
+        'accountdata',
+        'itemdata',
+        'godowns'
+    ));
+}
+
 
     /**
      * Update the specified resource in storage.

@@ -123,10 +123,10 @@ label {
 
         }
 
-        td,
-        th {
+   #sold_item_record td,
+#sold_item_record th {
             margin: 0px !important;
-            padding: 0px !important;
+            padding: 6px 8px !important;
             border: 1px solid blue;
             text-align: left;
             padding-left: 10px !important;
@@ -206,10 +206,26 @@ label {
 .select2-container {
     width: 100% !important;
 }
+.settings-popup {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    width: 160px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 13px;
+    display: none;
+    z-index: 1000;
+}
+
+.settings-popup label {
+    cursor: pointer;
+    margin-bottom: 4px;
+}
 
     </style>
-    
-
 
     <script>
         $(document).ready(function() {
@@ -217,7 +233,7 @@ label {
 
         });
     </script>
-    <div class="container ">
+    <div class="container-fluid">
         @if (session('message'))
             <div class="alert alert-primary">
                 {{ session('message') }}
@@ -230,11 +246,49 @@ label {
             </div>
         @endif
         <div class="card my-3">
-            <div class="card-header">
-                New Stock Issue
-                <a href="{{ url('temp_item_delete/' . Auth::user()->id) }}" class="btn btn-success">Add New</a>
-                <a href="{{ url('store_to_sale/' . Auth::user()->id) }}" class="btn btn-primary">Save</a>
-            </div>
+           <div class="card-header d-flex justify-content-between align-items-center">
+    <span>New Stock Issue</span>
+     <div id="settingsPopup"
+     class="settings-popup shadow-sm">
+     
+    <label class="d-block">
+        <input type="checkbox" class="remark-toggle" data-target="remark_1">
+        Remark 1
+    </label>
+
+    <label class="d-block">
+        <input type="checkbox" class="remark-toggle" data-target="remark_2">
+        Remark 2
+    </label>
+
+    <label class="d-block">
+        <input type="checkbox" class="remark-toggle" data-target="remark_3">
+        Remark 3
+    </label>
+</div>
+
+
+    <div class="d-flex gap-2">
+        <button type="button"
+        class="btn btn-outline-secondary btn-sm position-relative"
+        id="toggleSettings">
+    <i class="fa fa-cog"></i>
+</button>
+
+        <a href="{{ url('temp_item_delete/' . Auth::user()->id) }}"
+           class="btn btn-success btn-sm">
+            Add New
+        </a>
+
+        <a href="{{ url('store_to_sale/' . Auth::user()->id) }}"
+           class="btn btn-primary btn-sm">
+            Save
+        </a>
+    </div>
+   
+
+</div>
+
             {{-- <div class="row my-2">
                 <div class="col-md-12 text-center">
                     <a href="{{ url('temp_item_delete/' . Auth::user()->id) }}" class="btn btn-success">Add New</a>
@@ -323,12 +377,12 @@ label {
             </select>
         </div>
 
-        <a href="{{ url('/accountform') }}"
-           class="btn btn-outline-primary btn-plus"
-           title="Add Party"
-           target="_blank">
-            <i class="fa fa-plus"></i>
-        </a>
+     <a href="{{ url('/accountform') }}"
+   class="btn btn-outline-primary btn-plus"
+   title="Add Party">
+    <i class="fa fa-plus"></i>
+</a>
+
     </div>
 </div>
 
@@ -347,12 +401,12 @@ label {
             </select>
         </div>
 
-        <a href="{{ url('/itemform') }}"
-           class="btn btn-outline-success btn-plus"
-           title="Add Item"
-           target="_blank">
-            <i class="fa fa-plus"></i>
-        </a>
+      <a href="{{ url('/itemform') }}"
+   class="btn btn-outline-success btn-plus"
+   title="Add Item">
+    <i class="fa fa-plus"></i>
+</a>
+
     </div>
 </div>
 
@@ -367,14 +421,37 @@ label {
             </select>
         </div>
 
-        <a href="{{ url('/item') }}"
-           class="btn btn-outline-primary btn-plus"
-           title="Add Batch"
-           target="_blank">
-            <i class="fa fa-plus"></i>
-        </a>
+      <a href="{{ url('/item') }}"
+   class="btn btn-outline-primary btn-plus"
+   title="Add Batch">
+    <i class="fa fa-plus"></i>
+</a>
+ 
     </div>
 </div>
+{{-- ================= DYNAMIC REMARK INPUTS ================= --}}
+<div class="row mt-2">
+
+    <div class="col-md-4 remark-field" id="remark_1" style="display:none;">
+        <label>Remark 1</label>
+        <input type="text" class="form-control" name="remark_1">
+    </div>
+
+    <div class="col-md-4 remark-field" id="remark_2" style="display:none;">
+        <label>Remark 2</label>
+        <input type="text" class="form-control" name="remark_2">
+    </div>
+
+    <div class="col-md-4 remark-field" id="remark_3" style="display:none;">
+        <label>Remark 3</label>
+        <input type="text" class="form-control" name="remark_3">
+    </div>
+
+</div>
+
+{{-- ======================================================== --}}
+
+
 
                     <div class="col-md-1 col-3 text-center">
                         <div class="form-group">
@@ -452,8 +529,9 @@ label {
 
             </form>
 
-            <div class="row  mx-2 table-scrollable">
-                <table id ="sold_item_record"class="table table-striped  table-responsive ">
+            <div class="row  mx-2">
+                  <div class="table-responsive sold-table-wrapper">
+                <table id ="sold_item_record"class="table table-striped  table-bordered">
                     <thead class="table-dark">
                         <tr>
                             <td>S.No</td>
@@ -499,6 +577,7 @@ label {
                     </tfoot>
 
                 </table>
+                </div>
 
             </div>
 
@@ -580,8 +659,15 @@ label {
 
 
                         if (response.item_info) {
-                            $('#rate').val(response.item_info.sale_rate);
-                            $('#display_rate').text(response.item_info.sale_rate);
+                            let saleRate = parseFloat(response.item_info.sale_rate) || 0;
+            let mrp      = parseFloat(response.item_info.mrp) || 0;
+
+            // Fallback logic
+            let finalRate = saleRate > 0 ? saleRate : mrp;
+
+            // Set values
+            $('#rate').val(finalRate);
+            $('#display_rate').text(finalRate);
                             $('#gst_p').val(response.item_info.gstmaster.igst);
                             $('#gstmaster_id').val(response.item_info.gstmaster.id);
                         } else {
@@ -954,13 +1040,85 @@ label {
 
             });
 
-
-
-
-
-
             console.log("fetching record function");
         });
     </script>
+
+    {{-- to prevent form resubmission on page refresh using enter stop enter to page reload and use it as tab to change input boxes --}}
+    <script>
+$(document).ready(function () {
+    $('#item_entry').on('submit', function(e) {
+    e.preventDefault();
+    itementry();
+});
+
+
+    // Disable ENTER key submit globally
+    $(document).on('keydown', 'form', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+});
+</script>
+<script>
+$(document).ready(function () {
+
+    $('#item_entry').on('keydown', 'input, select', function (e) {
+
+        if (e.key === 'Enter') {
+            e.preventDefault();
+
+            let focusable = $('#item_entry')
+                .find('input:not([readonly]):not([disabled]), select:not([disabled]), button:not([disabled])')
+                .filter(':visible');
+
+            let index = focusable.index(this);
+
+            if (index > -1 && index + 1 < focusable.length) {
+                focusable.eq(index + 1).focus();
+            }
+        }
+    });
+
+});
+</script>
+
     <script></script>
+   <script>
+$(document).ready(function () {
+
+    // Toggle popup
+    $('#toggleSettings').on('click', function (e) {
+        e.stopPropagation();
+        $('#settingsPopup').toggle();
+    });
+
+    // Close popup when clicking outside
+    $(document).on('click', function () {
+        $('#settingsPopup').hide();
+    });
+
+    // Prevent popup click from closing
+    $('#settingsPopup').on('click', function (e) {
+        e.stopPropagation();
+    });
+
+    // Toggle remark fields
+    $('.remark-toggle').on('change', function () {
+        let target = $(this).data('target');
+
+        if (this.checked) {
+            $('#' + target).slideDown(150);
+        } else {
+            $('#' + target).slideUp(150)
+                           .find('input').val('');
+        }
+    });
+
+});
+</script>
+
 @endsection

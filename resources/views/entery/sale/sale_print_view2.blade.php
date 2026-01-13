@@ -215,9 +215,19 @@
         </div>
     </div>
 
-    <div class="text-center my-3 no-print">
-        <button class="btn btn-success" onclick="window.print()">Print</button>
-    </div>
+     <div class="button-container my-2 gap-2 no-print">
+
+    <!-- HOME BUTTON -->
+    <a href="{{ url('/sales') }}" class="btn btn-primary btn-lg">
+        <i class="fa fa-home"></i> Home
+    </a>
+
+    <!-- PRINT BUTTON -->
+    <button class="btn btn-success btn-lg" onclick="window.print()">
+        <i class="fa fa-print"></i> Print
+    </button>
+
+</div>
 
 </div>
 

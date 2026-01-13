@@ -708,116 +708,72 @@ body {
     !Auth::user()->can('Attendance Module') &&
     !Auth::user()->can('Crusher Module')
 )
+{{-- ======================= DASHBOARD QUICK ACTIONS ======================= --}}
+<div class="row mt-4 g-4 text-center">
 
-{{-- ======================= MAIN DASHBOARD ROW ======================= --}}
-<div class="row mt-4">
-
-
-    {{-- ================= LEFT : RECENT SALES ================= --}}
-    <div class="col-xl-6 col-lg-12 mb-4" id="recent-sales-section">
-        <div class="card h-100">
+    {{-- Sales --}}
+    <div class="col-xl-4 col-lg-6 col-md-6 col-12">
+        <div class="card shadow-sm h-100">
             <div class="card-header bg-success text-white fw-bold">
-                <i class="fas fa-box-open me-2"></i> Recent Sales
+                <i class="fas fa-box-open me-2"></i> Sales
             </div>
-
-            <div class="card-body p-0" style="max-height:350px; overflow:auto;">
-                <table class="table table-striped table-hover mb-0 text-center">
-                    <thead class="table-light sticky-top">
-                        <tr>
-                            <th>#</th>
-                            <th>Date</th>
-                            <th>Customer</th>
-                            <th>Invoice</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php $r1 = 0; @endphp
-                        @foreach($sales as $item)
-                        <tr>
-                            <td>{{ ++$r1 }}</td>
-                            <td>{{ \Carbon\Carbon::parse($item->voucher_date)->format('d-m-y') }}</td>
-                            <td>{{ $item->account->account_name ?? 'N/A' }}</td>
-                            <td>{{ $item->voucher_bill_no }}</td>
-                            <td class="fw-bold text-danger">
-                                {{ number_format($item->total_net_amount, 2) }}
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="card-footer text-end">
-                <a href="{{ url('/sales') }}" class="btn btn-sm btn-success">View All Sales</a>
+            <div class="card-body d-flex align-items-center">
+                <a href="{{ url('/sales') }}"
+                   class="btn btn-success btn-lg w-100 py-4 fs-5">
+                    <i class="fas fa-eye me-2"></i> View Sales
+                </a>
             </div>
         </div>
     </div>
 
-    {{-- ================= RIGHT : PAYABLE + RECEIVABLE + PURCHASE ================= --}}
-    <div class="col-xl-6 col-lg-12 d-flex flex-column gap-4">
-
-        {{-- Outstanding Payable --}}
-        <div class="card">
-            <div class="card-header bg-danger text-white fw-bold">
-                <i class="fas fa-file-invoice-dollar me-2"></i> Outstanding Payable
-            </div>
-            <div class="card-body p-0">
-                <table class="table table-striped mb-0 text-center">
-                    @php $totalbalance = 0; @endphp
-                    @foreach($outstandingPayables as $acc)
-                        @php
-                            $balance = $acc->balnce_type === 'Dr'
-                                ? $acc->op_balnce + $acc->total_debit - $acc->total_credit
-                                : $acc->total_debit - $acc->op_balnce - $acc->total_credit;
-                            $totalbalance += $balance;
-                        @endphp
-                    @endforeach
-                    <tr class="fw-bold">
-                        <td>Total</td>
-                        <td>{{ abs($totalbalance) }} {{ $totalbalance >= 0 ? 'Dr' : 'Cr' }}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        {{-- Outstanding Receivable --}}
-        <div class="card">
-            <div class="card-header bg-success text-white fw-bold">
-                <i class="fas fa-money-bill-wave me-2"></i> Outstanding Receivable
-            </div>
-            <div class="card-body p-0">
-                <table class="table table-striped mb-0 text-center">
-                    @php $totalReceivable = 0; @endphp
-                    @foreach($outstandingReceivables as $acc)
-                        @php
-                            $balance = $acc->balnce_type === 'Cr'
-                                ? $acc->op_balnce + $acc->total_credit - $acc->total_debit
-                                : $acc->total_credit - $acc->op_balnce - $acc->total_debit;
-                            $totalReceivable += $balance;
-                        @endphp
-                    @endforeach
-                    <tr class="fw-bold">
-                        <td>Total</td>
-                        <td>{{ abs($totalReceivable) }} {{ $totalReceivable >= 0 ? 'Cr' : 'Dr' }}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        {{-- Purchase Chart --}}
-        <div class="card">
+    {{-- Purchase --}}
+    <div class="col-xl-4 col-lg-6 col-md-6 col-12">
+        <div class="card shadow-sm h-100">
             <div class="card-header bg-primary text-white fw-bold">
-                <i class="fas fa-cart-plus me-2"></i> Purchase Amount
+                <i class="fas fa-cart-plus me-2"></i> Purchase
             </div>
-            <div class="card-body">
-                <canvas id="purchaseBarChart" style="height:260px;"></canvas>
+            <div class="card-body d-flex align-items-center">
+                <a href="{{ url('/purchases') }}"
+                   class="btn btn-primary btn-lg w-100 py-4 fs-5">
+                    <i class="fas fa-eye me-2"></i> View Purchase
+                </a>
             </div>
         </div>
-
     </div>
+
+    {{-- Payable --}}
+    <div class="col-xl-4 col-lg-6 col-md-6 col-12">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-danger text-white fw-bold">
+                <i class="fas fa-file-invoice-dollar me-2"></i> Payable
+            </div>
+            <div class="card-body d-flex align-items-center">
+                <a href="{{ url('/outstanding_payable') }}"
+                   class="btn btn-outline-danger btn-lg w-100 py-4 fs-5">
+                    <i class="fas fa-eye me-2"></i> View Payable
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {{-- Receivable --}}
+    <div class="col-xl-4 col-lg-6 col-md-6 col-12">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-success text-white fw-bold">
+                <i class="fas fa-money-bill-wave me-2"></i> Receivable
+            </div>
+            <div class="card-body d-flex align-items-center">
+                <a href="{{ url('/outstanding_receivable') }}"
+                   class="btn btn-outline-success btn-lg w-100 py-4 fs-5">
+                    <i class="fas fa-eye me-2"></i> View Receivable
+                </a>
+            </div>
+        </div>
+    </div>
+
 </div>
-@endif
+
+</div>
 
 
 @can('Crusher Module')
@@ -898,15 +854,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-@if(isset($sales) && count($sales) > 0)
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const salesSection = document.getElementById("recent-sales-section");
-        if (salesSection) {
-            salesSection.scrollIntoView({ behavior: "smooth" });
-        }
-    });
-</script>
 @endif
 
 

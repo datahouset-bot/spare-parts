@@ -13,6 +13,7 @@ use App\Models\purchase;
 use App\Models\inventory;
 use App\Models\tempentry;
 use App\Models\optionlist;
+use App\Models\componyinfo;
 use App\Models\roomcheckin;
 use App\Models\accountgroup;
 use App\Models\voucher_type;
@@ -36,7 +37,6 @@ class PurchaseController extends CustomBaseController
         return view('entery.purchase.purchase_index', compact('purchases'));
 
     }
-
     /**
      * Show the form for creating a new resource.
      */

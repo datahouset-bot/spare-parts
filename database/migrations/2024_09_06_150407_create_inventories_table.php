@@ -45,6 +45,12 @@ return new class extends Migration
             $table->float('stock_out', 8, 2)->nullable();
 
             $table->string('status')->default('0');
+            $table->string('invent_af1')->nullable();
+            $table->string('invent_af2')->nullable();
+            $table->string('invent_af3')->nullable();  
+            $table->string('invent_af4')->nullable();
+            $table->string('invent_af5')->nullable();   
+            
             $table->timestamps();
         });
     }

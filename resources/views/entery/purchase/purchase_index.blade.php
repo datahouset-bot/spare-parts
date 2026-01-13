@@ -30,15 +30,33 @@
        <div class="row my-2">
           <div class="col-md-12 text-center">
             <a href="{{url('purchases/create')}}" class="btn btn-primary">New Purchase  </a>
-            <a href="{{url('purchase_register')}}" class="btn btn-dark"> Purchase Register </a>
+
           </div>
        </div>
         
+<div class="row mb-3 align-items-end">
+    <div class="col-md-3">
+        <label class="fw-semibold">From Date</label>
+        <input type="date" id="from_date" class="form-control">
+    </div>
 
-           
-    
+    <div class="col-md-3">
+        <label class="fw-semibold">To Date</label>
+        <input type="date" id="to_date" class="form-control">
+    </div>
 
+    <div class="col-md-2">
+        <button class="btn btn-primary w-100" id="filterBtn">
+            <i class="fa fa-filter"></i> Filter
+        </button>
+    </div>
 
+    <div class="col-md-2">
+        <button class="btn btn-secondary w-100" id="resetBtn">
+            Reset
+        </button>
+    </div>
+</div>
 
           {{-- data table start  --}}
         <div class="card-body table-scrollable">
@@ -77,9 +95,9 @@
            
                     <td scope="row">{{$r1=$r1+1}}</td>
                     <td>{{$record->voucher_bill_no}}</td>
-                    <td scope="col">{{ \Carbon\Carbon::parse($record['voucher_date'])->format('d-m-y') }}</td>
-                    
-
+                    <td data-date="{{ \Carbon\Carbon::parse($record['voucher_date'])->format('Y-m-d') }}">
+    {{ \Carbon\Carbon::parse($record['voucher_date'])->format('d-m-y') }}
+</td>
                      <td>{{$record->account->account_name}}</td>
                      <td>{{$record['total_qty']}}</td>
                      <td>{{$record['total_item_basic_amount']}}</td>
@@ -133,24 +151,62 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
-
 <script>
-  $(document).ready(function () 
-  {
+$(document).ready(function () {
 
-    new DataTable('#remindtable', {
-    layout: {
-        topStart: {
-            buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+    let table = new DataTable('#remindtable', {
+        layout: {
+            topStart: {
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+            }
         }
-    }
+    });
+
+    // Custom DATE RANGE filter
+    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+
+        let fromDate = $('#from_date').val();
+        let toDate   = $('#to_date').val();
+
+        let billDate = $('#remindtable tbody tr')
+            .eq(dataIndex)
+            .find('td:eq(2)')
+            .data('date'); // YYYY-MM-DD
+
+        if (!billDate) return true;
+
+        // If no filter applied
+        if (fromDate === '' && toDate === '') {
+            return true;
+        }
+
+        // From date only
+        if (fromDate !== '' && toDate === '') {
+            return billDate >= fromDate;
+        }
+
+        // To date only
+        if (fromDate === '' && toDate !== '') {
+            return billDate <= toDate;
+        }
+
+        // From & To both
+        return billDate >= fromDate && billDate <= toDate;
+    });
+
+    // Apply filter
+    $('#filterBtn').on('click', function () {
+        table.draw();
+    });
+
+    // Reset filter
+    $('#resetBtn').on('click', function () {
+        $('#from_date').val('');
+        $('#to_date').val('');
+        table.draw();
+    });
+
 });
-
-
-  }
-  );
- 
 </script>
-
 
 @endsection

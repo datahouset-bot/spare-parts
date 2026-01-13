@@ -88,13 +88,6 @@ class HomeController extends CustomBaseController
     ->get()
     ->count();
 
-
- $sales = voucher::withinFY('entry_date')->with('account')
-        ->where('firm_id', Auth::user()->firm_id)
-        ->where('voucher_type','Sale')->orderBy('voucher_no','desc')->get();
-
-//  outstanding data show
-
  $today = now()->toDateString(); // YYYY-MM-DD
 
     // ==============================
@@ -210,7 +203,7 @@ class HomeController extends CustomBaseController
             }
             else{
                 return view('home', compact('purchaseChart','outstandingPayables','outstandingReceivables',
-                'roomcheckin','sales','currentDate','vacantroom','occupiedroom' ,'dirtyroom','daysDifference','amcCount', 
+                'roomcheckin','currentDate','vacantroom','occupiedroom' ,'dirtyroom','daysDifference','amcCount', 
                 'dueAmcCount','pendingTask','todayFollowup' ,'kot_Unprinted','Rkot_Unprinted','financialyear'));    
             }
         }

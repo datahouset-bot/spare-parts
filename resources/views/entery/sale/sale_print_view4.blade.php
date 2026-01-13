@@ -227,10 +227,19 @@ body{
     <div class="doc-sign">
         <strong>Authorised Signatory</strong>
     </div>
+   <div class="button-container my-2 gap-2">
 
-    <div class="text-center mt-3 no-print">
-        <button onclick="window.print()" class=" btn btn-lg btn-success">Print</button>
-    </div>
+    <!-- HOME BUTTON -->
+    <a href="{{ url('/sales') }}" class="btn btn-primary btn-lg">
+        <i class="fa fa-home"></i> Home
+    </a>
+
+    <!-- PRINT BUTTON -->
+    <button class="btn btn-success btn-lg" onclick="window.print()">
+        <i class="fa fa-print"></i> Print
+    </button>
+
+</div>
 
 </div>
 

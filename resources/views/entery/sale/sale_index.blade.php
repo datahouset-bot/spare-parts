@@ -16,7 +16,7 @@
    
   });
 </script> --}}
-<div class="container-fluid px-0" style="max-width:100% !important;">
+<div class="container-fluid" style="max-width:90% !important;">
   @if(session('message'))
     <div class="alert alert-primary">
         {{ session('message') }}
@@ -30,15 +30,33 @@
        <div class="row my-2">
           <div class="col-md-12 text-center">
             <a href="{{url('sales/create')}}" class="btn btn-primary">New Sale invoice</a>
-            <a href="{{url('sale_register')}}" class="btn btn-dark"> Register sale </a>
+            {{-- <a href="{{url('sale_register')}}" class="btn btn-dark"> Register sale </a> --}}
           </div>
        </div>
         
+<div class="row mb-3">
+    <div class="col-md-3">
+        <label class="fw-bold">From Date</label>
+        <input type="date" id="fromDate" class="form-control">
+    </div>
 
-           
-    
+    <div class="col-md-3">
+        <label class="fw-bold">To Date</label>
+        <input type="date" id="toDate" class="form-control">
+    </div>
 
+    <div class="col-md-3 d-flex align-items-end">
+        <button class="btn btn-primary w-50" id="filterDate">
+            <i class="fa fa-filter"></i> 0K
+        </button>
+    </div>
 
+    <div class="col-md-3 d-flex align-items-end">
+        <button class="btn btn-secondary w-100" id="resetDate">
+            <i class="fa fa-refresh"></i> Today
+        </button>
+    </div>
+</div>
 
           {{-- data table start  --}}
         <div class="card-body table-scrollable">
@@ -135,7 +153,7 @@
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
 
-<script>
+{{-- <script>
   $(document).ready(function () 
   {
 
@@ -151,7 +169,67 @@
   }
   );
  
+</script> --}}
+  <script>
+$(document).ready(function () {
+
+    // Get today's date (YYYY-MM-DD)
+    let today = new Date().toISOString().split('T')[0];
+
+    // Set default dates
+    $('#fromDate').val(today);
+    $('#toDate').val(today);
+
+    // Custom date filter
+    $.fn.dataTable.ext.search.push(function (settings, data) {
+
+        let min = $('#fromDate').val();
+        let max = $('#toDate').val();
+
+        // Bill Date column (index 3) → format: d-m-y
+        let billDateStr = data[3]; 
+        let parts = billDateStr.split('-');
+        let billDate = new Date(`20${parts[2]}-${parts[1]}-${parts[0]}`);
+
+        if (
+            (!min && !max) ||
+            (!min && billDate <= new Date(max)) ||
+            (new Date(min) <= billDate && !max) ||
+            (new Date(min) <= billDate && billDate <= new Date(max))
+        ) {
+            return true;
+        }
+        return false;
+    });
+
+    // Initialize DataTable
+    let table = new DataTable('#remindtable', {
+        order: [[3, 'desc']], // order by Bill Date
+        layout: {
+            topStart: {
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+            }
+        }
+    });
+
+    // Apply default (today) filter
+    table.draw();
+
+    // Filter button
+    $('#filterDate').on('click', function () {
+        table.draw();
+    });
+
+    // Reset to Today
+    $('#resetDate').on('click', function () {
+        $('#fromDate').val(today);
+        $('#toDate').val(today);
+        table.draw();
+    });
+
+});
 </script>
+
 
 
 @endsection

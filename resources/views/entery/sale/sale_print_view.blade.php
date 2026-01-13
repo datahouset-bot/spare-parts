@@ -464,9 +464,20 @@ background-color:white;
                     &nbsp;<img src="{{ asset('storage/image/' . $pic->seal) }}" alt="qr_code" width="80px">
                 </div>
             </div>
-            <div class="button-container my-2">
-                <button class="btn btn-success btn-lg" onclick="window.print()">Print</button>
-            </div>
+            <div class="button-container my-2 gap-2">
+
+    <!-- HOME BUTTON -->
+    <a href="{{ url('/sales') }}" class="btn btn-primary btn-lg">
+        <i class="fa fa-home"></i> Home
+    </a>
+
+    <!-- PRINT BUTTON -->
+    <button class="btn btn-success btn-lg" onclick="window.print()">
+        <i class="fa fa-print"></i> Print
+    </button>
+
+</div>
+
         </div>
     </body>
 

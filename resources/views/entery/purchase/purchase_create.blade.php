@@ -332,8 +332,16 @@
 
 
                         if (response.item_info) {
-                            $('#rate').val(response.item_info.sale_rate);
-                            $('#display_rate').text(response.item_info.sale_rate);
+                              let purchaseRate = parseFloat(response.item_info.purchase_rate) || 0;
+            let mrp      = parseFloat(response.item_info.mrp) || 0;
+
+            // Fallback logic
+            let finalRate = purchaseRate > 0 ? saleRate : mrp;
+
+            // Set values
+            $('#rate').val(finalRate);
+            $('#display_rate').text(finalRate);
+                         
                             $('#gst_p').val(response.item_info.gstmaster.igst);
                             $('#gstmaster_id').val(response.item_info.gstmaster.id);
                         } else {
