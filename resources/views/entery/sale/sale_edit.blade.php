@@ -232,10 +232,10 @@ label {
                 Back
             </a>
 
-            <a href="{{ url('store_to_sale/' . Auth::user()->id) }}"
-               class="btn btn-warning btn-sm float-end">
-                Update
-            </a>
+          <button type="button" id="updateSale" class="btn btn-warning btn-sm float-end">
+    Update
+</button>
+
         </div>
 
         {{-- ================= FORM ================= --}}
@@ -388,7 +388,39 @@ label {
                             <td></td>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+@foreach ($items as $index => $item)
+<tr data-id="{{ $item->id }}">
+    <td>{{ $index + 1 }}</td>
+    <td>{{ $item->item_name }}</td>
+
+    <td>
+        <input type="number" class="form-control edit-qty"
+               value="{{ $item->qty }}">
+    </td>
+
+    <td>
+        <input type="number" class="form-control edit-rate"
+               value="{{ $item->rate }}">
+    </td>
+
+    <td>{{ $item->item_basic_amount }}</td>
+
+    <td>{{ $item->total_discount }}</td>
+    <td>{{ $item->gst_item_percent }}</td>
+    <td>{{ $item->gst_item_amount }}</td>
+    <td>{{ $item->item_net_amount }}</td>
+
+    <td>
+        <button class="btn btn-sm btn-primary update-row">✔</button>
+    </td>
+    <td>
+        <button class="btn btn-sm btn-danger delete-row">✖</button>
+    </td>
+</tr>
+@endforeach
+</tbody>
+
                 <tfoot class="table-dark">
                     <tr>
                         <td>Total</td>
@@ -690,164 +722,7 @@ label {
             });
         });
     </script>
-
-
-    {{-- fetching records --}}
-    <script>
-        $(document).ready(function() {
-            function fetchAndDisplayRecords(user_id) {
-                $.ajax({
-                    url: '/fetchItemRecords_inventory/' + user_id,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        console.log(response);
-
-                        if (response.status === 200) {
-                            var itemRecords = response.itemrecords;
-                            var totalQty = 0;
-                            var totalAmount = 0;
-                            var total_bill_discount = 0;
-                            var total_bill_taxable = 0;
-                            var total_bill_gst = 0;
-                            var total_bill_net = 0;
-
-
-
-                            $('#sold_item_record tbody').empty(); // Clear previous records
-
-                            itemRecords.forEach(function(record, index) {
-                                var amount = record.qty * record.rate;
-                                totalQty += parseFloat(record.qty);
-                                totalAmount += parseFloat(amount);
-                                total_bill_discount += parseFloat(record.total_discount);
-                                total_bill_taxable += parseFloat(record.total_amount);
-                                total_bill_gst += parseFloat(record.total_gst);
-                                total_bill_net += parseFloat(record.item_net_value);
-
-
-                                $('#sold_item_record tbody').append(`
-                                <tr>
-                                    <td>${index + 1}</td>
-                                    <td>${record.item_name}</td>
-                                    <td>${record.qty}</td>
-                                    <td>${record.rate}</td>
-                                    <td>${record.amount}</td>
-                                    <td>${ record.dis_percent ?? 0 }</td>
-
-                                    <td>${record.dis_amt??0}</td>
-                                    <td>${record.total_discount}</td>
-                                    <td>${record.total_amount}</td>
-                                    <td>${record.item_gst_id}</td>
-                                     <td>${record.total_gst}</td>
-                                    <td>${record.item_net_value}</td>
-                                     <td>
-                                        <span class="btn btn-danger btn-sm delete-record" data-id="${record.id}">
-                                                X
-                                            </span>
-                                        </td>
-                                </tr>
-                            `);
-                            });
-
-                            $('#total_records').val(itemRecords.length);
-                            $('#total_qty').val(totalQty);
-                            $('#total_amount').val(totalAmount);
-                            $('#total_bill_discount').val(total_bill_discount);
-                            $('#total_bill_taxable').val(total_bill_taxable);
-                            $('#total_bill_gst').val(total_bill_gst);
-                            $('#total_bill_net').val(total_bill_net);
-
-                        } else {
-                            alert('Failed to fetch records');
-                        }
-                    },
-                    error: function() {
-                        alert('Error fetching records');
-                    }
-                });
-            }
-
-            // Delete Record Handler
-            $(document).on('click', '.delete-record', function() {
-                var recordId = $(this).data('id');
-                console.log("Deleting record:", recordId);
-
-                $.ajax({
-                    url: '/delete_kot_temprecord/' + recordId,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        console.log(response);
-                        var user_id = $("#user_id").val();
-                        if (user_id) {
-                            fetchAndDisplayRecords(user_id);
-                        }
-                    },
-                    error: function() {
-                        alert('Error deleting record');
-                    }
-                });
-            });
-            var initialUserId = $("#user_id").val();
-
-            if (initialUserId) {
-                fetchAndDisplayRecords(initialUserId);
-            }
-            // Fetch records on button click
-            $('#additem').click(function() {
-                var user_id = $("#user_id").val();
-                console.log(user_id);
-
-                if (user_id) {
-                    fetchAndDisplayRecords(user_id);
-                } else {
-                    alert('User ID is required');
-                }
-            });
-
-            $('#additem').keypress(function() {
-                var user_id = $("#user_id").val();
-                console.log(user_id);
-
-                if (user_id) {
-                    fetchAndDisplayRecords(user_id);
-                } else {
-                    alert('User ID is required');
-                }
-            });
-
-            $('#additem').click(function() {
-                var user_id = $("#user_id").val();
-                console.log(user_id);
-                if (user_id) {
-                    fetchAndDisplayRecords(user_id);
-                } else {
-                    alert('User ID is required');
-                }
-
-
-            });
-
-            // Fetch records on Enter key press
-            $('#user_id').keyUp(function(event) {
-                var user_id = $("#user_id").val();
-                console.log(user_id);
-                if (user_id) {
-                    fetchAndDisplayRecords(user_id);
-                } else {
-                    alert('User ID is required');
-                }
-
-
-
-
-            });
-
-            console.log("fetching record function");
-        });
-    </script>
-
+ 
     {{-- to prevent form resubmission on page refresh using enter stop enter to page reload and use it as tab to change input boxes --}}
     <script>
 $(document).ready(function () {
@@ -889,6 +764,86 @@ $(document).ready(function () {
 
 });
 </script>
+<script>
+$('#updateSale').on('click', function () {
+
+    let voucherNo = $('#voucher_no').val();
+
+    $.ajax({
+        url: '/sales/' + voucherNo,   // update route
+        type: 'PUT',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            voucher_date: $('#voucher_date').val(),
+            voucher_bill_no: $('#voucher_bill_no').val(),
+            voucher_terms: $('#terms').val(),
+            account_id: $('#account_id').val(),
+            total_qty: $('#total_qty').val(),
+            total_item_basic_amount: $('#total_amount').val(),
+            total_disc_item_amount: $('#total_bill_discount').val(),
+            total_gst_amount: $('#total_bill_gst').val(),
+            total_net_amount: $('#total_bill_net').val()
+        },
+        success: function () {
+            alert('Sale updated successfully');
+            window.location.href = "{{ route('sales.index') }}";
+        },
+        error: function (xhr) {
+            console.error(xhr.responseText);
+            alert('Update failed');
+        }
+    });
+});
+</script>
+<script>
+$(document).on('click', '.update-row', function () {
+
+    let row = $(this).closest('tr');
+    let id  = row.data('id');
+
+    $.ajax({
+        url: '/sale-item/' + id,
+        type: 'PUT',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            qty: row.find('.edit-qty').val(),
+            rate: row.find('.edit-rate').val()
+        },
+        success: function () {
+            alert('Item updated');
+            location.reload();
+        },
+        error: function (xhr) {
+            console.error(xhr.responseText);
+            alert('Update failed');
+        }
+    });
+});
+</script>
+<script>
+$(document).on('click', '.delete-row', function () {
+
+    if (!confirm('Delete this item?')) return;
+
+    let row = $(this).closest('tr');
+    let id  = row.data('id');
+
+    $.ajax({
+        url: '/sale-item/' + id,
+        type: 'DELETE',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function () {
+            row.remove();
+        },
+        error: function () {
+            alert('Delete failed');
+        }
+    });
+});
+</script>
+
 
     <script></script>
 

@@ -315,4 +315,60 @@ class ItemController extends CustomBaseController
     return back()->with('success', 'Items and master data imported successfully!');
 }
 
+public function createItemAjax(Request $request)
+{
+    try {
+
+        if (!Auth::check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+    $validated = $request->validate([
+    'item_name'     => 'required|string|max:255',
+    'company_id'    => 'required|integer',
+    'group_id'      => 'required|integer',
+
+    // 🔥 REQUIRED FIX
+    'unit_id'       => 'required|exists:units,id',
+    'gstmaster_id'  => 'required|exists:gstmasters,id',
+
+    'item_barcode'  => 'nullable|string|max:255',
+    'sale_rate'     => 'nullable|numeric',
+    'mrp'           => 'nullable|numeric',
+]);
+
+ $item = Item::create([
+    'firm_id'       => Auth::user()->firm_id,
+    'item_name'     => $validated['item_name'],
+    'company_id'    => $validated['company_id'],
+    'group_id'      => $validated['group_id'],
+    'unit_id'       => $validated['unit_id'],
+    'item_gst_id'  => $validated['gstmaster_id'],
+
+    'item_unit'     => Unit::find($validated['unit_id'])->primary_unit_name,
+    'item_company'  => Company::find($validated['company_id'])->comp_name,
+    'item_group'    => ItemGroup::find($validated['group_id'])->item_group,
+
+    'item_barcode'  => $validated['item_barcode'] ?? null,
+    'sale_rate'     => $validated['sale_rate'] ?? 0,
+    'sale_rate_a'   => $validated['sale_rate'] ?? 0,
+    'mrp'           => $validated['mrp'] ?? 0,
+]);
+
+
+
+        return response()->json([
+            'id'        => $item->id,
+            'item_name' => $item->item_name,
+        ]);
+
+    } catch (\Throwable $e) {
+        return response()->json([
+            'error'   => $e->getMessage(),
+            'line'    => $e->getLine(),
+            'file'    => $e->getFile(),
+        ], 500);
+    }
 }
+}
+

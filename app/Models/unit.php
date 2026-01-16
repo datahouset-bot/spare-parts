@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class unit extends Model
 {
     use HasFactory;
-    protected $fillable = ['primary_unit_name', 'conversion', 'alternate_unit_name'];
+    protected $fillable = ['firm_id', 'primary_unit_name', 'conversion', 'alternate_unit_name'];
 
     public function items()
     {

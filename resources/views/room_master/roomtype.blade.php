@@ -100,7 +100,6 @@
         <!-- ➕ ADD PACKAGE -->
         <a href="{{ url('/packages') }}"
            class="btn btn-outline-primary"
-           target="_blank"
            title="Add Package">
             <i class="fa fa-plus"></i>
         </a>

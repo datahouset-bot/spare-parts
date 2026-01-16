@@ -8,9 +8,12 @@ use App\Models\sale;
 use App\Models\godown;
 use App\Models\ledger;
 use App\Models\account;
+use App\Models\company;
 use App\Models\voucher;
 use App\Models\purchase;
+use App\Models\gstmaster;
 use App\Models\inventory;
+use App\Models\itemgroup;
 use App\Models\tempentry;
 use App\Models\optionlist;
 use App\Models\roomcheckin;
@@ -21,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoresaleRequest;
 use App\Http\Requests\UpdatesaleRequest;
 use Illuminate\Support\Facades\Validator;
+use App\Models\unit;
 
 class SaleController extends CustomBaseController
 {
@@ -33,6 +37,7 @@ class SaleController extends CustomBaseController
         $sales = voucher::withinFY('entry_date')->with('account')
         ->where('firm_id', Auth::user()->firm_id)
         ->where('voucher_type','Sale')->orderBy('voucher_no','desc')->get();
+       
         
  
         return view('entery.sale.sale_index',compact('sales'));
@@ -72,8 +77,23 @@ $sundry_SundryCreditors_id = accountgroup::where('firm_id', Auth::user()->firm_i
 ->where('account_group_name', 'Sundry Debtors')->first();
 $accountdata = account::where('firm_id', Auth::user()->firm_id)->where('account_group_id', $sundry_SundryCreditors_id->id)->get();   
 $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
+ $accountgroups = accountgroup::where('firm_id', Auth::user()->firm_id)->get();
 
-       return view('entery.sale.sale_create', compact('new_bill_no','new_voucher_no','accountdata','itemdata','godowns'));
+  $itemCompanies = company::where('firm_id', Auth::user()->firm_id)
+        ->orderBy('id')
+        ->get();
+
+    $itemGroups = itemgroup::where('firm_id', Auth::user()->firm_id)
+        ->orderBy('id')
+        ->get();
+   $units = unit::where('firm_id', Auth::user()->firm_id)
+        ->orderBy('id')
+        ->get();
+
+    $gsts = Gstmaster::where('firm_id', Auth::user()->firm_id)
+        ->orderBy('id')
+        ->get();
+       return view('entery.sale.sale_create', compact('new_bill_no','new_voucher_no','accountdata','itemdata','godowns','accountgroups','itemCompanies','itemGroups','units','gsts'));
 
     }
     /**
@@ -398,56 +418,17 @@ Public function sale_print_view4($voucher_no){
     /**
      * Show the form for editing the specified resource.
      */
-  public function edit($voucher_no)
+public function edit($voucher_no)
 {
     $sale = voucher::where('voucher_no', $voucher_no)
         ->where('firm_id', Auth::user()->firm_id)
         ->firstOrFail();
 
-    // 🔴 CLEAR OLD TEMP (safety)
-    tempentry::where('user_id', Auth::user()->id)->delete();
-
-    // 🔴 LOAD EXISTING ITEMS INTO TEMPENTRY
     $items = inventory::where('voucher_no', $voucher_no)
         ->where('voucher_type', 'Sale')
         ->where('firm_id', Auth::user()->firm_id)
         ->get();
 
- foreach ($items as $item) {
-    tempentry::create([
-        'firm_id'          => Auth::user()->firm_id,
-        'user_id'          => Auth::user()->id,
-        'user_name'        => Auth::user()->name,
-
-        'voucher_no'       => $sale->voucher_no,
-        'voucher_type'     => 'Sale',
-        'voucher_date'     => $sale->voucher_date,
-        'bill_no'          => $sale->voucher_bill_no,
-        'entry_date'       => $sale->voucher_date,
-
-        'item_id'          => $item->item_id,
-        'item_name'        => $item->item_name,
-        'qty'              => $item->qty,                // 🔴 FIXED
-        'rate'             => $item->rate,
-        'amount'           => $item->item_basic_amount,
-
-        'total_discount'   => $item->total_discount,
-        'total_amount'     => $item->item_basic_amount,
-
-        // 🔴 GST FIELDS (VERY IMPORTANT)
-        'item_gst_name'    => $item->gst_id,
-        'item_gst_id'      => $item->gst_item_percent,
-        'total_gst'        => $item->gst_item_amount,
-
-        'item_net_value'   => $item->item_net_amount,
-
-        'account_id'       => $sale->account_id,
-        'temp_af1'         => $item->godown_id,
-    ]);
-    }
-
-
-    // 🔴 SAME DATA AS CREATE
     $godowns = godown::where('firm_id', Auth::user()->firm_id)->get();
 
     $sundry = accountgroup::where('firm_id', Auth::user()->firm_id)
@@ -462,6 +443,7 @@ Public function sale_print_view4($voucher_no){
 
     return view('entery.sale.sale_edit', compact(
         'sale',
+        'items',      // ✅ IMPORTANT
         'accountdata',
         'itemdata',
         'godowns'
@@ -472,8 +454,11 @@ Public function sale_print_view4($voucher_no){
     /**
      * Update the specified resource in storage.
      */
-   public function update(Request $request, $voucher_no)
-    {
+  public function update(Request $request, $voucher_no)
+{
+    DB::transaction(function () use ($request, $voucher_no) {
+
+        // 1️⃣ Update voucher
         $voucher = voucher::where('voucher_no', $voucher_no)->firstOrFail();
 
         $voucher->update([
@@ -482,16 +467,51 @@ Public function sale_print_view4($voucher_no){
             'voucher_terms' => $request->voucher_terms,
             'voucher_bill_no' => $request->voucher_bill_no,
             'total_qty' => $request->total_qty,
-            'total_net_amount' => $request->total_net_amount,
             'total_item_basic_amount' => $request->total_item_basic_amount,
-            'total_gst_amount' => $request->total_gst_amount,
             'total_disc_item_amount' => $request->total_disc_item_amount,
-            'total_net_amount' => $request->total_net_amount,    // add other fields as necessary
+            'total_gst_amount' => $request->total_gst_amount,
+            'total_net_amount' => $request->total_net_amount,
         ]);
-        return redirect()
-            ->route('sales.index')
-            ->with('success', 'Sale updated successfully');
-    }
+
+        // 2️⃣ DELETE OLD INVENTORY ITEMS
+        inventory::where('voucher_no', $voucher_no)
+            ->where('voucher_type', 'Sale')
+            ->delete();
+
+        // 3️⃣ INSERT UPDATED ITEMS FROM TEMPENTRY
+        $items = tempentry::where('user_id', Auth::user()->id)
+            ->where('voucher_type', 'Sale')
+            ->get();
+
+        foreach ($items as $item) {
+            inventory::create([
+                'firm_id' => Auth::user()->firm_id,
+                'voucher_no' => $voucher_no,
+                'voucher_type' => 'Sale',
+                'voucher_date' => $voucher->voucher_date,
+                'item_id' => $item->item_id,
+                'item_name' => $item->item_name,
+                'qty' => $item->qty,
+                'rate' => $item->rate,
+                'item_basic_amount' => $item->amount,
+                'total_discount' => $item->total_discount,
+                'total_amount' => $item->total_amount,
+                'gst_id' => $item->item_gst_name,
+                'gst_item_percent' => $item->item_gst_id,
+                'gst_item_amount' => $item->total_gst,
+                'item_net_amount' => $item->item_net_value,
+                'godown_id' => $item->temp_af1,
+                'stock_out' => $item->qty,
+                'simpal_qty' => -$item->qty,
+            ]);
+        }
+
+        // 4️⃣ CLEAR TEMP
+        tempentry::where('user_id', Auth::user()->id)->delete();
+    });
+
+    return response()->json(['status' => 'updated']);
+}
 
 
     /**
@@ -524,5 +544,32 @@ Public function sale_print_view4($voucher_no){
 
        
     }
+public function updateSaleItem(Request $request, $id)
+{
+    $item = inventory::where('id', $id)
+        ->where('firm_id', Auth::user()->firm_id)
+        ->firstOrFail();
+
+    $amount = $request->qty * $request->rate;
+
+    $item->update([
+        'qty' => $request->qty,
+        'rate' => $request->rate,
+        'item_basic_amount' => $amount,
+        'item_net_amount' => $amount + $item->gst_item_amount,
+        'stock_out' => $request->qty,
+        'simpal_qty' => -$request->qty
+    ]);
+
+    return response()->json(['status' => 'updated']);
+}
+public function deleteSaleItem($id)
+{
+    inventory::where('id', $id)
+        ->where('firm_id', Auth::user()->firm_id)
+        ->delete();
+
+    return response()->json(['status' => 'deleted']);
+}
 
 }

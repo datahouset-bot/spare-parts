@@ -11,8 +11,9 @@ class account extends Model
     protected $table = 'accounts';
 
     Protected $fillable =[
+        'firm_id',
         'account_name',
-        'account_group',
+        'account_group_id',
         'op_balnce',
         'balnce_type',
         'address',

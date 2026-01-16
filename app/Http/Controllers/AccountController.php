@@ -391,4 +391,46 @@ class AccountController extends CustomBaseController
         }
     }
 
+   public function createAccountAjax(Request $request)
+{
+    // ✅ AJAX-safe validation
+    $validator = Validator::make($request->all(), [
+        'account_name'     => 'required|string|max:255',
+        'account_group_id' => 'required|integer',
+        'op_balnce'        => 'nullable|numeric',
+        'balnce_type'      => 'required|in:Dr,Cr',
+        'mobile'           => 'nullable|string',
+        'gst_no'           => 'nullable|string',
+        'address'          => 'nullable|string',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'errors' => $validator->errors()
+        ], 422);
+    }
+
+    if (!Auth::check()) {
+        return response()->json(['message' => 'Unauthorized'], 401);
+    }
+
+    $account = Account::create([
+        'firm_id'          => Auth::user()->firm_id,
+        'account_name'     => $request->account_name,
+        'account_group_id' => $request->account_group_id,
+        'op_balnce'        => $request->op_balnce ?? 0,
+        'balnce_type'      => $request->balnce_type,
+        'mobile'           => $request->mobile,
+        'gst_no'           => $request->gst_no,
+        'address'          => $request->address,
+    ]);
+
+    // ✅ JSON RESPONSE (THIS FIXES EVERYTHING)
+    return response()->json([
+        'id'           => $account->id,
+        'account_name' => $account->account_name,
+        'message'      => 'Account created successfully'
+    ]);
+}
+
 }

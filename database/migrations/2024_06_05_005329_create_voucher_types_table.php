@@ -21,6 +21,22 @@ return new class extends Migration
             $table->string('voucher_numbring_style')->nullable();
             $table->string('voucher_print_name')->nullable();
             $table->text('voucher_remark')->nullable();
+            $table->string('voucher_af1')->nullable();
+            $table->string('voucher_af2')->nullable();
+            $table->string('voucher_af3')->nullable();  
+            $table->string('voucher_af4')->nullable();
+            $table->string('voucher_af5')->nullable();
+            $table->string('voucher_af6')->nullable();
+            $table->string('voucher_af7')->nullable();
+            $table->string('voucher_af8')->nullable();
+            $table->string('voucher_af9')->nullable();
+            $table->string('voucher_af10')->nullable();
+            $table->string('voucher_af11')->nullable();
+            $table->string('voucher_af12')->nullable();
+            $table->string('voucher_af13')->nullable();
+            $table->string('voucher_af14')->nullable();
+            $table->string('voucher_af15')->nullable();
+
             $table->timestamps();
         });
     }

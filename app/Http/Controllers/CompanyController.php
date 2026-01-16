@@ -118,4 +118,23 @@ class CompanyController extends CustomBaseController
 
 
 }
+public function storeAjax(Request $request)
+{
+    $request->validate([
+        'comp_name' => 'required|string|max:255',
+        'Dis'       => 'nullable|numeric',
+    ]);
+
+    $company = Company::create([
+        'firm_id'   => Auth::user()->firm_id,
+        'comp_name' => $request->comp_name,
+        'comp_dis'       => $request->Dis ?? 0,
+    ]);
+
+    return response()->json([
+        'id'        => $company->id,
+        'comp_name' => $company->comp_name,
+    ]);
+}
+
 }

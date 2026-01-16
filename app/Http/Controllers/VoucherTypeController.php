@@ -31,6 +31,7 @@ class VoucherTypeController extends CustomBaseController
             'voucher_suffix'=>'nullable',
             'voucher_numbring_style'=>'nullable',
             'voucher_print_name'=>'nullable',
+            'voucher_type' => 'nullable|string|max:50',
             'voucher_remark'=>'nullable'
              
             ]);
@@ -38,6 +39,7 @@ class VoucherTypeController extends CustomBaseController
                 $voucher_type = new voucher_type;
                 $voucher_type->firm_id=Auth::user()->firm_id;
                 $voucher_type->voucher_type_name = $request->voucher_type_name;
+                $voucher_type->voucher_af1 = $request->voucher_type;
                 $voucher_type->numbring_start_from=$request->numbring_start_from;
                 $voucher_type->voucher_prefix=$request->voucher_prefix;
                 $voucher_type->voucher_suffix=$request->voucher_suffix;

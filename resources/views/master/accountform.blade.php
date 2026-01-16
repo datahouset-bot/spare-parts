@@ -2,12 +2,96 @@
 {{-- @include('layouts.blank') --}}
 @section('pagecontent')
 <style>
-.requierdfield{
-  color: red;
-  font-size:x-large;
-  text-align: left;
+/* ================= GLOBAL ================= */
+body {
+    background: #f4f6f9;
 }
-</style>    
+
+.card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #4e73df, #224abe);
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 14px 20px;
+}
+
+.card-body {
+    padding: 24px;
+}
+
+/* ================= FORM ================= */
+.form-floating > label,
+label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-control,
+.form-select {
+    border-radius: 8px;
+    font-size: 14px;
+    height: 40px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #4e73df;
+    box-shadow: 0 0 0 0.15rem rgba(78,115,223,.25);
+}
+
+/* ================= SECTIONS ================= */
+.section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #4e73df;
+    margin: 20px 0 10px;
+    border-left: 4px solid #4e73df;
+    padding-left: 10px;
+}
+
+/* ================= BUTTONS ================= */
+.btn-primary {
+    background: linear-gradient(135deg, #4e73df, #224abe);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-dark {
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+}
+
+.btn-outline-primary {
+    border-radius: 8px;
+}
+
+/* ================= REQUIRED ================= */
+.requierdfield {
+    color: red;
+    font-size: 16px;
+}
+
+/* ================= FILE INPUT ================= */
+input[type="file"] {
+    height: auto;
+}
+
+/* ================= FOOTER ================= */
+.card-footer {
+    background: #f8f9fc;
+    border-top: 1px solid #e3e6f0;
+}
+</style>
+  
 
 
 <div class="container">
@@ -21,6 +105,7 @@
                 @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
 @endif
+<div class="section-title">Basic Account Information</div>
 
 
             <div id="detail_a" class="row">
@@ -58,8 +143,7 @@
             <!-- ➕ ADD BUTTON -->
             <a href="{{ url('/accountgroups') }}"
                class="btn btn-outline-primary btn-icon"
-               title="Add Account Group"
-               target="_blank">
+               title="Add Account Group">
                 <i class="fa fa-plus"></i>
             </a>
         </div>
@@ -208,8 +292,13 @@
 
                 </div>
             </div>
-            <span id="part_b" class="btn btn-dark btn-sm">Show Part B</span>            
+           <button id="part_b" type="button" class="btn btn-outline-primary btn-sm mt-3">
+    + Additional Details (Part B)
+</button>
+
             <div id="detail_b" class="row">
+                
+<div class="section-title">Additional Business Details</div>
                 <div class="col-md-4">
                     <label for="">Root A/c</label>
                     <input type="text"  name ="account_af3"class="form-control" >
@@ -256,8 +345,13 @@
                 </div>
 
             </div>
-            <span id="part_c" class="btn btn-dark btn-sm">Show Part C </span>
+         <button id="part_c" type="button" class="btn btn-outline-primary btn-sm mt-3">
+    + Other Information (Part C)
+</button>
+
             <div id="detail_c" class="row">
+                <div class="section-title">Other Information</div>
+
                 <div class="col-md-4">
                     <label for="">Birthday</label>
                     <input type="text" name="account_birthday" class="form-control date">
@@ -294,8 +388,10 @@
 
             <div class="mt-4 mb-0">
                 <div class="d-grid">
-                    <button
-                        type="submit"class="btn btn-primary btn-block">Save</button>
+                    <button type="submit" class="btn btn-primary btn-lg">
+    💾 Save Account
+</button>
+
                 </div>
             </div>
         </form>

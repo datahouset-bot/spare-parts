@@ -177,12 +177,12 @@
                 @endforeach
             </select>
 
-            <button type="button"
-                    class="btn btn-outline-primary"
-                    id="addCompanyBtn"
-                    title="Add New Company">
-                <i class="fa fa-plus"></i>
-            </button>
+        <a href="{{ url('/company') }}"
+           class="btn btn-outline-primary"
+           title="Add Company"
+           >
+            <i class="fa fa-plus"></i>
+        </a>
         </div>
 
         @error('company_id')
@@ -202,12 +202,12 @@
                 @endforeach
             </select>
 
-            <button type="button"
-                    class="btn btn-outline-primary"
-                    id="addGroupBtn"
-                    title="Add New Item Group">
-                <i class="fa fa-plus"></i>
-            </button>
+       <a href="{{ url('/itemgroups') }}"
+           class="btn btn-outline-primary"
+           title="Add Item Group"
+           >
+            <i class="fa fa-plus"></i>
+        </a>
         </div>
 
         @error('group_id')
@@ -244,12 +244,12 @@
             @endforeach
         </select>
 
-        <button type="button"
-                class="btn btn-outline-primary"
-                id="addUnitBtn"
-                title="Add New Unit">
+      <a href="{{ url('/units') }}"
+           class="btn btn-outline-primary"
+           title="Add Unit"
+           >
             <i class="fa fa-plus"></i>
-        </button>
+        </a>
     </div>
 
     @error('unit_id')
@@ -272,7 +272,7 @@
         <a href="{{ url('/gstmasters') }}"
            class="btn btn-outline-primary"
            title="Add GST / Tax"
-           target="_blank">
+           >
             <i class="fa fa-plus"></i>
         </a>
     </div>
@@ -311,18 +311,17 @@ $('#mycompany, #myitemgroup').select2({
 </script>
 <script>
 $('#addCompanyBtn').on('click', function () {
-    window.open('/company', '_blank'); // company add page
+    window.location.href = '/company';
 });
 
 $('#addGroupBtn').on('click', function () {
-    window.open('/itemgroups', '_blank'); // item group add page
+    window.location.href = '/itemgroups';
 });
-</script>
 
-<script>
 $('#addUnitBtn').on('click', function () {
-    window.open('/units', '_blank'); // 🔁 change URL if needed
+    window.location.href = '/units';
 });
+
 </script>
 
 @endsection

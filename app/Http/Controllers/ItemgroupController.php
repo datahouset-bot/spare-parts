@@ -122,5 +122,21 @@ public function update(Request $request, $id)
         return redirect('itemgroups')->with('message', 'We cannot delete this record because it is used on an item.');
     }
 }
+public function storeAjax(Request $request)
+{
+    $request->validate([
+        'item_group' => 'required|string|max:255',
+    ]);
+
+    $group = ItemGroup::create([
+        'firm_id'    => Auth::user()->firm_id,
+        'item_group' => $request->item_group,
+    ]);
+
+    return response()->json([
+        'id'         => $group->id,
+        'item_group'=> $group->item_group,
+    ]);
+}
 
 }

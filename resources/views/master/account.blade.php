@@ -8,7 +8,94 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="jquery/master.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
-    
+    <style>
+/* ================= PAGE BACKGROUND ================= */
+body {
+    background: #f4f6f9;
+}
+
+/* ================= CARD ================= */
+.card {
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #4e73df, #224abe);
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 14px 20px;
+}
+
+/* ================= ACTION BAR ================= */
+.action-bar {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 12px 0;
+}
+
+.action-bar .btn {
+    border-radius: 20px;
+    font-weight: 600;
+    padding: 6px 16px;
+}
+
+/* ================= TABLE ================= */
+.table {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background: #f1f3f9;
+    color: #333;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.table tbody tr:hover {
+    background: #f8f9fc;
+}
+
+/* ================= ICON ACTIONS ================= */
+.action-icon {
+    font-size: 18px;
+    margin: 0 6px;
+    transition: transform .2s, color .2s;
+}
+
+.action-icon:hover {
+    transform: scale(1.2);
+}
+
+.icon-view { color: #1cc88a; }
+.icon-edit { color: #4e73df; }
+.icon-delete { color: #e74a3b; }
+
+/* ================= DATATABLE SEARCH ================= */
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 20px;
+    padding: 6px 14px;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    border-radius: 8px;
+}
+
+/* ================= ALERT ================= */
+.alert {
+    border-radius: 12px;
+}
+</style>
+
 <script>
   $(document).ready(function () {
     let table = new DataTable('#remindtable');
@@ -30,14 +117,18 @@
         <div class="card-header">
          Account List 
         </div>
-      <div class="row ">
-        
-        <div class="col-md-12 text-center my-2"><a href={{url('/accountform')}} class="btn btn-primary">Add New Account  </a>
-          <a href={{url('/account_dt')}} class="btn btn-success">Data Table   </a>
-          <a href={{url('/account_import')}} class="btn btn-warning">Import   </a>
-    
-        
-      </div>
+    <div class="action-bar">
+    <a href="{{ url('/accountform') }}" class="btn btn-primary">
+        <i class="fa fa-plus"></i> Add Account
+    </a>
+    <a href="{{ url('/account_dt') }}" class="btn btn-success">
+        <i class="fa fa-table"></i> Data Table
+    </a>
+    <a href="{{ url('/account_import') }}" class="btn btn-warning">
+        <i class="fa fa-upload"></i> Import
+    </a>
+</div>
+
          
         <div class="card-body table-scrollable">
             <table class="table table-striped" id="remindtable">
@@ -71,7 +162,7 @@
                     
                   <tr>
                     {{-- <th scope="row">{{$record['id']}}</th> --}}
-                    <th scope="row">{{$r1=$r1+1}}</th>
+       <th class="text-center">{{$r1=$r1+1}}</th>
                     <td>{{$record['account_name']}}</td>
                     <td>{{$record->accountgroup->account_group_name}}</td>
                     <td>{{$record['op_balnce']}}</td>
@@ -84,9 +175,24 @@
                     {{-- <td>{{$record['email']}}</td>
                     <td>{{$record['person_name']}}</td> --}}
                     <td>{{$record['gst_no']}}</td>
-                    <td><a href="{{('accountformview/'.$record['id']) }}"  ><i class="fa fa-eye" style="font-size:20px;color:DarkGreen"></i></a></td>
-                    <td><a href="{{('showeditaccount/'.$record['id']) }}"  ><i class="fa fa-edit" style="font-size:20px;color:blue"></i></a></td>
-                    <td><a href="{{('deleteaccount/'.$record['id']) }}"  ><i class="fa fa-trash" style="font-size:20px;color:red"></i></a></td>
+                   <td class="text-center">
+    <a href="{{ 'accountformview/'.$record['id'] }}" title="View">
+        <i class="fa fa-eye action-icon icon-view"></i>
+    </a>
+</td>
+<td class="text-center">
+    <a href="{{ 'showeditaccount/'.$record['id'] }}" title="Edit">
+        <i class="fa fa-edit action-icon icon-edit"></i>
+    </a>
+</td>
+<td class="text-center">
+    <a href="{{ 'deleteaccount/'.$record['id'] }}"
+       title="Delete"
+       onclick="return confirm('Are you sure you want to delete this account?')">
+        <i class="fa fa-trash action-icon icon-delete"></i>
+    </a>
+</td>
+
                   </tr>
                   @endforeach
                   

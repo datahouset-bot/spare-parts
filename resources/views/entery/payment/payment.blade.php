@@ -13,23 +13,124 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <style>
-/* ============================================ */
-/* payment mode css */
-/* ============================================
-/* Keep select2 + button on same row */
-.payment-mode-group {
-    display: flex;
+/* ================= PAGE BACKGROUND ================= */
+body {
+    background: #f4f6f9;
 }
 
-.payment-mode-group .select2-container {
-    flex: 1 1 auto !important;
-    width: auto !important;
+/* ================= CARD ================= */
+.card {
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.08);
 }
 
+.card-header {
+    background: linear-gradient(135deg, #4e73df, #224abe);
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 14px 20px;
+}
+
+/* ================= ACTION BUTTON ================= */
+.add-btn {
+    border-radius: 30px;
+    font-weight: 600;
+    padding: 8px 22px;
+}
+
+/* ================= MODAL ================= */
+.modal-content {
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    background: #f8f9fc;
+    border-bottom: 1px solid #e3e6f0;
+}
+
+.modal-title {
+    font-weight: 700;
+    color: #4e73df;
+}
+
+.modal-body label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* ================= FORM ================= */
+.form-control,
+.form-select {
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #4e73df;
+    box-shadow: 0 0 0 0.15rem rgba(78,115,223,.25);
+}
+
+/* ================= SELECT + PLUS ================= */
 .payment-mode-group .btn {
-    white-space: nowrap;
+    border-radius: 8px;
+    margin-left: 6px;
+}
+
+/* ================= TABLE ================= */
+.table {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background: #f1f3f9;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #333;
+}
+
+.table tbody tr:hover {
+    background: #f8f9fc;
+}
+
+/* ================= ACTION ICONS ================= */
+.action-icon {
+    font-size: 18px;
+    transition: transform .2s ease, color .2s ease;
+}
+
+.action-icon:hover {
+    transform: scale(1.25);
+}
+
+.icon-edit { color: #4e73df; }
+.icon-view { color: #1cc88a; }
+.icon-delete { color: #e74a3b; }
+
+/* ================= DATATABLE INPUT ================= */
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 20px;
+    padding: 6px 14px;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    border-radius: 8px;
+}
+
+/* ================= ALERT ================= */
+.alert {
+    border-radius: 12px;
 }
 </style>
+
     <script>
         $(document).ready(function() {
             let table = new DataTable('#remindtable');
@@ -55,10 +156,14 @@
             Add Payment 
         </div>
         <div class="row my-2">
-            <div class="col-md-12 text-center"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#myModal">
-                    Add New Payment
-                </button>
+            <div class="col-md-12 text-center">
+              <button type="button"
+        class="btn btn-primary add-btn"
+        data-bs-toggle="modal"
+        data-bs-target="#myModal">
+    <i class="fa fa-plus"></i> Add New Payment
+</button>
+
             </div>
         </div>
 
@@ -114,12 +219,13 @@
             @endforeach
         </select>
 
-        <button type="button"
-                class="btn btn-outline-primary"
-                id="addPaymentModeBtn"
-                title="Add New Payment Mode">
-            <i class="fa fa-plus"></i>
-        </button>
+  <a href="{{ url('/accountform') }}"
+   class="btn btn-outline-primary"
+   title="Add New">
+    <i class="fa fa-plus"></i>
+</a>
+
+
     </div>
 
     <span class="text-danger">
@@ -142,12 +248,13 @@
             @endforeach
         </select>
 
-        <button type="button"
-                class="btn btn-outline-primary"
-                id="addAccountBtn"
-                title="Add New Account">
-            <i class="fa fa-plus"></i>
-        </button>
+    <a href="{{ url('/accountform') }}"
+   class="btn btn-outline-primary"
+   title="Add New">
+    <i class="fa fa-plus"></i>
+</a>
+
+
     </div>
 
     <span class="text-danger">
@@ -316,27 +423,5 @@ $(document).on('select2:select', '#account_id', function (e) {
 });
 </script>
 
-<script>
-$('#addAccountBtn').on('click', function () {
-    window.open('/accountform', '_blank');
-});
-$('#account_id, #payment_mode_id').select2({
-    dropdownParent: $('#myModal'),
-    width: 'resolve'
-});
-
-</script>
-
-
-<script>
-    $('#payment_mode_id').select2({
-    dropdownParent: $('#myModal'),
-    width: 'resolve'
-});
-$('#addPaymentModeBtn').on('click', function () {
-    window.open('/accountform', '_blank');
-});
-
-</script>
 
 @endsection

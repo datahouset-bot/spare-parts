@@ -98,6 +98,15 @@
                             </span>
                           </div>    
                           <div>
+                            Voucher Type  <input type="text" name ="voucher_type"class="form-control" placeholder=" Voucher Type">
+                            <span class="text-danger"> 
+                              @error('voucher_type')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span>
+                          </div>    
+                          <div>
                             Numbring Style  <select name="voucher_numbring_style" id="voucher_numbring_style" class="form-control">
                               <option value="" selected disabled>Select Numbring Style</option>
                               <option value="voucher_no_continue"  >Continue</option>
@@ -162,6 +171,7 @@
                   <tr>
                     <th scope="col">S.No</th>
                     <th scope="col"> Voucher Type Name    </th>
+                    <th scope="col">Voucher type</th>
                     <th scope="col"> Starting Voucher Number  </th>
                     <th scope="col"> Voucher Prefix  </th>
                     <th scope="col"> Voucher Suffix  </th>
@@ -183,6 +193,7 @@
            
                     <th scope="row">{{$r1=$r1+1}}</th>
                     <td>{{$record['voucher_type_name']}}</td>
+                    <td>{{$record['voucher_af1']}}</td>
                     <td>{{$record['numbring_start_from']}}</td>
                     <td>{{$record['voucher_prefix']}}</td>
 

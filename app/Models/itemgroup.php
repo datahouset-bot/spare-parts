@@ -10,7 +10,9 @@ class itemgroup extends Model
     use HasFactory;
     use HasFactory;
 
-    protected $fillable = ['item_group'];
+    protected $fillable = [
+        'firm_id',
+        'item_group'];
     public function items()
     {
         return $this->hasMany(item::class,'group_id','id');

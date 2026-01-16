@@ -6,10 +6,18 @@
 @section('pagecontent')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="//cdn.datatables.net/2.0.0/css/dataTables.dataTables.min.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="jquery/master.js"></script>
-    <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
+ {{-- jQuery --}}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
+{{-- DataTables --}}
+<script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
+
+{{-- Select2 --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+{{-- Your custom JS --}}
+<script src="{{ asset('jquery/master.js') }}"></script>
+<script src="{{ asset('general_assets/js/form.js') }}"></script>
 
     <style>
         /* =====================================================
@@ -226,6 +234,8 @@ label {
 }
 
     </style>
+  
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
     <script>
         $(document).ready(function() {
@@ -248,25 +258,7 @@ label {
         <div class="card my-3">
            <div class="card-header d-flex justify-content-between align-items-center">
     <span>New Stock Issue</span>
-     <div id="settingsPopup"
-     class="settings-popup shadow-sm">
-     
-    <label class="d-block">
-        <input type="checkbox" class="remark-toggle" data-target="remark_1">
-        Remark 1
-    </label>
-
-    <label class="d-block">
-        <input type="checkbox" class="remark-toggle" data-target="remark_2">
-        Remark 2
-    </label>
-
-    <label class="d-block">
-        <input type="checkbox" class="remark-toggle" data-target="remark_3">
-        Remark 3
-    </label>
-</div>
-
+   
 
     <div class="d-flex gap-2">
         <button type="button"
@@ -286,6 +278,24 @@ label {
         </a>
     </div>
    
+  <div id="settingsPopup"
+     class="settings-popup shadow-sm">
+     
+    <label class="d-block">
+        <input type="checkbox" class="remark-toggle" data-target="remark_1">
+        Remark 1
+    </label>
+
+    <label class="d-block">
+        <input type="checkbox" class="remark-toggle" data-target="remark_2">
+        Remark 2
+    </label>
+
+    <label class="d-block">
+        <input type="checkbox" class="remark-toggle" data-target="remark_3">
+        Remark 3
+    </label>
+</div>
 
 </div>
 
@@ -364,24 +374,22 @@ label {
 
     <div class="d-flex align-items-center gap-1">
         <div class="flex-grow-1">
-            <select name="account_id"
-                    id="account_id"
-                    class="form-control select-party"
-                    required>
-                <option></option>
-                @foreach ($accountdata as $record)
-                    <option value="{{ $record->id }}">
-                        {{ $record->account_name }}
-                    </option>
-                @endforeach
-            </select>
+           <select id="account_id" name="account_id" class="form-control select-party">
+    <option></option>
+    @foreach ($accountdata as $record)
+        <option value="{{ $record->id }}">
+            {{ $record->account_name }}
+        </option>
+    @endforeach
+</select>
         </div>
 
-     <a href="{{ url('/accountform') }}"
-   class="btn btn-outline-primary btn-plus"
-   title="Add Party">
+   <button type="button"
+        class="btn btn-outline-primary btn-plus"
+        id="openAccountModal">
     <i class="fa fa-plus"></i>
-</a>
+</button>
+
 
     </div>
 </div>
@@ -401,11 +409,12 @@ label {
             </select>
         </div>
 
-      <a href="{{ url('/itemform') }}"
-   class="btn btn-outline-success btn-plus"
-   title="Add Item">
+   <button type="button"
+        class="btn btn-outline-success btn-plus"
+        id="openItemModal">
     <i class="fa fa-plus"></i>
-</a>
+</button>
+
 
     </div>
 </div>
@@ -481,14 +490,6 @@ label {
                             <label class="floating-label" for="dis_p">Dis%</label>
                         </div>
                     </div>
-                    
-                    <div class="col-md-2 col-3 text-center">
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="dis_amt" name="dis_amt" placeholder=" ">
-                            <label class="floating-label" for="dis_amt">Dis Amt</label>
-                        </div>
-                    </div>
-                    
                     <div class="col-md-2 col-3 col-sm-2text-center">
                         <div class="form-group">
                             <input type="text" class="form-control" id="total_item_dis_amt" name="total_item_dis_amt" placeholder=" ">
@@ -595,9 +596,301 @@ label {
                     $('#myModal').trigger('focus');
                 });
             </script>
+<!-- ================= ADD ACCOUNT MODAL ================= -->
+<div class="modal fade" id="accountModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="accountForm" method="POST" action="{{ route('create_account_ajax') }}">
+                    @csrf
+
+                  <div class="row">
+
+    <div class="col-md-6">
+        <label>Account Name</label>
+        <input type="text" name="account_name" class="form-control" required>
+    </div>
+
+    <div class="col-md-6">
+        <label>Account Group</label>
+        <select name="account_group_id" class="form-select" required>
+            <option disabled selected>Select Group</option>
+            @foreach($accountgroups as $group)
+                <option value="{{ $group->id }}">
+                    {{ $group->account_group_name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="col-md-6 mt-2">
+        <label>Mobile No</label>
+        <input type="text" name="mobile" class="form-control">
+    </div>
+
+    <div class="col-md-6 mt-2">
+        <label>GST No</label>
+        <input type="text" name="gst_no" class="form-control">
+    </div>
+
+    <div class="col-md-12 mt-2">
+        <label>Address</label>
+        <textarea name="address" class="form-control" rows="2"></textarea>
+    </div>
+
+    <div class="col-md-6 mt-2">
+        <label>Opening Balance</label>
+        <input type="number" step="0.01" name="op_balnce" class="form-control" value="0">
+    </div>
+
+    <div class="col-md-6 mt-2">
+        <label>Balance Type</label>
+        <select name="balnce_type" class="form-select">
+            <option value="Dr">Dr</option>
+            <option value="Cr">Cr</option>
+        </select>
+    </div>
+
+</div>
+
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-primary">
+                            Save Account
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ================= ADD ITEM MODAL ================= -->
+
+<div class="modal fade" id="itemModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+            <form id="itemForm">
+    @csrf
+
+    <div class="row">
+        <div class="col-md-6">
+            <label>Item Name</label>
+            <input type="text" name="item_name" class="form-control" required>
+        </div>
+
+        <div class="col-md-6">
+            <label>Barcode</label>
+            <input type="text" name="item_barcode" class="form-control">
+        </div>
+
+        <div class="col-md-6 mt-2">
+    <label>Item Company</label>
+    <div class="d-flex gap-1">
+        <select name="company_id" class="form-select flex-grow-1" required>
+            <option value="" disabled selected>Select Company</option>
+            @foreach($itemCompanies as $company)
+                <option value="{{ $company->id }}">
+                    {{ $company->comp_name }}
+                </option>
+            @endforeach
+        </select>
+
+        <button type="button"
+                class="btn btn-outline-primary btn-plus openCompanyModal">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>
+
+
+      <div class="col-md-6 mt-2">
+    <label>Item Group</label>
+    <div class="d-flex gap-1">
+        <select name="group_id" class="form-select flex-grow-1" required>
+            <option value="" disabled selected>Select Group</option>
+            @foreach($itemGroups as $group)
+                <option value="{{ $group->id }}">
+                    {{ $group->item_group }}
+                </option>
+            @endforeach
+        </select>
+
+        <button type="button"
+                class="btn btn-outline-primary btn-plus openGroupModal">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>
+
+
+<div class="col-md-6 mt-2">
+    <label>Unit</label>
+    <div class="d-flex gap-1">
+        <select name="unit_id" class="form-select flex-grow-1" required>
+            <option value="" disabled selected>Select Unit</option>
+            @foreach($units as $unit)
+                <option value="{{ $unit->id }}">
+                    {{ $unit->primary_unit_name }}
+                </option>
+            @endforeach
+        </select>
+
+        <button type="button"
+                class="btn btn-outline-primary btn-plus openUnitModal">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>
+
+
+<div class="col-md-6 mt-2">
+    <label>GST</label>
+    <div class="d-flex gap-1">
+        <select name="gstmaster_id" class="form-select flex-grow-1" required>
+            <option value="" disabled selected>Select GST</option>
+            @foreach($gsts as $gst)
+                <option value="{{ $gst->id }}">
+                    {{ $gst->gst_name }} ({{ $gst->igst }}%)
+                </option>
+            @endforeach
+        </select>
+    </div>
+</div>
 
 
 
+        <div class="col-md-6 mt-2">
+            <label>Sale Rate</label>
+            <input type="number" step="0.01" name="sale_rate" class="form-control">
+        </div>
+
+        <div class="col-md-6 mt-2">
+            <label>MRP</label>
+            <input type="number" step="0.01" name="mrp" class="form-control">
+        </div>
+    </div>
+
+    <div class="text-end mt-3">
+        <button type="submit" class="btn btn-primary">Save Item</button>
+    </div>
+</form>
+            </div>
+
+            {{-- ==============================company  model ================================ --}}
+            <div class="modal fade" id="companyModal" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h6 class="modal-title">Add Company</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form id="companyForm">
+                @csrf
+                <div class="modal-body">
+                    <label>Company Name</label>
+                    <input type="text" name="comp_name" class="form-control" required>
+                     <label>Dis %</label>
+                    <input type="text" name="Dis" class="form-control" >
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-sm">Save</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{{-- =====================================item group model =============================== --}}
+<div class="modal fade" id="groupModal" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h6 class="modal-title">Add Item Group</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form id="groupForm">
+                @csrf
+                <div class="modal-body">
+                    <label>Group Name</label>
+                    <input type="text" name="item_group" class="form-control" required>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-sm">Save</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{{-- =================================unit model ============================== --}}
+<div class="modal fade" id="unitModal" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h6 class="modal-title">Add Unit</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form id="unitForm">
+                @csrf
+
+                <div class="modal-body">
+
+                    <label>Unit Name</label>
+                    <input type="text"
+                           name="primary_unit_name"
+                           class="form-control"
+                           required>
+
+                    <label class="mt-2">Conversion</label>
+                    <input type="number"
+                           step="0.0001"
+                           name="conversion"
+                           class="form-control"
+                           placeholder="e.g. 10">
+
+                    <label class="mt-2">Alternate Unit name</label>
+                    <input type="text"
+                           name="alternate_unit_name"
+                           class="form-control"
+                           placeholder="e.g. Pcs">
+
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-sm">Save</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{{-- ============================================================================================== --}}
+        </div>
+    </div>
+</div>
 
 
         </div>
@@ -606,9 +899,9 @@ label {
 
 
     <!-- jQuery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> --}}
     <!-- Select2 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script> --}}
     <script>
         $("#item_id").select2({
             placeholder: "Select Item",
@@ -634,9 +927,8 @@ label {
         });
         
     </script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
-    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+    {{-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css"> --}}
+    {{-- <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script> --}}
     <script src="{{ global_asset('/general_assets\js\form.js') }}"></script>
 
 
@@ -1052,38 +1344,9 @@ $(document).ready(function () {
     itementry();
 });
 
-
+});
     // Disable ENTER key submit globally
-    $(document).on('keydown', 'form', function (e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            return false;
-        }
-    });
 
-});
-</script>
-<script>
-$(document).ready(function () {
-
-    $('#item_entry').on('keydown', 'input, select', function (e) {
-
-        if (e.key === 'Enter') {
-            e.preventDefault();
-
-            let focusable = $('#item_entry')
-                .find('input:not([readonly]):not([disabled]), select:not([disabled]), button:not([disabled])')
-                .filter(':visible');
-
-            let index = focusable.index(this);
-
-            if (index > -1 && index + 1 < focusable.length) {
-                focusable.eq(index + 1).focus();
-            }
-        }
-    });
-
-});
 </script>
 
     <script></script>
@@ -1120,5 +1383,319 @@ $(document).ready(function () {
 
 });
 </script>
+{{-- =======================================Account save ajeax ===================================== --}}
+<script>
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+$('#accountForm').on('submit', function (e) {
+    e.preventDefault();
+
+    $.ajax({
+        url: "{{ route('create_account_ajax') }}",
+        type: "POST",
+        data: $(this).serialize(),
+        dataType: 'json',
+
+        success: function (res) {
+
+            // Create & select new option
+            let newOption = new Option(
+                res.account_name,
+                res.id,
+                true,
+                true
+            );
+
+            $('#account_id')
+                .append(newOption)
+                .val(res.id)
+                .trigger('change');
+
+            // Close modal
+            $('#accountModal').modal('hide');
+
+            // Reset form
+            $('#accountForm')[0].reset();
+        },
+
+    error: function (xhr) {
+    if (xhr.status === 422) {
+        console.log(xhr.responseJSON.errors);
+        alert(Object.values(xhr.responseJSON.errors).join('\n'));
+    }
+}
+
+    });
+});
+
+</script>
+
+<script>
+$(document).ready(function () {
+
+    $('#openAccountModal').on('click', function () {
+        $('#accountModal').modal('show');
+    });
+
+});
+</script>
+@if(session('new_account_id'))
+<script>
+$(document).ready(function () {
+
+    let accountId   = "{{ session('new_account_id') }}";
+    let accountName = "{{ session('new_account_name') }}";
+
+    let optionExists = $('#account_id option[value="' + accountId + '"]').length;
+
+    if (!optionExists) {
+        let newOption = new Option(accountName, accountId, true, true);
+        $('#account_id').append(newOption);
+    }
+
+    $('#account_id')
+        .val(accountId)
+        .trigger('change');
+
+});
+</script>
+@endif
+
+{{-- =======================================Item save ajeax ===================================== --}}
+<script>
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+$('#openItemModal').on('click', function () {
+    $('#itemModal').modal('show');
+});
+
+$('#itemForm').on('submit', function (e) {
+    e.preventDefault();
+
+    $.ajax({
+        url: "{{ route('create_item_ajax') }}",
+        method: "POST",
+        data: $(this).serialize(),
+        dataType: "json",
+
+        success: function (res) {
+            let option = new Option(res.item_name, res.id, true, true);
+
+            $('#item_id')
+                .append(option)
+                .val(res.id)
+                .trigger('change');
+
+            $('#itemModal').modal('hide');
+            $('#itemForm')[0].reset();
+        },
+
+        error: function (xhr) {
+            console.error(xhr.responseJSON);
+            alert(JSON.stringify(xhr.responseJSON, null, 2));
+        }
+    });
+});
+</script>
+{{-- =============================== ITEM Compny AJAX=============================================================== --}}
+<script>
+$('#companyForm').on('submit', function(e){
+    e.preventDefault();
+
+    $.ajax({
+        url: "{{ route('company.store.ajax') }}",
+        type: "POST",
+        data: $(this).serialize(),
+        dataType: "json",
+
+        success: function(res){
+            let option = new Option(res.comp_name, res.id, true, true);
+
+            $('select[name="company_id"]')
+                .append(option)
+                .val(res.id);
+
+            $('#companyModal').modal('hide');
+            $('#companyForm')[0].reset();
+        },
+
+        error: function(xhr){
+            alert(Object.values(xhr.responseJSON.errors).join('\n'));
+        }
+    });
+});
+</script>
+{{-- =============================== ITEM Group AJAX=============================================================== --}}
+<script>
+$('#groupForm').on('submit', function(e){
+    e.preventDefault();
+
+    $.ajax({
+        url: "{{ route('itemgroup.store.ajax') }}",
+        type: "POST",
+        data: $(this).serialize(),
+        dataType: "json",
+
+        success: function(res){
+            let option = new Option(res.item_group, res.id, true, true);
+
+            $('select[name="group_id"]')
+                .append(option)
+                .val(res.id);
+
+            $('#groupModal').modal('hide');
+            $('#groupForm')[0].reset();
+        },
+
+        error: function(xhr){
+            alert(Object.values(xhr.responseJSON.errors).join('\n'));
+        }
+    });
+});
+</script>
+{{-- =============================== ITEM Unit AJAX=============================================================== --}}
+<script>
+$('#unitForm').on('submit', function(e){
+    e.preventDefault();
+
+    $.ajax({
+        url: "{{ route('unit.store.ajax') }}",
+        type: "POST",
+        data: $(this).serialize(),
+        dataType: "json",
+
+        success: function(res){
+            let label = res.primary_unit_name;
+
+            if (res.conversion && res.alternate_unit_name) {
+                label += ` (${res.conversion} ${res.alternate_unit_name})`;
+            }
+
+            let option = new Option(label, res.id, true, true);
+
+            $('select[name="unit_id"]')
+                .append(option)
+                .val(res.id);
+
+            $('#unitModal').modal('hide');
+            $('#unitForm')[0].reset();
+        },
+
+        error: function(xhr){
+            alert(Object.values(xhr.responseJSON.errors).join('\n'));
+        }
+    });
+});
+</script>
+
+{{-- =========================================================================================================== --}}
+
+{{-- ================================key automation for page ============================================== --}}
+<script>
+$(document).on('keydown', function (e) {
+
+    // ✅ Ctrl + I → Open ITEM Modal
+    if (e.ctrlKey && (e.key === 'i' || e.key === 'I')) {
+        e.preventDefault();
+        $('#itemModal').modal('show');
+    }
+
+    // ✅ Ctrl + A → Open ACCOUNT Modal
+    if (e.ctrlKey && (e.key === 'a' || e.key === 'A')) {
+        e.preventDefault();
+        $('#accountModal').modal('show');
+    }
+
+    // ✅ ESC → Close any open modal
+    if (e.key === 'Escape') {
+        $('.modal.show').modal('hide');
+    }
+
+});
+</script>
+<script>
+/**
+ * ENTER = MOVE NEXT
+ * DOES NOT SUBMIT MODAL FORMS
+ * SUBMITS ONLY WHEN SAVE BUTTON CLICKED
+ */
+$(document).on('keydown', 'input, select', function (e) {
+
+    if (e.key !== 'Enter') return;
+
+    // Allow textarea ENTER
+    if ($(this).is('textarea')) return;
+
+    // DO NOT auto-submit inside modals
+    if ($(this).closest('.modal').length) {
+        e.preventDefault();
+    }
+
+    let form = $(this).closest('form');
+
+    let focusable = form.find(
+        'input:not([readonly]):not([disabled]), ' +
+        'select:not([disabled]), ' +
+        'button:not([disabled])'
+    ).filter(':visible');
+
+    let index = focusable.index(this);
+
+    if (index > -1 && index + 1 < focusable.length) {
+        focusable.eq(index + 1).focus();
+    }
+});
+</script>
+
+<script>
+$(document).on('keydown', '.select2-selection', function (e) {
+
+    if (e.key !== 'Enter') return;
+
+    e.preventDefault();
+
+    let select = $(this).closest('.select2-container').prev('select');
+    let s2 = select.data('select2');
+
+    if (!s2.isOpen()) {
+        select.select2('open');
+        return;
+    }
+
+    $('.select2-results__option--highlighted').trigger('mouseup');
+
+    setTimeout(() => {
+        let form = select.closest('form');
+        let focusable = form.find(
+            'input:not([readonly]):not([disabled]), select:not([disabled]), button:not([disabled])'
+        ).filter(':visible');
+
+        let index = focusable.index(select);
+        if (index > -1 && index + 1 < focusable.length) {
+            focusable.eq(index + 1).focus();
+        }
+    }, 100);
+});
+</script>
+
+<script>
+$('#accountModal, #itemModal').on('shown.bs.modal', function () {
+    $(this).find('input, select').filter(':visible:first').focus();
+});
+</script>
+
+<script>
+$('.openCompanyModal').click(() => $('#companyModal').modal('show'));
+$('.openGroupModal').click(() => $('#groupModal').modal('show'));
+$('.openUnitModal').click(() => $('#unitModal').modal('show'));
+</script>
+
 
 @endsection

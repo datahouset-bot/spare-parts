@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class company extends Model
 {
+    protected $fillable = [
+        'firm_id',
+        'comp_name',
+        'comp_dis',
+    ];
     use HasFactory;
 
     public function items()

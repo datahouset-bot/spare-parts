@@ -83,7 +83,6 @@
 
     <!-- ➕ ADD SERVICE TYPE -->
     <a href="{{ url('/roomtypes') }}"
-       target="_blank"
        class="btn btn-outline-primary"
        title="Add Service Type">
         <i class="fa fa-plus"></i>

@@ -918,3 +918,61 @@ document.addEventListener("DOMContentLoaded", function () {
             setInterval(getCurrentTime, 1000);
         });
     </script>
+    <script>
+document.addEventListener('keydown', function (e) {
+
+    // Ignore when typing
+    if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
+
+    // CTRL shortcuts
+    if (e.ctrlKey) {
+        switch (e.key.toLowerCase()) {
+
+            case 'a': // Account
+                e.preventDefault();
+                window.location.href = "{{ url('/account') }}";
+                break;
+
+            case 'i': // Item
+                e.preventDefault();
+                window.location.href = "{{ url('/item') }}";
+                break;    
+
+            case 's': // Sale
+                e.preventDefault();
+                window.location.href = "{{ url('/sales') }}";
+                break;
+
+            case 'p': // Purchase
+                e.preventDefault();
+                window.location.href = "{{ url('/purchases') }}";
+                break;
+
+            case 'r': // Receipt
+                e.preventDefault();
+                window.location.href = "{{ url('/reciepts') }}";
+                break;
+
+            case 'l': // Ledger
+                e.preventDefault();
+                window.location.href = "{{ url('/ledgers') }}";
+                break;
+
+            case 'd': // Dashboard
+                e.preventDefault();
+                window.location.href = "{{ url('/home') }}";
+                break;
+
+                case 'j':
+                e.preventDefault();
+                window.location.href = "{{ url('/roomcheckins') }}";
+
+                case 's': // Stock Transfer
+                e.preventDefault();
+                window.location.href = "{{ url('/sales') }}";
+                break;
+        }
+    }
+
+});
+</script>

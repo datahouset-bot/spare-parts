@@ -233,12 +233,12 @@ table td {
             @endforeach
         </select>
 
-        <button type="button"
-                class="btn btn-outline-primary"
-                id="addPaymentModeBtn"
-                title="Add New Payment Mode">
-            <i class="fa fa-plus"></i>
-        </button>
+       <a href="{{ url('/accountform') }}"
+   class="btn btn-outline-primary"
+   title="Add New Payment Mode">
+    <i class="fa fa-plus"></i>
+</a>
+
     </div>
 
     <span class="text-danger">
@@ -261,12 +261,12 @@ table td {
             @endforeach
         </select>
 
-        <button type="button"
-                class="btn btn-outline-primary"
-                id="addAccountBtn"
-                title="Add New Account">
-            <i class="fa fa-plus"></i>
-        </button>
+        <a href="{{ url('/accountform') }}"
+   class="btn btn-outline-primary"
+   title="Add New Account">
+    <i class="fa fa-plus"></i>
+</a>
+
     </div>
 
     <span class="text-danger">
@@ -481,32 +481,5 @@ $(document).ready(function () {
 
 });
 </script>
-
-<script>
-$('#addAccountBtn').on('click', function () {
-    window.open('/accountform', '_blank');
-});
-$('#account_id, #payment_mode_id').select2({
-    dropdownParent: $('#myModal'),
-    width: 'resolve'
-});
-
-</script>
-
-
-<script>
-    $('#payment_mode_id').select2({
-    dropdownParent: $('#myModal'),
-    width: 'resolve'
-});
-$('#addPaymentModeBtn').on('click', function () {
-    window.open('/accountform', '_blank');
-});
-
-</script>
-
-
-
-
 @endsection
 

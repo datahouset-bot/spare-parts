@@ -155,5 +155,27 @@ $validator = Validator::make($request->all(), [
 
         }
     }
-    
+    public function storeAjax(Request $request)
+{
+    $request->validate([
+        'primary_unit_name'   => 'required|string|max:255',
+        'conversion'          => 'nullable|numeric|min:0',
+        'alternate_unit_name' => 'nullable|string|max:255',
+    ]);
+
+    $unit = Unit::create([
+        'firm_id'             => Auth::user()->firm_id,
+        'primary_unit_name'   => $request->primary_unit_name,
+        'conversion'          => $request->conversion,
+        'alternate_unit_name' => $request->alternate_unit_name,
+    ]);
+
+    return response()->json([
+        'id' => $unit->id,
+        'primary_unit_name' => $unit->primary_unit_name,
+        'conversion' => $unit->conversion,
+        'alternate_unit_name' => $unit->alternate_unit_name,
+    ]);
+}
+
 }
