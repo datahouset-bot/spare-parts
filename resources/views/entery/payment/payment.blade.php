@@ -422,6 +422,30 @@ $(document).on('select2:select', '#account_id', function (e) {
     }
 });
 </script>
+<script>
+document.addEventListener('keydown', function (e) {
+
+    // Ignore when typing inside inputs
+    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
+
+    // SHIFT + N → Open Add Payment Modal
+    if (e.shiftKey && e.key.toLowerCase() === 'n') {
+        e.preventDefault();
+
+        let modalEl = document.getElementById('myModal');
+        if (!modalEl) return;
+
+        // Bootstrap 5 modal instance
+        let modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+        modal.show();
+    }
+});
+</script>
+<script>
+document.getElementById('myModal')?.addEventListener('shown.bs.modal', function () {
+    this.querySelector('input:not([readonly])')?.focus();
+});
+</script>
 
 
 @endsection

@@ -171,7 +171,7 @@ table td {
             </div>
             <div class="row my-2">
                 <div class="col-md-12 text-center"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#myModal">
+                        data-bs-target="#myModal" title="shortcut:shift+n">
                         Add New Reciept
                     </button>
                 </div>
@@ -225,7 +225,7 @@ table td {
         <select id="payment_mode_id" name="payment_mode_id"
                 class="form-control myitemgroup form-select">
             <option value="" disabled selected>Select Payment Mode</option>
-
+  
             @foreach ($paymentmodes as $paymentmode)
                 <option value="{{ $paymentmode->id }}">
                     {{ $paymentmode->account_name }}
@@ -481,5 +481,80 @@ $(document).ready(function () {
 
 });
 </script>
+<script>
+document.addEventListener('keydown', function (e) {
+
+    // Only inside modal
+    if (!document.getElementById('myModal')?.classList.contains('show')) return;
+
+    // ENTER key
+    if (e.key === 'Enter') {
+
+        // Allow textarea enter
+        if (e.target.tagName === 'TEXTAREA') return;
+
+        e.preventDefault();
+
+        let form = document.querySelector('#myModal form');
+        if (!form) return;
+
+        // Get all focusable elements
+        let focusable = Array.from(
+            form.querySelectorAll(
+                'input:not([type=hidden]):not([readonly]), select, textarea, button'
+            )
+        ).filter(el => !el.disabled && el.offsetParent !== null);
+
+        let index = focusable.indexOf(document.activeElement);
+
+        // Move to next field
+        if (index > -1 && index < focusable.length - 1) {
+            focusable[index + 1].focus();
+        } else {
+            // Last field → focus Save button
+            document.getElementById('saveButton')?.focus();
+        }
+    }
+});
+</script>
+<script>
+$(document).on('select2:select', function () {
+    let e = $.Event('keydown', { key: 'Enter' });
+    document.dispatchEvent(e);
+});
+$('#myModal').on('shown.bs.modal', function () {
+    $(this).find('input:not([readonly]):first').focus();
+});
+
+</script>
+
+<script>
+document.addEventListener('keydown', function (e) {
+
+    // SHIFT + N → New Receipt
+    if (e.shiftKey && e.key.toLowerCase() === 'n') {
+
+        // Prevent browser / unwanted behavior
+        e.preventDefault();
+
+        // Do NOT trigger while typing inside inputs
+        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
+
+        // Open Bootstrap modal
+        let modalEl = document.getElementById('myModal');
+        if (!modalEl) return;
+
+        let modal = new bootstrap.Modal(modalEl);
+        modal.show();
+    }
+});
+
+
+$('#myModal').on('shown.bs.modal', function () {
+    $(this).find('input:not([readonly]):first').focus();
+});
+
+</script>
+
 @endsection
 

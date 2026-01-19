@@ -206,7 +206,24 @@ body {
 
 /* Desktop: keep Recent Sale & Outstanding side-by-side */
 
+.card-shortcut {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    letter-spacing: 0.5px;
+}
 
+/* optional hover glow */
+.card:hover .card-shortcut {
+    background: rgba(0,0,0,0.75);
+}
+ 
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <div id="layoutSidenav_content" style="background-color: whitesmoke">
@@ -444,36 +461,47 @@ body {
 </div>
 
         @can('sale')
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-warning text-white mb-4">
-                        <a href="{{ url('/sales') }}" class="btn btn-sales d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
-                                <i class="fas fa-box-open"></i>
-                            </span>
-                            <span class="ms-2" style="width: 90%;"><h3>Sale invoice</h3></span>
-                        </a>
-                    </div>
-                </div>
+              <div class="col-xl-3 col-md-6">
+    <div class="card bg-warning text-white mb-4 position-relative">
+
+        <span class="card-shortcut">Ctrl + S</span>
+
+        <a href="{{ url('/sales') }}"
+           class="btn btn-sales d-flex align-items-center justify-content-start">
+            <span style="width:10%">
+                <i class="fas fa-box-open"></i>
+            </span>
+            <span style="width:90%"><h3>Sale Invoice</h3></span>
+        </a>
+    </div>
+</div>
+
             @endcan
         
            
          @can('purchase')
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <a href="{{ url('/purchases') }}" class="btn btn-primary d-flex align-items-center justify-content-start">
-                            <span class="d-flex" style="width: 10%;">
-                                <i class="fas fa-cart-plus"></i>
-                            </span>
-                            <span class="ms-2" style="width: 90%;"><h3>Purchase</h3></span>
-                        </a>
-                    </div>
-                </div>
+               <div class="col-xl-3 col-md-6">
+    <div class="card bg-primary text-white mb-4 position-relative">
+
+        <span class="card-shortcut">Ctrl + P</span>
+
+        <a href="{{ url('/purchases') }}"
+           class="btn btn-primary d-flex align-items-center justify-content-start">
+            <span style="width:10%">
+                <i class="fas fa-cart-plus"></i>
+            </span>
+            <span style="width:90%"><h3>Purchase</h3></span>
+        </a>
+    </div>
+</div>
+
             @endcan
               
 
  @can('receipt')
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
+                        <span class="card-shortcut">Ctrl + R</span>
                         <a href="{{ url('/reciepts') }}" class="btn btn-warning d-flex align-items-center justify-content-start">
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-file-alt"></i>
@@ -515,6 +543,7 @@ body {
                  @can('ledger')
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
+                        <span class="card-shortcut">Ctrl + L</span>
                         <a href="{{ url('/ledgers') }}" class="btn btn-danger d-flex align-items-center justify-content-start">
                             <span class="d-flex" style="width: 10%;">
                                 <i class="fas fa-book"></i>
@@ -930,7 +959,7 @@ document.addEventListener('keydown', function (e) {
 
             case 'a': // Account
                 e.preventDefault();
-                window.location.href = "{{ url('/account') }}";
+                window.location.href = "{{ url('/accountform') }}";
                 break;
 
             case 'i': // Item

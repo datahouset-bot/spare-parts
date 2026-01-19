@@ -212,7 +212,7 @@
                     </div>
                     <div class="col-md-1 mt-4 col-3  text-center">
 
-                        <button type="submit" name="additem" id ="additem"class="btn btn-success ">+</button>
+                        <button type="button" name="additem" id ="additem"class="btn btn-success ">+</button>
 
                     </div>
                 </div>

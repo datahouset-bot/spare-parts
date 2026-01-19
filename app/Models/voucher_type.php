@@ -17,5 +17,7 @@ class voucher_type extends Model
         'voucher_numbring_style',
         'voucher_print_name',
         'voucher_remark',
+        'voucher_af1',
     ];
+    public $timestamps = false;
 }

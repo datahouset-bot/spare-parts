@@ -23,7 +23,7 @@ class VoucherTypeController extends CustomBaseController
 
     }
     public function store(Request $request)
-    {
+    { 
         $validator= validator::make($request->all(),[
             'voucher_type_name' => 'required|unique:voucher_types,voucher_type_name',
             'numbring_start_from'=>'nullable|integer',
@@ -32,7 +32,7 @@ class VoucherTypeController extends CustomBaseController
             'voucher_numbring_style'=>'nullable',
             'voucher_print_name'=>'nullable',
             'voucher_type' => 'nullable|string|max:50',
-            'voucher_remark'=>'nullable'
+            'voucher_remark'=>'nullable',
              
             ]);
             if ($validator->passes()) {

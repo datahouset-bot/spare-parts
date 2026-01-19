@@ -38,6 +38,7 @@ use App\Http\Controllers\WhatsAppController;
 use App\Http\Controllers\GstmasterController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemgroupController;
+use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\OptionlistController;
 use App\Http\Controllers\ComponyinfoController;
@@ -678,3 +679,6 @@ route::get('/hotel_contact/{firm_id}', [App\Http\Controllers\HotelfrontControlle
 
 // ==================================================[for cctv viit ]====================================================================
 
+// ===============================[for quotation ]=============================================================
+Route::resource('Quotation', QuotationController::class);
+Route::get('print_quotation_select/{id}', [App\Http\Controllers\QuotationController::class, 'print_quotation_select']);

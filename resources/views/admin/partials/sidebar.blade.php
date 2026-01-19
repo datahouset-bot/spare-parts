@@ -12,7 +12,7 @@
 ================================ */
 .sb-sidenav .nav-link {
     color: #cfd8e3 !important;
-    font-size: 19px;
+    font-size:29px;
     padding: 10px 18px;
     margin: 4px 10px;
     border-radius: 6px;
@@ -25,7 +25,7 @@
 
 /* ICON */
 .sb-sidenav .sb-nav-link-icon i {
-    font-size: 16px;
+    font-size: 24px;
     color: #8fa3bf;
     min-width: 18px;
     transition: color 0.25s ease;
@@ -62,7 +62,7 @@
 ================================ */
 .sb-sidenav-menu-heading {
     color: #6b8dbd;
-    font-size: 19px;
+    font-size: 24px;
     font-weight: 700;
     letter-spacing: 1px;
     padding: 18px 22px 8px;
@@ -76,9 +76,20 @@
     margin-left: 10px;
 }
 
+.shortcut-key {
+    margin-left: auto;
+    font-size: 19px;
+    color: #9fb3c8;
+    background: rgba(255,255,255,0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+
 /* SUBMENU LINKS */
 .sb-sidenav-menu-nested .nav-link {
-    font-size: 19px;
+    font-size: 24px;
     padding: 8px 16px 8px 42px;
     margin: 3px 10px;
     color: #b9c7dc !important;
@@ -189,7 +200,7 @@
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link"
-                                            href="{{ url('/account') }}"style=" ">Account</a>
+                                            href="{{ url('/account') }}"style=" "  title="shortcut:ctrl+A">Account</a>
                                         <a class="nav-link" href="{{ url('/accountgroups') }}"
                                             style=" ">Account Group</a>
                                         <a class="nav-link" href="{{ url('/primarygroups') }}"
@@ -207,7 +218,7 @@
                                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
                                         data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href={{ url('item') }}
+                                            <a class="nav-link" href={{ url('item') }}  title="shortcut:ctrl+I"
                                                 style=" ">Item</a>
                                             <a class="nav-link" href={{ url('company') }}
                                                 style=" ">Company</a>
@@ -417,23 +428,23 @@
                                         data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
                                             <a class="nav-link" href="{{ url('/sales') }}"
-                                                style=" ">Sale Invoice</a>
+                                                style=" "  title="shortcut:ctrl+S">Sale Invoice</a>
+                                            <a class="nav-link" href="{{ url('/Quotation') }}"
+                                                style=" " title="shortcut:ctrl+S">Quotation</a>
                                             <a class="nav-link" href="{{ url('/sales') }}"
-                                                style=" ">Quotation</a>
+                                                style=" "  title="shortcut:ctrl+S">Estimate Sale</a>
                                             <a class="nav-link" href="{{ url('/sales') }}"
-                                                style=" ">Estimate Sale</a>
+                                                style=" " title="shortcut:ctrl+S">Sale Order</a>
                                             <a class="nav-link" href="{{ url('/sales') }}"
-                                                style=" ">Sale Order</a>
-                                            <a class="nav-link" href="{{ url('/sales') }}"
-                                                style=" ">Sale Return</a>
+                                                style=" " title="shortcut:ctrl+S">Sale Return</a>
                                             <a class="nav-link" href="{{ url('/purchases') }}"
-                                                style=" ">Purchase</a>
+                                                style=" " title="shortcut:ctrl+P">Purchase</a>
                                             <a class="nav-link" href="{{ url('/purchases') }}"
-                                                style=" ">Purchase Order</a>
+                                                style=" " title="shortcut:ctrl+P">Purchase Order</a>
                                             <a class="nav-link" href="{{ url('/purchases') }}"
-                                                style=" ">Purchase Challan</a>
+                                                style=" " title="shortcut:ctrl+P">Purchase Challan</a>
                                             <a class="nav-link" href="{{ url('/purchases') }}"
-                                                style=" ">Purchase Return</a>
+                                                style=" " title="shortcut:ctrl+P">Purchase Return</a>
 
                                             <a class="nav-link" href="{{ url('/stocktransfers') }}"
                                                 style=" ">Stock Transfer</a>
@@ -577,7 +588,7 @@
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link"
-                                            href="{{ url('/ledgers') }}"style=" ">Ledger
+                                            href="{{ url('/ledgers') }}"style=" " title="shortcut:ctrl+L">Ledger
                                             Report</a>
                                         <a class="nav-link" href="{{ url('/outstanding_receivable') }}"
                                             style=" ">Outstanding
@@ -617,8 +628,7 @@
                         </div>
                     @endcan
 
-                    @can('Membership')
-                        {{-- entery  section  start  --}}
+                    {{-- @can('Membership')
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                             style=" ." data-bs-target="#collapsePages1" aria-expanded="false"
                             aria-controls="collapsePages1">
@@ -662,10 +672,7 @@
 
                                     </nav>
                                 </div>
-                                {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                Services 
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a> --}}
+                             
                                 @can('Lead Module')
                                     <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
                                         data-bs-parent="#sidenavAccordionPages">
@@ -687,7 +694,7 @@
                                 @endcan
                             </nav>
                         </div>
-                    @endcan
+                    @endcan --}}
                     {{-- entery section end  --}}
 <hr class="sb-divider">
 
@@ -909,4 +916,56 @@
             </div>
 
         </nav>
-    </div>
+    </div>{{--
+<script>
+document.addEventListener('keydown', function (e) {
+
+    // Ignore typing inside inputs
+    if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
+
+    if (e.ctrlKey) {
+        switch (e.key.toLowerCase()) {
+
+            case 'a': // Account
+                e.preventDefault();
+                window.location.href = "{{ url('/account') }}";
+                break;
+
+            case 'i': // Item
+                e.preventDefault();
+                window.location.href = "{{ url('/item') }}";
+                break;
+
+            case 's': // Sale
+                e.preventDefault();
+                window.location.href = "{{ url('/sales') }}";
+                break;
+
+            case 'p': // Purchase
+                e.preventDefault();
+                window.location.href = "{{ url('/purchases') }}";
+                break;
+
+            case 'r': // Receipt
+                e.preventDefault();
+                window.location.href = "{{ url('/reciepts') }}";
+                break;
+
+            case 'l': // Ledger
+                e.preventDefault();
+                window.location.href = "{{ url('/ledgers') }}";
+                break;
+
+            case 'd': // Dashboard
+                e.preventDefault();
+                window.location.href = "{{ url('/home') }}";
+                break;
+
+            case 'j': // Job Card
+                e.preventDefault();
+                window.location.href = "{{ url('/roomcheckins') }}";
+                break;
+        }
+    }
+});
+</script> --}}
