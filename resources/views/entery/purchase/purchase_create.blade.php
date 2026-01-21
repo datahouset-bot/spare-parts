@@ -74,6 +74,10 @@
                 New Purchase
                 <a href="{{ url('temp_item_delete/' . Auth::user()->id) }}" class="btn btn-success">Add New</a>
                 <a href="{{ url('store_to_purchase/' . Auth::user()->id) }}" class="btn btn-primary">Save</a>
+                <a href="{{ route('purchases.index') }}"
+       class="btn btn-outline-secondary btn-sm"  title="shortcut:ctrl+b">
+        <i class="fa fa-arrow-left"></i> Back
+    </a>
             </div>
             {{-- <div class="row my-2">
                 <div class="col-md-12 text-center">
@@ -136,7 +140,7 @@
                         <label for="voucher_bill_no">Bill No</label>
                         <input type="text" id="voucher_bill_no" class="form-control" name="voucher_bill_no" required autocomplete="off">
                     </div>
-                     <div class="col-md-2 col-3 text-center">
+                     {{-- <div class="col-md-2 col-4 text-center">
                         <label for="kot_on">Account Name </label>
                         <select name="account_id" id="account_id" class="form-select" required>
                             <option selected disabled>Select Party</option>
@@ -148,64 +152,98 @@
 
                         </select>
 
-                    </div>
+                    </div> --}}
+                      <div class="col-md-3">
+    <label class="fw-semibold">Account</label>
+
+    <div class="d-flex align-items-center gap-1">
+        <div class="flex-grow-1">
+           <select id="account_id" name="account_id" class="form-control select-party">
+    <option></option>
+    @foreach ($accountdata as $record)
+        <option value="{{ $record->id }}">
+            {{ $record->account_name }}
+        </option>
+    @endforeach
+</select>
+        </div>
+
+   <button type="button"
+        class="btn btn-outline-primary btn-plus"
+        id="openAccountModal">
+    <i class="fa fa-plus"></i>
+</button>
+
+
+    </div>
+</div>
+
                 </div>
                 
-                <div class="row no-gutter" name="itementery">
-                    <div class="col-md-2 col-3 mt-4 mx-1 ">
-                        <div class="input-group">
 
-                            <select id="item_id" name="item_id" class="js-states form-control">
-                                <option disabled selected>Select Item</option>
-                                @foreach ($itemdata as $record)
-                                    <option value={{ $record['id'] }}>
-                                        {{ $record['item_name'] }}||{{ $record['item_barcode'] }} </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <span class="text-danger">
-                            @error('cust_name_id')
-                                {{ $message }}
-                            @enderror
-                        </span>
-                    </div>
+                
+                <div class="row no-gutter" name="itementery">
+                        <div class="col-md-2">
+    <label class="fw-semibold">Item</label>
+
+    <div class="d-flex align-items-center gap-1">
+        <div class="flex-grow-1">
+            <select id="item_id" name="item_id" class="js-states form-control">
+                <option disabled selected>Select Item</option>
+                @foreach ($itemdata as $record)
+                    <option value="{{ $record['id'] }}">
+                        {{ $record['item_name'] }} || {{ $record['item_barcode'] }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+   <button type="button"
+        class="btn btn-outline-success btn-plus"
+        id="openItemModal">
+    <i class="fa fa-plus"></i>
+</button>
+
+
+    </div>
+</div>
 
                     <div class="col-md-1  col-3   text-center">
                         <label for="qty">QTY </label>
                         <input type="text" class ="form-control " id="qty" name="qty" autocomplete="off"
                             required>
                     </div>
-                    <div class="col-md-2 col-3  text-center">
+                    <div class="col-md-1 col-2  text-center">
                         <label for="rate">Rate&nbsp;&nbsp; </label><span id="display_rate"></span>
                         <input type="text" class ="form-control " id ="rate" name="rate" required>
                     </div>
-                    <div class="col-md-2 col-3  text-center">
+                    <div class="col-md-1 col-2  text-center">
                         <label for="amount">Basic </label>
                         <input type="text" class ="form-control " id="amount" name="amount" required readonly>
                     </div>
-                    <div class="col-md-2 col-3  text-center">
+                    <div class="col-md-1 col-2  text-center">
                         <label for="dis_p">Dis% </label>
                         <input type="text" class ="form-control " id="dis_p" name="dis_p">
                     </div>
-                    <div class="col-md-2 col-3  text-center">
+                    <div class="col-md-1 col-2  text-center">
                         <label for="dis_amt">Dis Amt </label>
                         <input type="text" class ="form-control " id="dis_amt" name="dis_amt">
                     </div>
-                    <div class="col-md-2 col-3  text-center">
+                    <div class="col-md-1 col-2 text-center">
                         <label for="total_item_dis_amt">Total Dis Amt </label>
                         <input type="text" class ="form-control " id="total_item_dis_amt" name="total_item_dis_amt">
                     </div>
-                    <div class="col-md-2 col-3  text-center">
+                    <div class="col-md-1 col-2  text-center">
                         <label for="gst_p">GST % </label>
                         <input type="text" class ="form-control " id="gst_p" name="gst_p" required readonly>
                     </div>
                         <input type="hidden" class ="form-control " id="gstmaster_id" name="gstmaster_id" required readonly>
                     
-                    <div class="col-md-2 col-3  text-center">
+                    <div class="col-md-1 col-2  text-center">
                         <label for="gst_amt">GST Amt </label>
                         <input type="text" class ="form-control " id="gst_amt" name="gst_amt" required readonly>
                     </div>
-                    <div class="col-md-2 col-3  text-center">
+                    <div class="col-md-1 col-2  text-center">
                         <label for="net_item_amt">Net </label>
                         <input type="text" class ="form-control " id="net_item_amt" name="net_item_amt" required
                             readonly>
@@ -290,8 +328,300 @@
 
         </div>
     </div>
+    
+            </script>
+<!-- ================= ADD ACCOUNT MODAL ================= -->
+<div class="modal fade" id="accountModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="accountForm" method="POST" action="{{ route('create_account_ajax') }}">
+                    @csrf
+
+                  <div class="row">
+
+    <div class="col-md-6">
+        <label>Account Name</label>
+        <input type="text" name="account_name" class="form-control" required>
+    </div>
+
+    <div class="col-md-6">
+        <label>Account Group</label>
+        <select name="account_group_id" class="form-select" required>
+            <option disabled selected>Select Group</option>
+            @foreach($accountgroups as $group)
+                <option value="{{ $group->id }}">
+                    {{ $group->account_group_name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="col-md-6 mt-2">
+        <label>Mobile No</label>
+        <input type="text" name="mobile" class="form-control">
+    </div>
+
+    <div class="col-md-6 mt-2">
+        <label>GST No</label>
+        <input type="text" name="gst_no" class="form-control">
+    </div>
+
+    <div class="col-md-12 mt-2">
+        <label>Address</label>
+        <textarea name="address" class="form-control" rows="2"></textarea>
+    </div>
+
+    <div class="col-md-6 mt-2">
+        <label>Opening Balance</label>
+        <input type="number" step="0.01" name="op_balnce" class="form-control" value="0">
+    </div>
+
+    <div class="col-md-6 mt-2">
+        <label>Balance Type</label>
+        <select name="balnce_type" class="form-select">
+            <option value="Dr">Dr</option>
+            <option value="Cr">Cr</option>
+        </select>
+    </div>
+
+</div>
+
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-primary">
+                            Save Account
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ================= ADD ITEM MODAL ================= -->
+
+<div class="modal fade" id="itemModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+            <form id="itemForm">
+    @csrf
+
+    <div class="row">
+        <div class="col-md-6">
+            <label>Item Name</label>
+            <input type="text" name="item_name" class="form-control" required>
+        </div>
+
+        <div class="col-md-6">
+            <label>Barcode</label>
+            <input type="text" name="item_barcode" class="form-control">
+        </div>
+
+        <div class="col-md-6 mt-2">
+    <label>Item Company</label>
+    <div class="d-flex gap-1">
+        <select name="company_id" class="form-select flex-grow-1" required>
+            <option value="" disabled selected>Select Company</option>
+            @foreach($itemCompanies as $company)
+                <option value="{{ $company->id }}">
+                    {{ $company->comp_name }}
+                </option>
+            @endforeach
+        </select>
+
+        <button type="button"
+                class="btn btn-outline-primary btn-plus openCompanyModal">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>
 
 
+      <div class="col-md-6 mt-2">
+    <label>Item Group</label>
+    <div class="d-flex gap-1">
+        <select name="group_id" class="form-select flex-grow-1" required>
+            <option value="" disabled selected>Select Group</option>
+            @foreach($itemGroups as $group)
+                <option value="{{ $group->id }}">
+                    {{ $group->item_group }}
+                </option>
+            @endforeach
+        </select>
+
+        <button type="button"
+                class="btn btn-outline-primary btn-plus openGroupModal">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>
+
+
+<div class="col-md-6 mt-2">
+    <label>Unit</label>
+    <div class="d-flex gap-1">
+        <select name="unit_id" class="form-select flex-grow-1" required>
+            <option value="" disabled selected>Select Unit</option>
+            @foreach($units as $unit)
+                <option value="{{ $unit->id }}">
+                    {{ $unit->primary_unit_name }}
+                </option>
+            @endforeach
+        </select>
+
+        <button type="button"
+                class="btn btn-outline-primary btn-plus openUnitModal">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>
+
+
+<div class="col-md-6 mt-2">
+    <label>GST</label>
+    <div class="d-flex gap-1">
+        <select name="gstmaster_id" class="form-select flex-grow-1" required>
+            <option value="" disabled selected>Select GST</option>
+            @foreach($gsts as $gst)
+                <option value="{{ $gst->id }}">
+                    {{ $gst->gst_name }} ({{ $gst->igst }}%)
+                </option>
+            @endforeach
+        </select>
+    </div>
+</div>
+
+
+
+        <div class="col-md-6 mt-2">
+            <label>Sale Rate</label>
+            <input type="number" step="0.01" name="sale_rate" class="form-control">
+        </div>
+
+        <div class="col-md-6 mt-2">
+            <label>MRP</label>
+            <input type="number" step="0.01" name="mrp" class="form-control">
+        </div>
+    </div>
+
+    <div class="text-end mt-3">
+        <button type="submit" class="btn btn-primary">Save Item</button>
+    </div>
+</form>
+            </div>
+
+    {{-- ==============================company  model ================================ --}}
+            <div class="modal fade" id="companyModal" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h6 class="modal-title">Add Company</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form id="companyForm">
+                @csrf
+                <div class="modal-body">
+                    <label>Company Name</label>
+                    <input type="text" name="comp_name" class="form-control" required>
+                     <label>Dis %</label>
+                    <input type="text" name="Dis" class="form-control" >
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-sm">Save</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{{-- =====================================item group model =============================== --}}
+<div class="modal fade" id="groupModal" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h6 class="modal-title">Add Item Group</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form id="groupForm">
+                @csrf
+                <div class="modal-body">
+                    <label>Group Name</label>
+                    <input type="text" name="item_group" class="form-control" required>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-sm">Save</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{{-- =================================unit model ============================== --}}
+<div class="modal fade" id="unitModal" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h6 class="modal-title">Add Unit</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form id="unitForm">
+                @csrf
+
+                <div class="modal-body">
+
+                    <label>Unit Name</label>
+                    <input type="text"
+                           name="primary_unit_name"
+                           class="form-control"
+                           required>
+
+                    <label class="mt-2">Conversion</label>
+                    <input type="number"
+                           step="0.0001"
+                           name="conversion"
+                           class="form-control"
+                           placeholder="e.g. 10">
+
+                    <label class="mt-2">Alternate Unit name</label>
+                    <input type="text"
+                           name="alternate_unit_name"
+                           class="form-control"
+                           placeholder="e.g. Pcs">
+
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-sm">Save</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{{-- ============================================================================================== --}}
 
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -358,6 +688,221 @@
             });
         });
     </script>
+    
+{{-- =======================================Account save ajeax ===================================== --}}
+<script>
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+$('#accountForm').on('submit', function (e) {
+    e.preventDefault();
+
+    $.ajax({
+        url: "{{ route('create_account_ajax') }}",
+        type: "POST",
+        data: $(this).serialize(),
+        dataType: 'json',
+
+        success: function (res) {
+
+            // Create & select new option
+            let newOption = new Option(
+                res.account_name,
+                res.id,
+                true,
+                true
+            );
+
+            $('#account_id')
+                .append(newOption)
+                .val(res.id)
+                .trigger('change');
+
+            // Close modal
+            $('#accountModal').modal('hide');
+
+            // Reset form
+            $('#accountForm')[0].reset();
+        },
+
+    error: function (xhr) {
+    if (xhr.status === 422) {
+        console.log(xhr.responseJSON.errors);
+        alert(Object.values(xhr.responseJSON.errors).join('\n'));
+    }
+}
+
+    });
+});
+
+</script>
+
+<script>
+$(document).ready(function () {
+
+    $('#openAccountModal').on('click', function () {
+        $('#accountModal').modal('show');
+    });
+
+});
+</script>
+@if(session('new_account_id'))
+<script>
+$(document).ready(function () {
+
+    let accountId   = "{{ session('new_account_id') }}";
+    let accountName = "{{ session('new_account_name') }}";
+
+    let optionExists = $('#account_id option[value="' + accountId + '"]').length;
+
+    if (!optionExists) {
+        let newOption = new Option(accountName, accountId, true, true);
+        $('#account_id').append(newOption);
+    }
+
+    $('#account_id')
+        .val(accountId)
+        .trigger('change');
+
+});
+</script>
+@endif
+
+{{-- =======================================Item save ajeax ===================================== --}}
+<script>
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+$('#openItemModal').on('click', function () {
+    $('#itemModal').modal('show');
+});
+
+$('#itemForm').on('submit', function (e) {
+    e.preventDefault();
+
+    $.ajax({
+        url: "{{ route('create_item_ajax') }}",
+        method: "POST",
+        data: $(this).serialize(),
+        dataType: "json",
+
+        success: function (res) {
+            let option = new Option(res.item_name, res.id, true, true);
+
+            $('#item_id')
+                .append(option)
+                .val(res.id)
+                .trigger('change');
+
+            $('#itemModal').modal('hide');
+            $('#itemForm')[0].reset();
+        },
+
+        error: function (xhr) {
+            console.error(xhr.responseJSON);
+            alert(JSON.stringify(xhr.responseJSON, null, 2));
+        }
+    });
+});
+</script>
+{{-- =============================== ITEM Compny AJAX=============================================================== --}}
+<script>
+$('#companyForm').on('submit', function(e){
+    e.preventDefault();
+
+    $.ajax({
+        url: "{{ route('company.store.ajax') }}",
+        type: "POST",
+        data: $(this).serialize(),
+        dataType: "json",
+
+        success: function(res){
+            let option = new Option(res.comp_name, res.id, true, true);
+
+            $('select[name="company_id"]')
+                .append(option)
+                .val(res.id);
+
+            $('#companyModal').modal('hide');
+            $('#companyForm')[0].reset();
+        },
+
+        error: function(xhr){
+            alert(Object.values(xhr.responseJSON.errors).join('\n'));
+        }
+    });
+});
+</script>
+{{-- =============================== ITEM Group AJAX=============================================================== --}}
+<script>
+$('#groupForm').on('submit', function(e){
+    e.preventDefault();
+
+    $.ajax({
+        url: "{{ route('itemgroup.store.ajax') }}",
+        type: "POST",
+        data: $(this).serialize(),
+        dataType: "json",
+
+        success: function(res){
+            let option = new Option(res.item_group, res.id, true, true);
+
+            $('select[name="group_id"]')
+                .append(option)
+                .val(res.id);
+
+            $('#groupModal').modal('hide');
+            $('#groupForm')[0].reset();
+        },
+
+        error: function(xhr){
+            alert(Object.values(xhr.responseJSON.errors).join('\n'));
+        }
+    });
+});
+</script>
+{{-- =============================== ITEM Unit AJAX=============================================================== --}}
+<script>
+$('#unitForm').on('submit', function(e){
+    e.preventDefault();
+
+    $.ajax({
+        url: "{{ route('unit.store.ajax') }}",
+        type: "POST",
+        data: $(this).serialize(),
+        dataType: "json",
+
+        success: function(res){
+            let label = res.primary_unit_name;
+
+            if (res.conversion && res.alternate_unit_name) {
+                label += ` (${res.conversion} ${res.alternate_unit_name})`;
+            }
+
+            let option = new Option(label, res.id, true, true);
+
+            $('select[name="unit_id"]')
+                .append(option)
+                .val(res.id);
+
+            $('#unitModal').modal('hide');
+            $('#unitForm')[0].reset();
+        },
+
+        error: function(xhr){
+            alert(Object.values(xhr.responseJSON.errors).join('\n'));
+        }
+    });
+});
+</script>
+
+{{-- =========================================================================================================== --}}
+
     {{-- script for amount  rate*amount calculation --}}
     <script>
         $(document).ready(function() {
@@ -666,5 +1211,114 @@
     </script>
     
    
+<script>
+$('#accountModal, #itemModal').on('shown.bs.modal', function () {
+    $(this).find('input, select').filter(':visible:first').focus();
+});
+</script>
+
+<script>
+$('.openCompanyModal').click(() => $('#companyModal').modal('show'));
+$('.openGroupModal').click(() => $('#groupModal').modal('show'));
+$('.openUnitModal').click(() => $('#unitModal').modal('show'));
+</script>
+
+
+{{-- ================================key automation for page ============================================== --}}
+<script>
+$(document).on('keydown', function (e) {
+    if (e.ctrlKey && (e.key === 'b' || e.key === 'B')) {
+        window.location.href = "{{ route('purchases.index') }}";
+    }
+});
+</script>
+
+<script>
+$(document).on('keydown', function (e) {
+
+    // ✅ Ctrl + I → Open ITEM Modal
+    if (e.ctrlKey && (e.key === 'i' || e.key === 'I')) {
+        e.preventDefault();
+        $('#itemModal').modal('show');
+    }
+
+    // ✅ Ctrl + A → Open ACCOUNT Modal
+    if (e.ctrlKey && (e.key === 'a' || e.key === 'A')) {
+        e.preventDefault();
+        $('#accountModal').modal('show');
+    }
+
+    // ✅ ESC → Close any open modal
+    if (e.key === 'Escape') {
+        $('.modal.show').modal('hide');
+    }
+
+});
+</script>
+<script>
+/**
+ * ENTER = MOVE NEXT
+ * DOES NOT SUBMIT MODAL FORMS
+ * SUBMITS ONLY WHEN SAVE BUTTON CLICKED
+ */
+$(document).on('keydown', 'input, select', function (e) {
+
+    if (e.key !== 'Enter') return;
+
+    // Allow textarea ENTER
+    if ($(this).is('textarea')) return;
+
+    // DO NOT auto-submit inside modals
+    if ($(this).closest('.modal').length) {
+        e.preventDefault();
+    }
+
+    let form = $(this).closest('form');
+
+    let focusable = form.find(
+        'input:not([readonly]):not([disabled]), ' +
+        'select:not([disabled]), ' +
+        'button:not([disabled])'
+    ).filter(':visible');
+
+    let index = focusable.index(this);
+
+    if (index > -1 && index + 1 < focusable.length) {
+        focusable.eq(index + 1).focus();
+    }
+});
+</script>
+
+<script>
+$(document).on('keydown', '.select2-selection', function (e) {
+
+    if (e.key !== 'Enter') return;
+
+    e.preventDefault();
+
+    let select = $(this).closest('.select2-container').prev('select');
+    let s2 = select.data('select2');
+
+    if (!s2.isOpen()) {
+        select.select2('open');
+        return;
+    }
+
+    $('.select2-results__option--highlighted').trigger('mouseup');
+
+    setTimeout(() => {
+        let form = select.closest('form');
+        let focusable = form.find(
+            'input:not([readonly]):not([disabled]), select:not([disabled]), button:not([disabled])'
+        ).filter(':visible');
+
+        let index = focusable.index(select);
+        if (index > -1 && index + 1 < focusable.length) {
+            focusable.eq(index + 1).focus();
+        }
+    }, 100);
+});
+</script>
+
 
 @endsection

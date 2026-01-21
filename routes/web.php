@@ -679,6 +679,10 @@ route::get('/hotel_contact/{firm_id}', [App\Http\Controllers\HotelfrontControlle
 
 // ==================================================[for cctv viit ]====================================================================
 
-// ===============================[for quotation ]=============================================================
-Route::resource('Quotation', QuotationController::class);
+// ===============================[for quotation ]===================================================
+Route::resource('quotations', QuotationController::class);
+Route::get('quotationform', [QuotationController::class, 'quotationform'])
+->name('quotationform');
+
+route::get('quotation_print_view/{id}', [App\Http\Controllers\QuotationController::class, 'quotation_print_view']);
 Route::get('print_quotation_select/{id}', [App\Http\Controllers\QuotationController::class, 'print_quotation_select']);

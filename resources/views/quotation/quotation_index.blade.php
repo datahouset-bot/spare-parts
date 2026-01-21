@@ -26,10 +26,13 @@
 
    <div class="card my-3 w-100" style="border-radius:5px;">
         <div class="card-header">
-        <h4>Sale invoice  <h4>       </div>
+        <h4>Quotation list  <h4>       </div>
        <div class="row my-2">
           <div class="col-md-12 text-center">
-            <a href="{{url('sales/create')}}" class="btn btn-primary">New Sale invoice</a>
+           <a href="{{ route('quotationform') }}" class="btn btn-primary">
+    New Quotation
+</a>
+
             {{-- <a href="{{url('sale_register')}}" class="btn btn-dark"> Register sale </a> --}}
           </div>
        </div>
@@ -116,7 +119,7 @@
                   
 
                <td>
-                <a href="{{ url('print_sale_select', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
+                <a href="{{ url('print_quotation_select', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
             </td> 
             <td>
                 <a href="{{ route('sales.edit', $record['voucher_no']) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
@@ -125,7 +128,7 @@
 
 
               <td>
-                <form action="{{ route('sales.destroy', $record['voucher_no']) }}" method="POST" style="display:inline;">
+                <form action="{{ route('quotations.destroy', $record['voucher_no']) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn  btn-sm" onclick="return confirm('Are you sure you want to delete this  Record ?{{$record['voucher_no']}}')"><i class="fa fa-trash" style="font-size:20px;color:OrangeRed"></i></button>

@@ -216,8 +216,8 @@ label {
 }
 .settings-popup {
     position: absolute;
-    top: 110%;
-    right: 0;
+    top: 45px;          /* directly below header */
+    right: 10px;        /* align with settings button */
     width: 160px;
     background: #fff;
     border: 1px solid #ddd;
@@ -225,7 +225,8 @@ label {
     padding: 8px 10px;
     font-size: 13px;
     display: none;
-    z-index: 1000;
+    z-index: 1050;      /* above everything */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
 .settings-popup label {
@@ -256,17 +257,39 @@ label {
             </div>
         @endif
         <div class="card my-3">
-           <div class="card-header d-flex justify-content-between align-items-center">
+         <div class="card-header d-flex justify-content-between align-items-center position-relative">
     <span>New Stock Issue</span>
-   
+   <div class="d-flex gap-2">
+<div class="position-relative">
 
-    <div class="d-flex gap-2">
-        <button type="button"
-        class="btn btn-outline-secondary btn-sm position-relative"
+    <button type="button"
+        class="btn btn-outline-secondary btn-sm"
         id="toggleSettings">
-    <i class="fa fa-cog"></i>
-</button>
+        <i class="fa fa-cog"></i>
+    </button>
 
+    <div id="settingsPopup" class="settings-popup">
+        <label class="d-block">
+            <input type="checkbox" class="remark-toggle" data-target="remark_1">
+            Remark 1
+        </label>
+        <label class="d-block">
+            <input type="checkbox" class="remark-toggle" data-target="remark_2">
+            Remark 2
+        </label>
+        <label class="d-block">
+            <input type="checkbox" class="remark-toggle" data-target="remark_3">
+            Remark 3
+        </label>
+    </div>
+
+</div>
+ <a href="{{ route('sales.index') }}"
+       class="btn btn-outline-secondary btn-sm"  title="shortcut:ctrl+b">
+        <i class="fa fa-arrow-left"></i> Back
+    </a>
+
+    
         <a href="{{ url('temp_item_delete/' . Auth::user()->id) }}"
            class="btn btn-success btn-sm">
             Add New
@@ -355,14 +378,14 @@ label {
                             <label class="floating-label" for="terms">Terms</label>
                         </div>
                     </div>
-                    <div class="col-md-1 col-4 text-center ">
+                    <div class="col-md-2 col-4 text-center ">
                         <div class="form-group">
                             <input type="text" id="purchase_bill_date" class="form-control date" name="purchase_bill_date" required>
                             <label class="floating-label" for="purchase_bill_date">Bill Date</label>
                         </div>
                     </div>
                     
-                    <div class="col-md-1 col-4 text-center">
+                    <div class="col-md-2 col-4 text-center">
                         <div class="form-group">
                             <input type="text" id="voucher_bill_no" class="form-control" name="voucher_bill_no" value="{{ $new_bill_no }}" required>
                             <label class="floating-label" for="voucher_bill_no">Bill No</label>
@@ -469,7 +492,7 @@ label {
                         </div>
                     </div>
                     
-                    <div class="col-md-2 col-3 text-center">
+                    <div class="col-md-1 col-3 text-center">
                         <div class="form-group">
                             <input type="text" class="form-control" id="rate" name="rate" placeholder=" " required>
                             <label class="floating-label" for="rate">Rate</label>
@@ -477,7 +500,7 @@ label {
                         </div>
                     </div>
                     
-                    <div class="col-md-2 col-3 text-center">
+                    <div class="col-md-1 col-3 text-center">
                         <div class="form-group">
                             <input type="text" class="form-control" id="amount" name="amount" placeholder=" " required readonly>
                             <label class="floating-label" for="amount">Basic</label>
@@ -490,7 +513,7 @@ label {
                             <label class="floating-label" for="dis_p">Dis%</label>
                         </div>
                     </div>
-                    <div class="col-md-2 col-3 col-sm-2text-center">
+                    <div class="col-md-1 col-3 col-sm-2text-center">
                         <div class="form-group">
                             <input type="text" class="form-control" id="total_item_dis_amt" name="total_item_dis_amt" placeholder=" ">
                             <label class="floating-label" for="total_item_dis_amt">Dis Amt</label>
@@ -1354,20 +1377,18 @@ $(document).ready(function () {
 $(document).ready(function () {
 
     // Toggle popup
-    $('#toggleSettings').on('click', function (e) {
-        e.stopPropagation();
-        $('#settingsPopup').toggle();
-    });
+  $('#toggleSettings').on('click', function (e) {
+    e.stopPropagation();
+    $('#settingsPopup').toggle();
+});
 
-    // Close popup when clicking outside
-    $(document).on('click', function () {
-        $('#settingsPopup').hide();
-    });
+$(document).on('click', function () {
+    $('#settingsPopup').hide();
+});
 
-    // Prevent popup click from closing
-    $('#settingsPopup').on('click', function (e) {
-        e.stopPropagation();
-    });
+$('#settingsPopup').on('click', function (e) {
+    e.stopPropagation();
+});
 
     // Toggle remark fields
     $('.remark-toggle').on('change', function () {
@@ -1598,6 +1619,14 @@ $('#unitForm').on('submit', function(e){
 {{-- =========================================================================================================== --}}
 
 {{-- ================================key automation for page ============================================== --}}
+<script>
+$(document).on('keydown', function (e) {
+    if (e.ctrlKey && (e.key === 'b' || e.key === 'B')) {
+        window.location.href = "{{ route('sales.index') }}";
+    }
+});
+</script>
+
 <script>
 $(document).on('keydown', function (e) {
 

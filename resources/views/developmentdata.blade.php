@@ -25,3 +25,5 @@ compsny m 0 hatana h
 6. item list on sales requierd additionl filed for remark entery 
 
 4. sale modify sahi karna hai  
+-=====================================================================================
+quotation make but index not working or any get method not working give error of not found conf_firm_name

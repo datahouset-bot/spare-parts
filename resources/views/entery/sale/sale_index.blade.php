@@ -29,7 +29,7 @@
         <h4>Sale invoice  <h4>       </div>
        <div class="row my-2">
           <div class="col-md-12 text-center">
-            <a href="{{url('sales/create')}}" class="btn btn-primary">New Sale invoice</a>
+            <a href="{{url('sales/create')}}" class="btn btn-primary" title="shortcut:shift+N">New Sale invoice</a>
             {{-- <a href="{{url('sale_register')}}" class="btn btn-dark"> Register sale </a> --}}
           </div>
        </div>

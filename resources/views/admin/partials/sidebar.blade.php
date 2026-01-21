@@ -429,7 +429,7 @@
                                         <nav class="sb-sidenav-menu-nested nav">
                                             <a class="nav-link" href="{{ url('/sales') }}"
                                                 style=" "  title="shortcut:ctrl+S">Sale Invoice</a>
-                                            <a class="nav-link" href="{{ url('/Quotation') }}"
+                                            <a class="nav-link" href="{{ url('/quotations/create') }}"
                                                 style=" " title="shortcut:ctrl+S">Quotation</a>
                                             <a class="nav-link" href="{{ url('/sales') }}"
                                                 style=" "  title="shortcut:ctrl+S">Estimate Sale</a>
@@ -916,7 +916,7 @@
             </div>
 
         </nav>
-    </div>{{--
+    </div>
 <script>
 document.addEventListener('keydown', function (e) {
 
@@ -925,47 +925,12 @@ document.addEventListener('keydown', function (e) {
 
     if (e.ctrlKey) {
         switch (e.key.toLowerCase()) {
-
-            case 'a': // Account
-                e.preventDefault();
-                window.location.href = "{{ url('/account') }}";
-                break;
-
-            case 'i': // Item
-                e.preventDefault();
-                window.location.href = "{{ url('/item') }}";
-                break;
-
-            case 's': // Sale
-                e.preventDefault();
-                window.location.href = "{{ url('/sales') }}";
-                break;
-
-            case 'p': // Purchase
-                e.preventDefault();
-                window.location.href = "{{ url('/purchases') }}";
-                break;
-
-            case 'r': // Receipt
-                e.preventDefault();
-                window.location.href = "{{ url('/reciepts') }}";
-                break;
-
-            case 'l': // Ledger
-                e.preventDefault();
-                window.location.href = "{{ url('/ledgers') }}";
-                break;
-
             case 'd': // Dashboard
                 e.preventDefault();
                 window.location.href = "{{ url('/home') }}";
                 break;
 
-            case 'j': // Job Card
-                e.preventDefault();
-                window.location.href = "{{ url('/roomcheckins') }}";
-                break;
         }
     }
 });
-</script> --}}
+</script>

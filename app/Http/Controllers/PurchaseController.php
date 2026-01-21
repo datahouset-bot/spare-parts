@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\kot;
 use App\Models\item;
+use App\Models\unit;
 use App\Models\godown;
 use App\Models\ledger;
 use App\Models\account;
+use App\Models\company;
 use App\Models\voucher;
 use App\Models\purchase;
+use App\Models\gstmaster;
 use App\Models\inventory;
+use App\Models\itemgroup;
 use App\Models\tempentry;
 use App\Models\optionlist;
 use App\Models\componyinfo;
@@ -73,13 +77,29 @@ class PurchaseController extends CustomBaseController
         $godowns = godown::where('firm_id', Auth::user()->firm_id)->get();
         $sundry_SundryCreditors_id = accountgroup::where('firm_id', Auth::user()->firm_id)
             ->where('account_group_name', 'Sundry Creditors')->first();
-
+$accountgroups = accountgroup::where('firm_id', Auth::user()->firm_id)->get();
         $accountdata = account::where('firm_id', Auth::user()->firm_id)->where('account_group_id', $sundry_SundryCreditors_id->id)->get();
 
         $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
+
+          $itemCompanies = company::where('firm_id', Auth::user()->firm_id)
+        ->orderBy('id')
+        ->get();
+         $itemGroups = itemgroup::where('firm_id', Auth::user()->firm_id)
+        ->orderBy('id')
+        ->get();
+   $units = unit::where('firm_id', Auth::user()->firm_id)
+        ->orderBy('id')
+        ->get();
+
+    $gsts = gstmaster::where('firm_id', Auth::user()->firm_id)
+        ->orderBy('id')
+        ->get();
      
 
-        return view('entery.purchase.purchase_create', compact('new_bill_no', 'new_voucher_no', 'accountdata', 'itemdata', 'godowns'));
+        return view('entery.purchase.purchase_create', compact('new_bill_no', 'new_voucher_no', 'accountdata', 'accountgroups',
+        'itemdata', 'godowns',
+        'itemCompanies','gsts','units','itemGroups'));
 
     }
 
