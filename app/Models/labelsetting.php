@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class labelsetting extends Model
 {
     use HasFactory;
-     protected $fillable = [
+    protected $fillable = [
         'firm_id',
         'field_name',
         'replaced_field_name',

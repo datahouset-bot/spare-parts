@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use App\Models\businesssource;
 use App\Models\softwarecompany;
 use App\Models\super_comp_list;
+use App\Models\Labelsetting;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -1115,7 +1116,7 @@ class SuperCompListController extends Controller
                         ->where('firm_id', $account['firm_id'])
                         ->where('account_name', $account['account_name'])
                         ->exists();
-();
+
                     if (!$exists) {
                         DB::table('accounts')->insert($account);
                     }
@@ -1295,4 +1296,49 @@ class SuperCompListController extends Controller
         }
 
     }
+
+
+    public function batchlabel_seed($firm_id)
+    {
+        $fields = [
+            'batch_no',
+            'batch_af1',
+            'batch_af2',
+            'batch_af3',
+            'batch_af4',
+            'batch_af5',
+            'mfg_date',
+            'exp_date',
+            'batch_mrp',
+            'batch_sale_rate',
+            'batch_basic_rate',
+            'batch_a_rate',
+            'batch_b_rate',
+            'batch_c_rate',
+            'batch_purchase_rate',
+            'batch_op_qty',
+            'batch_op_value',
+            'batch_barcode',
+            'batch_op_remark',
+            'rack',
+        ];
+    
+        foreach ($fields as $field) {
+            $exists = Labelsetting::where('firm_id', $firm_id)
+                                    ->where('field_name', $field)
+                                    ->exists();
+    
+            if (!$exists) {
+                Labelsetting::create([
+                    'firm_id' => $firm_id,
+                    'field_name' => $field,
+                    'replaced_field_name' => $field,
+                    'is_visible' => 1,
+                ]);
+            }
+        }
+    
+        return "Batch Label Settings inserted/updated successfully for firm: " . $firm_id;
+    }
+    
 }
