@@ -10,43 +10,256 @@
     <script src="jquery/master.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
     <style>
-    .no-gutter ,.form-control{
-        margin: 0 !important;
-        padding: 0 !important;
+   /* =====================================================
+   GLOBAL RESET (SAFE)
+===================================================== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 14px;
+    background: #f6f8fb;
+    color: #212529;
+}
+
+/* =====================================================
+   CARD & CONTAINER
+===================================================== */
+.container,
+.container-fluid {
+    max-width: 100%;
+}
+
+.card {
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+}
+
+.card-header {
+    background: #f8f9fa;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 8px 12px;
+}
+
+.card-body {
+    padding: 12px;
+}
+
+/* =====================================================
+   FORM GRID & SPACING
+===================================================== */
+.row {
+    margin-bottom: 6px;
+}
+
+.row.g-2 > [class*="col-"] {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.no-gutter {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.no-gutter > [class*="col-"] {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+/* =====================================================
+   LABELS
+===================================================== */
+label {
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    color: #495057;
+}
+
+/* =====================================================
+   INPUTS & SELECTS
+===================================================== */
+.form-control,
+.form-select {
+    height: 36px;
+    padding: 4px 8px;
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.15);
+}
+
+/* Readonly */
+.form-control[readonly] {
+    background-color: #f8f9fa;
+}
+
+/* =====================================================
+   SELECT2 FIXES
+===================================================== */
+.select2-container {
+    width: 100% !important;
+}
+
+.select2-container--default .select2-selection--single {
+    height: 36px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.select2-selection__rendered {
+    line-height: 24px !important;
+    font-size: 14px;
+}
+
+.select2-selection__arrow {
+    height: 34px;
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+.btn {
+    height: 36px;
+    font-size: 14px;
+    padding: 0 12px;
+}
+
+.btn-sm {
+    height: 30px;
+    font-size: 13px;
+    padding: 0 10px;
+}
+
+.btn-success {
+    background-color: #198754;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+}
+
+/* =====================================================
+   RATE DISPLAY
+===================================================== */
+#display_rate {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 6px;
+    font-size: 13px;
+    background: #fff3cd;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+/* =====================================================
+   TABLE STYLES
+===================================================== */
+.table-responsive {
+    margin-top: 8px;
+}
+
+.table {
+    font-size: 13px;
+    margin-bottom: 0;
+}
+
+.table th,
+.table td {
+    padding: 6px 8px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.table thead th {
+    background: #212529;
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f8f9fa;
+}
+
+/* Delete button */
+.delete-record {
+    cursor: pointer;
+    padding: 2px 6px;
+    font-size: 12px;
+}
+
+/* =====================================================
+   TABLE FOOTER TOTALS
+===================================================== */
+tfoot input {
+    height: 28px;
+    font-size: 13px;
+    text-align: right;
+    background: #fff;
+    border-radius: 3px;
+}
+
+.footer_input {
+    width: 90px;
+}
+
+/* =====================================================
+   ALERTS
+===================================================== */
+.alert {
+    padding: 6px 10px;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+/* =====================================================
+   MOBILE OPTIMIZATION
+===================================================== */
+@media (max-width: 768px) {
+
+    .card-header {
+        flex-direction: column;
+        gap: 6px;
     }
-    .footer_input{
-        width: 100px;
-        padding: 0px;
-        margin: 0px;
 
-    }
-    td,th{
-        margin: 0px !important;
-        padding: 0px !important;
- border: 1px solid blue;
- text-align: left;
- padding-left: 10px !important;
-    }
-    .left-margin{
-        margin-left: 30px;
+    .btn {
+        width: 100%;
     }
 
-        #display_rate {
-            color: black;
+    .table-responsive {
+        overflow-x: auto;
+    }
 
-            background-color: yellow;
-            font-size: 20px;
-        }
+    label {
+        font-size: 12px;
+    }
+}
 
-        .custom-row {
-            margin-right: -1px;
-            margin-left: -1px;
-        }
+/* =====================================================
+   UTILITIES
+===================================================== */
+.text-right {
+    text-align: right;
+}
 
-        .custom-row>[class*='col-'] {
-            padding-right: 1px;
-            padding-left: 1px;
-        }
+.text-center {
+    text-align: center;
+}
+
+.fw-semibold {
+    font-weight: 600;
+}
+
     </style>
 
     <script>
@@ -124,7 +337,7 @@
                     </div>
                     
 
-                    <div class="col-md-3 col-4 text-center">
+                    <div class="col-md-2 col-3 text-center">
                         <label for="kot_on">Account Name {{ $voucher_header->account->account_name }}</label>
                         <select name="account_id" id="account_id" class="form-select" required>
                             <option selected disabled>Select Party</option>

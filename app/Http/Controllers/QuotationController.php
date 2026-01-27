@@ -10,7 +10,7 @@ use App\Models\optionlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class QuotationController extends Controller
+class QuotationController extends CustomBaseController
 {
     /**
      * Display a listing of the resource.
