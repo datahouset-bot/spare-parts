@@ -101,19 +101,33 @@
             </ol>
 
             
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="input-group">
+            <span class="input-group-text">
+                <i class="fas fa-search"></i>
+            </span>
+            <input type="text"
+                   id="dashboardSearch"
+                   class="form-control"
+                   placeholder="Search dashboard (Booking, Sale, Payment...)">
+        </div>
+    </div>
+</div>
             <div class="row">
                 <!-- Booking Calendar -->
                 @can('Booking Calendar')
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white">
-                        <a href="{{ url('/booking_calendar') }}" class="btn btn-success d-flex align-items-center justify-content-start">
-                            <span class="d-flex align-items-center">
-                                <i class="fas fa-calendar-alt"></i>
-                            </span>
-                            <span class="ms-2" style="width: 90%;">Booking Calendar</span>
-                        </a>
-                    </div>
-                </div>
+              <div class="col-xl-3 col-md-6 dashboard-card"
+     data-title="Booking Calendar">
+    <div class="card bg-primary text-white">
+        <a href="{{ url('/booking_calendar') }}"
+           class="btn btn-success d-flex align-items-center justify-content-start">
+            <i class="fas fa-calendar-alt"></i>
+            <span class="ms-2">Booking Calendar</span>
+        </a>
+    </div>
+</div>
+
                  @endcan 
                 <!-- Pending Booking for Confirmation -->
                 @can('Unconfirmed Bookings')
@@ -617,4 +631,19 @@
 
         </div>
     </main>
-    
+   <script>
+document.getElementById('dashboardSearch').addEventListener('keyup', function () {
+    let search = this.value.toLowerCase();
+
+    // Select all dashboard columns (cards)
+    let cards = document.querySelectorAll(
+        '#layoutSidenav_content .col-xl-3, #layoutSidenav_content .col-md-6'
+    );
+
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(search) ? '' : 'none';
+    });
+});
+</script>
+
