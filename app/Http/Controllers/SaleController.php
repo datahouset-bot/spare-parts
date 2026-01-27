@@ -295,7 +295,9 @@ $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
     $totalAmount = $records->sum('amount');
     $net_voucher_amount=$records->sum('item_net_value');
     foreach ($records as $record) {
+        
          $purchase=new inventory;
+         dd($record->remark_1);
          $purchase->firm_id = Auth::user()->firm_id;
          $purchase->entry_date=$record->entry_date;
          $purchase->voucher_no=$record->voucher_no;
@@ -318,9 +320,9 @@ $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
          $purchase->item_net_amount=$net_voucher_amount;  
          $purchase->simpal_qty=-($record->qty);  
          $purchase->stock_out=$record->qty;
-         $purchase->invent_af1 = $record->remark_1;
-         $purchase->invent_af2 = $record->remark_2;
-         $purchase->invent_af3 = $record->remark_3;
+         $purchase->invent_af2 = $record->remark_1;
+         $purchase->invent_af3 = $record->remark_2;
+         $purchase->invent_af4 = $record->remark_3;
 
         $purchase->save();
 

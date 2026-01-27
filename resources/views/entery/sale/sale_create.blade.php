@@ -464,17 +464,17 @@ label {
 {{-- ================= DYNAMIC REMARK INPUTS ================= --}}
 <div class="row mt-2">
 
-    <div class="col-md-4 remark-field" id="remark_1" style="display:none;">
+    <div class="col-md-3 remark-field" id="remark_1" style="display:none;">
         <label>Remark 1</label>
         <input type="text" class="form-control" name="remark_1">
     </div>
 
-    <div class="col-md-4 remark-field" id="remark_2" style="display:none;">
+    <div class="col-md-3 remark-field" id="remark_2" style="display:none;">
         <label>Remark 2</label>
         <input type="text" class="form-control" name="remark_2">
     </div>
 
-    <div class="col-md-4 remark-field" id="remark_3" style="display:none;">
+    <div class="col-md-3 remark-field" id="remark_3" style="display:none;">
         <label>Remark 3</label>
         <input type="text" class="form-control" name="remark_3">
     </div>

@@ -218,7 +218,7 @@ class HomeController extends CustomBaseController
                return view('home', compact( 
     'roomcheckin','currentDate','vacantroom','occupiedroom','dirtyroom',
     'daysDifference','amcCount','dueAmcCount','pendingTask','todayFollowup',
-    'kot_Unprinted','Rkot_Unprinted','financialyear','debugData','sales',
+    'kot_Unprinted','Rkot_Unprinted','financialyear','debugData',
 'purchaseChart','outstandingPayables','outstandingReceivables'
     
 ));
