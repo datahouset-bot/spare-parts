@@ -73,7 +73,7 @@ body {
    LABELS
 ===================================================== */
 label {
-    font-size: 12.5px;
+    font-size: 15px;
     font-weight: 600;
     margin-bottom: 2px;
     color: #495057;
@@ -419,7 +419,7 @@ tfoot input {
                         <input type="text" class ="form-control " id="net_item_amt" name="net_item_amt" required
                             readonly>
                     </div>
-                    <div class="col-md-2  col-3  text-center">
+                    <div class="col-md-2 col-2 text-left ">
 
                         <button type="submit" name="additem" id ="additem"class="btn btn-success ">+</button>
 

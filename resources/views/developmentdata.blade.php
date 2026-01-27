@@ -25,5 +25,10 @@ compsny m 0 hatana h
 6. item list on sales requierd additionl filed for remark entery 
 
 4. sale modify sahi karna hai  
+main id m sale compact problem h 
+FIRM ID SET ON ATTENDANCE MODULE complete 
+super company edit 
+Method App\Http\Controllers\SuperCompListController::batchlabel_seed does not exist.
+role k preset ho jaye 
+sidebar shi krna h or report m search box add krna h 
 -=====================================================================================
-quotation make but index not working or any get method not working give error of not found conf_firm_name

@@ -16,7 +16,125 @@
    
   });
 </script> --}}
-<div class="container ">
+<style>
+/* ===============================
+   GLOBAL POLISH
+================================ */
+body {
+    background: #f5f7fb;
+    font-size: 14px;
+}
+
+.card {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(0,0,0,.08);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #0d6efd, #084298);
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 12px 16px;
+}
+
+/* ===============================
+   BUTTONS
+================================ */
+.btn-primary {
+    background: #0d6efd;
+    border-radius: 6px;
+}
+
+.btn-sm {
+    padding: 4px 8px;
+}
+
+/* ===============================
+   MODAL
+================================ */
+.modal-content {
+    border-radius: 10px;
+}
+
+.modal-header {
+    background: #0d6efd;
+    color: #fff;
+}
+
+.modal-header .btn-close {
+    filter: invert(1);
+}
+
+.modal-body input {
+    margin-bottom: 10px;
+}
+
+/* ===============================
+   TABLE
+================================ */
+.table {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.table thead th {
+    background: #1e293b;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table tbody td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f8fafc;
+}
+
+/* ===============================
+   DATATABLE WRAPPER
+================================ */
+.table-scrollable {
+    overflow-x: auto;
+    padding: 10px;
+}
+
+/* ===============================
+   ICON BUTTONS
+================================ */
+.action-btn i {
+    font-size: 18px;
+}
+
+.action-btn:hover {
+    transform: scale(1.1);
+}
+
+/* ===============================
+   HEADER BUTTON ROW
+================================ */
+.header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ===============================
+   DATATABLE BUTTONS
+================================ */
+.dt-buttons button {
+    border-radius: 6px !important;
+    font-size: 13px !important;
+    margin-right: 4px;
+}
+</style>
+
+<div class="container-fluid ">
   @if(session('message'))
     <div class="alert alert-primary">
         {{ session('message') }}
@@ -25,14 +143,21 @@
 
 
     <div class="card my-1">
-        <div class="card-header">
+        {{-- <div class="card-header">
     Company List 
-        </div>
+        </div> --}}
        <div class="row my-2">
-        <div class="col-md-12 text-center"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-          Add New Company / Hotel / Firm 
-      </button>
-          </div></div>
+        <div class="card-header header-actions">
+    <span>Company / Firm List</span>
+
+    <button type="button"
+        class="btn btn-light btn-sm"
+        data-bs-toggle="modal"
+        data-bs-target="#myModal">
+        <i class="fa fa-plus"></i> Add Company
+    </button>
+</div>
+</div>
         
           <div class="container mt-1">
             
@@ -250,25 +375,36 @@
                     <td>{{$record->comp_af6}}</td>
 
                     
-                  <td>
-                      <a href="{{ route('super_comp_lists.edit', $record->id) }}" class="btn  btn-sm" ><i class="fa fa-edit" style="font-size:20px;color:SlateBlue"></i></a>
-                  </td>
-                <td>
-                    <a href="{{ url('/seed', $record->firm_id) }}" class="btn  btn-sm" >Seed</a>
-                </td>
-                <td>
-                  <a href="{{ url('/trandelete', $record->firm_id) }}" class="btn  btn-sm" >Trandelete</a>
-              </td>
+                 <td class="d-flex gap-1 justify-content-center">
+    <a href="{{ route('super_comp_lists.edit', $record->id) }}"
+       class="btn btn-outline-primary btn-sm action-btn">
+        <i class="fa fa-edit"></i>
+    </a>
+                 </td>
+<td>
+    <a href="{{ url('/seed', $record->firm_id) }}"
+       class="btn btn-outline-success btn-sm">
+        Seed
+    </a>
+  </td>
+<td>
+    <a href="{{ url('/trandelete', $record->firm_id) }}"
+       class="btn btn-outline-warning btn-sm">
+        Tran
+    </a>
+  </td>
+  <td>
+    <form action="{{ route('super_comp_lists.destroy', $record->id) }}"
+          method="POST">
+        @csrf
+        @method('DELETE')
+        <button class="btn btn-outline-danger btn-sm"
+                onclick="return confirm('Delete this firm?')">
+            <i class="fa fa-trash"></i>
+        </button>
+    </form>
+</td>
 
-
-                    <td>
-                      <form action="{{ route('super_comp_lists.destroy', $record->id) }}" method="POST" style="display:inline;">
-                          @csrf
-                          @method('DELETE')
-                          <button type="submit" class="btn  btn-sm" onclick="return confirm('Are you sure you want to delete this Company?')"><i class="fa fa-trash" style="font-size:20px;color:OrangeRed"></i></button>
-                      </form>
-                  </td>
-                  
                   </tr>
                   @endforeach
                   
@@ -290,21 +426,24 @@
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
 
 <script>
-  $(document).ready(function () 
-  {
-
+ $(document).ready(function () {
     new DataTable('#remindtable', {
-    layout: {
-        topStart: {
-            buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+        responsive: true,
+        scrollX: true,
+        pageLength: 25,
+        layout: {
+            topStart: {
+                buttons: [
+                    { extend: 'copy', className: 'btn btn-light btn-sm' },
+                    { extend: 'excel', className: 'btn btn-light btn-sm' },
+                    { extend: 'pdf', className: 'btn btn-light btn-sm' },
+                    { extend: 'print', className: 'btn btn-light btn-sm' }
+                ]
+            }
         }
-    }
+    });
 });
 
-
-  }
-  );
- 
 </script>
 
 @endsection

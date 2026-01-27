@@ -406,10 +406,13 @@ label {
 
     <td>{{ $item->item_basic_amount }}</td>
 
-    <td>{{ $item->total_discount }}</td>
+    <td>{{ $item->disc_percent }}</td>
     <td>{{ $item->gst_item_percent }}</td>
     <td>{{ $item->gst_item_amount }}</td>
     <td>{{ $item->item_net_amount }}</td>
+    <td>{{$item->gst_item_percent}}</td>
+    <td>{{$item->gst_item_amount}}</td>
+    <td>{{$item->item_net_amount}}</td>
 
     <td>
         <button class="btn btn-sm btn-primary update-row">✔</button>

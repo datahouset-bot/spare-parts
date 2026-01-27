@@ -37,11 +37,11 @@ class SuperCompListController extends Controller
       
 
 
-        $record = \DB::table('super_comp_lists as s')
+        $record = DB::table('super_comp_lists as s')
     ->leftJoin('roomcheckouts as r', 's.firm_id', '=', 'r.firm_id')
     ->select(
         's.*',
-        \DB::raw('COUNT(r.id) as total_roomcheckouts')
+        DB::raw('COUNT(r.id) as total_roomcheckouts')
     )
     ->groupBy(
         's.id', 's.firm_id', 's.firm_name', 's.firm_mobile', 's.firm_dealer',
@@ -873,7 +873,7 @@ class SuperCompListController extends Controller
                 ]);
             } else {
                 // If the primary group doesn't exist, log an error
-                \Log::error('Primary group not found for: ' . $accountGroup['primary_group_name']);
+                Log::error('Primary group not found for: ' . $accountGroup['primary_group_name']);
             }
         }
     }
@@ -1114,7 +1114,8 @@ class SuperCompListController extends Controller
                     $exists = DB::table('accounts')
                         ->where('firm_id', $account['firm_id'])
                         ->where('account_name', $account['account_name'])
-                        ->exists
+                        ->exists();
+
                     if (!$exists) {
                         DB::table('accounts')->insert($account);
                     }

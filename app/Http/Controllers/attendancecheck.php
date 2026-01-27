@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\photoattendance;
 
 use App\Models\attendancecheckin;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class attendancecheck extends Controller
@@ -25,66 +26,60 @@ public function index(Request $request)
         'month'     => 'nullable|date_format:Y-m',
     ]);
 
-    // =========================
-    // DATE LOGIC (FIXED)
-    // =========================
-  if ($request->filled('from_date') || $request->filled('to_date')) {
+    /* =========================
+       DATE LOGIC
+    ========================= */
+    if ($request->filled('from_date') || $request->filled('to_date')) {
 
-    // 📆 DATE FILTER
-    $fromDate = $request->from_date ?? now()->format('Y-m-d');
-    $toDate   = $request->to_date   ?? now()->format('Y-m-d');
+        $fromDate = $request->from_date ?? now()->format('Y-m-d');
+        $toDate   = $request->to_date   ?? now()->format('Y-m-d');
 
-} elseif (!empty($request->month)) {
+    } elseif (!empty($request->month)) {
 
-    // 📅 MONTH FILTER
-    $fromDate = Carbon::parse($request->month)->startOfMonth()->format('Y-m-d');
-    $toDate   = Carbon::parse($request->month)->endOfMonth()->format('Y-m-d');
+        $fromDate = Carbon::parse($request->month)->startOfMonth()->format('Y-m-d');
+        $toDate   = Carbon::parse($request->month)->endOfMonth()->format('Y-m-d');
 
-} else {
+    } else {
 
-    // 🕒 DEFAULT TODAY
-    $fromDate = now()->format('Y-m-d');
-    $toDate   = now()->format('Y-m-d');
-}
+        $fromDate = now()->format('Y-m-d');
+        $toDate   = now()->format('Y-m-d');
+    }
 
-    $employees = photoattendance::all();
-    $period    = CarbonPeriod::create($fromDate, $toDate);
+    /* =========================
+       🔒 FIRM FILTER
+    ========================= */
+    $firmId = Auth::user()->firm_id;
+
+    // ✅ Only firm employees
+    $employees = photoattendance::where('firm_id', $firmId)->get();
+
+    $period = CarbonPeriod::create($fromDate, $toDate);
 
     $attendanceData = [];
 
     foreach ($employees as $emp) {
         foreach ($period as $date) {
 
-            $attendance = attendancecheckin::where('emp_id', $emp->id)
+            // ✅ Only firm attendance records
+            $attendance = attendancecheckin::where('firm_id', $firmId)
+                ->where('emp_id', $emp->id)
                 ->whereDate('date', $date->format('Y-m-d'))
                 ->first();
 
-            $status      = "Absent";
-            $lateMessage = "";
+            $status      = 'Absent';
+            $lateMessage = '';
 
-            $checkin_time  = $attendance?->checkin_time ?? "--";
-            $checkout_time = $attendance?->checkout_time ?? "--";
+            $checkin_time  = $attendance?->checkin_time ?? '--';
+            $checkout_time = $attendance?->checkout_time ?? '--';
 
             $checkin_photo  = $attendance?->checkin_photo;
             $checkout_photo = $attendance?->checkout_photo;
 
-            if ($attendance) {
-
-                if ($attendance->checkin_time && !$attendance->checkout_time) {
-                    $status = "Present";
-                }
-
-                if ($attendance->checkin_time && $attendance->checkout_time) {
-                    $status = "Present";
-                }
-
-              if ($attendance && $attendance->checkin_time) {
-    [$status, $lateMessage] = $this->calculateStatusAndMessage(
-        $emp,
-        $attendance->checkin_time
-    );
-}
-
+            if ($attendance && $attendance->checkin_time) {
+                [$status, $lateMessage] = $this->calculateStatusAndMessage(
+                    $emp,
+                    $attendance->checkin_time
+                );
             }
 
             $attendanceData[] = [
@@ -110,8 +105,6 @@ public function index(Request $request)
         'toDate'
     ));
 }
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -144,6 +137,7 @@ public function store(Request $request)
 
         if (!$attendance) {
             $attendance = new attendancecheckin();
+            $attendance->firm_id= Auth::user()->firm_id;
             $attendance->emp_id = $request->emp_id;
             $attendance->emp_name = $request->emp_name;
             $attendance->date = $today; // ← SAVE TODAY DATE
@@ -271,6 +265,7 @@ $attendance->checkout_photo = $filename;
         $emp = photoattendance::find($request->emp_id);
 
         $attendance = new attendancecheckin();
+        $attendance->firm_id  = Auth::user()->firm_id;
         $attendance->emp_id   = $request->emp_id;
         $attendance->emp_name = $emp->name ?? '';
         $attendance->date     = $request->date;

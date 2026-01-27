@@ -9,6 +9,7 @@ use App\Models\SalaryPayment;
 use App\Models\photoattendance;
 use App\Models\attendancesalary;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,9 +17,11 @@ class photoattendancecontroller extends Controller
 {
      public function index()
     {
-        $employeeWithTerms = photoattendance::whereNotNull('terms_text')
-            ->latest()
-            ->first();
+       $employeeWithTerms = photoattendance::where('firm_id', Auth::user()->firm_id)
+    ->whereNotNull('terms_text')
+    ->latest()
+    ->first();
+
 return view('photoattendancee.attendance_index', compact(
     'employeeWithTerms',
 ));
@@ -33,7 +36,7 @@ return view('photoattendancee.attendance_index', compact(
     // }
 public function create()
 {
-    $employees = photoattendance::latest()->get();
+   $employees = photoattendance::where('firm_id', Auth::user()->firm_id)->latest()->get();
 
 
     return view('photoattendancee.attendance_view', compact(
@@ -44,13 +47,17 @@ public function create()
 
     public function showform()
     {
-        $employees = photoattendance::select('id', 'af5', 'name')->get();
+       $employees = photoattendance::where('firm_id', Auth::user()->firm_id)
+    ->select('id', 'af5', 'name')
+    ->get();
+
         return view('photoattendancee.checkinindex', compact('employees'));
     }
     //============ SHOW EMPLOYEE ATTENDANCE/salary/and all DETAILS===========================
 public function show($id)
 {
-    $employee = photoattendance::findOrFail($id);
+   $employee = photoattendance::where('firm_id', Auth::user()->firm_id)
+    ->findOrFail($id);
 
     /* ===============================
        MONTH / YEAR
@@ -242,7 +249,7 @@ $employee = new photoattendance();
 $employee->af5 = $request->emp_id; // user typed value
 
 
-
+$employee->firm_id = Auth::user()->firm_id;
     $employee->name            = $request->name;
     $employee->email           = $request->email;
     $employee->mobile          = $request->mobile;
@@ -282,7 +289,9 @@ $employee->af5 = $request->emp_id; // user typed value
 // ===================================================================================================
    public function edit($id)
 {
-    $employee = photoattendance::findOrFail($id);
+   $employee = photoattendance::where('firm_id', Auth::user()->firm_id)
+    ->findOrFail($id);
+
  // keep existing ID
 
     return view('photoattendancee.attendance_edit', compact(
@@ -413,12 +422,13 @@ public function saveAdvanceSalary(Request $request)
     ]);
 
 attendancesalary::create([
+        'firm_id'        => Auth::user()->firm_id,
         'emp_id' => $request->emp_no,
         'emp_name' => $request->emp_name, 
         'advance_salary' => $request->advance_salary,
         'date' => $request->date,
-         'salary' => $request->salary, 
-         'no_of_days_worked' => 0,
+        'salary' => $request->salary, 
+        'no_of_days_worked' => 0,
         'remark' => "Advance Given",
     ]);
 
@@ -448,7 +458,8 @@ public function updateAdvance(Request $request, $id)
 // ============================================= update salary status=============================================================
 public function updateSalaryStatus(Request $request, $id)
 {
-    $employee = photoattendance::findOrFail($id);
+$employee = photoattendance::where('firm_id', Auth::user()->firm_id)
+    ->findOrFail($id);
 
     $employee->salary_status = $request->has('salary_status')
         ? 'paid'
@@ -467,6 +478,7 @@ public function updateMonthlySalary(Request $request, $id)
             'employee_id' => $id,
             'month'       => $request->month,
             'year'        => $request->year,
+            'firm_id' => Auth::user()->firm_id,
         ],
         [
             'status' => $request->has('status') ? 'paid' : 'unpaid',

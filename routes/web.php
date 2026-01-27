@@ -625,8 +625,8 @@ Route::put(
 
 // ===============================[for quotation ]===================================================
 Route::resource('quotations', QuotationController::class);
-Route::get('quotationform', [QuotationController::class, 'quotationform'])
-->name('quotationform');
+
+Route::get('store_to_salequotation/{id}', [App\Http\Controllers\QuotationController::class, 'store_to_salequotation']);
 
 route::get('quotation_print_view/{id}', [App\Http\Controllers\QuotationController::class, 'quotation_print_view']);
 Route::get('print_quotation_select/{id}', [App\Http\Controllers\QuotationController::class, 'print_quotation_select']);
