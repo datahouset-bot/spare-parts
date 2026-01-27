@@ -1114,7 +1114,7 @@ class SuperCompListController extends Controller
                     $exists = DB::table('accounts')
                         ->where('firm_id', $account['firm_id'])
                         ->where('account_name', $account['account_name'])
-                        ->exists
+                        ->exists();
                     if (!$exists) {
                         DB::table('accounts')->insert($account);
                     }
