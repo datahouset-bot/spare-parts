@@ -29,7 +29,7 @@
         <h4>Quotation list  <h4>       </div>
        <div class="row my-2">
           <div class="col-md-12 text-center">
-           <a href="{{ route('quotationform') }}" class="btn btn-primary">
+           <a href="{{ route('quotations.create') }}" class="btn btn-primary">
     New Quotation
 </a>
 

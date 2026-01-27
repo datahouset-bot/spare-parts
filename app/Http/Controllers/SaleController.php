@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\kot;
 use App\Models\item;
 use App\Models\sale;
+use App\Models\unit;
 use App\Models\godown;
 use App\Models\ledger;
 use App\Models\account;
@@ -20,11 +21,11 @@ use App\Models\roomcheckin;
 use App\Models\accountgroup;
 use App\Models\voucher_type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoresaleRequest;
 use App\Http\Requests\UpdatesaleRequest;
 use Illuminate\Support\Facades\Validator;
-use App\Models\unit;
 
 class SaleController extends CustomBaseController
 {

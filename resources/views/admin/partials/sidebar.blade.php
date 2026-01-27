@@ -429,7 +429,7 @@
                                         <nav class="sb-sidenav-menu-nested nav">
                                             <a class="nav-link" href="{{ url('/sales') }}"
                                                 style=" "  title="shortcut:ctrl+S">Sale Invoice</a>
-                                            <a class="nav-link" href="{{ url('/quotations/create') }}"
+                                            <a class="nav-link" href="{{ url('/quotations') }}"
                                                 style=" " title="shortcut:ctrl+S">Quotation</a>
                                             <a class="nav-link" href="{{ url('/sales') }}"
                                                 style=" "  title="shortcut:ctrl+S">Estimate Sale</a>

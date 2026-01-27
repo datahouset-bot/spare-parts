@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('firm_dealer', 200);
             $table->date('activation_date');
             $table->date('expiry_date'); // Corrected spelling
-            $table->decimal('billing_amt', 10, 2); // Changed to decimal for storing amounts
+            $table->decimal('billing_amt', 10, 2); 
+            // Changed to decimal for storing amounts
             
             $table->timestamps();
         });

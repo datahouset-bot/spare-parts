@@ -257,7 +257,7 @@ label {
         @endif
         <div class="card my-3">
            <div class="card-header d-flex justify-content-between align-items-center">
-    <span>New Stock Issue</span>
+    <span>New Quotation</span>
    
 
     <div class="d-flex gap-2">
@@ -272,7 +272,7 @@ label {
             Add New
         </a>
 
-        <a href="{{ url('store_to_sale/' . Auth::user()->id) }}"
+        <a href="{{ url('store_to_salequotation/' . Auth::user()->id) }}"
            class="btn btn-primary btn-sm">
             Save
         </a>
@@ -1697,5 +1697,28 @@ $('.openGroupModal').click(() => $('#groupModal').modal('show'));
 $('.openUnitModal').click(() => $('#unitModal').modal('show'));
 </script>
 
+<script>
+$(document).ready(function () {
+
+    function todayDMY() {
+        let d = new Date();
+        let day   = String(d.getDate()).padStart(2, '0');
+        let month = String(d.getMonth() + 1).padStart(2, '0');
+        let year  = d.getFullYear();
+        return `${day}-${month}-${year}`;
+    }
+
+    // Voucher Date
+    if (!$('#voucher_date').val()) {
+        $('#voucher_date').val(todayDMY());
+    }
+
+    // Bill Date
+    if (!$('#purchase_bill_date').val()) {
+        $('#purchase_bill_date').val(todayDMY());
+    }
+
+});
+</script>
 
 @endsection
