@@ -46,7 +46,7 @@ class SuperCompListController extends Controller
     ->groupBy(
         's.id', 's.firm_id', 's.firm_name', 's.firm_mobile', 's.firm_dealer',
         's.activation_date', 's.expiry_date', 's.billing_amt', 
-        's.created_at', 's.updated_at' // include all fields from super_comp_lists table
+        's.created_at', 's.updated_at','s.comp_af1','s.comp_af2','s.comp_af3','s.comp_af4','s.comp_af5','s.comp_af6','s.comp_af7','s.comp_af8' // include all fields from super_comp_lists table
     )
     ->orderBy('s.created_at', 'desc')
     ->get();
@@ -1114,8 +1114,7 @@ class SuperCompListController extends Controller
                     $exists = DB::table('accounts')
                         ->where('firm_id', $account['firm_id'])
                         ->where('account_name', $account['account_name'])
-                        ->exists();
-    
+                        ->exists
                     if (!$exists) {
                         DB::table('accounts')->insert($account);
                     }
@@ -1167,6 +1166,14 @@ class SuperCompListController extends Controller
             $supercomp->activation_date = $request->activation_date;
             $supercomp->expiry_date = $request->expiry_date;
             $supercomp->billing_amt = $request->billing_amt;
+            $supercomp->comp_af1 = $request->comp_af1;
+            $supercomp->comp_af2 = $request->comp_af2;
+            $supercomp->comp_af3 = $request->comp_af3;
+            $supercomp->comp_af4 = $request->comp_af4;
+            $supercomp->comp_af5 = $request->comp_af5;
+            $supercomp->comp_af6 = $request->comp_af6;
+            $supercomp->comp_af7 = $request->comp_af7;
+            $supercomp->comp_af8 = $request->comp_af8;
 
             $supercomp->save();
             $this->seedcompinfooters($request);

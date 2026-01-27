@@ -119,6 +119,53 @@
                               @enderror
                             </span>
                           </div>
+
+                            <div>
+
+                            Business <input type="text" name ="comp_af1"class="form-control" placeholder="Business">
+                            <span class="text-danger"> 
+                              @error('comp_af1')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span>
+                          </div>
+                          <div>
+                             Whatsapp <input type="text" name ="comp_af2"class="form-control" placeholder="whtsapp">
+                            <span class="text-danger"> 
+                              @error('comp_af2')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span>
+                          </div>
+                          <div>
+                             Wp start  to End<input type="text" name ="comp_af3"class="form-control" placeholder="whatsapp satrt and end">
+                            <span class="text-danger"> 
+                              @error('comp_af3')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span>
+                          </div>
+                          <div>
+                             Wp Amount<input type="text" name ="comp_af4"class="form-control" placeholder="whatsapp amount">
+                            <span class="text-danger"> 
+                              @error('comp_af4')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span>
+                          </div>
+                          <div>
+                             Remark1<input type="text" name ="comp_af5"class="form-control" placeholder="remark">
+                            <span class="text-danger"> 
+                              @error('comp_af5')
+                              {{$message}}
+                                  
+                              @enderror
+                            </span>
+                          </div>
                         
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -156,12 +203,19 @@
                     <th scope="col"> Activation Date   </th>
                     <th scope="col"> Expiery Date  </th>
                     <th scope="col"> Billing Amount  </th>
-                    <th scope="col"> Total RoomCheckout  </th>
+                    <th scope="col"> Chekins  </th>
 
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
+                    <th scope="col"> 1 </th>
+                    <th scope="col"> 2 </th>
+                    <th scope="col"> 3 </th>
+                    <th scope="col"> 4  </th>
+                    <th scope="col"> 5  </th>
+                    <th scope="col"> 6  </th>
+                    <th scope="col">   </th>
+                    <th scope="col">   </th>
+                    <th scope="col">   </th>
+                    <th scope="col">   </th>
+
                   </tr>
                 </thead>
                 <tbody>
@@ -182,9 +236,18 @@
                     <td>{{ \Carbon\Carbon::parse($record->expiry_date)->format('d-m-Y') }}</td>
                     
                     <td>{{$record->billing_amt}}</td>
+
+
+
+
                     <td>{{ $record->total_roomcheckouts }}</td>
 
-
+                    <td>{{$record->comp_af1}}</td>
+                    <td>{{$record->comp_af2}}</td>
+                    <td>{{$record->comp_af3}}</td>
+                    <td>{{$record->comp_af4}}</td>
+                    <td>{{$record->comp_af5}}</td>
+                    <td>{{$record->comp_af6}}</td>
 
                     
                   <td>
