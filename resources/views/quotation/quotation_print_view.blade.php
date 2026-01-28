@@ -328,7 +328,7 @@ background-color:white;
 
 
                        {{-- <span>Mobile No:{{ $salebill_header->account->mobile }}</span><br> --}}
-                       <span>GSTIN  No:{{ $salebill_header->account->gst_no }}</span><br>
+                       {{-- <span>GSTIN  No:{{ $salebill_header->account->gst_no }}</span><br> --}}
                       
                     </div>
                     <div class="voucher_info">
@@ -355,10 +355,10 @@ background-color:white;
                         <tr>
                             <th class="th_detail">S.no</th>
                             <th class="th_detail">Item Name</th>
-                            <th class="th_detail">Qty</th>
+                            {{-- <th class="th_detail">Qty</th>
                             <th class="th_detail">Rate</th>
 
-                            <th class="th_detail">Gst%</th>
+                            <th class="th_detail">Gst%</th> --}}
                             <th class="th_detail">Amount</th>
                         </tr>
                     </thead>
@@ -368,13 +368,13 @@ background-color:white;
                         @endphp
                         @foreach ($salebill_items as $records )
                         <tr>
-                            <td>{{$sno=$sno+1}}</td>
-                          <td>{{$records->item_name}}</td>
-                           <td>{{ number_format($records->qty, 0) }}</td>
+                            <td style="text-align: center">{{$sno=$sno+1}}</td>
+                          <td style="text-align: center">{{$records->item_name}}</td>
+                           {{-- <td>{{ number_format($records->qty, 0) }}</td>
                           <td>{{ number_format($records->rate,1)}}</td>
-                          <td>{{ number_format($records->gst_item_percent,1)}}</td>
+                          <td>{{ number_format($records->gst_item_percent,1)}}</td> --}}
 
-                          <td>{{ number_format($records->item_basic_amount,1)}}</td>  
+                          <td style="text-align: center">{{ number_format($records->item_basic_amount,1)}}</td>  
                         </tr>
                             
                         @endforeach
@@ -468,7 +468,7 @@ background-color:white;
             <div class="button-container my-2 gap-2">
 
     <!-- HOME BUTTON -->
-    <a href="{{ url('/Qotations/create') }}" class="btn btn-primary btn-lg">
+    <a href="{{ url('/quotations') }}" class="btn btn-primary btn-lg">
         <i class="fa fa-home"></i> Home
     </a>
 

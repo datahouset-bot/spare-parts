@@ -13,7 +13,7 @@
 .sb-sidenav .nav-link {
     color: #cfd8e3 !important;
     font-size:29px;
-    padding: 10px 18px;
+    padding: 14px 22px;
     margin: 4px 10px;
     border-radius: 6px;
     display: flex;
@@ -21,23 +21,23 @@
     gap: 12px;
     transition: all 0.25s ease;
     position: relative;
+    
 }
 
 /* ICON */
 .sb-sidenav .sb-nav-link-icon i {
-    font-size: 24px;
+    font-size: 26px;
     color: #8fa3bf;
     min-width: 18px;
     transition: color 0.25s ease;
 }
-
 /* ===============================
    HOVER EFFECT (PRO STYLE)
 ================================ */
-.sb-sidenav .nav-link:hover {
+/* .sb-sidenav .nav-link:hover {
     background: rgba(255, 255, 255, 0.08);
     color: #ffffff !important;
-}
+} */
 
 .sb-sidenav .nav-link:hover i {
     color: #4fc3f7;
@@ -137,6 +137,11 @@
         rgba(255,255,255,0)
     );
 }
+/* =====================================
+   GLOBAL SIDEBAR WIDTH FIX (SAFE)
+===================================== */
+
+
 
 
 </style>
@@ -901,7 +906,34 @@
 
 
 
+@if (auth()->user()->can('Staff Management'))
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    style=" " data-bs-target="#pagesCollapseError"
+                                    aria-expanded="false" aria-controls="pagesCollapseError">
+                                    Staff Management
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="{{ url('attendancecheckin') }}"
+                                style=" ">Check In/Out</a>
+
+                                    @can('create role')
+                                <a class="nav-link" href="{{ url('attendancephoto') }}"
+                                style=" ">Attendance Records</a>
+                        <a  class="nav-link" href="{{ url('attendances') }}"  style=" ">
+                        Add New Employee</a>
+                        @endcan
+                         @can('view user')
+                            <a class="nav-link" href="{{ url('attendances/create') }}"
+                                style=" ">Employee Details</a>
+                        @endcan
+                                    </nav>
+                                </div>
+
                 </div>
+                    @endif
 
 
 

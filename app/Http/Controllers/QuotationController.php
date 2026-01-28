@@ -89,8 +89,8 @@ $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
 
        public function store_to_voucher($id)
     {
-    $record=tempentry::where('firm_id', Auth::user()->firm_id)->where('user_id',$id)->where('voucher_type','sale')->get();
-    $first_record=tempentry::where('firm_id', Auth::user()->firm_id)->where('user_id',$id)->where('voucher_type','sale')->first();
+    $record=tempentry::where('firm_id', Auth::user()->firm_id)->where('user_id',$id)->where('voucher_type','Quotation')->get();
+    $first_record=tempentry::where('firm_id', Auth::user()->firm_id)->where('user_id',$id)->where('voucher_type','Quotation')->first();
     $voucher_terms = $first_record->voucher_remark;
 
 
@@ -147,7 +147,7 @@ $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
             $ledger->voucher_no = $first_record->voucher_no;
             $ledger->reciept_no = $first_record->bill_no;
             $ledger->entry_date = $first_record->entry_date;
-            $ledger->transaction_type = 'sale';
+            $ledger->transaction_type = 'Quotation';
             $ledger->payment_mode_id = $posting_acc_id;
             $ledger->payment_mode_name = $paymentmode->account_name;
 
@@ -159,7 +159,7 @@ $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
             $ledger->primary_group_name = $accountname->accountgroup->primaryGroup->primary_group_name;
             $ledger->credit = $net_voucher_amount;
             $ledger->amount = $net_voucher_amount;
-            $ledger->remark = "Sale/" . $first_record->bill_no;
+            $ledger->remark = "Quotation/" . $first_record->bill_no;
             $ledger->simpal_amount = "-" .$net_voucher_amount;
             $ledger->userid = Auth::user()->id;
             $ledger->username = Auth::user()->name;
@@ -172,7 +172,7 @@ $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
             $ledger->voucher_no = $first_record->voucher_no;
             $ledger->reciept_no = $first_record->bill_no;
             $ledger->entry_date = $first_record->entry_date;
-            $ledger->transaction_type = 'sale';
+            $ledger->transaction_type = 'Quotation';
             $ledger->payment_mode_id = $accountname->id;
             $ledger->payment_mode_name = $accountname->account_name;
             $ledger->account_id = $paymentmode->id;
@@ -183,7 +183,7 @@ $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
             $ledger->primary_group_name = $paymentmode->accountgroup->primaryGroup->primary_group_name;
             $ledger->debit = $net_voucher_amount;
             $ledger->amount = $net_voucher_amount;
-            $ledger->remark = "Sale/" . $first_record->bill_no;
+            $ledger->remark = "Quotation/" . $first_record->bill_no;
             $ledger->simpal_amount = "+" . $net_voucher_amount;
             $ledger->userid = Auth::user()->id;
             $ledger->username = Auth::user()->name;
@@ -272,7 +272,7 @@ $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
        }
     }
 
-    public function store_to_salequotation($id)
+    public function store_to_quotation($id)
     {
      
     $records=tempentry::where('user_id',$id)->get();
@@ -404,12 +404,40 @@ $salebill_items=inventory::withinFY('entry_date')->where('firm_id',Auth::user()-
 
    }
   
-
-
-   Public function quotation_print_view($voucher_no){
-    $salebill_header = voucher::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->with('account')->where('voucher_type','sale')->where('voucher_no',$voucher_no)->first(); 
+   Public function quotation_print_view2($voucher_no){
+    $salebill_header = voucher::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->with('account')->where('voucher_type','Quotation')->where('voucher_no',$voucher_no)->first(); 
    $salebill_items=inventory::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->where('voucher_no',$salebill_header->voucher_no)
-   ->where('voucher_type','sale')
+   ->where('voucher_type','Quotation')
+   ->get();
+
+ return view('quotation.quotation_print_view2',compact('salebill_header','salebill_items'));
+
+} 
+
+ Public function quotation_print_view3($voucher_no){
+    $salebill_header = voucher::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->with('account')->where('voucher_type','Quotation')->where('voucher_no',$voucher_no)->first(); 
+   $salebill_items=inventory::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->where('voucher_no',$salebill_header->voucher_no)
+   ->where('voucher_type','Quotation')
+   ->get();
+
+ return view('quotation.quotation_print_view3',compact('salebill_header','salebill_items'));
+
+} 
+
+ Public function quotation_print_view4($voucher_no){
+    $salebill_header = voucher::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->with('account')->where('voucher_type','Quotation')->where('voucher_no',$voucher_no)->first(); 
+   $salebill_items=inventory::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->where('voucher_no',$salebill_header->voucher_no)
+   ->where('voucher_type','Quotation')
+   ->get();
+
+ return view('quotation.quotation_print_view4',compact('salebill_header','salebill_items'));
+
+} 
+
+ Public function quotation_print_view($voucher_no){
+    $salebill_header = voucher::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->with('account')->where('voucher_type','Quotation')->where('voucher_no',$voucher_no)->first(); 
+   $salebill_items=inventory::withinFY('entry_date')-> where('firm_id',Auth::user()->firm_id)->where('voucher_no',$salebill_header->voucher_no)
+   ->where('voucher_type','Quotation')
    ->get();
 
  return view('quotation.quotation_print_view',compact('salebill_header','salebill_items'));

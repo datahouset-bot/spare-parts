@@ -303,7 +303,7 @@
 
                                                 <div class="card-footer text-center py-3">
                                                     <div class="small">
-
+                                                         <a class= "btn btn-success "href={{ url('quotations') }}>Home</a>
                                                         <a class= "btn btn-dark  "href={{ url('home') }}>Back</a>
                                                     </div>
                                                 </div>

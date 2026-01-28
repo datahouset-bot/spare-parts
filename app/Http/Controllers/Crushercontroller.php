@@ -18,12 +18,65 @@ class Crushercontroller extends Controller
      */
     public function index()
     {
-        $creshers = cresher::latest()->get();
+         $creshers = cresher::where('firm_id', Auth::user()->firm_id)
+        ->latest()
+        ->get();
         return view('crusher.cresher_index', compact('creshers'));
     }
   /**
      * Show the form for creating a new resource.
      */
+    
+public function create()
+{
+    $firmId = Auth::user()->firm_id;
+
+    // ================= VEHICLE & ACCOUNTS =================
+    $vehicle = vehicledetail::get();
+    $account = account::where('firm_id', $firmId)->get();
+
+    // ================= VOUCHER TYPE =================
+    $voucherType = voucher_type::where('firm_id', $firmId)
+        ->where('voucher_type_name', 'Crusher')
+        ->first();
+
+    if (!$voucherType) {
+        abort(500, 'Crusher voucher type not configured');
+    }
+
+    // ================= CHECK EXISTING CRUSHER RECORDS (FY) =================
+    $crusherCount = cresher::withinFY('date')
+        ->where('firm_id', $firmId)
+        ->count();
+
+    if ($crusherCount > 0) {
+
+        $lastRecord = cresher::withinFY('date')
+            ->where('firm_id', $firmId)
+            ->orderByRaw('CAST(slip_no AS UNSIGNED) DESC')
+            ->first();
+
+        $nextSlip = ((int)$lastRecord->slip_no) + 1;
+
+    } else {
+
+        // start from voucher type config
+        $nextSlip = (int)$voucherType->numbring_start_from;
+    }
+
+    // ================= BILL NO =================
+    $billNo =
+        ($voucherType->voucher_prefix ?? '') .
+        $nextSlip .
+        ($voucherType->voucher_suffix ?? '');
+
+    // ================= VIEW =================
+    return view(
+        'crusher.cresher_entry',
+        compact('account', 'vehicle', 'nextSlip', 'billNo')
+    );
+}
+
 public function store(Request $request)
 {
     // ================= VALIDATION =================
@@ -41,7 +94,6 @@ public function store(Request $request)
     $crusherCount = Cresher::withinFY('date')
         ->where('firm_id', $firmId)
         ->count();
-        dd($crusherCount);
 
     $voucherType = voucher_type::where('firm_id', $firmId)
         ->where('voucher_type_name', 'Crusher')
@@ -303,57 +355,7 @@ public function vehicledetailcreate()
     {
         return view('crusher.vehicledetail_entry');
     }
-public function create()
-{
-    $firmId = Auth::user()->firm_id;
-
-    // ================= VEHICLE & ACCOUNTS =================
-    $vehicle = vehicledetail::get();
-    $account = account::where('firm_id', $firmId)->get();
-
-    // ================= VOUCHER TYPE =================
-    $voucherType = voucher_type::where('firm_id', $firmId)
-        ->where('voucher_type_name', 'Crusher')
-        ->first();
-
-    if (!$voucherType) {
-        abort(500, 'Crusher voucher type not configured');
-    }
-
-    // ================= CHECK EXISTING CRUSHER RECORDS (FY) =================
-    $crusherCount = cresher::withinFY('date')
-        ->where('firm_id', $firmId)
-        ->count();
-        dd($crusherCount);
-
-    if ($crusherCount > 0) {
-
-        $lastRecord = cresher::withinFY('date')
-            ->where('firm_id', $firmId)
-            ->orderByRaw('CAST(slip_no AS UNSIGNED) DESC')
-            ->first();
-
-        $nextSlip = ((int)$lastRecord->slip_no) + 1;
-
-    } else {
-
-        // start from voucher type config
-        $nextSlip = (int)$voucherType->numbring_start_from;
-    }
-
-    // ================= BILL NO =================
-    $billNo =
-        ($voucherType->voucher_prefix ?? '') .
-        $nextSlip .
-        ($voucherType->voucher_suffix ?? '');
-
-    // ================= VIEW =================
-    return view(
-        'crusher.cresher_entry',
-        compact('account', 'vehicle', 'nextSlip', 'billNo')
-    );
-}
-
+    
     /**
      * Store a newly created resource in storage.
      */

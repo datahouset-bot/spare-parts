@@ -88,6 +88,26 @@
     }
 }
 
+/* Desktop & Laptop */
+#layoutSidenav_content {
+    margin-left: 80%;          /* SAME as sidebar width */
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    transition: margin-left 0.3s ease;
+}
+
+/* Make sure main never exceeds */
+#layoutSidenav_content > main {
+    margin-left: 5%;
+
+    width: 95%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 16px;
+}
+
+
     </style>
     <main>
         <div class="container-fluid px-4">

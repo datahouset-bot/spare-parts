@@ -272,7 +272,7 @@ label {
             Add New
         </a>
 
-        <a href="{{ url('store_to_salequotation/' . Auth::user()->id) }}"
+        <a href="{{ url('store_to_quotation/' . Auth::user()->id) }}"
            class="btn btn-primary btn-sm">
             Save
         </a>
@@ -318,7 +318,7 @@ label {
                         value =  "{{ Auth::user()->name }}">
                     <input type="hidden" class="form-control" id="voucher_no" name="voucher_no"
                         value={{ $new_voucher_no }}>
-                    <input type="hidden" class="form-control" id="voucher_type" name="voucher_type" value="sale">
+                    <input type="hidden" class="form-control" id="voucher_type" name="voucher_type" value="Quotation">
                     {{-- <input type="hidden" class="form-control" id="total_item_dis_amt" name="total_item_dis_amt" > --}}
 
                     {{-- hidden input close  --}}

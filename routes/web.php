@@ -41,6 +41,7 @@ use App\Http\Controllers\ItemgroupController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\OptionlistController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ComponyinfoController;
 use App\Http\Controllers\LandingpageController;
 use App\Http\Controllers\OtherchargeController;
@@ -520,7 +521,7 @@ Route::get('table_foodbill_print_view/{voucher_no}', [App\Http\Controllers\Resta
 Route::get('table_foodbill_settle/{voucher_no}/{id}/{settel_only}', [App\Http\Controllers\RestaController::class, 'settle_show']);
 Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
-    Route::resource('permissions', App\Http\Controllers\PermissionController::class);
+    Route::resource('permissions', PermissionController::class);
     Route::get('permissions/{permissionId}/delete', [App\Http\Controllers\PermissionController::class, 'destroy']);
 
     Route::resource('roles', App\Http\Controllers\RoleController::class);
@@ -626,12 +627,13 @@ Route::put(
 // ===============================[for quotation ]===================================================
 Route::resource('quotations', QuotationController::class);
 
-Route::get('store_to_salequotation/{id}', [App\Http\Controllers\QuotationController::class, 'store_to_salequotation']);
+Route::get('store_to_quotation/{id}', [App\Http\Controllers\QuotationController::class, 'store_to_quotation']);
 
 route::get('quotation_print_view/{id}', [App\Http\Controllers\QuotationController::class, 'quotation_print_view']);
 Route::get('print_quotation_select/{id}', [App\Http\Controllers\QuotationController::class, 'print_quotation_select']);
-
-
+route::get('quotation_print_view2/{id}', [App\Http\Controllers\QuotationController::class, 'quotation_print_view2']);
+route::get('quotation_print_view3/{id}', [App\Http\Controllers\QuotationController::class, 'quotation_print_view3']);
+route::get('quotation_print_view4/{id}', [App\Http\Controllers\QuotationController::class, 'quotation_print_view4']);
 
 //----------------------------purchase- sales invetory  stock managment -------------------------
 Route::resource('purchases', PurchaseController::class);
