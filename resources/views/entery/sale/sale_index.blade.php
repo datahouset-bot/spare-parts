@@ -16,7 +16,7 @@
    
   });
 </script> --}}
-<div class="container-fluid" style="max-width:90% !important;">
+<div class="container-fluid" style="max-width:100% !important;">
   @if(session('message'))
     <div class="alert alert-primary">
         {{ session('message') }}
@@ -25,46 +25,54 @@
 
 
    <div class="card my-3 w-100" style="border-radius:5px;">
-        <div class="card-header">
-        <h4>Sale invoice  <h4>       </div>
-       <div class="row my-2">
-          <div class="col-md-12 text-center">
-            <a href="{{url('sales/create')}}" class="btn btn-primary" title="shortcut:shift+N">New Sale invoice</a>
-            {{-- <a href="{{url('sale_register')}}" class="btn btn-dark"> Register sale </a> --}}
-         <div class="row mb-3 align-items-end g-2">
+     <div class="card-header">
+    <div class="row align-items-end g-2">
 
-    <!-- FROM DATE -->
-    <div class="col-md-3 col-sm-6">
-        <label class="fw-bold">From Date</label>
-        <input type="date" id="fromDate" class="form-control">
+        <!-- Title -->
+        <div class="col-md-2 col-sm-12">
+            <h4 class="mb-0">Sale Invoice</h4>
+        </div>
+
+        <!-- New Sale Button -->
+        <div class="col-md-2 col-sm-12">
+            <a href="{{ url('sales/create') }}"
+               class="btn btn-primary w-100"
+               title="shortcut: shift + N">
+                New Sale Invoice
+            </a>
+        </div>
+
+        <!-- From Date -->
+        <div class="col-md-2 col-sm-6">
+            <label class="fw-bold">From Date</label>
+            <input type="date" id="fromDate" class="form-control">
+        </div>
+
+        <!-- To Date -->
+        <div class="col-md-2 col-sm-6">
+            <label class="fw-bold">To Date</label>
+            <input type="date" id="toDate" class="form-control">
+        </div>
+
+        <!-- OK -->
+        <div class="col-md-2 col-sm-6">
+            <label class="d-none d-md-block">&nbsp;</label>
+            <button class="btn btn-primary w-100" id="filterDate">
+                <i class="fa fa-filter"></i> OK
+            </button>
+        </div>
+
+        <!-- Today -->
+        <div class="col-md-2 col-sm-6">
+            <label class="d-none d-md-block">&nbsp;</label>
+            <button class="btn btn-secondary w-100" id="resetDate">
+                <i class="fa fa-refresh"></i> Today
+            </button>
+        </div>
+
     </div>
-
-    <!-- TO DATE -->
-    <div class="col-md-3 col-sm-6">
-        <label class="fw-bold">To Date</label>
-        <input type="date" id="toDate" class="form-control">
-    </div>
-
-    <!-- OK BUTTON -->
-    <div class="col-md-2 col-sm-6">
-        <label class="fw-bold d-none d-md-block">&nbsp;</label>
-        <button class="btn btn-primary w-100" id="filterDate">
-            <i class="fa fa-filter"></i> OK
-        </button>
-    </div>
-
-    <!-- TODAY BUTTON -->
-    <div class="col-md-2 col-sm-6">
-        <label class="fw-bold d-none d-md-block">&nbsp;</label>
-        <button class="btn btn-secondary w-100" id="resetDate">
-            <i class="fa fa-refresh"></i> Today
-        </button>
-    </div>
-
 </div>
 
-          </div>
-       </div>
         
 
 

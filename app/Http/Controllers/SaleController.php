@@ -298,7 +298,6 @@ $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
     foreach ($records as $record) {
         
          $purchase=new inventory;
-         dd($record->remark_1);
          $purchase->firm_id = Auth::user()->firm_id;
          $purchase->entry_date=$record->entry_date;
          $purchase->voucher_no=$record->voucher_no;

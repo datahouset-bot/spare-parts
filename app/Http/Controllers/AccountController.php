@@ -64,20 +64,9 @@ class AccountController extends CustomBaseController
 
 
             return redirect('/account_import')->with('message', 'The record has been successfully inserted .');
-
-
-
         } else {
             return redirect()->back()->withErrors($validator);
-
         }
-
-
-
-
-
-
-
     }
 
 
@@ -114,8 +103,6 @@ class AccountController extends CustomBaseController
             $image1 = $request->account_id_pic;
             $account_id_pic = $image1->getClientOriginalName();
             $image1->storeAS('public\account_image', $account_id_pic);
-
-
         } else {
             $account_id_pic = NULL;
         }
@@ -124,22 +111,16 @@ class AccountController extends CustomBaseController
             $image2 = $request->account_pic1;
             $account_pic1 = $image2->getClientOriginalName();
             $image2->storeAS('public\account_image', $account_pic1);
-
-
         } else {
             $account_pic1 = NULL;
         }
 
-       if (!empty($request->gst_no)) {
-                // Extract first 2 characters from GST number
-                $gst_code = substr($request->gst_no, 0, 2);
-            
-            }
-
-
-         else{
+        if (!empty($request->gst_no)) {
+            // Extract first 2 characters from GST number
+            $gst_code = substr($request->gst_no, 0, 2);
+        } else {
             $gst_code = NULL;
-         }
+        }
         if ($validator->passes()) {
             $account = new account;
             $account->firm_id = Auth::user()->firm_id;
@@ -177,9 +158,7 @@ class AccountController extends CustomBaseController
             return redirect()->back()->with('success', 'Account is created successfully.');
         } else {
             return redirect('/accountform')->withInput()->withErrors($validator);
-
         }
-
     }
 
     public function destroy(Account $account, $id)
@@ -226,12 +205,11 @@ class AccountController extends CustomBaseController
     public function update(Request $request)
     {
 
-        
-            if (!empty($request->gst_no)) {
-                // Extract first 2 characters from GST number
-                $gst_code = substr($request->gst_no, 0, 2);
-            
-            }
+
+        if (!empty($request->gst_no)) {
+            // Extract first 2 characters from GST number
+            $gst_code = substr($request->gst_no, 0, 2);
+        }
 
         // this is use for save the record of edited item 
         $validator = validator::make($request->all(), [
@@ -244,8 +222,6 @@ class AccountController extends CustomBaseController
             $image1 = $request->account_id_pic;
             $account_id_pic = $image1->getClientOriginalName();
             $image1->storeAS('public\account_image', $account_id_pic);
-
-
         } else {
             $account_id_pic = NULL;
         }
@@ -254,8 +230,6 @@ class AccountController extends CustomBaseController
             $image2 = $request->account_pic1;
             $account_pic1 = $image2->getClientOriginalName();
             $image2->storeAS('public\account_image', $account_pic1);
-
-
         } else {
             $account_pic1 = NULL;
         }
@@ -307,7 +281,6 @@ class AccountController extends CustomBaseController
         $accountgroups = accountgroup::all();
 
         return view('master.accountformview', ['data' => $record, 'accountgroups' => $accountgroups]);
-
     }
 
 
@@ -325,7 +298,7 @@ class AccountController extends CustomBaseController
 
     public function searchCustomer($contactNumber)
     {
-        $firm_id=Auth::user()->firm_id;
+        $firm_id = Auth::user()->firm_id;
         // Search for the customer by contact number
         $customer = account::where('firm_id', Auth::user()->firm_id)
             // ->where('phone', $contactNumber)
@@ -334,7 +307,7 @@ class AccountController extends CustomBaseController
 
         if ($customer) {
             return response()->json([
-                'message' => '<p class="alart alart-success">Record Found Sucessfully <p>.'.$firm_id,
+                'message' => '<p class="alart alart-success">Record Found Sucessfully <p>.' . $firm_id,
                 'customer_info' => $customer->toArray()
             ]);
         } else {
@@ -346,27 +319,27 @@ class AccountController extends CustomBaseController
     }
 
 
-        public function searchcustomer_check_in_pending($contactNumber)
+    public function searchcustomer_check_in_pending($contactNumber)
     {
-        $firm_id=Auth::user()->firm_id;
+        $firm_id = Auth::user()->firm_id;
         // Search for the customer by contact number
         $customer = roomcheckin::where('firm_id', Auth::user()->firm_id)
             // ->where('phone', $contactNumber)
             ->Where('guest_mobile', $contactNumber)
-            ->where('checkout_voucher_no','0')
+            ->where('checkout_voucher_no', '0')
             ->first();
 
         if ($customer) {
             return response()->json([
-                'message' => '<p class="alart alart-success">Record Found Sucessfully <p>.'.$firm_id,
+                'message' => '<p class="alart alart-success">Record Found Sucessfully <p>.' . $firm_id,
                 'customer_info' => $customer->toArray(),
-                'status'=>200,
+                'status' => 200,
             ]);
         } else {
             return response()->json([
                 'message' => ' <p class="alart alart-danger">No Record Found<p>',
                 'customer_info' => null,
-                'status'=>400,
+                'status' => 400,
             ]);
         }
     }
@@ -391,52 +364,51 @@ class AccountController extends CustomBaseController
         }
     }
 
-   public function createAccountAjax(Request $request)
-{
-    // ✅ AJAX-safe validation
-    $validator = Validator::make($request->all(), [
-        'account_name'     => 'required|string|max:255',
-        'account_group_id' => 'required|integer',
-        'op_balnce'        => 'nullable|numeric',
-        'balnce_type'      => 'required|in:Dr,Cr',
-        'mobile'           => 'nullable|string',
-        'gst_no'           => 'nullable|string',
-        'address'          => 'nullable|string',
-    ]);
+    public function createAccountAjax(Request $request)
+    {
+        // ✅ AJAX-safe validation
+        $validator = Validator::make($request->all(), [
+            'account_name'     => 'required|string|max:255',
+            'account_group_id' => 'required|integer',
+            'op_balnce'        => 'nullable|numeric',
+            'balnce_type'      => 'required|in:Dr,Cr',
+            'mobile'           => 'nullable|string',
+            'gst_no'           => 'nullable|string',
+            'address'          => 'nullable|string',
+        ]);
 
-    if ($validator->fails()) {
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        if (!Auth::check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        try {
+            $account = Account::create([
+                'firm_id'          => Auth::user()->firm_id,
+                'account_name'     => $request->account_name,
+                'account_group_id' => $request->account_group_id,
+                'op_balnce'        => $request->op_balnce ?? 0,
+                'balnce_type'      => $request->balnce_type,
+                'mobile'           => $request->mobile,
+                'gst_no'           => $request->gst_no,
+                'address'          => $request->address,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
+
+
+        // ✅ JSON RESPONSE (THIS FIXES EVERYTHING)
         return response()->json([
-            'errors' => $validator->errors()
-        ], 422);
+            'id'           => $account->id,
+            'account_name' => $account->account_name,
+            'message'      => 'Account created successfully'
+        ]);
     }
-
-    if (!Auth::check()) {
-        return response()->json(['message' => 'Unauthorized'], 401);
-    }
-try {
-    $account = Account::create([
-        'firm_id'          => Auth::user()->firm_id,
-        'account_name'     => $request->account_name,
-        'account_group_id' => $request->account_group_id,
-        'op_balnce'        => $request->op_balnce ?? 0,
-        'balnce_type'      => $request->balnce_type,
-        'mobile'           => $request->mobile,
-        'gst_no'           => $request->gst_no,
-        'address'          => $request->address,
-    ]);
-} catch (\Exception $e) {
-    return response()->json([
-        'error' => $e->getMessage()
-    ], 500);
-}
-
-
-    // ✅ JSON RESPONSE (THIS FIXES EVERYTHING)
-    return response()->json([
-        'id'           => $account->id,
-        'account_name' => $account->account_name,
-        'message'      => 'Account created successfully'
-    ]);
-}
-
 }

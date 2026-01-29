@@ -16,7 +16,45 @@
    
   });
 </script> --}}
-<div class="container-fluid mx-3 ">
+
+<style>
+/* FULL PAGE FIX */
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.container-fluid {
+    max-width: 100%;
+}
+
+/* DataTable full width */
+.dataTables_wrapper {
+    width: 100%;
+}
+
+table.dataTable {
+    width: 100% !important;
+}
+
+/* Sticky header remains */
+.card {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.form-control,
+.btn {
+    height: 36px;
+}
+.dataTables_paginate,
+.dataTables_info {
+    padding: 8px 12px;
+}
+
+
+</style>
+<div class="container-fluid px-0">
   @if(session('message'))
     <div class="alert alert-primary">
         {{ session('message') }}
@@ -24,44 +62,60 @@
 @endif
 
 
-    <div class="">
-        <div class="card-header">
-        <h4>Purchase <h4>       </div>
-       <div class="row my-2">
-          <div class="col-md-12 text-center">
-            <a href="{{url('purchases/create')}}" class="btn btn-primary">New Purchase  </a>
 
-          </div>
-       </div>
-        
-<div class="row mb-3 align-items-end">
-    <div class="col-md-3">
-        <label class="fw-semibold">From Date</label>
-        <input type="date" id="from_date" class="form-control">
-    </div>
+  <div class="card mb-3">
+    <div class="card-body">
+        <div class="row align-items-end g-2">
 
-    <div class="col-md-3">
-        <label class="fw-semibold">To Date</label>
-        <input type="date" id="to_date" class="form-control">
-    </div>
+            <!-- Title -->
+            <div class="col-md-2">
+                <h4 class="mb-0">Purchase</h4>
+            </div>
 
-    <div class="col-md-2">
-        <button class="btn btn-primary w-100" id="filterBtn">
-            <i class="fa fa-filter"></i> Filter
-        </button>
-    </div>
+            <!-- New Purchase Button -->
+            <div class="col-md-2">
+                <a href="{{ url('purchases/create') }}"
+                   class="btn btn-primary w-100">
+                    New Purchase
+                </a>
+            </div>
 
-    <div class="col-md-2">
-        <button class="btn btn-secondary w-100" id="resetBtn">
-            Reset
-        </button>
+            <!-- From Date -->
+            <div class="col-md-2">
+                <label class="fw-semibold">From Date</label>
+                <input type="date" id="from_date" class="form-control">
+            </div>
+
+            <!-- To Date -->
+            <div class="col-md-2">
+                <label class="fw-semibold">To Date</label>
+                <input type="date" id="to_date" class="form-control">
+            </div>
+
+            <!-- Filter -->
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100" id="filterBtn">
+                    <i class="fa fa-filter"></i> Filter
+                </button>
+            </div>
+
+            <!-- Reset -->
+            <div class="col-md-2">
+                <button class="btn btn-secondary w-100" id="resetBtn">
+                    Reset
+                </button>
+            </div>
+
+        </div>
     </div>
 </div>
 
+
           {{-- data table start  --}}
-        <div class="card-body table-scrollable">
- 
-          <table class="table table-striped" id="remindtable">
+       <div class="card-body p-0">
+    <div class="table-responsive">
+        <table class="table table-striped w-100" id="remindtable">
+
                 <thead>
                   <tr>
                     <th scope="col">S.No</th>
@@ -154,13 +208,16 @@
 <script>
 $(document).ready(function () {
 
-    let table = new DataTable('#remindtable', {
-        layout: {
-            topStart: {
-                buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
-            }
-        }
-    });
+   let table = new DataTable('#remindtable', {
+    responsive: false,
+    scrollX: true,
+    layout: {
+        topStart: {
+            buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+        },
+        topEnd: 'search'
+    }
+});
 
     // Custom DATE RANGE filter
     $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {

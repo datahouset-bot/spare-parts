@@ -132,8 +132,6 @@ Route::Post('itemgroups', [App\Http\Controllers\ItemgroupController::class, 'sto
 Route::get('deleteitemgroups/{id}', [App\Http\Controllers\ItemgroupController::class, 'destroy']);
 Route::get('showediteditemgroups/{id}', [App\Http\Controllers\ItemgroupController::class, 'show']);
 Route::put('/itemgroups/{id}', [ItemGroupController::class, 'update']);
-Route::post('/item-group/store-ajax', [ItemGroupController::class, 'storeAjax'])
-    ->name('itemgroup.store.ajax');
 
 
 Route::resource('units', UnitController::class);
@@ -152,8 +150,6 @@ Route::POST('store_softwarecompny_firmid', [App\Http\Controllers\SuperCompListCo
 
 Route::Post('unit_store', [App\Http\Controllers\UnitController::class, 'unit_store']);
 Route::get('fetch_units', [App\Http\Controllers\UnitController::class, 'fetchUnits']);
-Route::post('/unit/store-ajax', [UnitController::class, 'storeAjax'])
-    ->name('unit.store.ajax');
 
 
 Route::resource('primarygroups', PrimarygroupController::class);
@@ -175,9 +171,6 @@ Route::get('item_dt', [App\Http\Controllers\ItemController::class, 'item_dt']);
 Route::get('/searchitem/{item_id}', [ItemController::class, 'searchitem']);
 Route::get('/searchitem_batch/{item_id}', [ItemController::class, 'searchitem_batch']);
 Route::post('/items/import', [ItemController::class, 'importItems'])->name('items.import');
-Route::post('/create_item_ajax', [ItemController::class, 'createItemAjax'])
-    ->name('create_item_ajax');
-
 // master Route---Comapny-----------------------------------------------
 Route::get('/company', [App\Http\Controllers\CompanyController::class, 'index'])->name('company');
 // Route::get('/savecompany', [App\Http\Controllers\CompanyController::class, 'create']);
@@ -185,8 +178,7 @@ Route::post('/savecompany', [App\Http\Controllers\CompanyController::class, 'sto
 Route::get('/deletecompany/{id}', [App\Http\Controllers\CompanyController::class, 'destroy']);
 Route::get('/showeditecompany/{id}', [App\Http\Controllers\CompanyController::class, 'show_company_form_edit']);
 Route::put('/editcompany', [App\Http\Controllers\CompanyController::class, 'edit_company']);
-Route::post('/company/store-ajax', [CompanyController::class, 'storeAjax'])
-    ->name('company.store.ajax');
+
 
 //Account Route ---------------------------------------------------------------------------
 Route::get('/account', [App\Http\Controllers\AccountController::class, 'index']);
@@ -200,11 +192,23 @@ Route::get('/searchcustomer_check_in_pending/{contactNumber}', [AccountControlle
 Route::get('/searchCustomer_by_id/{id}', [AccountController::class, 'searchCustomer_by_id']);
 
 
+Route::post('/item-group/store-ajax', [ItemGroupController::class, 'storeAjax'])
+    ->name('itemgroup.store.ajax');
+
+Route::post('/create_item_ajax', [ItemController::class, 'createItemAjax'])
+    ->name('create_item_ajax');
+
+Route::post('/company/store-ajax', [CompanyController::class, 'storeAjax'])
+    ->name('company.store.ajax');
 
 Route::post(
     '/create_account_ajax',
     [AccountController::class, 'createAccountAjax']
 )->name('create_account_ajax');
+
+
+Route::post('/unit/store-ajax', [UnitController::class, 'storeAjax'])
+    ->name('unit.store.ajax');
 
 Route::get('/accountform', [App\Http\Controllers\AccountController::class, 'create']);
 Route::post('/create_account', [App\Http\Controllers\AccountController::class, 'store']);
