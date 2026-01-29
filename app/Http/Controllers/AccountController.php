@@ -413,7 +413,7 @@ class AccountController extends CustomBaseController
     if (!Auth::check()) {
         return response()->json(['message' => 'Unauthorized'], 401);
     }
-
+try {
     $account = Account::create([
         'firm_id'          => Auth::user()->firm_id,
         'account_name'     => $request->account_name,
@@ -424,6 +424,12 @@ class AccountController extends CustomBaseController
         'gst_no'           => $request->gst_no,
         'address'          => $request->address,
     ]);
+} catch (\Exception $e) {
+    return response()->json([
+        'error' => $e->getMessage()
+    ], 500);
+}
+
 
     // ✅ JSON RESPONSE (THIS FIXES EVERYTHING)
     return response()->json([

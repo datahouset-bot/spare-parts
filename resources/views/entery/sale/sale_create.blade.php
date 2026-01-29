@@ -1726,5 +1726,22 @@ $('.openGroupModal').click(() => $('#groupModal').modal('show'));
 $('.openUnitModal').click(() => $('#unitModal').modal('show'));
 </script>
 
+<script>
+$(document).ready(function () {
+
+    // Get today's date in YYYY-MM-DD
+    let today = new Date().toISOString().split('T')[0];
+
+    // Set default dates only if empty
+    if (!$('#voucher_date').val()) {
+        $('#voucher_date').val(today);
+    }
+
+    if (!$('#purchase_bill_date').val()) {
+        $('#purchase_bill_date').val(today);
+    }
+
+});
+</script>
 
 @endsection

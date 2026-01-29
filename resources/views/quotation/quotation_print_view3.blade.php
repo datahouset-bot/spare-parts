@@ -159,9 +159,22 @@ body{
     <div class="inv-info">
         <div class="inv-box">
             <strong>BILL TO</strong><br>
-            {{-- {{ $salebill_header->account->account_name }}<br>
-            {{ $salebill_header->account->address }}<br>
-            GSTIN: {{ $salebill_header->account->gst_no }} --}}
+             @if(isset($salebill_header->account->account_name))
+                        <span> Name: {{ $salebill_header->account->account_name }}</span><br>
+                    @else
+                        <span> Name: No record</span><br>
+                    @endif
+                @if(isset($salebill_header->account->address))
+                    <span> address: {{ $salebill_header->account->address }}</span><br>
+                @else
+                    <span> address: No record</span><br>
+                @endif
+                @if(isset($salebill_header->account->city))
+                <span> city: {{ $salebill_header->account->city }}</span><br>
+            @else
+                <span> city: No record</span><br>
+            @endif
+                    
         </div>
 
         <div class="inv-box">
@@ -244,7 +257,7 @@ body{
      <div class="button-container my-2 gap-2 no-print">
 
     <!-- HOME BUTTON -->
-    <a href="{{ url('/sales') }}" class="btn btn-primary btn-lg ">
+    <a href="{{ url('/quotations') }}" class="btn btn-primary btn-lg ">
         <i class="fa fa-home"></i> Home
     </a>
 

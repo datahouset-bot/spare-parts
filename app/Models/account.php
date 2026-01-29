@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class account extends Model
+class Account extends Model
 {
     use HasFactory;
+
     protected $table = 'accounts';
 
-    Protected $fillable =[
+    protected $fillable = [
         'firm_id',
         'account_name',
         'account_group_id',
@@ -22,10 +23,10 @@ class account extends Model
         'phone',
         'mobile',
         'email',
-        'person_name'
-
+        'person_name',
     ];
-    
+
+
 
     public function amc()
     {

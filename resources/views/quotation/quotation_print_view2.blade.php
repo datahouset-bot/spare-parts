@@ -1,27 +1,23 @@
 @php
     include public_path('cdn/cdn.blade.php');
 @endphp
-{{-- <link rel="stylesheet" href="{{ global_asset('/general_assets\css\form.css')}}"> --}}
 
 @extends('layouts.blank')
-@section('pagecontent')
-    <!DOCTYPE html>
-    <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Invoice</title>
-        <style>
-            .alt-page{
+@section('pagecontent')
+
+<style>
+/* ===== PAGE ===== */
+.alt-page{
     width:190mm;
-    margin:auto;
+    margin:20px auto;
     background:#fff;
     padding:15px;
     border:1px solid #000;
     font-size:14px;
 }
 
+/* ===== HEADER ===== */
 .alt-header{
     display:grid;
     grid-template-columns:80px 1fr 120px;
@@ -32,43 +28,32 @@
 
 .alt-logo{ width:70px; }
 
-.alt-invoice-tag{
-    background:#000;
-    color:#fff;
-    text-align:center;
-    padding:6px;
-    font-weight:700;
-}
-
+/* ===== INFO ===== */
 .alt-info{
     display:grid;
     grid-template-columns:1fr 1fr;
+    gap:15px;
     margin:15px 0;
 }
 
+/* ===== TABLE ===== */
 .alt-table{
     width:100%;
     border-collapse:collapse;
 }
 
-.alt-table th, .alt-table td{
+.alt-table th,
+.alt-table td{
     border:1px solid #000;
     padding:6px;
     text-align:center;
 }
 
+/* ===== TOTAL ===== */
 .alt-total{
-    width:30%;
+    width:35%;
     margin-left:auto;
     margin-top:10px;
-}
-
-.alt-total table{
-    width:100%;
-}
-
-.alt-total td{
-    padding:2px;
 }
 
 .alt-total .grand{
@@ -76,73 +61,64 @@
     font-size:16px;
 }
 
+/* ===== FOOTER ===== */
 .alt-footer{
     display:grid;
     grid-template-columns:2fr 2fr 1fr;
+    gap:15px;
     margin-top:20px;
     border-top:1px solid #000;
     padding-top:10px;
 }
 
-.alt-qr{
-    text-align:center;
+/* ===== BUTTONS ===== */
+.button-container{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:20px;
 }
 
+/* ===== PRINT ===== */
 @media print{
     .no-print{ display:none; }
+    body{ background:#fff; }
 }
-
-        </style>
-
-
-
-
-
-
-    </head>
-<body>
+</style>
 
 <div class="alt-page">
 
-    {{-- ================= HEADER ================= --}}
-    <div class="alt-header">
-        <img src="{{ asset('storage/app/public/image/'.$pic->logo) }}" class="alt-logo">
+{{-- HEADER --}}
+<div class="alt-header">
+    <img src="{{ asset('storage/app/public/image/'.$pic->logo) }}" class="alt-logo">
 
-        <div class="alt-company">
-            <h3>{{ $componyinfo->cominfo_firm_name }}</h3>
-            <small>
-                {{ $componyinfo->cominfo_address1 }},
-                {{ $componyinfo->cominfo_city }},
-                {{ $componyinfo->cominfo_state }} -
-                {{ $componyinfo->cominfo_pincode }}<br>
-                Email: {{ $componyinfo->cominfo_email }} |
-                Phone: {{ $componyinfo->cominfo_phone }}
-            </small>
-        </div>
-
-        <div class="alt-invoice-tag">
-            SALE INVOICE
-        </div>
+    <div>
+        <h3>{{ $componyinfo->cominfo_firm_name }}</h3>
+        <small>
+            {{ $componyinfo->cominfo_address1 }},
+            {{ $componyinfo->cominfo_city }},
+            {{ $componyinfo->cominfo_state }} -
+            {{ $componyinfo->cominfo_pincode }}<br>
+            Email: {{ $componyinfo->cominfo_email }} |
+            Phone: {{ $componyinfo->cominfo_phone }}
+        </small>
     </div>
 
-    {{-- ================= CUSTOMER + INVOICE ================= --}}
-    <div class="alt-info">
-        <div>
-            {{-- <strong>BILL TO</strong><br>
-            {{ $salebill_header->account->account_name }}<br>
-            {{ $salebill_header->account->address }}<br>
-            GSTIN: {{ $salebill_header->account->gst_no }}
-        </div> --}}
+    <div class="alt-invoice-tag">QUOTATIONS</div>
+</div>
 
-        <div>
-            <table>
-                <tr><td>Invoice No</td><td>: {{ $salebill_header->voucher_bill_no }}</td></tr>
-                <tr><td>Date</td><td>: {{ $salebill_header->voucher_date }}</td></tr>
-                <tr><td>Time</td><td>: {{ $salebill_header->created_at->format('H:i') }}</td></tr>
-                <tr><td>Operator</td><td>: {{ $salebill_header->user_name }}</td></tr>
-            </table>
-        </div>
+{{-- INFO --}}
+<div class="alt-info">
+    <div></div>
+    <div>
+        <table>
+            <tr><td>Invoice No</td><td>: {{ $salebill_header->voucher_bill_no }}</td></tr>
+            <tr><td>Date</td><td>: {{ $salebill_header->voucher_date }}</td></tr>
+            <tr><td>Time</td><td>: {{ $salebill_header->created_at->format('H:i') }}</td></tr>
+            <tr><td>Operator</td><td>: {{ $salebill_header->user_name }}</td></tr>
+        </table>
     </div>
+</div>
 
     {{-- ================= ITEMS ================= --}}
     <table class="alt-table">
@@ -150,9 +126,9 @@
             <tr>
                 <th>#</th>
                 <th>Item</th>
-                <th>Qty</th>
+                {{-- <th>Qty</th>
                 <th>Rate</th>
-                <th>GST%</th>
+                <th>GST%</th> --}}
                 <th>Amount</th>
             </tr>
         </thead>
@@ -162,9 +138,9 @@
             <tr>
                 <td>{{ $i++ }}</td>
                 <td>{{ $row->item_name }}</td>
-                <td>{{ number_format($row->qty,0) }}</td>
+                {{-- <td>{{ number_format($row->qty,0) }}</td>
                 <td>{{ number_format($row->rate,1) }}</td>
-                <td>{{ number_format($row->gst_item_percent,1) }}</td>
+                <td>{{ number_format($row->gst_item_percent,1) }}</td> --}}
                 <td>{{ number_format($row->item_basic_amount,1) }}</td>
             </tr>
             @endforeach
@@ -218,7 +194,7 @@
      <div class="button-container my-2 gap-2 no-print">
 
     <!-- HOME BUTTON -->
-    <a href="{{ url('/sales') }}" class="btn btn-primary btn-lg">
+    <a href="{{ url('/quotations') }}" class="btn btn-primary btn-lg">
         <i class="fa fa-home"></i> Home
     </a>
 

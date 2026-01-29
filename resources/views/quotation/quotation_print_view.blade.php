@@ -1,486 +1,255 @@
 @php
     include public_path('cdn/cdn.blade.php');
 @endphp
-{{-- <link rel="stylesheet" href="{{ global_asset('/general_assets\css\form.css')}}"> --}}
 
 @extends('layouts.blank')
+
 @section('pagecontent')
-    <!DOCTYPE html>
-    <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Invoice</title>
-        <style>
-            @page {
-                size: auto;
-                margin: 0;
-            }
-
-            body {
-                margin: 0;
-               
-            }
-            
-            button,.navbar-brand,.sb-topnav,{
-                    display: none;
-                }
-
-            .page {
-                height: auto;
-                /* Changed height to auto */
-                width: 190mm;
-                /* Width of A4 paper */
-                margin: 0 auto;
-                margin-top: 10px;
-                padding: 0px;
-                border: 1px solid;
-                border-radius: 2px;
-                width: 80%;
-
-            }
-
-            .page_header {
-                /* display: none; Initially hidden */
-                position: relative;
-                top: 0;
-                width: 100%;
-                background-color:whitesmoke;
-                padding: 0px;
-                text-align: center;
-
-
-            }
-
-            .info-container {
-                display: flex;
-                justify-content: space-between;
-                margin: 5px;
-                /* Added margin-bottom for separation */
-                margin-right: 5px;
-
-            }
-            #footer_total{
-                width: 100%;
-                 font-size: 15px;
-                 padding: 2px; 
-                 border: 1px dashed green;
-                 font-size: 20px;
-            }
-                               
-            .cust_info {
-                background-color:whitesmoke;
-                font-size: 20px;
-                width: 50%;
-                /* Adjusted width to accommodate for separation */
-                padding: 5px;
-                box-sizing: border-box;
-                text-align: left;
-            }
-
-            .voucher_info {
-                width: 50%;
-                background-color:whitesmoke;
-                text-align: left;
-                padding: 5px;
-                font-size: 20px;
-            
-                
-            }
-            .qty_total{
-                text-align: left;
-            }
-
-            td,th{
-                    border: solid 1px;
-                }
-            .detail {
-                background-color: silver;
-                width: 100%;
-                text-align: right;
-            }
-
-
-            .table_detail {
-background-color:white;
-                width: 100%;
-                padding: 2px;
-                
-            }
-
-            .th_detail {
-                color: white;
-                background-color:rgb(58, 58, 58);
-                border: none;
-                text-align: center;
-            }
-
-            .row1 {
-                display: inline;
-            }
-            .button-container {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-            }
-
-            .voucher_head {
-                background-color:white;
-                display: grid;
-                grid-template-columns: 100%;
-                font: 100px;
-                text-align: center;
-
-            }
-
-            .gst_no {
-                font-size: medium;
-                font-weight: 800;
-                margin-left: 10px;
-                font-style: bold;
-            }
-
-            .bill_head {
-                margin-left: 0%;
-                font-size: x-large;
-            }
-
-            .company_info {
-                background-color:rgb(224, 221, 221);
-                display: grid;
-                grid-template-columns: 1fr 4fr 1fr;
-                border: 1px solid black;
-                margin-bottom: 0px;
-            }
-
-            .logo1 {}
-
-            .firm_detail {
-                text-align: center;
-
-            }
-
-            .logo2 {
-                align-content: :flex-end;
-
-            }
-
-           .voucher_footer {
-    background-color: bisque;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-auto-rows: auto;     /* AUTO HEIGHT */
-    border: 1px solid black;
+<style>
+/* ================= PAGE ================= */
+.quote-page{
+    width:210mm;
+    margin:15px auto;
+    background:#fff;
+    padding:18px;
+    font-size:13px;
+    border:1px solid #999;
 }
 
-
-          .terms {
-    grid-column: 1 / 3;
-    min-height: 100px;        /* initial height */
-    height: auto;             /* AUTO GROW */
-    padding: 6px;
-    text-align: left;
-    overflow: visible;        /* allow expansion */
+/* ================= HEADER ================= */
+.quote-header{
+    display:flex;
+    justify-content:space-between;
+    border-bottom:2px solid #000;
+    padding-bottom:10px;
 }
 
-
-            .bank_detail {
-                text-align: left;
-                height: 120px;
-                border-top: 1px solid;
-                padding: 1px;
-                font-size: 15px;
-            }
-
-            .comp_sign {
-
-                border-left: 1px solid;
-                text-align: center;
-
-            }
-
-
-            .qr_code {
-                border-left: 1px solid;
-                border-top: 1px solid;
-                text-align: center;
-
-            }
-
-            .for_companyname {
-                border-left: 1px solid;
-                text-align: center;
-            }
-
-            /* CSS for page breaks */
-            @media print {
-                .page_header {
-                    display: block;
-                    /* Displayed when printing */
-                    height: auto;
-                /* Changed height to auto */
-                width: 190mm;
-                /* Width of A4 paper */
-                margin: 0px ;
-                margin-top: 0px;
-                padding: 0px;
-                border-radius: 2px;
-                width: 100%;
-                padding: 0in;
-
-                }
-                td,th{
-                    border: solid 1px;
-                }
-                
-
-
-                button,.navbar-brand {
-                    display: none;
-                }
-
-                .button-container {
-                    display: none;
-                    justify-content: center;
-                    align-items: center;
-
-                }
-
-
-                .page {
-                    size: A4;
-                    page-break-inside: avoid;
-                    position: initial;
-                    margin: 0in 0in 0in 0in;
-                    width: 100%;
-                    border: 1px solid;
-                }
-
-                .bg-dark,
-                .d-flex {
-                    display: none !important;
-                }
-
-                .bg-dark {
-                    margin: 0 !important;
-                    padding: 0 !important;
-                }
-            }
-            .terms ol {
-    margin: 4px 0;
+.quote-company h3{
+    margin:0;
+    font-size:18px;
 }
 
-.terms li {
-    margin-bottom: 2px;
+.quote-company small{
+    font-size:12px;
 }
 
-        </style>
+.quote-title{
+    font-size:22px;
+    font-weight:700;
+}
 
+/* ================= INFO ================= */
+.quote-info{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    margin:15px 0;
+    gap:15px;
+}
 
+.quote-info table{
+    width:100%;
+    font-size:13px;
+}
 
+/* ================= ITEMS ================= */
+.quote-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
 
+.quote-table th,
+.quote-table td{
+    border:1px solid #000;
+    padding:6px;
+    text-align:center;
+}
 
+.quote-table th{
+    background:#f2f2f2;
+}
 
-    </head>
+/* ================= TOTAL ================= */
+.quote-total{
+    width:35%;
+    margin-left:auto;
+    margin-top:10px;
+}
 
-    <body>
+.quote-total table{
+    width:100%;
+    border-collapse:collapse;
+}
 
-        <div class="page">
+.quote-total td{
+    padding:5px;
+    border:1px solid #000;
+}
 
-            <div class="company_info">
-                <div class="logo1">&nbsp;<img src="{{ asset('storage\app\public\image\\' . $pic->logo) }}" alt="qr_code" width="90%">
-                </div>
-                <div class="firm_detail">
-                     <h2 style="color: green;">Quotation</h2>
-                    <h4>{{ $componyinfo->cominfo_firm_name }}</h4>
-                        {{ $componyinfo->cominfo_address1 }}&nbsp;{{ $componyinfo->cominfo_address2 }}&nbsp;
-                    {{ $componyinfo->cominfo_city }}&nbsp;{{ $componyinfo->cominfo_state }}
-                        &nbsp;{{ $componyinfo->cominfo_pincode }}&nbsp;{{ $compinfofooter->country }}&nbsp;
-                   Email:{{ $componyinfo->cominfo_email }} Phone &nbsp;{{ $componyinfo->cominfo_phone }}
-                        Mobile&nbsp;{{ $componyinfo->cominfo_mobile }} 
-                 
-                </div>
-                {{-- <div class="logo2"><img src="{{ asset('storage\app\public\image\\' . $pic->brand) }}" alt="qr_code" width="80px">
-                </div> --}}
-            </div>
-            <div class="page_header">
-                <div class="info-container">
-                    <div class="cust_info">
-                        @if(isset($salebill_header->account->account_name))
-                        <span> Name: {{ $salebill_header->account->account_name }}</span><br>
-                    @else
-                        <span> Name: No record</span><br>
-                    @endif
-                @if(isset($salebill_header->account->address))
-                    <span> address: {{ $salebill_header->account->address }}</span><br>
-                @else
-                    <span> address: No record</span><br>
-                @endif
-                @if(isset($salebill_header->account->city))
-                <span> city: {{ $salebill_header->account->city }}</span><br>
-            @else
-                <span> city: No record</span><br>
-            @endif
-                    
-                    
+.quote-total .grand{
+    font-weight:700;
+    font-size:15px;
+}
 
+/* ================= FOOTER ================= */
+.quote-footer{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:15px;
+    margin-top:20px;
+    border-top:1px solid #000;
+    padding-top:10px;
+    font-size:12px;
+}
 
-                       {{-- <span>Mobile No:{{ $salebill_header->account->mobile }}</span><br> --}}
-                       {{-- <span>GSTIN  No:{{ $salebill_header->account->gst_no }}</span><br> --}}
-                      
-                    </div>
-                    <div class="voucher_info">
+/* ================= BUTTONS ================= */
+.no-print{
+    text-align:center;
+    margin-top:20px;
+}
 
-                        <span>Invoice  No    :{{ $salebill_header->voucher_bill_no }}</span><br>
-                        <span>Date : {{ $salebill_header->voucher_date }}</span><br>
-                        <span>Time : {{ $salebill_header->created_at->format('H:i') }}</span><br>
-                         <span>Oprater : {{ $salebill_header->user_name }}</span><br>
+@media print{
+    .no-print{display:none;}
+    body{background:#fff;}
+}
+/* ================= FORMAT SWITCH ================= */
+.format-switch{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    margin:15px auto;
+    flex-wrap:wrap;
+}
 
-                    </div>
-                </div>
+.format-switch .btn{
+    padding:8px 16px;
+    font-size:14px;
+    font-weight:600;
+    border-radius:6px;
+}
 
-            </div>
+</style>
 
+<div class="quote-page">
 
+{{-- HEADER --}}
+<div class="quote-header">
+    <div class="quote-company">
+        <h3>{{ $componyinfo->cominfo_firm_name }}</h3>
+        <small>
+            {{ $componyinfo->cominfo_address1 }},
+            {{ $componyinfo->cominfo_city }},
+            {{ $componyinfo->cominfo_state }} - {{ $componyinfo->cominfo_pincode }}<br>
+            Phone: {{ $componyinfo->cominfo_phone }} |
+            Email: {{ $componyinfo->cominfo_email }}
+        </small>
+    </div>
 
-            <div class="detail">
+    <div class="quote-title">QUOTATION</div>
+</div>
 
+{{-- CUSTOMER + META --}}
+<div class="quote-info">
+    <div>
+        <strong>Quotation For</strong><br>
+        {{ $salebill_header->account->account_name ?? '' }}<br>
+        {{ $salebill_header->account->address ?? '' }}<br>
+        {{ $salebill_header->account->city ?? '' }}
+    </div>
 
+    <div>
+        <table>
+            <tr><td>Quotation No</td><td>: {{ $salebill_header->voucher_bill_no }}</td></tr>
+            <tr><td>Date</td><td>: {{ $salebill_header->voucher_date }}</td></tr>
+            <tr><td>Prepared By</td><td>: {{ $salebill_header->user_name }}</td></tr>
+        </table>
+    </div>
+</div>
 
-                <table class="table_detail">
-                    <thead>
+{{-- ITEMS --}}
+<table class="quote-table">
+    <thead>
+        <tr>
+            <th>Qty</th>
+            <th>Description</th>
+            <th>Unit Price</th>
+            <th>Tax%</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($salebill_items as $item)
+        <tr>
+            <td>{{ $item->qty }}</td>
+            <td>{{ $item->item_name }}</td>
+            <td>{{ number_format($item->rate,2) }}</td>
+            <td>{{ number_format($item->gst_item_percent,2) }}</td>
+            <td>{{ number_format($item->item_basic_amount,2) }}</td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 
-                        <tr>
-                            <th class="th_detail">S.no</th>
-                            <th class="th_detail">Item Name</th>
-                            {{-- <th class="th_detail">Qty</th>
-                            <th class="th_detail">Rate</th>
+{{-- TOTAL --}}
+<div class="quote-total">
+    <table>
+        <tr><td>Subtotal</td><td>{{ $salebill_header->total_item_basic_amount }}</td></tr>
+        <tr><td>Tax</td><td>{{ $salebill_header->total_gst_amount }}</td></tr>
+        <tr class="grand">
+            <td>Total</td>
+            <td>{{ $salebill_header->total_net_amount }}</td>
+        </tr>
+    </table>
+</div>
 
-                            <th class="th_detail">Gst%</th> --}}
-                            <th class="th_detail">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                        $sno=0;
-                        @endphp
-                        @foreach ($salebill_items as $records )
-                        <tr>
-                            <td style="text-align: center">{{$sno=$sno+1}}</td>
-                          <td style="text-align: center">{{$records->item_name}}</td>
-                           {{-- <td>{{ number_format($records->qty, 0) }}</td>
-                          <td>{{ number_format($records->rate,1)}}</td>
-                          <td>{{ number_format($records->gst_item_percent,1)}}</td> --}}
-
-                          <td style="text-align: center">{{ number_format($records->item_basic_amount,1)}}</td>  
-                        </tr>
-                            
-                        @endforeach
-  
-                </table>
-
-
-
-
-
-            </div>
-            <div class="page_header">
-                <div class="info-container">
-                    <div class="cust_info">
-                       
-                        <span>Total Item ={{$sno}}</span><br>
-                        <span>Total Qty ={{$salebill_header->total_qty}}</span><br>
-                       
-                    </div>
-                    <div class="voucher_info">
-                        <table id="footer_total">
-                            <tr>
-                                <td>Basic Amt:</td>
-                                <td>{{ $salebill_header->total_item_basic_amount }}</td>
-                            </tr>
-                            <tr>
-                                <td>Dis Total  </td>
-                                <td>{{ $salebill_header->total_disc_item_amount }}</td>
-                            </tr>
-
-                            <tr>
-                                <td>SGST Amt:</td>
-                                <td>{{ $salebill_header->total_gst_amount / 2 }}</td>
-                            </tr>
-                            
-                            <tr>
-                                <td>CGST Amt:</td>
-                                <td>{{ $salebill_header->total_gst_amount / 2 }}</td>
-                            </tr>
-                            
-                            <tr>
-                                <td>Round Off:</td>
-                                <td>{{ $salebill_header->total_roundoff }}</td>
-                            </tr>
-                            <tr>
-                                <td>Grand Total :</td>
-                                <td><h3>{{ $salebill_header->total_net_amount }}</h3></td>
-                            </tr>
-                        </table>
-
-
-                    </div>
-                </div>
-
-            </div>
-            {{-- <div style="background-color: white" class="my-1">&nbsp;</div>
-            <div class="voucher_footer">
-                <div class="terms" style="background-color:#e6ecff">
-    <h5>Terms & Conditions</h5>
-
-    @if(!empty($compinfofooter->terms))
-        @php
-            $terms = array_filter(array_map('trim', explode("\n", $compinfofooter->terms)));
-        @endphp
-
-        <ol style="padding-left:18px; font-size:13px; text-align:left;">
-            @foreach($terms as $term)
-                <li>{{ $term }}</li>
+{{-- FOOTER --}}
+<div class="quote-footer">
+    <div>
+        <strong>Terms & Conditions</strong>
+        <ol>
+            @foreach(preg_split("/\r\n|\r|\n/", (string)($compinfofooter->terms ?? '')) as $term)
+                @if(trim($term)) <li>{{ trim($term) }}</li> @endif
             @endforeach
         </ol>
-    @endif
+    </div>
+
+    <div>
+        <strong>Bank Details</strong><br>
+        {{ $compinfofooter->bank_name }}<br>
+        A/C: {{ $compinfofooter->bank_ac_no }}<br>
+        IFSC: {{ $compinfofooter->bank_ifsc }}
+    </div>
+
+    <div style="text-align:center">
+        <img src="/storage/image/{{ $pic->qrcode }}" width="80"><br>
+        {{ $compinfofooter->upiid }}
+    </div>
 </div>
 
-                <div class="for_companyname"style="background-color:#e6ecff"><span>For
-                        {{ $componyinfo->cominfo_firm_name }}</span><br></div>
-                <div class="bank_detail"style="background-color:#e6ecff">
-                    <span>Bank Name:{{ $compinfofooter->bank_name }}</span><br>
-                    <span>Bank A/C No :{{ $compinfofooter->bank_ac_no }}</span><br>
-                    <span>Bank IFSC:{{ $compinfofooter->bank_ifsc }}</span><br>
-                    <span>Bank Branch:{{ $compinfofooter->bank_branch }}</span><br>
-                </div>
-                <div class="qr_code"style="background-color:#e6ecff">
-                    <span>Bank id:{{ $compinfofooter->upiid }}</span><br>
-                    &nbsp;<img src="/storage/image/{{ $pic->qrcode }}" alt="qr_code" width="80px">
-                </div>
-                <div class="comp_sign"style="background-color:#e6ecff">
-
-                    &nbsp;<img src="{{ asset('storage/image/' . $pic->seal) }}" alt="qr_code" width="80px">
-                </div>
-            </div> --}}
-            <div class="button-container my-2 gap-2">
-
-    <!-- HOME BUTTON -->
-    <a href="{{ url('/quotations') }}" class="btn btn-primary btn-lg">
-        <i class="fa fa-home"></i> Home
+{{-- BUTTONS --}}
+<div class="no-print">
+    <a href="{{ url('/quotations') }}" class="btn btn-primary">Home</a>
+    <button onclick="window.print()" class="btn btn-success">Print</button>
+    <div class="format-switch no-print">
+    <a href="{{ url('/quotation_print_view2/'.$salebill_header->voucher_no) }}" class="btn btn-outline-primary">
+    Format 2
     </a>
 
-    <!-- PRINT BUTTON -->
-    <button class="btn btn-success btn-lg" onclick="window.print()">
-        <i class="fa fa-print"></i> Print
+   <a href="{{ url('/quotation_print_view3/'.$salebill_header->voucher_no) }}" class="btn btn-outline-success">
+    Format 3
+    </a>
+
+   <a href="{{ url('/quotation_print_view4/'.$salebill_header->voucher_no) }}" class="btn btn-outline-warning">
+    Format 4
+    </a>
+
+    <button onclick="window.print()" class="btn btn-outline-dark">
+        Print
     </button>
+</div>
 
 </div>
 
-        </div>
-    </body>
-
-    </html>
+</div>
 @endsection

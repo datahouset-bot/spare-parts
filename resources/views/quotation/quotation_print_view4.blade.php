@@ -146,9 +146,22 @@ body{
     <div class="doc-info">
         <div>
             <strong>BILL TO</strong><br>
-            {{-- {{ $salebill_header->account->account_name }}<br>
-            {{ $salebill_header->account->address }}<br>
-            GSTIN: {{ $salebill_header->account->gst_no }} --}}
+             @if(isset($salebill_header->account->account_name))
+                        <span> Name: {{ $salebill_header->account->account_name }}</span><br>
+                    @else
+                        <span> Name: No record</span><br>
+                    @endif
+                @if(isset($salebill_header->account->address))
+                    <span> address: {{ $salebill_header->account->address }}</span><br>
+                @else
+                    <span> address: No record</span><br>
+                @endif
+                @if(isset($salebill_header->account->city))
+                <span> city: {{ $salebill_header->account->city }}</span><br>
+            @else
+                <span> city: No record</span><br>
+            @endif
+                    
         </div>
 
         <div>

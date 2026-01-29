@@ -31,32 +31,42 @@
           <div class="col-md-12 text-center">
             <a href="{{url('sales/create')}}" class="btn btn-primary" title="shortcut:shift+N">New Sale invoice</a>
             {{-- <a href="{{url('sale_register')}}" class="btn btn-dark"> Register sale </a> --}}
-          </div>
-       </div>
-        
-<div class="row mb-3">
-    <div class="col-md-3">
+         <div class="row mb-3 align-items-end g-2">
+
+    <!-- FROM DATE -->
+    <div class="col-md-3 col-sm-6">
         <label class="fw-bold">From Date</label>
         <input type="date" id="fromDate" class="form-control">
     </div>
 
-    <div class="col-md-3">
+    <!-- TO DATE -->
+    <div class="col-md-3 col-sm-6">
         <label class="fw-bold">To Date</label>
         <input type="date" id="toDate" class="form-control">
     </div>
 
-    <div class="col-md-3 d-flex align-items-end">
-        <button class="btn btn-primary w-50" id="filterDate">
-            <i class="fa fa-filter"></i> 0K
+    <!-- OK BUTTON -->
+    <div class="col-md-2 col-sm-6">
+        <label class="fw-bold d-none d-md-block">&nbsp;</label>
+        <button class="btn btn-primary w-100" id="filterDate">
+            <i class="fa fa-filter"></i> OK
         </button>
     </div>
 
-    <div class="col-md-3 d-flex align-items-end">
+    <!-- TODAY BUTTON -->
+    <div class="col-md-2 col-sm-6">
+        <label class="fw-bold d-none d-md-block">&nbsp;</label>
         <button class="btn btn-secondary w-100" id="resetDate">
             <i class="fa fa-refresh"></i> Today
         </button>
     </div>
+
 </div>
+
+          </div>
+       </div>
+        
+
 
           {{-- data table start  --}}
         <div class="card-body table-scrollable">
