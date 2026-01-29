@@ -397,9 +397,11 @@ class AccountController extends CustomBaseController
                 'gst_no'           => $request->gst_no,
                 'address'          => $request->address,
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
-                'error' => $e->getMessage()
+                 'error'   => $e->getMessage(),
+            'line'    => $e->getLine(),
+            'file'    => $e->getFile(),
             ], 500);
         }
 

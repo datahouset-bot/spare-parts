@@ -320,9 +320,7 @@ $itemdata = item::where('firm_id', Auth::user()->firm_id)->get();
          $purchase->item_net_amount=$net_voucher_amount;  
          $purchase->simpal_qty=-($record->qty);  
          $purchase->stock_out=$record->qty;
-         $purchase->invent_af2 = $record->remark_1;
-         $purchase->invent_af3 = $record->remark_2;
-         $purchase->invent_af4 = $record->remark_3;
+       
 
         $purchase->save();
 

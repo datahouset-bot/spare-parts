@@ -168,15 +168,14 @@ table td {
         <div class="card my-3">
             <div class="card-header">
                 ADD Reciept
-            </div>
-            <div class="row my-2">
-                <div class="col-md-12 text-center"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                <div class=" text-center"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#myModal" title="shortcut:shift+n">
                         Add New Reciept
                     </button>
                 </div>
-            </div>
 
+            </div>
+           
 
 
             <div class="container mt-2">

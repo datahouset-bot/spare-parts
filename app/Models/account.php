@@ -24,6 +24,7 @@ class Account extends Model
         'mobile',
         'email',
         'person_name',
+        'gst_no'
     ];
 
 

@@ -162,13 +162,21 @@ $validator = Validator::make($request->all(), [
         'conversion'          => 'nullable|numeric|min:0',
         'alternate_unit_name' => 'nullable|string|max:255',
     ]);
-
+try{
     $unit = Unit::create([
         'firm_id'             => Auth::user()->firm_id,
         'primary_unit_name'   => $request->primary_unit_name,
         'conversion'          => $request->conversion,
         'alternate_unit_name' => $request->alternate_unit_name,
-    ]);
+    ]);} 
+    catch(\Throwable $e){
+        return response()->json([
+            'error' => $e->getMessage(),
+            'line' => $e->getline(),
+            'file'=> $e->getfile(),
+        ],500);
+
+    }
 
     return response()->json([
         'id' => $unit->id,

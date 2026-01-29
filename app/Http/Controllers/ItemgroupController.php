@@ -127,11 +127,18 @@ public function storeAjax(Request $request)
     $request->validate([
         'item_group' => 'required|string|max:255',
     ]);
-
+try{
     $group = ItemGroup::create([
         'firm_id'    => Auth::user()->firm_id,
         'item_group' => $request->item_group,
-    ]);
+    ]);}catch(\Throwable $e){
+         return response()->json([
+                'error'   => $e->getMessage(),
+                'line'    => $e->getLine(),
+                'file'    => $e->getFile(),
+            ], 500);
+
+    }
 
     return response()->json([
         'id'         => $group->id,

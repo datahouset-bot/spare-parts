@@ -23,8 +23,8 @@ class CompanyController extends CustomBaseController
      */
     public function index()
     {
-        $record=company::where('firm_id',Auth::user()->firm_id)->get();
-        return view('master.companylist',['data'=>$record]);
+        $record = company::where('firm_id', Auth::user()->firm_id)->get();
+        return view('master.companylist', ['data' => $record]);
         //
     }
 
@@ -36,27 +36,25 @@ class CompanyController extends CustomBaseController
     public function store(Request $request)
     {
 
-           
-         $validator= validator::make($request->all(),[
-            'comp_name' => [
-        'required',
-        'unique:companies,comp_name,NULL,id,firm_id,' . auth()->user()->firm_id,
-    ],
-// Assuming you meant "float", you can use numeric instead.
-            ]);
-            if ($validator->passes()) {
-                $company = new Company;
-                $company->firm_id=Auth::user()->firm_id;
-                $company->comp_name = $request->comp_name;
-                $company->comp_dis = $request->comp_dis;
-                $company->save();
-        
-                return redirect()->back()->with('message', 'Company created successfully!');
-            } else {
-                return redirect('company')->withInput()->withErrors($validator);
-            }
- 
 
+        $validator = validator::make($request->all(), [
+            'comp_name' => [
+                'required',
+                'unique:companies,comp_name,NULL,id,firm_id,' . auth()->user()->firm_id,
+            ],
+            // Assuming you meant "float", you can use numeric instead.
+        ]);
+        if ($validator->passes()) {
+            $company = new Company;
+            $company->firm_id = Auth::user()->firm_id;
+            $company->comp_name = $request->comp_name;
+            $company->comp_dis = $request->comp_dis;
+            $company->save();
+
+            return redirect()->back()->with('message', 'Company created successfully!');
+        } else {
+            return redirect('company')->withInput()->withErrors($validator);
+        }
     }
 
     // public function destroy(company $compnies,$id)
@@ -70,10 +68,10 @@ class CompanyController extends CustomBaseController
     {
         try {
             // Attempt to delete the record
-            $deleted = Company::where('firm_id',Auth::user()->firm_id)
-            ->where('id',$id)
-            ->delete();
-             // Check if the deletion was successful
+            $deleted = Company::where('firm_id', Auth::user()->firm_id)
+                ->where('id', $id)
+                ->delete();
+            // Check if the deletion was successful
             if ($deleted) {
                 return redirect('company')->with('message', 'Record deleted successfully.');
             } else {
@@ -88,53 +86,56 @@ class CompanyController extends CustomBaseController
 
 
     public function show_company_form_edit($id)
-    {      
-        $record= company::where('firm_id',Auth::user()->firm_id)->find($id);
+    {
+        $record = company::where('firm_id', Auth::user()->firm_id)->find($id);
 
-        return view('master.companyedit',['data'=>$record]);
-
+        return view('master.companyedit', ['data' => $record]);
     }
 
     public function edit_company(Request $request)
     {
-    
-           
-    
-    
-        $validator= validator::make($request->all(),[
+
+
+
+
+        $validator = validator::make($request->all(), [
             'comp_name' => 'required',
-              // Assuming you meant "float", you can use numeric instead.
+            // Assuming you meant "float", you can use numeric instead.
+        ]);
+        if ($validator->passes()) {
+            $company = Company::where('firm_id', Auth::user()->firm_id)->find($request->id);
+            $company->comp_name = $request->comp_name;
+            $company->comp_dis = $request->comp_dis;
+            $company->update();
+            return redirect('company');
+        } else {
+            return redirect('showeditecompany')->withInput()->withErrors($validator);
+        }
+    }
+    public function storeAjax(Request $request)
+    {
+        $request->validate([
+            'comp_name' => 'required|string|max:255',
+            'Dis'       => 'nullable|numeric',
+        ]);
+        try {
+            $company = Company::create([
+                'firm_id'   => Auth::user()->firm_id,
+                'comp_name' => $request->comp_name,
+                'comp_dis'       => $request->Dis ?? 0,
             ]);
-            if ($validator->passes()) {
-                $company = Company::where('firm_id',Auth::user()->firm_id)->find($request->id);
-                $company->comp_name = $request->comp_name;
-                $company->comp_dis = $request->comp_dis;
-                $company->update();
-                return redirect('company');
- 
-            } else {
-                return redirect('showeditecompany')->withInput()->withErrors($validator);
-            }
+        } catch (\Throwable $e) {
+            return response()->json([
+                'error'   => $e->getMessage(),
+                'line'    => $e->getLine(),
+                'file'    => $e->getFile(),
+            ], 500);
+        }
 
 
-}
-public function storeAjax(Request $request)
-{
-    $request->validate([
-        'comp_name' => 'required|string|max:255',
-        'Dis'       => 'nullable|numeric',
-    ]);
-
-    $company = Company::create([
-        'firm_id'   => Auth::user()->firm_id,
-        'comp_name' => $request->comp_name,
-        'comp_dis'       => $request->Dis ?? 0,
-    ]);
-
-    return response()->json([
-        'id'        => $company->id,
-        'comp_name' => $company->comp_name,
-    ]);
-}
-
+        return response()->json([
+            'id'        => $company->id,
+            'comp_name' => $company->comp_name,
+        ]);
+    }
 }
