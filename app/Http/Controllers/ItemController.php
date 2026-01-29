@@ -34,15 +34,15 @@ class ItemController extends CustomBaseController
     public function index()
     {
         $records = item::with('company', 'itemgroup', 'unit', 'gstmaster')
-        ->where('firm_id',Auth::user()->firm_id)
-        ->get();
+            ->where('firm_id', Auth::user()->firm_id)
+            ->get();
         return view('master.item', ['data' => $records]);
 
         // return view('master.item', compact('records'));
     }
     public function item_dt()
     {
-        $record = item::where('firm_id',Auth::user()->firm_id)->get();
+        $record = item::where('firm_id', Auth::user()->firm_id)->get();
         return view('master.item_dt', ['data' => $record]);
 
         //  return view('master.item');
@@ -50,25 +50,25 @@ class ItemController extends CustomBaseController
 
     public function itemform()
     {
-        $company = company::where('firm_id',Auth::user()->firm_id)->get();
-        $itemgroup = itemgroup::where('firm_id',Auth::user()->firm_id)->get();
-        $unit = unit::where('firm_id',Auth::user()->firm_id)->get();
-        $gstmaster = gstmaster::where('firm_id',Auth::user()->firm_id)->get();
+        $company = company::where('firm_id', Auth::user()->firm_id)->get();
+        $itemgroup = itemgroup::where('firm_id', Auth::user()->firm_id)->get();
+        $unit = unit::where('firm_id', Auth::user()->firm_id)->get();
+        $gstmaster = gstmaster::where('firm_id', Auth::user()->firm_id)->get();
 
-        $labelsetting=labelsetting::where('firm_id',Auth::user()->firm_id)->get();
+        $labelsetting = labelsetting::where('firm_id', Auth::user()->firm_id)->get();
         return view('master.itemform', [
             'companydata' => $company,
             'itemgroupdata' => $itemgroup,
             'unit' => $unit,
             'gstmaster' => $gstmaster,
-            'labelsetting'=>$labelsetting
+            'labelsetting' => $labelsetting
 
 
         ]);
     }
 
     public function insertitem(Request $request)
-    { 
+    {
         if ($request->hasFile('item_image')) {
             $image1 = $request->file('item_image'); // Use `file()` method to access uploaded file
             $originalName = $image1->getClientOriginalName(); // Original file name
@@ -76,43 +76,43 @@ class ItemController extends CustomBaseController
             $uniqueName = $timestamp . '_' . $originalName; // Combine timestamp and original name for uniqueness
             $image1->storeAs('public/account_image', $uniqueName); // Save file with unique name
         }
-        
+
         // if ($request->hasFile('item_image')) {
         //     $image1 = $request->file('item_image');
         //     $name = $image1->getClientOriginalName();
         //     $image1->storeAS('public\account_image\item_image', $name);
-        
+
 
 
         // }
-         
+
 
         $validator = validator::make($request->all(), [
-           'item_name' => [
-        'required',
-        'unique:items,item_name,NULL,id,firm_id,' . auth()->user()->firm_id,
-    ],
+            'item_name' => [
+                'required',
+                'unique:items,item_name,NULL,id,firm_id,' . auth()->user()->firm_id,
+            ],
             'item_barcode' => 'nullable|numeric',
             'mrp' => 'required|numeric',
             'sale_rate' => 'nullable|numeric',
-             'sale_rate_a' => 'nullable|numeric',
+            'sale_rate_a' => 'nullable|numeric',
             'sale_rate_b' => 'nullable|numeric',
             'sale_rate_c' => 'nullable|numeric',
             'purchase_rate' => 'nullable|numeric',
-             'group_id'=>'nullable',
-            'company_id'=>'nullable',
-             'item_gst_id'=>'required|numeric',
+            'group_id' => 'nullable',
+            'company_id' => 'nullable',
+            'item_gst_id' => 'required|numeric',
             'unit_id' => 'required|numeric',
         ]);
 
-       
+
 
         if ($validator->passes()) {
-            $company_name = company::where('firm_id',Auth::user()->firm_id)->find($request->company_id);
-            $group_name = itemgroup::where('firm_id',Auth::user()->firm_id)->find($request->group_id);
-            $unit_name = unit::where('firm_id',Auth::user()->firm_id)->find($request->unit_id);
+            $company_name = company::where('firm_id', Auth::user()->firm_id)->find($request->company_id);
+            $group_name = itemgroup::where('firm_id', Auth::user()->firm_id)->find($request->group_id);
+            $unit_name = unit::where('firm_id', Auth::user()->firm_id)->find($request->unit_id);
             $item = new item;
-            $item->firm_id=Auth::user()->firm_id;
+            $item->firm_id = Auth::user()->firm_id;
             $item->item_name = $request->item_name;
             $item->item_company = $company_name->comp_name;
             $item->item_group = $group_name->item_group;
@@ -130,70 +130,62 @@ class ItemController extends CustomBaseController
             $item->purchase_rate = $request->purchase_rate;
             // $item->short_name = $request->short_name;
             if (is_null($request->item_barcode)) {
-                $last_item = Item::
-                where('firm_id',Auth::user()->firm_id)->orderByRaw('CAST(id AS UNSIGNED) DESC')->first();
-                if($last_item->exists()){
+                $last_item = Item::where('firm_id', Auth::user()->firm_id)->orderByRaw('CAST(id AS UNSIGNED) DESC')->first();
+                if ($last_item->exists()) {
 
-                // Check if $last_item is null to handle cases where there are no items in the database
-                $last_item_id = $last_item->id+10000 ;
-                 $item->item_barcode = $last_item_id ;
-                }else{
-                    $item->item_barcode=10001;
+                    // Check if $last_item is null to handle cases where there are no items in the database
+                    $last_item_id = $last_item->id + 10000;
+                    $item->item_barcode = $last_item_id;
+                } else {
+                    $item->item_barcode = 10001;
                 }
-            }
-            
-            else{
+            } else {
                 $item->item_barcode = $request->item_barcode;
-
             }
 
 
 
-            
+
             if ($request->hasFile('item_image')) {
-                $item->item_image=$uniqueName;
+                $item->item_image = $uniqueName;
             }
             $item->save();
             return redirect('item');
         } else {
             return redirect('/itemform')->withInput()->withErrors($validator);
-
         }
-
-
-
     }
 
     public function itemformview($id)
     {
-        $record = item::where('firm_id',Auth::user()->firm_id)->find($id);
+        $record = item::where('firm_id', Auth::user()->firm_id)->find($id);
 
         return view('master.itemformview', ['data' => $record]);
-
     }
 
     public function show_item_form_edit($id)
     {
 
 
-        $company = company::where('firm_id',Auth::user()->firm_id)->get();
-        $itemgroup = itemgroup::where('firm_id',Auth::user()->firm_id)->get();
-        $unit = unit::where('firm_id',Auth::user()->firm_id)->get();
-        $gstmaster = gstmaster::where('firm_id',Auth::user()->firm_id)->get();
+        $company = company::where('firm_id', Auth::user()->firm_id)->get();
+        $itemgroup = itemgroup::where('firm_id', Auth::user()->firm_id)->get();
+        $unit = unit::where('firm_id', Auth::user()->firm_id)->get();
+        $gstmaster = gstmaster::where('firm_id', Auth::user()->firm_id)->get();
 
 
 
-        $record = item::where('firm_id',Auth::user()->firm_id)->find($id);
-        $labelsetting=labelsetting::where('firm_id',Auth::user()->firm_id)->get();
+        $record = item::where('firm_id', Auth::user()->firm_id)->find($id);
+        $labelsetting = labelsetting::where('firm_id', Auth::user()->firm_id)->get();
 
-        return view('master.itemformedit', ['data' => $record, 'companydata' => $company,
-        'itemgroupdata' => $itemgroup,
-        'unit' => $unit,
-        'gstmaster' => $gstmaster,
-        'labelsetting'=>$labelsetting,
-    
-    ]);
+        return view('master.itemformedit', [
+            'data' => $record,
+            'companydata' => $company,
+            'itemgroupdata' => $itemgroup,
+            'unit' => $unit,
+            'gstmaster' => $gstmaster,
+            'labelsetting' => $labelsetting,
 
+        ]);
     }
     public function edit_item(Request $request)
     {
@@ -217,10 +209,10 @@ class ItemController extends CustomBaseController
         // echo"<pre>";
         // print_r($request->all());
         if ($validator->passes()) {
-            $company_name = company::where('firm_id',Auth::user()->firm_id)->find($request->company_id);
-            $group_name = itemgroup::where('firm_id',Auth::user()->firm_id)->find($request->group_id);
-            $unit_name = unit::where('firm_id',Auth::user()->firm_id)->find($request->unit_id);
-            $item = item::where('firm_id',Auth::user()->firm_id)->find($request->id);
+            $company_name = company::where('firm_id', Auth::user()->firm_id)->find($request->company_id);
+            $group_name = itemgroup::where('firm_id', Auth::user()->firm_id)->find($request->group_id);
+            $unit_name = unit::where('firm_id', Auth::user()->firm_id)->find($request->unit_id);
+            $item = item::where('firm_id', Auth::user()->firm_id)->find($request->id);
             $item->item_name = $request->item_name;
 
             $item->item_barcode = $request->item_barcode;
@@ -248,10 +240,10 @@ class ItemController extends CustomBaseController
     {
         try {
             // Attempt to delete the item
-            item::where('firm_id',Auth::user()->firm_id)
-            ->where('id',$id)
-            ->delete();
-    
+            item::where('firm_id', Auth::user()->firm_id)
+                ->where('id', $id)
+                ->delete();
+
             // Redirect back with success message
             return redirect('item')->with('message', 'Item deleted successfully.');
         } catch (\Illuminate\Database\QueryException $e) {
@@ -259,13 +251,13 @@ class ItemController extends CustomBaseController
             return redirect('item')->with('error', 'Item is used in a transaction. Please delete the transaction first.');
         }
     }
-    
+
 
     public function searchitem($item_id)
     {
         // Search for the customer by contact number
-        $item = item::where('firm_id',Auth::user()->firm_id)
-        ->with('gstmaster')-> where('id', $item_id)->first();
+        $item = item::where('firm_id', Auth::user()->firm_id)
+            ->with('gstmaster')->where('id', $item_id)->first();
 
         if ($item) {
             return response()->json([
@@ -278,20 +270,18 @@ class ItemController extends CustomBaseController
                 'item_info' => null
             ]);
         }
-
-
     }
     public function searchitem_batch($item_id)
     {
         $startTime = microtime(true); // Start timer
-    
+
         $batch = batch::where('firm_id', Auth::user()->firm_id)
-                      ->where('item_id', $item_id)
-                      ->get();
-    
+            ->where('item_id', $item_id)
+            ->get();
+
         $endTime = microtime(true); // End timer
         $executionTime = round(($endTime - $startTime) * 1000, 2); // Time in milliseconds
-    
+
         if ($batch->isNotEmpty()) {
             return response()->json([
                 'message' => '<p class="alert alert-success">Batch Record Found</p>',
@@ -306,69 +296,67 @@ class ItemController extends CustomBaseController
             ]);
         }
     }
-    
+
 
 
     public function importItems(Request $request)
-{
-    Excel::import(new FullItemsImport, $request->file('file'));
-    return back()->with('success', 'Items and master data imported successfully!');
-}
+    {
+        Excel::import(new FullItemsImport, $request->file('file'));
+        return back()->with('success', 'Items and master data imported successfully!');
+    }
 
-public function createItemAjax(Request $request)
-{
-    try {
+    public function createItemAjax(Request $request)
+    {
+        try {
 
-        if (!Auth::check()) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+            if (!Auth::check()) {
+                return response()->json(['message' => 'Unauthorized'], 401);
+            }
+
+            $validated = $request->validate([
+                'item_name'     => 'required|string|max:255',
+                'company_id'    => 'required|integer',
+                'group_id'      => 'required|integer',
+
+                // 🔥 REQUIRED FIX
+                'unit_id'       => 'required|exists:units,id',
+                'gstmaster_id'  => 'required|exists:gstmasters,id',
+
+                'item_barcode'  => 'nullable|string|max:255',
+                'sale_rate'     => 'nullable|numeric',
+                'mrp'           => 'nullable|numeric',
+            ]);
+
+            $item = Item::create([
+                'firm_id'       => Auth::user()->firm_id,
+                'item_name'     => $validated['item_name'],
+                'company_id'    => $validated['company_id'],
+                'group_id'      => $validated['group_id'],
+                'unit_id'       => $validated['unit_id'],
+                'item_gst_id'  => $validated['gstmaster_id'],
+
+                'item_unit'     => Unit::find($validated['unit_id'])->primary_unit_name,
+                'item_company'  => Company::find($validated['company_id'])->comp_name,
+                'item_group'    => ItemGroup::find($validated['group_id'])->item_group,
+
+                'item_barcode'  => $validated['item_barcode'] ?? null,
+                'sale_rate'     => $validated['sale_rate'] ?? 0,
+                'sale_rate_a'   => $validated['sale_rate'] ?? 0,
+                'mrp'           => $validated['mrp'] ?? 0,
+            ]);
+
+
+
+            return response()->json([
+                'id'        => $item->id,
+                'item_name' => $item->item_name,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'error'   => $e->getMessage(),
+                'line'    => $e->getLine(),
+                'file'    => $e->getFile(),
+            ], 500);
         }
-
-    $validated = $request->validate([
-    'item_name'     => 'required|string|max:255',
-    'company_id'    => 'required|integer',
-    'group_id'      => 'required|integer',
-
-    // 🔥 REQUIRED FIX
-    'unit_id'       => 'required|exists:units,id',
-    'gstmaster_id'  => 'required|exists:gstmasters,id',
-
-    'item_barcode'  => 'nullable|string|max:255',
-    'sale_rate'     => 'nullable|numeric',
-    'mrp'           => 'nullable|numeric',
-]);
-
- $item = Item::create([
-    'firm_id'       => Auth::user()->firm_id,
-    'item_name'     => $validated['item_name'],
-    'company_id'    => $validated['company_id'],
-    'group_id'      => $validated['group_id'],
-    'unit_id'       => $validated['unit_id'],
-    'item_gst_id'  => $validated['gstmaster_id'],
-
-    'item_unit'     => Unit::find($validated['unit_id'])->primary_unit_name,
-    'item_company'  => Company::find($validated['company_id'])->comp_name,
-    'item_group'    => ItemGroup::find($validated['group_id'])->item_group,
-
-    'item_barcode'  => $validated['item_barcode'] ?? null,
-    'sale_rate'     => $validated['sale_rate'] ?? 0,
-    'sale_rate_a'   => $validated['sale_rate'] ?? 0,
-    'mrp'           => $validated['mrp'] ?? 0,
-]);
-
-
-
-        return response()->json([
-            'id'        => $item->id,
-            'item_name' => $item->item_name,
-        ]);
-
-    } catch (\Throwable $e) {
-        return response()->json([
-            'error'   => $e->getMessage(),
-            'line'    => $e->getLine(),
-            'file'    => $e->getFile(),
-        ], 500);
     }
 }
-}
-

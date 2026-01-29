@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\kot;
 use App\Models\item;
 use App\Models\room;
@@ -15,18 +16,19 @@ use App\Models\inventory;
 use App\Models\roombooking;
 use App\Models\roomcheckin;
 use App\Models\accountgroup;
+use App\Models\Labelsetting;
 use App\Models\roomcheckout;
 use Illuminate\Http\Request;
 use App\Models\businesssource;
 use App\Models\softwarecompany;
 use App\Models\super_comp_list;
-use App\Models\Labelsetting;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Storesuper_comp_listRequest;
 use App\Http\Requests\Updatesuper_comp_listRequest;
 
@@ -35,35 +37,47 @@ class SuperCompListController extends Controller
     public function index()
     {
         // $record = super_comp_list::orderBy('created_at', 'desc')->get();
-      
+
 
 
         $record = DB::table('super_comp_lists as s')
-    ->leftJoin('roomcheckouts as r', 's.firm_id', '=', 'r.firm_id')
-    ->select(
-        's.*',
-        DB::raw('COUNT(r.id) as total_roomcheckouts')
-    )
-    ->groupBy(
-        's.id', 's.firm_id', 's.firm_name', 's.firm_mobile', 's.firm_dealer',
-        's.activation_date', 's.expiry_date', 's.billing_amt', 
-        's.created_at', 's.updated_at','s.comp_af1','s.comp_af2','s.comp_af3','s.comp_af4','s.comp_af5','s.comp_af6','s.comp_af7','s.comp_af8' // include all fields from super_comp_lists table
-    )
-    ->orderBy('s.created_at', 'desc')
-    ->get();
+            ->leftJoin('roomcheckouts as r', 's.firm_id', '=', 'r.firm_id')
+            ->select(
+                's.*',
+                DB::raw('COUNT(r.id) as total_roomcheckouts')
+            )
+            ->groupBy(
+                's.id',
+                's.firm_id',
+                's.firm_name',
+                's.firm_mobile',
+                's.firm_dealer',
+                's.activation_date',
+                's.expiry_date',
+                's.billing_amt',
+                's.created_at',
+                's.updated_at',
+                's.comp_af1',
+                's.comp_af2',
+                's.comp_af3',
+                's.comp_af4',
+                's.comp_af5',
+                's.comp_af6',
+                's.comp_af7',
+                's.comp_af8' // include all fields from super_comp_lists table
+            )
+            ->orderBy('s.created_at', 'desc')
+            ->get();
 
         return view('super.supercom', ['data' => $record]);
-
-
     }
 
     public function softwarecomapny_show($firm_id)
     {
-        $software_companyInfo = softwarecompany::where('firm_id',$firm_id)->first();
-    
-      
-        return view('setting.software_company_form_firmid', ['software_companyInfo' => $software_companyInfo,'firm_id'=>$firm_id]);
+        $software_companyInfo = softwarecompany::where('firm_id', $firm_id)->first();
 
+
+        return view('setting.software_company_form_firmid', ['software_companyInfo' => $software_companyInfo, 'firm_id' => $firm_id]);
     }
 
     public function store_softwarecompny_firmid(Request $request)
@@ -72,14 +86,13 @@ class SuperCompListController extends Controller
         $validator = Validator::make($request->all(), [
             'software_firm_name' => 'required',
             'customer_firm_name' => 'required',
-            'firm_id'=>'required',
+            'firm_id' => 'required',
         ]);
-    
-        if ($validator->passes()) 
-        {
-            $software_companyInfo = softwarecompany::where('firm_id',$request->firm_id)->first();
-    
-    
+
+        if ($validator->passes()) {
+            $software_companyInfo = softwarecompany::where('firm_id', $request->firm_id)->first();
+
+
             $software_companyInfo->activation_date = $request->activation_date;
             $software_companyInfo->expiry_date = $request->expiry_date;
             $software_companyInfo->customer_firm_name = $request->customer_firm_name;
@@ -112,21 +125,18 @@ class SuperCompListController extends Controller
             $software_companyInfo->software_af8 = $request->software_af8;
             $software_companyInfo->software_af9 = $request->software_af9;
             $software_companyInfo->software_af10 = $request->software_af10;
-    
+
             $software_companyInfo->update();
-    
+
             return redirect()->back()->with('message', 'Record Updated Successfully!');
-        } 
-        else {
+        } else {
             return redirect()->back()->withInput()->withErrors($validator)->with('message', 'Record Not Updated!');
         }
     }
-    
+
     public function seed($firm_id)
     {
         return view('super.supercom_seed', ['firm_id' => $firm_id]);
-
-
     }
     public function trandelete($firm_id)
     {
@@ -183,10 +193,6 @@ class SuperCompListController extends Controller
             // Delete the voucher records
             $voucher_delete->delete();
         }
-
-
-
-
     }
 
     public function firm_master_delete($firm_id)
@@ -194,48 +200,47 @@ class SuperCompListController extends Controller
 
 
 
-       $accounts = account::where('firm_id', $firm_id)->get();
+        $accounts = account::where('firm_id', $firm_id)->get();
 
-            // Check if records exist before attempting to delete
-            if ($accounts->isNotEmpty()) {
-                foreach ($accounts as $account) {
-                    // Delete the account_id_pic if it exists
-                    if ($account->account_id_pic && Storage::exists('public/account_image/' . $account->account_id_pic)) {
-                        Storage::delete('public/account_image/' . $account->account_id_pic);
-                    }
-
-                    // Delete the account_pic1 if it exists
-                    if ($account->account_pic1 && Storage::exists('public/account_image/' . $account->account_pic1)) {
-                        Storage::delete('public/account_image/' . $account->account_pic1);
-                    }
+        // Check if records exist before attempting to delete
+        if ($accounts->isNotEmpty()) {
+            foreach ($accounts as $account) {
+                // Delete the account_id_pic if it exists
+                if ($account->account_id_pic && Storage::exists('public/account_image/' . $account->account_id_pic)) {
+                    Storage::delete('public/account_image/' . $account->account_id_pic);
                 }
 
-                // After deleting images, delete the accounts
-                account::where('firm_id', $firm_id)->delete();
+                // Delete the account_pic1 if it exists
+                if ($account->account_pic1 && Storage::exists('public/account_image/' . $account->account_pic1)) {
+                    Storage::delete('public/account_image/' . $account->account_pic1);
+                }
             }
 
-            $rooms = room::where('firm_id', $firm_id)->get();
+            // After deleting images, delete the accounts
+            account::where('firm_id', $firm_id)->delete();
+        }
 
-            // Check if records exist before attempting to delete
-            if ($rooms->isNotEmpty()) {
-                foreach ($rooms as $room) {
-                    // Delete the room_image if it exists
-                    if ($room->room_image1 && Storage::exists('public/room_image/' . $room->room_image1)) {
-                        Storage::delete('public/room_image/' . $room->room_image1);
-                    }
+        $rooms = room::where('firm_id', $firm_id)->get();
 
-                    if ($room->room_image2 && Storage::exists('public/room_image/' . $room->room_image2)) {
-                        Storage::delete('public/room_image/' . $room->room_image2);
-                    }
-                    if ($room->room_image3 && Storage::exists('public/room_image/' . $room->room_image3)) {
-                        Storage::delete('public/room_image/' . $room->room_image3);
-                    }
-                
+        // Check if records exist before attempting to delete
+        if ($rooms->isNotEmpty()) {
+            foreach ($rooms as $room) {
+                // Delete the room_image if it exists
+                if ($room->room_image1 && Storage::exists('public/room_image/' . $room->room_image1)) {
+                    Storage::delete('public/room_image/' . $room->room_image1);
                 }
 
-                // After deleting images, delete the accounts
-                room::where('firm_id', $firm_id)->delete();
+                if ($room->room_image2 && Storage::exists('public/room_image/' . $room->room_image2)) {
+                    Storage::delete('public/room_image/' . $room->room_image2);
+                }
+                if ($room->room_image3 && Storage::exists('public/room_image/' . $room->room_image3)) {
+                    Storage::delete('public/room_image/' . $room->room_image3);
+                }
             }
+
+            // After deleting images, delete the accounts
+            room::where('firm_id', $firm_id)->delete();
+        }
 
 
 
@@ -267,9 +272,6 @@ class SuperCompListController extends Controller
         if ($user_delete->exists()) {
             $user_delete->delete();
         }
-
-
-
     }
 
     public function firmmaster_foregnkey_delete($firm_id)
@@ -305,11 +307,6 @@ class SuperCompListController extends Controller
         if ($businesssource_delete->exists()) {
             $businesssource_delete->delete();
         }
-
-
-
-
-
     }
 
 
@@ -350,7 +347,7 @@ class SuperCompListController extends Controller
     {
         // Create and assign Super Admin role to user
         $superAdminUser = User::firstOrCreate([
-            'email' => $request->firm_id.'_superadmin@gmail.com',
+            'email' => $request->firm_id . '_superadmin@gmail.com',
         ], [
             'name' => 'Super Admin',
             'firm_id' => $request->firm_id,
@@ -362,7 +359,7 @@ class SuperCompListController extends Controller
 
         // Create and assign Data House user with Super Admin role
         $superAdminUser2 = User::firstOrCreate([
-            'email' => $request->firm_id.'_datahouset@gmail.com',
+            'email' => $request->firm_id . '_datahouset@gmail.com',
         ], [
             'name' => 'Data House',
             'firm_id' => $request->firm_id,
@@ -384,7 +381,7 @@ class SuperCompListController extends Controller
 
         // Create and assign Admin role to user
         $adminUser = User::firstOrCreate([
-            'email' => $request->firm_id.'_admin@gmail.com',
+            'email' => $request->firm_id . '_admin@gmail.com',
         ], [
             'name' => 'Admin',
             'firm_id' => $request->firm_id,
@@ -396,7 +393,7 @@ class SuperCompListController extends Controller
 
         // Create and assign Staff role to user
         $staffUser = User::firstOrCreate([
-            'email' => $request->firm_id.'_staff@gmail.com',
+            'email' => $request->firm_id . '_staff@gmail.com',
         ], [
             'name' => 'Staff',
             'firm_id' => $request->firm_id,
@@ -774,13 +771,25 @@ class SuperCompListController extends Controller
             ['firm_id' => $request->firm_id, 'option_type' => 'Check_out', 'option_name' => 'room_checkout_view', 'format_name' => 'A4 General Invoice'],
             ['firm_id' => $request->firm_id, 'option_type' => 'Check_out', 'option_name' => 'room_checkout_view3', 'format_name' => 'A4 standard'],
             ['firm_id' => $request->firm_id, 'option_type' => 'Check_out', 'option_name' => 'room_checkout_view4', 'format_name' => 'a5/Half Page Format'],
-             ['firm_id' => $request->firm_id, 'option_type' => 'Check_out', 'option_name' => 'room_checkout_view7', 'format_name' => 'Only Room Bill'],
+            ['firm_id' => $request->firm_id, 'option_type' => 'Check_out', 'option_name' => 'room_checkout_view7', 'format_name' => 'Only Room Bill'],
             ['firm_id' => $request->firm_id, 'option_type' => 'Check_out', 'option_name' => 'room_checkout_view8', 'format_name' => 'Only Food Bill'],
             ['firm_id' => $request->firm_id, 'option_type' => 'Room_booking', 'option_name' => 'roombooking_view', 'format_name' => 'A4 Booking  Reciept'],
             ['firm_id' => $request->firm_id, 'option_type' => 'Room_booking', 'option_name' => 'roombooking_print2', 'format_name' => 'Room Booking Without  Room'],
-            
+            ['firm_id' => $request->firm_id, 'option_type' => 'Purchase', 'option_name' => 'purchase_print_view', 'format_name' => 'A4 Size PUrchase Bill'],
+            ['firm_id' => $request->firm_id, 'option_type' => 'Purchase', 'option_name' => 'purchase_print_view2', 'format_name' => 'A5 size purchase Bill'],
+            ['firm_id' => $request->firm_id, 'option_type' => '	Receipts', 'option_name' => 'receipt_print_view', 'format_name' => 'A4 size receipt print'],
+            ['firm_id' => $request->firm_id, 'option_type' => 'Payments', 'option_name' => 'payment_print_view', 'format_name' => '	A4 size payment print'],
+            ['firm_id' => $request->firm_id, 'option_type' => 'Payments', 'option_name' => 'payment_print_view2', 'format_name' => 'A5 size payment print'],
+            ['firm_id' => $request->firm_id, 'option_type' => 'Sale', 'option_name' => 'sale_print_view', 'format_name' => 'A2 size sale print'],
+            ['firm_id' => $request->firm_id, 'option_type' => 'Sale', 'option_name' => 'sale_print_view2', 'format_name' => 'A3 size sale print'],
+            ['firm_id' => $request->firm_id, 'option_type' => 'Sale', 'option_name' => 'sale_print_view3', 'format_name' => 'A4 size sale print'],
+            ['firm_id' => $request->firm_id, 'option_type' => 'Sale', 'option_name' => 'sale_print_view4', 'format_name' => 'A5 size sale print'],
+            ['firm_id' => $request->firm_id, 'option_type' => 'Quotation', 'option_name' => 'quotation_print_view', 'format_name' => 'A2 size  quotation print'],
+            ['firm_id' => $request->firm_id, 'option_type' => 'Quotation', 'option_name' => 'quotation_print_view2', 'format_name' => 'A3 size quotation  print'],
+            ['firm_id' => $request->firm_id, 'option_type' => 'Quotation', 'option_name' => 'quotation_print_view3', 'format_name' => 'A4 size quotation  print'],
+            ['firm_id' => $request->firm_id, 'option_type' => 'Quotation', 'option_name' => 'quotation_print_view4', 'format_name' => 'A5 size quotation  print'],
         ];
-    
+
         foreach ($data as $item) {
             // Check if the record already exists
             $exists = DB::table('optionlists')
@@ -788,14 +797,14 @@ class SuperCompListController extends Controller
                 ->where('option_type', $item['option_type'])
                 ->where('option_name', $item['option_name'])
                 ->exists();
-    
+
             // Insert only if the record does not exist
             if (!$exists) {
                 DB::table('optionlists')->insert($item);
             }
         }
     }
-    
+
     public function primarygroupseed(Request $request)
     {
         $data = [
@@ -1080,67 +1089,67 @@ class SuperCompListController extends Controller
 
     public function remainingseed($firm_id)
     {
-        
+
         $purchase_id = accountgroup::where('firm_id', $firm_id)
-            ->where('account_group_name', 'Purchase')->first(); 
+            ->where('account_group_name', 'Purchase')->first();
 
 
-            if ( $purchase_id) {
-                // Define the accounts to be created
-                $accounts = [
-        
-                    [
-                        'firm_id' => $firm_id,
-                        'account_name' => 'Purchase',
-                        'account_group_id' => $purchase_id->id,
-                        'op_balnce' => 0,
-                        'balnce_type' => 'Dr',
-                        'address' => null,
-                        'city' => null,
-                        'state' => null,
-                        'phone' => null,
-                        'mobile' => null,
-                        'email' => null,
-                        'person_name' => null,
-                        'gst_no' => null,
-                        'account_af3' => 'YES',
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]
-             
-                ];
-    
-                // Filter accounts to ensure no duplicates are inserted
-                foreach ($accounts as $account) {
-                    $exists = DB::table('accounts')
-                        ->where('firm_id', $account['firm_id'])
-                        ->where('account_name', $account['account_name'])
-                        ->exists();
+        if ($purchase_id) {
+            // Define the accounts to be created
+            $accounts = [
 
-                    if (!$exists) {
-                        DB::table('accounts')->insert($account);
-                    }
-                }
-            } else {
-                return "Please seed all account groups first.";
-            }
-
-
-
-            $data = [
                 [
                     'firm_id' => $firm_id,
-                    'voucher_type_name' => 'RKot',
-                    'numbring_start_from' => 1,
-                    'voucher_prefix' => 'R/',
-                    'voucher_suffix' => '',
-                    'voucher_numbring_style' => 'voucher_no_continue',
-                    'voucher_print_name' => 'Restaurant Kot',
-                    'voucher_remark' => 'Restaurant Kot',
-                ],
+                    'account_name' => 'Purchase',
+                    'account_group_id' => $purchase_id->id,
+                    'op_balnce' => 0,
+                    'balnce_type' => 'Dr',
+                    'address' => null,
+                    'city' => null,
+                    'state' => null,
+                    'phone' => null,
+                    'mobile' => null,
+                    'email' => null,
+                    'person_name' => null,
+                    'gst_no' => null,
+                    'account_af3' => 'YES',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+
             ];
-    
-            DB::table('voucher_types')->insert($data);
+
+            // Filter accounts to ensure no duplicates are inserted
+            foreach ($accounts as $account) {
+                $exists = DB::table('accounts')
+                    ->where('firm_id', $account['firm_id'])
+                    ->where('account_name', $account['account_name'])
+                    ->exists();
+
+                if (!$exists) {
+                    DB::table('accounts')->insert($account);
+                }
+            }
+        } else {
+            return "Please seed all account groups first.";
+        }
+
+
+
+        $data = [
+            [
+                'firm_id' => $firm_id,
+                'voucher_type_name' => 'RKot',
+                'numbring_start_from' => 1,
+                'voucher_prefix' => 'R/',
+                'voucher_suffix' => '',
+                'voucher_numbring_style' => 'voucher_no_continue',
+                'voucher_print_name' => 'Restaurant Kot',
+                'voucher_remark' => 'Restaurant Kot',
+            ],
+        ];
+
+        DB::table('voucher_types')->insert($data);
     }
 
 
@@ -1215,7 +1224,6 @@ class SuperCompListController extends Controller
     {
         $package = super_comp_list::findOrFail($id);
         return view('room_master.package_edit', compact('package'));
-
     }
 
     /**
@@ -1281,7 +1289,7 @@ class SuperCompListController extends Controller
             // DB::rollBack();
 
             // Log the full error details for debugging
-            \Log::error('Error deleting records: ' . $e->getMessage(), [
+            Log::error('Error deleting records: ' . $e->getMessage(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString()
@@ -1294,7 +1302,6 @@ class SuperCompListController extends Controller
                 'error' => $e->getMessage(), // Optional: include this only if you want to return the error details.
             ], 500);
         }
-
     }
 
 
@@ -1322,12 +1329,12 @@ class SuperCompListController extends Controller
             'batch_op_remark',
             'rack',
         ];
-    
+
         foreach ($fields as $field) {
             $exists = Labelsetting::where('firm_id', $firm_id)
-                                    ->where('field_name', $field)
-                                    ->exists();
-    
+                ->where('field_name', $field)
+                ->exists();
+
             if (!$exists) {
                 Labelsetting::create([
                     'firm_id' => $firm_id,
@@ -1337,8 +1344,7 @@ class SuperCompListController extends Controller
                 ]);
             }
         }
-    
+
         return "Batch Label Settings inserted/updated successfully for firm: " . $firm_id;
     }
-    
 }

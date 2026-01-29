@@ -295,23 +295,23 @@
                         <div class="col-md-3  text-center row ">
                             {{-- <div class="form-group"> --}}
                             <div class="d-flex align-items-center gap-1">
-                            <div class="flex-grow-1">
-                                <select id="account_id" name="account_id" class="form-control select-party">
-                                    <option></option>
-                                    @foreach ($accountdata as $record)
-                                        <option value="{{ $record->id }}">
-                                            {{ $record->account_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <div class="flex-grow-1">
+                                    <select id="account_id" name="account_id" class="form-control select-party">
+                                        <option></option>
+                                        @foreach ($accountdata as $record)
+                                            <option value="{{ $record->id }}">
+                                                {{ $record->account_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <button type="button" class="btn btn-outline-primary btn-plus" id="openAccountModal">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+
+
                             </div>
-
-                            <button type="button" class="btn btn-outline-primary btn-plus" id="openAccountModal">
-                                <i class="fa fa-plus"></i>
-                            </button>
-
-
-                        </div>
 
                             {{-- <label class="floating-label" for="account_id">Account Name</label> --}}
                             {{-- </div> --}}

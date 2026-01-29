@@ -399,9 +399,9 @@ class AccountController extends CustomBaseController
             ]);
         } catch (\Throwable $e) {
             return response()->json([
-                 'error'   => $e->getMessage(),
-            'line'    => $e->getLine(),
-            'file'    => $e->getFile(),
+                'error'   => $e->getMessage(),
+                'line'    => $e->getLine(),
+                'file'    => $e->getFile(),
             ], 500);
         }
 
