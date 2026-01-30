@@ -14,6 +14,7 @@ class accountgroup extends Model
     protected $fillable = [
         'account_group_name',
         'primary_group_id',
+        'firm_id'
     ];
 
     /**

@@ -141,11 +141,13 @@ input[type="file"] {
             </select>
 
             <!-- ➕ ADD BUTTON -->
-            <a href="{{ url('/accountgroups') }}"
-               class="btn btn-outline-primary btn-icon"
-               title="Add Account Group">
-                <i class="fa fa-plus"></i>
-            </a>
+          <button type="button"
+        class="btn btn-outline-primary"
+        id="openAccountGroupModal"
+        title="Add Account Group">
+    <i class="fa fa-plus"></i>
+</button>
+
         </div>
 
         <span class="text-danger">
@@ -392,6 +394,7 @@ input[type="file"] {
     💾 Save Account
 </button>
 
+
                 </div>
             </div>
         </form>
@@ -402,6 +405,53 @@ input[type="file"] {
         </div>
     </div>
 </div>
+{{-- =========================================
+ACCOUNT GROUP MODAL (OUTSIDE FORM)
+========================================= --}}
+<div class="modal fade" id="accountGroupModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Add Account Group</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="accountGroupForm" novalidate>
+                    @csrf
+
+                    <div class="mb-3">
+                        <label>Account Group Name <span class="text-danger">*</span></label>
+                        <input type="text" name="account_group_name" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Primary Group Name <span class="text-danger">*</span></label>
+                     <select name="primary_group_id" class="form-select" required>
+    <option value="" disabled selected>Select Primary Group</option>
+
+    @foreach ($primarygroups as $group)
+        <option value="{{ $group->id }}">
+            {{ $group->primary_group_name }}
+        </option>
+    @endforeach
+</select>
+
+                    </div>
+
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">
+                            💾 Save Group
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{{-- ============================================================================================ --}}
 
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
@@ -426,5 +476,57 @@ input[type="file"] {
 
     });
 </script>
+<script>
+$('#accountGroupForm').on('submit', function (e) {
+    e.preventDefault();
+
+    $.ajax({
+        url: "{{ route('accountgroup.store.ajax') }}",
+        type: "POST",
+        data: $(this).serialize(),
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (res) {
+
+            // Add new option to dropdown
+            let option = new Option(
+                res.account_group_name,
+                res.id,
+                true,
+                true
+            );
+
+            $('#account_group_id').append(option).trigger('change');
+
+            $('#accountGroupModal').modal('hide');
+            $('#accountGroupForm')[0].reset();
+        },
+        error: function (xhr) {
+
+    if (xhr.responseJSON?.type === 'validation') {
+        alert(Object.values(xhr.responseJSON.errors).join('\n'));
+    }
+    else if (xhr.responseJSON?.type === 'server') {
+        alert(xhr.responseJSON.message);
+
+        if (xhr.responseJSON.debug) {
+            console.error('Debug:', xhr.responseJSON.debug);
+        }
+    }
+    else {
+        alert('Unexpected error occurred.');
+    }
+}
+
+    });
+});
+</script>
+<script>
+$('#openAccountGroupModal').on('click', function () {
+    $('#accountGroupModal').modal('show');
+});
+</script>
+
 
 @endsection

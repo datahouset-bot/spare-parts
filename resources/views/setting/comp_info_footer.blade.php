@@ -1,4 +1,116 @@
 @extends('layouts.blank')
+<style>
+    /* ================= PAGE BACKGROUND ================= */
+    body {
+        background: linear-gradient(135deg, #eef2ff, #f8fafc);
+    }
+
+    /* ================= CARD ================= */
+    .card {
+        border-radius: 18px;
+        border: none;
+        box-shadow: 0 14px 40px rgba(0, 0, 0, .12);
+        animation: fadeUp .35s ease;
+    }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(14px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ================= HEADER ================= */
+    .card-header {
+        background: linear-gradient(135deg, #4338ca, #1e3a8a);
+        color: #fff;
+        font-size: 22px;
+        font-weight: 700;
+        text-align: center;
+        border-radius: 18px 18px 0 0;
+        padding: 18px;
+    }
+
+    /* ================= FORM INPUTS ================= */
+    .form-control,
+    .form-select,
+    textarea {
+        border-radius: 10px;
+        border: 2px solid #c7d2fe;
+        font-size: 14px;
+    }
+
+    .form-control:focus,
+    .form-select:focus,
+    textarea:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, .25);
+    }
+
+    /* ================= FLOATING LABEL ================= */
+    .form-floating>label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #475569;
+    }
+
+    /* ================= CHECKBOX ================= */
+    .form-check-input {
+        border-radius: 6px;
+        border: 2px solid #6366f1;
+    }
+
+    .form-check-label {
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    /* ================= SECTION DIVIDER ================= */
+    .section-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1e40af;
+        border-left: 5px solid #6366f1;
+        padding-left: 12px;
+        margin: 28px 0 14px;
+    }
+
+    /* ================= TERMS TEXTAREA ================= */
+    textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    /* ================= BUTTON ================= */
+    .btn-primary {
+        border-radius: 28px;
+        font-weight: 700;
+        padding: 10px;
+        transition: all .25s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(99, 102, 241, .45);
+    }
+
+    .btn-dark {
+        border-radius: 22px;
+        padding: 6px 18px;
+    }
+
+    /* ================= FOOTER ================= */
+    .card-footer {
+        background: #f1f5f9;
+        border-radius: 0 0 18px 18px;
+    }
+</style>
+
 @section('pagecontent')
     <div class="container-fluid ">
         @if (session('message'))
@@ -24,6 +136,7 @@
                                                 @method('put')
 
 
+                                                <div class="section-title">Bank & Payment Details</div>
 
                                                 <div class="row mb-3">
                                                     <div class="col-md-4">
@@ -132,6 +245,8 @@
 
                                                     </div>
                                                 </div>
+                                                <div class="section-title">Voucher & Invoice Settings</div>
+
                                                 <div class="row mb-3">
                                                     <div class="col-md-4">
                                                         <div class="form-floating mb-3 mb-md-0">
@@ -186,6 +301,7 @@
 
                                                     </div>
                                                 </div>
+                                                <div class="section-title">Region & Currency</div>
 
                                                 <div class="row mb-3">
                                                     <div class="col-md-4">
@@ -237,7 +353,7 @@
                                                                     DR Congo</option>
                                                                 <option value="Madagascar"
                                                                     {{ old('country', $compinfofooter->country) == 'Madagascar' ? 'selected' : '' }}>
-                                                                    Madagascar</option>    
+                                                                    Madagascar</option>
 
 
                                                             </select>
@@ -282,7 +398,7 @@
                                                                     &#x0631;.&#x0633; Saudi Riyal (SAR)</option>
                                                                 <option value="MGA"
                                                                     {{ old('currency', $compinfofooter->currency) == 'MGA' ? 'selected' : '' }}>
-                                                                     Malagasy Ariary (AR)</option>    
+                                                                    Malagasy Ariary (AR)</option>
                                                             </select>
                                                             <span class="text-danger">
                                                                 @error('currency')
@@ -295,6 +411,8 @@
                                                 </div>
 
                                                 <div class="row mb-3">
+                                                    <div class="section-title">Business Configuration</div>
+
                                                     <div class="col-md-4">
                                                         <div class="form-floating mb-3 mb-md-0">
                                                             <input class="form-control" id="ct2" type="text"
@@ -342,76 +460,82 @@
 
                                                 </div>
                                                 <div class="row mb-3">
-                                                  <div class="col-md-4">
-                                                      <div class="form-floating mb-3 mb-md-0">
-                                                          <input class="form-control" id="ct5" type="text"
-                                                              name="ct5" value="{{ $compinfofooter->ct5 }}" />
-                                                          <span class="text-danger">
-                                                              @error('ct5')
-                                                                  `
-                                                                  {{ $message }}
-                                                              @enderror
-                                                          </span>
-                                                          <label for="ct5">Bank A/c Name  </label>
-                                                      </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input class="form-control" id="ct5" type="text"
+                                                                name="ct5" value="{{ $compinfofooter->ct5 }}" />
+                                                            <span class="text-danger">
+                                                                @error('ct5')
+                                                                    `
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                            <label for="ct5">Bank A/c Name </label>
+                                                        </div>
 
-                                                  </div>
-                                                  <div class="col-md-4">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <select class="form-select" id="ct7" name="ct7">
-                                                            <option value="GST"
-                                                                {{ old('ct7', $compinfofooter->ct7) == 'GST' ? 'selected' : '' }}>
-                                                                GST</option>
-                                                            <option value="VAT"
-                                                                {{ old('ct7', $compinfofooter->ct7) == 'VAT' ? 'selected' : '' }}>
-                                                                 VAT</option>
-    
-                                                        </select>
-                                                        <span class="text-danger">
-                                                            @error('tax_type')
-                                                                {{ $message }}
-                                                            @enderror
-                                                        </span>
-                                                        <label for="tax_type">Tax System</label>
                                                     </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <select class="form-select" id="ct7" name="ct7">
+                                                                <option value="GST"
+                                                                    {{ old('ct7', $compinfofooter->ct7) == 'GST' ? 'selected' : '' }}>
+                                                                    GST</option>
+                                                                <option value="VAT"
+                                                                    {{ old('ct7', $compinfofooter->ct7) == 'VAT' ? 'selected' : '' }}>
+                                                                    VAT</option>
+
+                                                            </select>
+                                                            <span class="text-danger">
+                                                                @error('tax_type')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                            <label for="tax_type">Tax System</label>
+                                                        </div>
+
+                                                    </div>
+
 
                                                 </div>
 
 
-                                              </div>
-                                              
-                                              
-                                              <div class="row mb-3">
-                                                <div class="col-md-4">
-                                                    <div class="form-check mb-3 mb-md-0">
-                                                        <input class="form-check-input" type="checkbox" id="ct6" name="ct6" value="1" {{ old('ct6', $compinfofooter->ct6) == 1 ? 'checked' : '' }}>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-4">
+                                                        <div class="form-check mb-3 mb-md-0">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="ct6" name="ct6" value="1"
+                                                                {{ old('ct6', $compinfofooter->ct6) == 1 ? 'checked' : '' }}>
 
-                                                        <label class="form-check-label" for="ct6">Restaurant & Room Food Bill Tax Inclusive </label>
-                                                        <br>
-                                                        <span class="text-danger">
-                                                            @error('ct6')
-                                                                {{ $message }}
-                                                            @enderror
-                                                        </span>
+                                                            <label class="form-check-label" for="ct6">Restaurant &
+                                                                Room Food Bill Tax Inclusive </label>
+                                                            <br>
+                                                            <span class="text-danger">
+                                                                @error('ct6')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-<div class="input-group mb-3 mb-md-0">
-    <div class="input-group-prepend">
-        <span class="input-group-text">Terms &amp; Conditions</span>
-    </div>
+                                                <div class="input-group mb-3 mb-md-0">
+                                                    <div class="section-title">Terms & Conditions</div>
 
-    <textarea rows="6"cols="50" name="terms" class="form-control"
-    placeholder="Enter ONE term per line&#10;"
-    >{{ old('terms', $compinfofooter->terms) }}</textarea>
-</div>
+                        
+                                                    <textarea rows="6" name="terms" class="form-control"
+                                                        placeholder="• One term per line&#10;• Appears on invoice&#10;• Keep it short">
+{{ old('terms', $compinfofooter->terms) }}
+</textarea>
+
+                                                </div>
 
 
                                                 <div class="mt-4 mb-0">
                                                     <div class="d-grid">
-                                                        <button
-                                                            type="submit"class="btn btn-primary btn-block">Apply</button>
+                                                        <button type="submit" class="btn btn-primary btn-lg">
+                                                            💾 Save & Apply Changes
+                                                        </button>
+
                                                     </div>
                                                 </div>
                                             </form>

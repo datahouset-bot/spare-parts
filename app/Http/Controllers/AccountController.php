@@ -6,6 +6,7 @@ use App\Models\ledger;
 use App\Models\account;
 use App\Models\roomcheckin;
 use App\Models\accountgroup;
+use App\Models\primarygroup;
 use Illuminate\Http\Request;
 use App\Imports\accountImport;
 use Illuminate\Support\Facades\Auth;
@@ -76,7 +77,8 @@ class AccountController extends CustomBaseController
     {
         //show the list of account landing page 
         $accountgroups = accountgroup::where('firm_id', Auth::user()->firm_id)->get();
-        return view('master.accountform', compact('accountgroups'));
+        $primarygroups = primarygroup::where('firm_id', Auth::user()->firm_id)->get();
+        return view('master.accountform', compact('accountgroups','primarygroups'));
     }
 
     /**
@@ -404,13 +406,12 @@ class AccountController extends CustomBaseController
                 'file'    => $e->getFile(),
             ], 500);
         }
-
-
         // ✅ JSON RESPONSE (THIS FIXES EVERYTHING)
         return response()->json([
-            'id'           => $account->id,
-            'account_name' => $account->account_name,
-            'message'      => 'Account created successfully'
+        'id'           => $account->id,
+        'account_name' => $account->account_name,
+        'group_name' => $account->accountGroup->account_group_name,
+        'message'      => 'Account created successfully'
         ]);
     }
 }

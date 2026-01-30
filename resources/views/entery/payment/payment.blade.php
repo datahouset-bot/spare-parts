@@ -218,13 +218,10 @@ body {
                 </option>
             @endforeach
         </select>
-
-  <a href="{{ url('/accountform') }}"
-   class="btn btn-outline-primary"
-   title="Add New">
-    <i class="fa fa-plus"></i>
-</a>
-
+ <button type="button" id="openPaymentModeModal"
+                                                class="btn btn-outline-primary">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
 
     </div>
 
@@ -247,13 +244,9 @@ body {
                 </option>
             @endforeach
         </select>
-
-    <a href="{{ url('/accountform') }}"
-   class="btn btn-outline-primary"
-   title="Add New">
-    <i class="fa fa-plus"></i>
-</a>
-
+ <button type="button" id="openAccountModal" class="btn btn-outline-primary">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
 
     </div>
 
@@ -373,6 +366,89 @@ body {
             </tbody>
           </table> 
 
+                  {{-- ======================================Acount model ajax ================================================= --}}
+             <div class="modal fade"
+     id="accountModal"
+     tabindex="-1"
+     data-bs-backdrop="false"
+     data-bs-focus="false"
+     aria-hidden="true"
+     style="z-index:1060">
+
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add New Account</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                <form id="accountForm">
+                                    @csrf
+
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+                                            <label>Account Name</label>
+                                            <input type="text" name="account_name" class="form-control" required>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label>Account Group</label>
+                                            <select name="account_group_id" class="form-select" required>
+                                                <option disabled selected>Select Group</option>
+                                                @foreach ($accountgroups as $group)
+                                                    <option value="{{ $group->id }}">
+                                                        {{ $group->account_group_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6 mt-2">
+                                            <label>Mobile</label>
+                                            <input type="text" name="mobile" class="form-control">
+                                        </div>
+
+                                        <div class="col-md-6 mt-2">
+                                            <label>GST No</label>
+                                            <input type="text" name="gst_no" class="form-control">
+                                        </div>
+
+                                        <div class="col-md-12 mt-2">
+                                            <label>Address</label>
+                                            <textarea name="address" class="form-control"></textarea>
+                                        </div>
+
+                                        <div class="col-md-6 mt-2">
+                                            <label>Opening Balance</label>
+                                            <input type="number" step="0.01" name="op_balnce" class="form-control"
+                                                value="0">
+                                        </div>
+
+                                        <div class="col-md-6 mt-2">
+                                            <label>Balance Type</label>
+                                            <select name="balnce_type" class="form-select">
+                                                <option value="Dr">Dr</option>
+                                                <option value="Cr">Cr</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="text-end mt-3">
+                                        <button type="submit" class="btn btn-primary">
+                                            Save Account
+                                        </button>
+                                    </div>
+
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
 </div>
@@ -410,19 +486,6 @@ body {
 </script>
 
 <script>
-$(document).on('select2:select', '#account_id', function (e) {
-    let value = e.params.data.id;
-
-    if (value === '__add_new__') {
-        // close dropdown
-        $('#account_id').val(null).trigger('change');
-
-        // open account form
-        window.open('/accountform', '_blank');
-    }
-});
-</script>
-<script>
 document.addEventListener('keydown', function (e) {
 
     // Ignore when typing inside inputs
@@ -446,6 +509,106 @@ document.getElementById('myModal')?.addEventListener('shown.bs.modal', function 
     this.querySelector('input:not([readonly])')?.focus();
 });
 </script>
+  {{-- //*
+    ======================================================================
+    Account ajax 
+    ==========================================================
+    //* --}}
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+      $('#accountForm').on('submit', function (e) {
+    e.preventDefault();
+
+    $.post("{{ route('create_account_ajax') }}",
+        $(this).serialize(),
+        function (res) {
+
+            let group = res.group_name.toLowerCase();
+
+            // Allowed for payment mode
+            let isCashOrBank =
+                group.includes('cash in hand') ||
+                group.includes('Bank account');
+
+            // ACCOUNT SELECT → always add
+            if (currentSource === 'account') {
+                let option = new Option(res.account_name, res.id, true, true);
+                $('#account_id').append(option).trigger('change');
+            }
+
+            // PAYMENT MODE SELECT → only if Cash / Bank
+            if (currentSource === 'payment' && isCashOrBank) {
+                let option = new Option(res.account_name, res.id, true, true);
+                $('#payment_mode_id').append(option).trigger('change');
+            }
+
+            $('#accountModal').modal('hide');
+            $('#accountForm')[0].reset();
+        }
+    ).fail(function (xhr) {
+        alert(Object.values(xhr.responseJSON.errors).join('\n'));
+    });
+});
+
+    </script>
+   <script>
+let currentTargetSelect = null;
+
+// ACCOUNT +
+$('#openAccountModal').on('click', function () {
+    currentTargetSelect = '#account_id';
+    currentSource = 'account';
+
+    $('#myModal').modal('hide');
+    $('#accountModal').modal('show');
+});
+
+// PAYMENT MODE +
+$('#openPaymentModeModal').on('click', function () {
+    currentTargetSelect = '#payment_mode_id';
+    currentSource = 'payment';
+
+    $('#myModal').modal('hide');
+    $('#accountModal').modal('show');
+});
+
+</script>
+<script>
+$('#accountModal').on('hidden.bs.modal', function () {
+    $('#myModal').modal('show');
+});
+</script>
+
+
+    <script>
+document.addEventListener('keydown', function (e) {
+
+    // ❌ DO NOT interfere when Account or Payment modal is open
+    if (
+        document.getElementById('accountModal')?.classList.contains('show') ||
+        document.getElementById('paymentModeModal')?.classList.contains('show')
+    ) {
+        return;
+    }
+
+    // Only receipt modal logic
+    if (!document.getElementById('myModal')?.classList.contains('show')) return;
+
+    if (e.key === 'Enter') {
+
+        if (['TEXTAREA'].includes(e.target.tagName)) return;
+
+        e.preventDefault();
+
+    }
+});
+</script>
+
 
 
 @endsection

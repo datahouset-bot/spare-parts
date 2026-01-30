@@ -16,6 +16,136 @@
    
   });
 </script>
+
+<style>
+/* ===== PAGE BACKGROUND ===== */
+body {
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+}
+
+/* ===== CARD ===== */
+.card {
+    border-radius: 18px;
+    border: none;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.12);
+    animation: fadeUp 0.6s ease;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== HEADER ===== */
+.card-header {
+    background: linear-gradient(135deg, #6366f1, #1e3a8a);
+    color: #fff;
+    border-radius: 18px 18px 0 0;
+    padding: 18px;
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+/* ===== ACTION BAR ===== */
+.action-bar {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin: 16px 0;
+}
+
+/* ===== BUTTONS ===== */
+.btn-primary {
+    border-radius: 30px;
+    font-weight: 600;
+    padding: 8px 24px;
+    transition: all .25s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(99,102,241,0.45);
+}
+
+.btn-outline-primary {
+    border-radius: 50%;
+}
+
+/* ===== TABLE ===== */
+.table {
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background: #eef2ff;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.table tbody tr {
+    transition: all .25s ease;
+}
+
+.table tbody tr:hover {
+    background: #f1f5ff;
+    transform: scale(1.01);
+}
+
+/* ===== ICONS ===== */
+.fa-edit, .fa-trash {
+    transition: transform .2s ease, color .2s ease;
+}
+
+.fa-edit:hover {
+    transform: scale(1.25);
+    color: #6366f1 !important;
+}
+
+.fa-trash:hover {
+    transform: scale(1.25);
+    color: #dc2626 !important;
+}
+
+/* ===== MODAL ===== */
+.modal-content {
+    border-radius: 18px;
+    animation: zoomIn .3s ease;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.92); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #6366f1, #1e3a8a);
+    color: #fff;
+    border-radius: 18px 18px 0 0;
+}
+
+/* ===== FORM INPUTS ===== */
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 2px solid #c7d2fe;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,.25);
+}
+
+/* ===== DATATABLE SEARCH ===== */
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 20px;
+    padding: 6px 14px;
+}
+</style>
+
+
 <div class="container ">
   @if(session('message'))
     <div class="alert alert-primary">
@@ -33,11 +163,15 @@
         <div class="card-header">
         slot
         </div>
-       <div class="row my-2">
-        <div class="col-md-12 text-center"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-          Add New 
-      </button>
-          </div></div>
+      <div class="action-bar">
+    <button type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#myModal">
+        <i class="fa fa-plus"></i> Add Slot
+    </button>
+</div>
+
         
           <div class="container mt-5">
             
@@ -248,5 +382,24 @@
         </div>
     </div>
 </div>
+
+<script>
+  $(document).ready(function () {
+    new DataTable('#remindtable', {
+        pageLength: 10,
+        responsive: true,
+        ordering: true,
+        language: {
+            search: "🔍 Search Slot:",
+            lengthMenu: "Show _MENU_ slots",
+            info: "Showing _START_ to _END_ of _TOTAL_ slots"
+        }
+    });
+});
+$('#myModal').on('shown.bs.modal', function () {
+    $(this).find('input:first').focus();
+});
+
+</script>
 
 @endsection

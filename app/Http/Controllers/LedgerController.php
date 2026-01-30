@@ -56,6 +56,7 @@ class LedgerController extends CustomBaseController
         ->get();
         $account_names=account::where('firm_id',Auth::user()->firm_id)
         ->orderBy('account_name','asc')->get();
+
         $subquery = Ledger::select(DB::raw('MIN(id)'))
         ->where('transaction_type', 'Receipts') // Apply this filter before grouping
         ->where('firm_id',Auth::user()->firm_id)
@@ -67,13 +68,11 @@ class LedgerController extends CustomBaseController
         ->get();
     
     
-
-
-
+ $accountgroups = accountgroup::where('firm_id', Auth::user()->firm_id)->get();
    
 
 
-        return view('entery.reciept.reciept',compact('paymentmodes','account_names','new_bill_no','new_voucher_no','voucher_type','ledgers'));
+        return view('entery.reciept.reciept',compact('paymentmodes','account_names','new_bill_no','new_voucher_no','voucher_type','ledgers','accountgroups'));
 
 
     }
@@ -161,11 +160,13 @@ public function slip_print_view($voucher_no)
         ->get();
 
 
+ $accountgroups = accountgroup::where('firm_id', Auth::user()->firm_id)->get();
+   
 
  
 
 
-        return view('entery.payment.payment',compact('paymentmodes','account_names','new_bill_no','new_voucher_no','voucher_type','ledgers'));
+        return view('entery.payment.payment',compact('paymentmodes','account_names','new_bill_no','new_voucher_no','voucher_type','ledgers','accountgroups'));
 
 
     }

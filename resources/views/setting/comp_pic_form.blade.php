@@ -1,6 +1,115 @@
 
 @extends('layouts.blank')
 @section('pagecontent')
+<style>
+/* ================= PAGE BG ================= */
+body {
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+}
+
+/* ================= CARD ================= */
+.card {
+    border-radius: 18px;
+    border: none;
+    box-shadow: 0 14px 40px rgba(0,0,0,.12);
+    animation: fadeUp .35s ease;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= HEADER ================= */
+.card-header {
+    background: linear-gradient(135deg, #4338ca, #1e3a8a);
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    border-radius: 18px 18px 0 0;
+}
+
+/* ================= TABLE ================= */
+.table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.table thead th {
+    background: #1e293b;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    text-align: center;
+}
+
+.table tbody tr {
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+    border-radius: 12px;
+}
+
+.table tbody td,
+.table tbody th {
+    vertical-align: middle;
+    text-align: center;
+    border: none;
+}
+
+/* ================= IMAGE PREVIEW ================= */
+.preview-box {
+    background: #f8fafc;
+    border: 2px dashed #c7d2fe;
+    border-radius: 12px;
+    padding: 8px;
+}
+
+.preview-box img {
+    max-height: 120px;
+    object-fit: contain;
+    transition: transform .25s ease;
+}
+
+.preview-box img:hover {
+    transform: scale(1.05);
+}
+
+/* ================= FILE INPUT ================= */
+.form-control[type="file"] {
+    border-radius: 10px;
+    border: 2px solid #c7d2fe;
+}
+
+.form-control[type="file"]:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99,102,241,.25);
+}
+
+/* ================= BUTTON ================= */
+.btn-primary {
+    border-radius: 22px;
+    font-weight: 600;
+    padding: 6px 14px;
+    transition: all .25s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(99,102,241,.45);
+}
+
+.btn-dark {
+    border-radius: 22px;
+    padding: 6px 18px;
+}
+
+/* ================= FOOTER ================= */
+.card-footer {
+    background: #f1f5f9;
+    border-radius: 0 0 18px 18px;
+}
+</style>
 
 <div class="container ">
   @if(session('message'))
@@ -43,12 +152,11 @@
                                                        
                                                         --}}
                                                         
-                                                        <td>
-                                                            <img src="{{ asset('storage\app\public\image\\'.$comppic->logo) }}" width="130px" height="130px">
-                                                        
+                                                     <td>
+    <div class="preview-box">
+        <img src="{{ asset('storage/app/public/image/'.$comppic->logo) }}">
+    </div>
 </td>
-                                                        
-                                                                                                                
 
 
 
@@ -62,7 +170,10 @@
     </div>
 </td>
 <td> <div class="d-grid">
-    <button type="submit" class="btn btn-primary btn-block">Upload Logo</button>
+  <button type="submit" class="btn btn-primary">
+    ⬆ Upload
+</button>
+
 </div></td></tr> </form>
 <tr>
     <form action="{{ url('/comp_pic_qrstore') }}" method="POST" enctype="multipart/form-data">

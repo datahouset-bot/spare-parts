@@ -1,5 +1,99 @@
 @extends('layouts.blank')
 @section('pagecontent')
+<style>
+/* ================= PAGE BACKGROUND ================= */
+body {
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+}
+
+/* ================= CARD ================= */
+.card {
+    border-radius: 18px;
+    border: none;
+    box-shadow: 0 14px 40px rgba(0,0,0,.12);
+    animation: fadeUp .4s ease;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= CARD HEADER ================= */
+.card-header {
+    background: linear-gradient(135deg, #4f46e5, #1e3a8a);
+    color: #fff;
+    font-weight: 700;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 18px 18px 0 0;
+}
+
+/* ================= FORM ================= */
+.form-floating label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.form-control {
+    border-radius: 10px;
+    border: 2px solid #c7d2fe;
+    font-size: 14px;
+    height: 46px;
+}
+
+.form-control:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99,102,241,.25);
+}
+
+/* ================= SECTION DIVIDER ================= */
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin: 24px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+/* ================= CHECKBOX GROUP ================= */
+.checkbox-group {
+    background: #f8fafc;
+    border: 2px dashed #c7d2fe;
+    padding: 14px;
+    border-radius: 12px;
+}
+
+.checkbox-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+/* ================= BUTTON ================= */
+.btn-primary {
+    border-radius: 28px;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 10px;
+    transition: all .25s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(99,102,241,.45);
+}
+
+/* ================= FOOTER ================= */
+.card-footer {
+    background: #f1f5f9;
+    border-radius: 0 0 18px 18px;
+}
+</style>
+
     <div class="container-fluid">
         @if (session('message'))
             <div class="alert alert-primary">
@@ -23,6 +117,7 @@
                                             <form action="{{ url('/compinfo_store') }}" method="POST">
                                                 @csrf
                                                 @method('put')
+<div class="section-title">Basic Firm Information</div>
 
                                                 <div class="row mb-3">
                                                     <div class="col-md-8">
@@ -173,6 +268,8 @@
 
                                                         </div>
                                                     </div>
+                                                    <div class="section-title">Tax & Registration Details</div>
+
                                                     <div class="col-md-4 mt-2">
                                                         <div class="form-floating mb-3 mb-md-0">
                                                             <input class="form-control" id="gst_no" type="text"
@@ -247,39 +344,39 @@
                                                         </div>
 
                                                     </div>
+<div class="section-title">System Settings</div>
 
                                                     <div class="col-md-4 mt-2">
                                                         <div class="form-floating mb-3 mb-md-0">
 
                                                             @if (auth()->check() && Auth::user()->email === Auth::user()->firm_id . '@gmail.com')
-                                                                <div>
-                                                                    <label>
-                                                                        <input type="checkbox" name="gst_notapplicable"
-                                                                            value="1"
-                                                                            {{ $companyInfo->gst_notapplicable ? 'checked' : '' }}>
-                                                                        GST Not Applicable
-                                                                    </label>
-                                                                    <label>
-                                                                        <input type="checkbox"
-                                                                            name="make_all_bill_local_gst" value="1"
-                                                                            {{ $companyInfo->make_all_bill_local_gst ? 'checked' : '' }}>
-                                                                        Make All Bill Local GST
-                                                                    </label>
-                                                                    <label>
-                                                                        <input type="checkbox"
-                                                                            name="requierd_aspedted_checkout"
-                                                                            value="1"
-                                                                            {{ $companyInfo->componyinfo_af1 ? 'checked' : '' }}>
-                                                                        Requierd Expected Check-Out
-                                                                    </label>
-                                                                    <label>
-                                                                        <input type="checkbox" name="componyinfo_af2"
-                                                                            value="1"
-                                                                            {{ $companyInfo->componyinfo_af2 ? 'checked' : '' }}>
-                                                                        Enable Channel Manager
-                                                                    </label>
+                                                              <div class="checkbox-group">
+    <label>
+        <input type="checkbox" name="gst_notapplicable" value="1"
+            {{ $companyInfo->gst_notapplicable ? 'checked' : '' }}>
+        GST Not Applicable
+    </label>
 
-                                                                </div>
+    <label>
+        <input type="checkbox" name="make_all_bill_local_gst" value="1"
+            {{ $companyInfo->make_all_bill_local_gst ? 'checked' : '' }}>
+        Make All Bill Local GST
+    </label>
+
+    <label>
+        <input type="checkbox" name="requierd_aspedted_checkout" value="1"
+            {{ $companyInfo->componyinfo_af1 ? 'checked' : '' }}>
+        Require Expected Check-Out
+    </label>
+<div class="section-title">Channel Manager Configuration</div>
+
+    <label>
+        <input type="checkbox" name="componyinfo_af2" value="1"
+            {{ $companyInfo->componyinfo_af2 ? 'checked' : '' }}>
+        Enable Channel Manager
+    </label>
+</div>
+
 
                                                         </div>
                                                         @endif
@@ -340,8 +437,10 @@
 
                                                 <div class="mt-4 mb-0">
                                                     <div class="d-grid">
-                                                        <button
-                                                            type="submit"class="btn btn-primary btn-block">Apply</button>
+                                                        <button type="submit" class="btn btn-primary">
+    💾 Save Company Details
+</button>
+
                                                     </div>
                                                 </div>
                                             </form>

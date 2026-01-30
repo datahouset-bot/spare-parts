@@ -31,25 +31,109 @@
    
    });
 </script>
-
-
-        
-
 <style>
-  .table-scrollable {
-    /* border-style: solid;
-    border-color: blue; */
-
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* Enables momentum scrolling in iOS Safari */
-  }
-
-  .highlight {
-  background-color: lightyellow;
+/* ===== PAGE BACKGROUND ===== */
+body {
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
 }
 
+/* ===== CARD ===== */
+.card {
+    border-radius: 18px;
+    border: none;
+    box-shadow: 0 12px 30px rgba(0,0,0,.12);
+    animation: fadeUp .5s ease;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== CARD TITLE ===== */
+.card-title {
+    font-size: 22px;
+    font-weight: 700;
+    padding: 16px 22px;
+    background: linear-gradient(135deg, #6366f1, #1e3a8a);
+    color: #fff;
+    border-radius: 18px 18px 0 0;
+}
+
+/* ===== FORM INPUTS ===== */
+.form-control {
+    border-radius: 10px;
+    border: 2px solid #c7d2fe;
+    font-size: 14px;
+}
+
+.form-control:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,.25);
+}
+
+/* ===== SAVE BUTTON ===== */
+.btn-primary {
+    border-radius: 25px;
+    font-weight: 600;
+    padding: 8px 22px;
+    transition: all .25s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(99,102,241,.45);
+}
+
+/* ===== FILTER BUTTON BAR ===== */
+.todo-actions a {
+    border-radius: 25px;
+    font-weight: 600;
+    padding: 6px 18px;
+    margin: 6px;
+}
+
+/* ===== TABLE ===== */
+.table {
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background: #eef2ff;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.table tbody tr {
+    transition: all .25s ease;
+}
+
+.table tbody tr:hover {
+    background: #f1f5ff;
+    transform: scale(1.01);
+}
+
+/* ===== DONE CHECK ===== */
+.form-check-input {
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+/* ===== ACTION BUTTONS ===== */
+.btn-sm {
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* ===== DATATABLE SEARCH ===== */
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 20px;
+    padding: 6px 14px;
+}
 </style>
+
  <div class="container-fluid">
   
   @if(session('message'))
@@ -135,9 +219,9 @@
         </div>
       </div>
     </div>
+<div class="row">
+  <div class="col-md-12 text-center todo-actions my-3">
 
-    <div class="row" class="text-center">
-      <div class="col-md-12 text-center">
         <a href="{{url('/todolist')}}" class ="btn btn-danger my-2 mx-2">  Pending To-Dos </a>
         <a href="{{url('/tododonelist')}}" class ="btn btn-success my-2 mx-2">  Completed To-Dos </a>
         <a href="{{url('/todolist_dt')}}" class ="btn btn-danger my-2 mx-2">  Data Table   </a>
@@ -178,7 +262,7 @@
                   @endphp
                  @foreach ($data as $record)
                     
-                  <tr>
+                  <tr class="{{ \Carbon\Carbon::parse($record['reminder_date'])->isToday() ? 'highlight' : '' }}">
                    
                     <th scope="row">{{$r1=$r1+1}}</th>
                     <td scope="col">{{ \Carbon\Carbon::parse($record['reminder_date'])->format('d-m-y') }}</td>
@@ -217,5 +301,18 @@
         </div>
     </div>
 </div>
+<script>
+  $(document).ready(function () {
+    new DataTable('#remindtable', {
+        pageLength: 10,
+        responsive: true,
+        language: {
+            search: "🔍 Search To-Do:",
+            lengthMenu: "Show _MENU_ tasks",
+            info: "Showing _START_ to _END_ of _TOTAL_ tasks"
+        }
+    });
+});
 
+</script>
 @endsection

@@ -572,9 +572,9 @@
                                         <a class="nav-link" href="{{ url('/store_wise_stock') }}"
                                             style=" ">Store Wise Stock </a>
                                         <a class="nav-link" href="{{ url('/purchases') }}"
-                                            style=" ">Stock In Register</a>
+                                            style=" ">Purchase</a>
                                         <a class="nav-link" href="{{ url('/sales') }}"
-                                            style=" ">Stock Out Register</a>
+                                            style=" ">Sale invoice</a>
                                         <a class="nav-link" href="{{ url('/stocktransfers') }}"
                                             style=" ">Stock Transfer
                                             Register</a>

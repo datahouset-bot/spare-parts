@@ -9,142 +9,154 @@
     <script src="jquery/master.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
     <!-- Add these in your <head> or layout -->
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
-<style>
-    /* ============================================
-   GLOBAL PAGE RESPONSIVENESS
-============================================ */
-.container-fluid {
-    padding-left: 12px !important;
-    padding-right: 12px !important;
-}
+    <style>
+        /* ============================================
+           GLOBAL PAGE RESPONSIVENESS
+        ============================================ */
+        .container-fluid {
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+        }
 
-.card {
-    border-radius: 10px;
-}
-/* ============================================ */
-/* payment mode css */
-/* ============================================
-/* Keep select2 + button on same row */
-.payment-mode-group {
-    display: flex;
-}
+        .card {
+            border-radius: 10px;
+        }
 
-.payment-mode-group .select2-container {
-    flex: 1 1 auto !important;
-    width: auto !important;
-}
+        /* ============================================ */
+        /* payment mode css */
+        /* ============================================
+        /* Keep select2 + button on same row */
+        .payment-mode-group {
+            display: flex;
+        }
 
-.payment-mode-group .btn {
-    white-space: nowrap;
-}
-/* ============================================
-   MODAL RESPONSIVENESS
-============================================ */
-.modal-dialog {
-    max-width: 700px;
-}
+        .payment-mode-group .select2-container {
+            flex: 1 1 auto !important;
+            width: auto !important;
+        }
 
-@media (max-width: 768px) {
-    .modal-dialog {
-        max-width: 95% !important;
-        margin: 10px auto;
-    }
-    .modal-body .col-md-6,
-    .modal-body .col-md-12 {
-        padding-left: 5px !important;
-        padding-right: 5px !important;
-    }
-}
+        .payment-mode-group .btn {
+            white-space: nowrap;
+        }
 
-/* Form fields inside modal */
-.modal-body label {
-    font-weight: 600;
-    font-size: 14px;
-}
+        /* ============================================
+           MODAL RESPONSIVENESS
+        ============================================ */
+        .modal-dialog {
+            max-width: 700px;
+        }
 
-.modal-body input,
-.modal-body select {
-    font-size: 14px;
-    padding: 8px 10px;
-}
+        @media (max-width: 768px) {
+            .modal-dialog {
+                max-width: 95% !important;
+                margin: 10px auto;
+            }
 
-/* ============================================
-   TABLE RESPONSIVENESS
-============================================ */
-.table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
+            .modal-body .col-md-6,
+            .modal-body .col-md-12 {
+                padding-left: 5px !important;
+                padding-right: 5px !important;
+            }
+        }
 
-table th {
-    white-space: nowrap;
-}
+        /* Form fields inside modal */
+        .modal-body label {
+            font-weight: 600;
+            font-size: 14px;
+        }
 
-table td {
-    vertical-align: middle;
-}
+        .modal-body input,
+        .modal-body select {
+            font-size: 14px;
+            padding: 8px 10px;
+        }
 
-/* Smaller font on mobile */
-@media (max-width: 768px) {
-    table td,
-    table th {
-        font-size: 13px;
-        padding: 6px;
-    }
-}
+        /* ============================================
+           TABLE RESPONSIVENESS
+        ============================================ */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
 
-/* Action buttons spacing */
-.table .btn {
-    padding: 3px 6px;
-}
+        table th {
+            white-space: nowrap;
+        }
 
-/* ============================================
-   BUTTON & UI OPTIMIZATIONS
-============================================ */
-.btn {
-    border-radius: 6px !important;
-}
+        table td {
+            vertical-align: middle;
+        }
 
-.btn-primary {
-    font-size: 15px;
-}
+        /* Smaller font on mobile */
+        @media (max-width: 768px) {
 
-/* Disable button animation on save */
-#saveButton[disabled] {
-    opacity: 0.8;
-}
+            table td,
+            table th {
+                font-size: 13px;
+                padding: 6px;
+            }
+        }
 
-/* ============================================
-   SELECT2 FIX IN MODAL
-============================================ */
-.select2-container {
-    width: 100% !important;
-}
+        /* Action buttons spacing */
+        .table .btn {
+            padding: 3px 6px;
+        }
 
-.select2-selection {
-    min-height: 38px !important;
-    padding-top: 3px !important;
-}
-.select2-results__option[data-add="true"] {
-    color: #0d6efd !important;
-    font-weight: 600;
-    border-top: 1px solid #ddd;
-}
+        /* ============================================
+           BUTTON & UI OPTIMIZATIONS
+        ============================================ */
+        .btn {
+            border-radius: 6px !important;
+        }
+
+        .btn-primary {
+            font-size: 15px;
+        }
+
+        /* Disable button animation on save */
+        #saveButton[disabled] {
+            opacity: 0.8;
+        }
+
+        /* ============================================
+           SELECT2 FIX IN MODAL
+        ============================================ */
+        .select2-container {
+            width: 100% !important;
+        }
+
+        .select2-selection {
+            min-height: 38px !important;
+            padding-top: 3px !important;
+        }
+
+        .select2-results__option[data-add="true"] {
+            color: #0d6efd !important;
+            font-weight: 600;
+            border-top: 1px solid #ddd;
+        }
 
 
-/* For mobile: dropdown inside modal */
-@media (max-width: 768px) {
-    .select2-container--open .select2-dropdown {
-        left: 0 !important;
-        width: 100% !important;
-    }
-}
+        /* For mobile: dropdown inside modal */
+        @media (max-width: 768px) {
+            .select2-container--open .select2-dropdown {
+                left: 0 !important;
+                width: 100% !important;
+            }
+        }
 
-</style>
+        #accountModal {
+            pointer-events: auto;
+        }
+
+        .modal-backdrop {
+            z-index: 1040 !important;
+        }
+    </style>
     <script>
         $(document).ready(function() {
             let table = new DataTable('#remindtable');
@@ -152,7 +164,7 @@ table td {
         });
     </script>
 
-     <div class="container-fluid px-3">
+    <div class="container-fluid px-3">
         @if (session('message'))
             <div class="alert alert-primary">
                 {{ session('message') }}
@@ -175,9 +187,6 @@ table td {
                 </div>
 
             </div>
-           
-
-
             <div class="container mt-2">
 
 
@@ -213,71 +222,74 @@ table td {
 
                                     <div class="col-md-12">
                                         <label for="entry_date">Date </label>
-                                        <input type="text" class ="form-control date" name="entry_date" @cannot('Change_Date&Time')readonly data-restrict="true"  @endcannot>
+                                        <input type="text" class ="form-control date" name="entry_date"
+                                            @cannot('Change_Date&Time')readonly data-restrict="true"  @endcannot>
 
                                     </div>
-                                  
-                                       <div class="col-md-12">
-    <label for="payment_mode_id">Payment Mode</label>
 
-    <div class="input-group payment-mode-group">
-        <select id="payment_mode_id" name="payment_mode_id"
-                class="form-control myitemgroup form-select">
-            <option value="" disabled selected>Select Payment Mode</option>
-  
-            @foreach ($paymentmodes as $paymentmode)
-                <option value="{{ $paymentmode->id }}">
-                    {{ $paymentmode->account_name }}
-                </option>
-            @endforeach
-        </select>
+                                    <div class="col-md-12">
+                                        <label for="payment_mode_id">Payment Mode</label>
 
-       <a href="{{ url('/accountform') }}"
-   class="btn btn-outline-primary"
-   title="Add New Payment Mode">
-    <i class="fa fa-plus"></i>
-</a>
+                                        <div class="input-group payment-mode-group">
+                                            <select id="payment_mode_id" name="payment_mode_id"
+                                                class="form-control myitemgroup form-select">
+                                                <option value="" disabled selected>Select Payment Mode</option>
 
-    </div>
+                                                @foreach ($paymentmodes as $paymentmode)
+                                                    <option value="{{ $paymentmode->id }}">
+                                                        {{ $paymentmode->account_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <button type="button" id="openPaymentModeModal"
+                                                class="btn btn-outline-primary">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
 
-    <span class="text-danger">
-        @error('payment_mode_id') {{ $message }} @enderror
-    </span>
-</div>
+                                        </div>
 
-                        <div class="col-md-12">
-    <label for="account_id">Account</label>
+                                        <span class="text-danger">
+                                            @error('payment_mode_id')
+                                                {{ $message }}
+                                            @enderror
+                                        </span>
+                                    </div>
 
-    <div class="input-group payment-mode-group">
-        <select id="account_id" name="account_id"
-                class="form-control myitemgroup form-select">
-            <option value="" disabled selected>Select Account</option>
+                                    <div class="col-md-12">
+                                        <label for="account_id">Account</label>
 
-            @foreach ($account_names as $record)
-                <option value="{{ $record->id }}">
-                    {{ $record->account_name }} || {{ $record->mobile }}
-                </option>
-            @endforeach
-        </select>
+                                        <div class="input-group payment-mode-group">
+                                            <select id="account_id" name="account_id"
+                                                class="form-control myitemgroup form-select">
+                                                <option value="" disabled selected>Select Account</option>
 
-        <a href="{{ url('/accountform') }}"
-   class="btn btn-outline-primary"
-   title="Add New Account">
-    <i class="fa fa-plus"></i>
-</a>
+                                                @foreach ($account_names as $record)
+                                                    <option value="{{ $record->id }}">
+                                                        {{ $record->account_name }} || {{ $record->mobile }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
 
-    </div>
+                                            <button type="button" id="openAccountModal" class="btn btn-outline-primary">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
 
-    <span class="text-danger">
-        @error('account_id') {{ $message }} @enderror
-    </span>
-</div>
 
-                                        
+
+                                        </div>
+
+                                        <span class="text-danger">
+                                            @error('account_id')
+                                                {{ $message }}
+                                            @enderror
+                                        </span>
+                                    </div>
+
+
                                     <div class="col-md-12">
                                         <label for="reciept_amount">Amount </label>
-                                      <input type="text" class="form-control" id="receipt_amount" 
-                                      placeholder=" Amount" name="receipt_amount">
+                                        <input type="text" class="form-control" id="receipt_amount" placeholder=" Amount"
+                                            name="receipt_amount">
                                         <span class="text-danger">
                                             @error('receipt_amount')
                                                 {{ $message }}
@@ -289,8 +301,8 @@ table td {
                                     </div>
                                     <div class="col-md-12">
                                         <label for="reciept_discount">Discount </label>
-                                       <input type="text" class="form-control" id="receipt_discount"
-                                        placeholder=" Discount (%)" name="receipt_discount">
+                                        <input type="text" class="form-control" id="receipt_discount"
+                                            placeholder=" Discount (%)" name="receipt_discount">
                                         <span class="text-danger">
                                             @error('receipt_discount')
                                                 {{ $message }}
@@ -331,10 +343,11 @@ table td {
                     $('#myModal').trigger('focus');
                 });
                 $(document).ready(function() {
-            $('#saveForm').on('submit', function() {
-                $('#saveButton').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Please wait...');
-            });
-        });
+                    $('#saveForm').on('submit', function() {
+                        $('#saveButton').prop('disabled', true).html(
+                            '<i class="fa fa-spinner fa-spin"></i> Please wait...');
+                    });
+                });
             </script>
 
 
@@ -372,7 +385,7 @@ table td {
                                 <td>{{ $ledger->payment_mode_name }}</td>
                                 <td>{{ $ledger->account_name }}</td>
                                 <td>{{ $ledger->amount }}</td>
-                                <td>{{ $ledger->la1 }}%</td>    
+                                <td>{{ $ledger->la1 }}%</td>
                                 <td>{{ $ledger->remark }}</td>
 
 
@@ -383,10 +396,10 @@ table td {
                                     <a href="" class="btn  btn-sm"><i class="fa fa-edit"
                                             style="font-size:20px;color:SlateBlue"></i></a>
                                 </td>
- <td>
+                                <td>
                                     {{-- {{ route('roomtypes.edit', $ledger['id']) }} --}}
-                                    <a href="{{url('reciepts_format',$ledger->voucher_no)}}" class="btn  btn-sm"><i class="fa fa-eye"
-                                            style="font-size:20px;color:SlateBlue"></i></a>
+                                    <a href="{{ url('reciepts_format', $ledger->voucher_no) }}" class="btn  btn-sm"><i
+                                            class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
                                 </td>
 
                                 <td>
@@ -407,6 +420,91 @@ table td {
                     </tbody>
                 </table>
 
+
+                {{-- ======================================Acount model ajax ================================================= --}}
+             <div class="modal fade"
+     id="accountModal"
+     tabindex="-1"
+     data-bs-backdrop="false"
+     data-bs-focus="false"
+     aria-hidden="true"
+     style="z-index:1060">
+
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add New Account</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                <form id="accountForm">
+                                    @csrf
+
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+                                            <label>Account Name</label>
+                                            <input type="text" name="account_name" class="form-control" required>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label>Account Group</label>
+                                            <select name="account_group_id" class="form-select" required>
+                                                <option disabled selected>Select Group</option>
+                                                @foreach ($accountgroups as $group)
+                                                    <option value="{{ $group->id }}">
+                                                        {{ $group->account_group_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6 mt-2">
+                                            <label>Mobile</label>
+                                            <input type="text" name="mobile" class="form-control">
+                                        </div>
+
+                                        <div class="col-md-6 mt-2">
+                                            <label>GST No</label>
+                                            <input type="text" name="gst_no" class="form-control">
+                                        </div>
+
+                                        <div class="col-md-12 mt-2">
+                                            <label>Address</label>
+                                            <textarea name="address" class="form-control"></textarea>
+                                        </div>
+
+                                        <div class="col-md-6 mt-2">
+                                            <label>Opening Balance</label>
+                                            <input type="number" step="0.01" name="op_balnce" class="form-control"
+                                                value="0">
+                                        </div>
+
+                                        <div class="col-md-6 mt-2">
+                                            <label>Balance Type</label>
+                                            <select name="balnce_type" class="form-select">
+                                                <option value="Dr">Dr</option>
+                                                <option value="Cr">Cr</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="text-end mt-3">
+                                        <button type="submit" class="btn btn-primary">
+                                            Save Account
+                                        </button>
+                                    </div>
+
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+{{-- ================================================================================================================= --}}
             </div>
         </div>
     </div>
@@ -415,145 +513,215 @@ table td {
     {{-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> --}}
     <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
     <!-- Bootstrap 5 JS Bundle (with Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
     <script src="{{ global_asset('/general_assets\js\form.js') }}"></script>
     <script>
         $(document).ready(function() {
-             
+
             // Disable datepicker interaction if permission is restricted
             $('[data-restrict="true"]').datepicker('destroy'); // Prevent calendar from appearing
         });
     </script>
-<script>
-    $(document).ready(function () {
-        let isSelect2Initialized = false;
+    <script>
+        $(document).ready(function() {
+            let isSelect2Initialized = false;
 
-        $('#myModal').on('shown.bs.modal', function () {
-            if (!isSelect2Initialized) {
-                $('#account_id, #payment_mode_id').select2({
-                    dropdownParent: $('#myModal'),
-                    width: '100%',
-                    placeholder: "Select option"
-                });
-                isSelect2Initialized = true;
+            $('#myModal').on('shown.bs.modal', function() {
+                if (!isSelect2Initialized) {
+                    $('#account_id, #payment_mode_id').select2({
+                        dropdownParent: $('#myModal'),
+                        width: '100%',
+                        placeholder: "Select option"
+                    });
+                    isSelect2Initialized = true;
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            // Store original amount when user types
+            $('#receipt_amount').on('input', function() {
+                let value = parseFloat($(this).val());
+                if (!isNaN(value)) {
+                    $('#original_amount').val(value);
+                }
+            });
+
+            function calculateDiscount() {
+                let originalAmount = parseFloat($('#original_amount').val()) || 0;
+                let discountPercent = parseFloat($('#receipt_discount').val()) || 0;
+
+                // If discount cleared → restore original
+                if (discountPercent === 0 || $('#receipt_discount').val() === '') {
+                    $('#receipt_amount').val(originalAmount.toFixed(2));
+                    return;
+                }
+
+                if (discountPercent > 100) {
+                    alert('Discount cannot be more than 100%');
+                    $('#receipt_discount').val('');
+                    $('#receipt_amount').val(originalAmount.toFixed(2));
+                    return;
+                }
+
+                let discountValue = (originalAmount * discountPercent) / 100;
+                let finalAmount = originalAmount - discountValue;
+
+                $('#receipt_amount').val(finalAmount.toFixed(2));
+            }
+
+            $('#receipt_discount').on('keyup change', calculateDiscount);
+
+        });
+    </script>
+    <script>
+        $('#openAccountModal').on('click', function() {
+            $('#accountModal').modal('show');
+        });
+    </script>
+
+
+    <script>
+        $(document).on('select2:select', function() {
+            let e = $.Event('keydown', {
+                key: 'Enter'
+            });
+            document.dispatchEvent(e);
+        });
+        $('#myModal').on('shown.bs.modal', function() {
+            $(this).find('input:not([readonly]):first').focus();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('keydown', function(e) {
+
+            // SHIFT + N → New Receipt
+            if (e.shiftKey && e.key.toLowerCase() === 'n') {
+
+                // Prevent browser / unwanted behavior
+                e.preventDefault();
+
+                // Do NOT trigger while typing inside inputs
+                if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
+
+                // Open Bootstrap modal
+                let modalEl = document.getElementById('myModal');
+                if (!modalEl) return;
+
+                let modal = new bootstrap.Modal(modalEl);
+                modal.show();
             }
         });
+
+
+        $('#myModal').on('shown.bs.modal', function() {
+            $(this).find('input:not([readonly]):first').focus();
+        });
+    </script>
+
+    {{-- //*
+    ======================================================================
+    Account ajax 
+    ==========================================================
+    //* --}}
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+      $('#accountForm').on('submit', function (e) {
+    e.preventDefault();
+
+    $.post("{{ route('create_account_ajax') }}",
+        $(this).serialize(),
+        function (res) {
+
+            let group = res.group_name.toLowerCase();
+
+            // Allowed for payment mode
+            let isCashOrBank =
+                group.includes('cash in hand') ||
+                group.includes('Bank account');
+
+            // ACCOUNT SELECT → always add
+            if (currentSource === 'account') {
+                let option = new Option(res.account_name, res.id, true, true);
+                $('#account_id').append(option).trigger('change');
+            }
+
+            // PAYMENT MODE SELECT → only if Cash / Bank
+            if (currentSource === 'payment' && isCashOrBank) {
+                let option = new Option(res.account_name, res.id, true, true);
+                $('#payment_mode_id').append(option).trigger('change');
+            }
+
+            $('#accountModal').modal('hide');
+            $('#accountForm')[0].reset();
+        }
+    ).fail(function (xhr) {
+        alert(Object.values(xhr.responseJSON.errors).join('\n'));
     });
+});
+
+    </script>
+   <script>
+let currentTargetSelect = null;
+
+// ACCOUNT +
+$('#openAccountModal').on('click', function () {
+    currentTargetSelect = '#account_id';
+    currentSource = 'account';
+
+    $('#myModal').modal('hide');
+    $('#accountModal').modal('show');
+});
+
+// PAYMENT MODE +
+$('#openPaymentModeModal').on('click', function () {
+    currentTargetSelect = '#payment_mode_id';
+    currentSource = 'payment';
+
+    $('#myModal').modal('hide');
+    $('#accountModal').modal('show');
+});
+
 </script>
 <script>
-$(document).ready(function () {
-
-    // Store original amount when user types
-    $('#receipt_amount').on('input', function () {
-        let value = parseFloat($(this).val());
-        if (!isNaN(value)) {
-            $('#original_amount').val(value);
-        }
-    });
-
-    function calculateDiscount() {
-        let originalAmount  = parseFloat($('#original_amount').val()) || 0;
-        let discountPercent = parseFloat($('#receipt_discount').val()) || 0;
-
-        // If discount cleared → restore original
-        if (discountPercent === 0 || $('#receipt_discount').val() === '') {
-            $('#receipt_amount').val(originalAmount.toFixed(2));
-            return;
-        }
-
-        if (discountPercent > 100) {
-            alert('Discount cannot be more than 100%');
-            $('#receipt_discount').val('');
-            $('#receipt_amount').val(originalAmount.toFixed(2));
-            return;
-        }
-
-        let discountValue = (originalAmount * discountPercent) / 100;
-        let finalAmount   = originalAmount - discountValue;
-
-        $('#receipt_amount').val(finalAmount.toFixed(2));
-    }
-
-    $('#receipt_discount').on('keyup change', calculateDiscount);
-
+$('#accountModal').on('hidden.bs.modal', function () {
+    $('#myModal').modal('show');
 });
 </script>
-<script>
+
+
+    <script>
 document.addEventListener('keydown', function (e) {
 
-    // Only inside modal
+    // ❌ DO NOT interfere when Account or Payment modal is open
+    if (
+        document.getElementById('accountModal')?.classList.contains('show') ||
+        document.getElementById('paymentModeModal')?.classList.contains('show')
+    ) {
+        return;
+    }
+
+    // Only receipt modal logic
     if (!document.getElementById('myModal')?.classList.contains('show')) return;
 
-    // ENTER key
     if (e.key === 'Enter') {
 
-        // Allow textarea enter
-        if (e.target.tagName === 'TEXTAREA') return;
+        if (['TEXTAREA'].includes(e.target.tagName)) return;
 
         e.preventDefault();
 
-        let form = document.querySelector('#myModal form');
-        if (!form) return;
-
-        // Get all focusable elements
-        let focusable = Array.from(
-            form.querySelectorAll(
-                'input:not([type=hidden]):not([readonly]), select, textarea, button'
-            )
-        ).filter(el => !el.disabled && el.offsetParent !== null);
-
-        let index = focusable.indexOf(document.activeElement);
-
-        // Move to next field
-        if (index > -1 && index < focusable.length - 1) {
-            focusable[index + 1].focus();
-        } else {
-            // Last field → focus Save button
-            document.getElementById('saveButton')?.focus();
-        }
     }
 });
-</script>
-<script>
-$(document).on('select2:select', function () {
-    let e = $.Event('keydown', { key: 'Enter' });
-    document.dispatchEvent(e);
-});
-$('#myModal').on('shown.bs.modal', function () {
-    $(this).find('input:not([readonly]):first').focus();
-});
-
-</script>
-
-<script>
-document.addEventListener('keydown', function (e) {
-
-    // SHIFT + N → New Receipt
-    if (e.shiftKey && e.key.toLowerCase() === 'n') {
-
-        // Prevent browser / unwanted behavior
-        e.preventDefault();
-
-        // Do NOT trigger while typing inside inputs
-        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
-
-        // Open Bootstrap modal
-        let modalEl = document.getElementById('myModal');
-        if (!modalEl) return;
-
-        let modal = new bootstrap.Modal(modalEl);
-        modal.show();
-    }
-});
-
-
-$('#myModal').on('shown.bs.modal', function () {
-    $(this).find('input:not([readonly]):first').focus();
-});
-
 </script>
 
 @endsection
-

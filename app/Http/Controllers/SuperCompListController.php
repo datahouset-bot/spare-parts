@@ -784,7 +784,7 @@ class SuperCompListController extends Controller
             ['firm_id' => $request->firm_id, 'option_type' => 'Sale', 'option_name' => 'sale_print_view2', 'format_name' => 'A3 size sale print'],
             ['firm_id' => $request->firm_id, 'option_type' => 'Sale', 'option_name' => 'sale_print_view3', 'format_name' => 'A4 size sale print'],
             ['firm_id' => $request->firm_id, 'option_type' => 'Sale', 'option_name' => 'sale_print_view4', 'format_name' => 'A5 size sale print'],
-            ['firm_id' => $request->firm_id, 'option_type' => 'Quotation', 'option_name' => 'quotation_print_view', 'format_name' => 'A2 size  quotation print'],
+            ['firm_id' => $request->firm_id, 'option_type' => 'Quotation', 'option_name' => 'quotation_print_view', 'format_name' =>  'A2  size  quotation print'],
             ['firm_id' => $request->firm_id, 'option_type' => 'Quotation', 'option_name' => 'quotation_print_view2', 'format_name' => 'A3 size quotation  print'],
             ['firm_id' => $request->firm_id, 'option_type' => 'Quotation', 'option_name' => 'quotation_print_view3', 'format_name' => 'A4 size quotation  print'],
             ['firm_id' => $request->firm_id, 'option_type' => 'Quotation', 'option_name' => 'quotation_print_view4', 'format_name' => 'A5 size quotation  print'],

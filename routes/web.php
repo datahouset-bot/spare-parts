@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KotController;
@@ -155,6 +156,9 @@ Route::get('fetch_units', [App\Http\Controllers\UnitController::class, 'fetchUni
 Route::resource('primarygroups', PrimarygroupController::class);
 Route::resource('accountgroups', AccountgroupController::class);
 
+Route::post('/account-group/ajax-store',
+    [App\Http\Controllers\AccountGroupController::class, 'storeAjax']
+)->name('accountgroup.store.ajax');
 
 
 
@@ -229,9 +233,9 @@ Route::get('/amc_format/{id}', [App\Http\Controllers\AmcController::class, 'amc_
 
 // =====================================================================================
 
-Route::resource('cctv',cctvController::class);
+Route::resource('cctv', cctvController::class);
 Route::get('cctv/{id}/pdf', [cctvController::class, 'pdf'])
-     ->name('cctv.pdf');
+    ->name('cctv.pdf');
 
 
 // ============================================================================================
@@ -536,7 +540,6 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::resource('users', App\Http\Controllers\UserController::class);
     Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
     Route::get('/deleteitem/{id}', [App\Http\Controllers\ItemController::class, 'destroy']);
-
 });
 //---------------------------report------------
 Route::get('payment_register_pageshow', [App\Http\Controllers\ReportController::class, 'payment_register_pageshow']);
@@ -582,8 +585,8 @@ Route::get('/searchbatch/{batch_id}', [App\Http\Controllers\BatchController::cla
 Route::resource('batchs', BatchController::class);
 
 // -------------------------------------Crusher new table------------------------------------------------
-Route::resource('crusher',Crushercontroller::class);
-Route::get('vehicledetail',[App\Http\Controllers\Crushercontroller::class,'vehicledetail'])->name('vehicledetail');
+Route::resource('crusher', Crushercontroller::class);
+Route::get('vehicledetail', [App\Http\Controllers\Crushercontroller::class, 'vehicledetail'])->name('vehicledetail');
 Route::post('vehicledetailstore', [App\Http\Controllers\Crushercontroller::class, 'vehicledetailstore'])
     ->name('vehicledetail.store');
 Route::post('crusher/addstore', [Crushercontroller::class, 'crusher_addstore'])
@@ -599,28 +602,29 @@ Route::get('vehicledetail/create', [Crushercontroller::class, 'vehicledetailcrea
 Route::get('vehicledetail/{id}/edit', [Crushercontroller::class, 'vehicledetailedit'])
     ->name('vehicledetail.edit');
 Route::delete('vehicledetaildestroy/{id}', [Crushercontroller::class, 'vehicledetaildestroy'])
-    ->name('vehicledetail.destroy'); 
+    ->name('vehicledetail.destroy');
 
 route::put('vehicledetailupdate/{id}', [App\Http\Controllers\Crushercontroller::class, 'vehicledetailupdate'])
     ->name('vehicledetail.update');
 //=================================================attandance APP=================================================================
-route::resource('attendances',photoattendancecontroller::class)->names  ('attendances');
+route::resource('attendances', photoattendancecontroller::class)->names('attendances');
 route::get('attendancecheckin', [App\Http\Controllers\photoattendancecontroller::class, 'showform'])->name('attendance.checkin');
 Route::get('/employeename/{id}', [photoattendancecontroller::class, 'getEmployeeName']);
 
-route::resource('attendancephoto', attendancecheck::class)->names  ('attendancephoto');
+route::resource('attendancephoto', attendancecheck::class)->names('attendancephoto');
 // Route::get('/attendance-status', [Attendancecheck::class, 'attendanceStatus'])
 //      ->name('attendance.status');
 Route::post('/advance-salary/store', [photoattendanceController::class, 'saveAdvanceSalary'])
-     ->name('advance.store');
-     
-Route::post('/attendance/update-status', 
+    ->name('advance.store');
+
+Route::post(
+    '/attendance/update-status',
     [attendancecheck::class, 'updateStatus']
 )->name('attendancephoto.updateStatus');
 
 Route::get('employee/print/{id}', [photoattendanceController::class, 'print'])->name('employee.print');
 Route::put('/advance-salary/{id}', [photoattendancecontroller::class, 'updateAdvance'])
-     ->name('advance.update');
+    ->name('advance.update');
 Route::put(
     '/salary-monthly/{id}',
     [photoattendancecontroller::class, 'updateMonthlySalary']
@@ -641,14 +645,14 @@ route::get('quotation_print_view4/{id}', [App\Http\Controllers\QuotationControll
 
 //----------------------------purchase- sales invetory  stock managment -------------------------
 Route::resource('purchases', PurchaseController::class);
-Route::get('purchases_show/{id}',[App\Http\Controllers\purchasecontroller::class,'purchase_show']);
-Route::get('purchase_print_view/{id}',[App\Http\Controllers\purchasecontroller::class,'purchase_print_view']);
-Route::get('purchase_print_view2/{id}',[App\Http\Controllers\purchasecontroller::class,'purchase_print_view2']);
-Route::get('purchase_print_view3/{id}',[App\Http\Controllers\purchasecontroller::class,'purchase_print_view3']);
+Route::get('purchases_show/{id}', [App\Http\Controllers\purchasecontroller::class, 'purchase_show']);
+Route::get('purchase_print_view/{id}', [App\Http\Controllers\purchasecontroller::class, 'purchase_print_view']);
+Route::get('purchase_print_view2/{id}', [App\Http\Controllers\purchasecontroller::class, 'purchase_print_view2']);
+Route::get('purchase_print_view3/{id}', [App\Http\Controllers\purchasecontroller::class, 'purchase_print_view3']);
 Route::resource('inventories', InventoryController::class);
 Route::resource('stocktransfers', StocktransferController::class);
-route::get('purchase_view/{id}',[App\Http\Controllers\StocktransferController::class,'purchase_view']);
-route::get('stocktransfer_print_view/{id}',[App\Http\Controllers\StocktransferController::class,'stocktransfer_print_view']);
+route::get('purchase_view/{id}', [App\Http\Controllers\StocktransferController::class, 'purchase_view']);
+route::get('stocktransfer_print_view/{id}', [App\Http\Controllers\StocktransferController::class, 'stocktransfer_print_view']);
 Route::get('liqour_stock_brand_wise', [App\Http\Controllers\InventoryController::class, 'liqour_stock_brand_wise']);
 Route::get('store_to_stocktransfer/{id}', [App\Http\Controllers\StocktransferController::class, 'store_to_stocktransfer']);
 Route::get('store_to_purchase/{id}', [App\Http\Controllers\PurchaseController::class, 'store_to_purchase']);

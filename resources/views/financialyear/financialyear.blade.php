@@ -8,14 +8,131 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="jquery/master.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
-    <style>
-      .active1{
-        background-color: yellowgreen !important;
-        font-weight: 800px !important;
-        font-size: large !important;
-        color: darkblue !important; 
-      }
-    </style>
+   <style>
+/* ================= PAGE BACKGROUND ================= */
+body {
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+}
+
+/* ================= CARD ================= */
+.card {
+    border-radius: 18px;
+    border: none;
+    box-shadow: 0 14px 36px rgba(0,0,0,.12);
+    animation: fadeUp .3s ease;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= HEADER ================= */
+.card-header {
+    background: linear-gradient(135deg, #1e3a8a, #3730a3);
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    padding: 16px;
+    border-radius: 18px 18px 0 0;
+}
+
+/* ================= BUTTONS ================= */
+.btn-primary {
+    border-radius: 24px;
+    padding: 8px 18px;
+    font-weight: 700;
+    transition: all .25s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(59,130,246,.4);
+}
+
+.btn-secondary {
+    border-radius: 22px;
+}
+
+.btn-sm i {
+    vertical-align: middle;
+}
+
+/* ================= MODAL ================= */
+.modal-content {
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,.25);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    color: #fff;
+    border-radius: 16px 16px 0 0;
+}
+
+/* ================= TABLE ================= */
+.table {
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.table thead {
+    background: #e0e7ff;
+}
+
+.table thead th {
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f5ff;
+    transition: background .2s ease;
+}
+
+/* ================= ACTIVE FINANCIAL YEAR ================= */
+.active1 {
+    background: linear-gradient(135deg, #bbf7d0, #86efac) !important;
+    font-weight: 800 !important;
+    color: #065f46 !important;
+}
+
+.active1 td {
+    font-weight: 700;
+}
+
+/* ================= FORM INPUTS ================= */
+.form-control {
+    border-radius: 10px;
+    border: 2px solid #c7d2fe;
+}
+
+.form-control:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99,102,241,.25);
+}
+
+/* ================= BADGE ================= */
+.badge-active {
+    background: #22c55e;
+    color: white;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 14px;
+    font-weight: 700;
+}
+
+.badge-inactive {
+    background: #ef4444;
+    color: white;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 14px;
+    font-weight: 700;
+}
+</style>
+
     
 <script>
   $(document).ready(function () {
@@ -144,7 +261,13 @@
                     <td>{{$record->financial_year}}</td>
                     <td>{{$record->financial_year_start}}</td>
                     <td>{{$record->financial_year_end}}</td>
-                   <td>{{$record->is_active_fy}}</td>
+                  <td>
+    @if($record->is_active_fy == 1)
+        <span class="badge-active">ACTIVE</span>
+    @else
+        <span class="badge-inactive">INACTIVE</span>
+    @endif
+</td>
 
 
                     

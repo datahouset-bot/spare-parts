@@ -16,6 +16,155 @@
 
         });
     </script>
+    <style>
+/* ===== PAGE BACKGROUND ===== */
+body {
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+}
+
+/* ===== CARD ===== */
+.card {
+    border-radius: 18px;
+    border: none;
+    box-shadow: 0 14px 32px rgba(0,0,0,0.12);
+    animation: fadeSlide 0.6s ease;
+}
+
+@keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== CARD HEADER ===== */
+.card-header {
+    background: linear-gradient(135deg, #4f46e5, #1e3a8a);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 18px 18px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.card-header span {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* ===== ACTION BAR ===== */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ===== BUTTONS ===== */
+.btn-primary {
+    border-radius: 30px;
+    font-weight: 600;
+    padding: 8px 22px;
+    transition: all .25s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(79,70,229,.45);
+}
+
+.btn-warning {
+    border-radius: 25px;
+    font-weight: 600;
+}
+
+.btn-outline-primary {
+    border-radius: 50%;
+}
+
+/* ===== PUSH RATE BOX ===== */
+.push-box {
+    background: #f8fafc;
+    border-radius: 14px;
+    padding: 10px;
+    box-shadow: inset 0 0 0 1px #c7d2fe;
+}
+
+/* ===== TABLE ===== */
+.table {
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background: #eef2ff;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.table tbody tr {
+    transition: all .25s ease;
+}
+
+.table tbody tr:hover {
+    background: #f1f5ff;
+    transform: scale(1.01);
+}
+
+/* ===== ICON ACTIONS ===== */
+.fa-edit,
+.fa-trash {
+    transition: transform .2s ease, color .2s ease;
+}
+
+.fa-edit:hover {
+    transform: scale(1.25);
+    color: #4f46e5 !important;
+}
+
+.fa-trash:hover {
+    transform: scale(1.25);
+    color: #dc2626 !important;
+}
+
+/* ===== MODAL ===== */
+.modal-content {
+    border-radius: 18px;
+    animation: zoomIn .3s ease;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(.92); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #6366f1, #1e3a8a);
+    color: #fff;
+    border-radius: 18px 18px 0 0;
+}
+
+/* ===== FORM INPUTS ===== */
+.form-control,
+.form-select {
+    border-radius: 10px;
+    border: 2px solid #c7d2fe;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,.25);
+}
+
+/* ===== DATATABLE SEARCH ===== */
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 20px;
+    padding: 6px 14px;
+}
+</style>
+
     <div class="container-fluid">
         @if (session('message'))
             <div class="alert alert-primary">
@@ -25,29 +174,31 @@
 
 
 <div class="card my-3">
-    <div class="card-header">
-       <span style="font-size: large; font-weight: 500;">Service Type</span> 
-    
+  <div class="card-header">
+    <span>Service Plan</span>
 
-        <div class="d-inline-flex align-items-center justify-content-center flex-wrap gap-2">
+    <div class="header-actions">
 
-            <!-- Add New Room Type Button -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-                Add New Service
+        <button type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#myModal">
+            <i class="fa fa-plus"></i> Add Service
+        </button>
+
+        <form action="{{ url('/pushrate') }}"
+              method="POST"
+              class="d-inline-flex align-items-center gap-2 push-box"
+              style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
+            @csrf
+            <input type="date" name="start_date" class="form-control form-control-sm" required>
+            <input type="date" name="end_date" class="form-control form-control-sm" required>
+            <button type="submit" class="btn btn-sm btn-warning">
+                <i class="fa fa-upload"></i> Push
             </button>
+        </form>
 
-            <!-- Push Rate Form -->
-            <form action="{{ url('/pushrate') }}" method="POST" class="d-inline-flex align-items-center gap-2 p-2 border rounded bg-light shadow-sm" style="{{ $componyinfo->componyinfo_af2 == 1 ? '' : 'display:none;' }}">
-                @csrf
-                <input type="date" name="start_date" class="form-control form-control-sm" required style="width:140px;">
-                <input type="date" name="end_date" class="form-control form-control-sm" required style="width:140px;">
-                <button type="submit" class="btn btn-sm btn-warning">
-                    <i class="fas fa-upload"></i> Push
-                </button>
-            </form>
-
-        </div>
-
+    </div>
 </div>
 
 
@@ -319,4 +470,19 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+    new DataTable('#remindtable', {
+        pageLength: 10,
+        responsive: true,
+        ordering: true,
+        language: {
+            search: "🔍 Search Service:",
+            lengthMenu: "Show _MENU_ services",
+            info: "Showing _START_ to _END_ of _TOTAL_ services"
+        }
+    });
+});
+
+    </script>
 @endsection
