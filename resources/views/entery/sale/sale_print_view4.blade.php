@@ -1,11 +1,8 @@
-@extends('layouts.blank')
-@section('pagecontent')
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Invoice</title>
+<title>Sale Invoice</title>
 
 <style>
 body{
@@ -116,10 +113,49 @@ body{
     margin-top:40px;
 }
 
-@media print{
-    body{ background:#fff; }
-    .no-print{ display:none; }
+/* BUTTONS */
+.button-container{
+    text-align:center;
+    margin-top:20px;
 }
+.btn{
+    padding:10px 18px;
+    font-size:16px;
+    border-radius:6px;
+    border:none;
+    cursor:pointer;
+}
+.btn-primary{ background:#0d6efd; color:#fff; }
+.btn-success{ background:#198754; color:#fff; }
+
+/* PRINT */@media print {
+
+    /* Hide buttons */
+    .no-print {
+        display: none !important;
+    }
+
+    /* Page setup */
+    @page {
+        size: A4;
+        margin: 10mm;
+    }
+
+    body {
+        background: #fff !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* ADD PRINT BORDER */
+    .doc {
+        border: 3px double #000 !important;
+        margin: 0 auto !important;
+        padding: 15px !important;
+        box-shadow: none !important;
+    }
+}
+
 </style>
 </head>
 
@@ -127,7 +163,7 @@ body{
 
 <div class="doc">
 
-    {{-- HEADER --}}
+    <!-- HEADER -->
     <div class="doc-header">
         <img src="{{ asset('storage/app/public/image/'.$pic->logo) }}">
 
@@ -142,7 +178,7 @@ body{
         <img src="{{ asset('storage/app/public/image/'.$pic->brand ?? '') }}">
     </div>
 
-    {{-- INFO --}}
+    <!-- INFO -->
     <div class="doc-info">
         <div>
             <strong>BILL TO</strong><br>
@@ -159,7 +195,7 @@ body{
         </div>
     </div>
 
-    {{-- ITEMS --}}
+    <!-- ITEMS -->
     <table class="doc-table">
         <thead>
         <tr>
@@ -186,7 +222,7 @@ body{
         </tbody>
     </table>
 
-    {{-- TOTAL STRIP --}}
+    <!-- TOTAL -->
     <div class="total-strip">
         <div>Basic<br>{{ $salebill_header->total_item_basic_amount }}</div>
         <div>Discount<br>{{ $salebill_header->total_disc_item_amount }}</div>
@@ -196,20 +232,18 @@ body{
         <div>NET<br>{{ $salebill_header->total_net_amount }}</div>
     </div>
 
-    {{-- FOOTER --}}
+    <!-- FOOTER -->
     <div class="doc-footer">
-       <div class="doc-box">
-    <strong>Terms & Conditions</strong>
-
-    <ol style="padding-left:18px; margin-top:6px;">
-        @foreach(preg_split("/\r\n|\r|\n/", (string)($compinfofooter->terms ?? '')) as $term)
-            @if(trim($term) !== '')
-                <li>{{ trim($term) }}</li>
-            @endif
-        @endforeach
-    </ol>
-</div>
-
+        <div class="doc-box">
+            <strong>Terms & Conditions</strong>
+            <ol>
+                @foreach(preg_split("/\r\n|\r|\n/", (string)($compinfofooter->terms ?? '')) as $term)
+                    @if(trim($term) !== '')
+                        <li>{{ trim($term) }}</li>
+                    @endif
+                @endforeach
+            </ol>
+        </div>
 
         <div class="doc-box">
             <strong>Bank Details</strong><br>
@@ -227,22 +261,14 @@ body{
     <div class="doc-sign">
         <strong>Authorised Signatory</strong>
     </div>
-   <div class="button-container my-2 gap-2">
 
-    <!-- HOME BUTTON -->
-    <a href="{{ url('/sales') }}" class="btn btn-primary btn-lg">
-        <i class="fa fa-home"></i> Home
-    </a>
-
-    <!-- PRINT BUTTON -->
-    <button class="btn btn-success btn-lg" onclick="window.print()">
-        <i class="fa fa-print"></i> Print
-    </button>
-
-</div>
+    <!-- BUTTONS -->
+    <div class="button-container no-print">
+        <a href="{{ url('/sales') }}" class="btn btn-primary">Home</a>
+        <button class="btn btn-success" onclick="window.print()">Print</button>
+    </div>
 
 </div>
 
 </body>
 </html>
-@endsection

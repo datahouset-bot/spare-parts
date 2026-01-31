@@ -1,6 +1,3 @@
-@extends('layouts.blank')
-@section('pagecontent')
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -121,6 +118,53 @@ body{
 .inv-qr{
     text-align:center;
 }
+/* home print button  */
+/* BUTTON CONTAINER */
+.button-container{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    margin-top:20px;
+}
+
+/* BASE BUTTON */
+.btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:10px 20px;
+    font-size:15px;
+    font-weight:600;
+    text-decoration:none;
+    border-radius:6px;
+    cursor:pointer;
+    border:none;
+}
+
+/* PRIMARY */
+.btn-primary{
+    background:#0d6efd;
+    color:#fff;
+}
+
+.btn-primary:hover{
+    background:#0b5ed7;
+}
+
+/* SUCCESS */
+.btn-success{
+    background:#198754;
+    color:#fff;
+}
+
+.btn-success:hover{
+    background:#157347;
+}
+
+/* ICON FIX (optional if font-awesome missing) */
+.btn i{
+    font-style:normal;
+}
 
 /* PRINT */
 @media print{
@@ -216,17 +260,15 @@ body{
     {{-- FOOTER --}}
     <div class="inv-footer">
         <div class="inv-box">
-    <strong>Terms & Conditions</strong>
-
-    <ol style="padding-left:18px; margin-top:6px;">
-        @foreach(preg_split("/\r\n|\r|\n/", (string)($compinfofooter->terms ?? '')) as $term)
-            @if(trim($term) !== '')
-                <li>{{ trim($term) }}</li>
-            @endif
-        @endforeach
-    </ol>
-</div>
-
+            <strong>Terms & Conditions</strong>
+            <ol>
+                @foreach(preg_split("/\r\n|\r|\n/", (string)($compinfofooter->terms ?? '')) as $term)
+                    @if(trim($term) !== '')
+                        <li>{{ trim($term) }}</li>
+                    @endif
+                @endforeach
+            </ol>
+        </div>
 
         <div class="inv-box">
             <strong>Bank Details</strong><br>
@@ -241,21 +283,19 @@ body{
         </div>
     </div>
 
-     <div class="button-container my-2 gap-2 no-print">
-
-    <!-- HOME BUTTON -->
-    <a href="{{ url('/sales') }}" class="btn btn-primary btn-lg ">
-        <i class="fa fa-home"></i> Home
+    {{-- BUTTONS --}}
+  <div class="button-container no-print">
+    <a href="{{ url('/sales') }}" class="btn btn-primary">
+        Home
     </a>
 
-    <!-- PRINT BUTTON -->
-    <button class="btn btn-success btn-lg" onclick="window.print()">
-        <i class="fa fa-print"></i> Print
+    <button class="btn btn-success" onclick="window.print()">
+        Print
     </button>
-
 </div>
+
+
 </div>
 
 </body>
 </html>
-@endsection

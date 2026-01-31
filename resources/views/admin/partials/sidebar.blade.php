@@ -833,12 +833,11 @@
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link" href="{{ url('/attendance_index') }}"
                                             style=" ">Mark Attendance </a>
-
                                     </nav>
+
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link" href="{{ url('/attendance_report') }}"
-                                            style=" ">attendance_report </a>
-
+                                            style=" ">attendance/report </a>
                                     </nav>
                                 </div>
                             </nav>

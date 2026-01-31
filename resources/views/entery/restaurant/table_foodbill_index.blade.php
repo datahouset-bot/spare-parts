@@ -19,21 +19,149 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<style>
+/* ================= PAGE BACKGROUND ================= */
+body {
+    background: #f4f6fb;
+    font-family: "Segoe UI", system-ui, sans-serif;
+}
 
-    <style>
-        td {
-            margin: 1px !important;
-            padding: 1px !important;
-        }
+/* ================= CARD ================= */
+.card {
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+}
 
-        .card-header {
-            margin: 0;
-        }
+/* ================= HEADER ================= */
+.card-header {
+    background: linear-gradient(135deg, #ffffff, #eef2f7);
+    border-bottom: 1px solid #e5e7eb;
+    padding: 14px 18px;
+}
 
-        .col {
-            margin: 0;
-        }
-    </style>
+.card-header h4 {
+    margin: 0;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* ================= FILTER BAR ================= */
+.card-header form {
+    align-items: center;
+}
+
+.card-header input {
+    border-radius: 10px;
+}
+
+.card-header .btn {
+    border-radius: 25px;
+    padding: 6px 18px;
+    font-weight: 600;
+}
+
+/* ================= REPORT PERIOD ================= */
+.report-range {
+    display: block;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 8px 0 14px;
+    color: #374151;
+}
+
+/* ================= TABLE ================= */
+.table-scrollable {
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* Header */
+thead th {
+    background: #f1f5f9;
+    font-weight: 700;
+    color: #374151;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+/* Cells */
+td {
+    padding: 8px !important;
+    vertical-align: middle;
+}
+
+/* Hover row */
+tbody tr {
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+tbody tr:hover {
+    background: #f8fafc;
+    transform: scale(1.002);
+}
+
+/* ================= STATUS ================= */
+td:nth-child(8) {
+    font-weight: 700;
+    color: #16a34a;
+}
+
+/* ================= TOTAL HIGHLIGHT ================= */
+tfoot th,
+tfoot td {
+    background: #f9fafb;
+    font-weight: 800;
+    border-top: 2px solid #e5e7eb;
+}
+
+/* ================= ACTION ICONS ================= */
+.btn-sm i {
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-sm:hover i {
+    transform: scale(1.2);
+    opacity: 0.9;
+}
+
+/* ================= DATATABLE BUTTONS ================= */
+.dt-buttons .dt-button {
+    border-radius: 20px !important;
+    background: #e5e7eb !important;
+    border: none !important;
+    font-weight: 600;
+    padding: 6px 14px !important;
+}
+
+.dt-buttons .dt-button:hover {
+    background: #2563eb !important;
+    color: #fff !important;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+    .card-header form .col-md-2,
+    .card-header form .col-md-1 {
+        margin-bottom: 6px;
+    }
+
+    .card-header h4 {
+        text-align: center;
+        margin-bottom: 8px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+</style>
 
 
 
@@ -125,9 +253,10 @@
                     $formattedFromDate = Carbon::parse($from_date)->format('d-m-y');
                     $formattedToDate = Carbon::parse($to_date)->format('d-m-y');
                 @endphp
-                    <span style="text-align: center; font-size: 18px;">
-                        Report From {{ $formattedFromDate }} to {{ $formattedToDate }}
-                    </span> 
+                   <span class="report-range">
+    Report From {{ $formattedFromDate }} to {{ $formattedToDate }}
+</span>
+
                
               
                 <thead>

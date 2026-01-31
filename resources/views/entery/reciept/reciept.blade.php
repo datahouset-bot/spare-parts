@@ -14,148 +14,280 @@
 
 
     <style>
-        /* ============================================
-           GLOBAL PAGE RESPONSIVENESS
-        ============================================ */
-        .container-fluid {
-            padding-left: 12px !important;
-            padding-right: 12px !important;
-        }
+        /* ===============================
+   GLOBAL LOOK & FEEL
+================================ */
+body {
+    background: #f4f6f9;
+}
 
-        .card {
-            border-radius: 10px;
-        }
+/* ===============================
+   CARD POLISH
+================================ */
+.card {
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 8px 25px rgba(0,0,0,.08);
+}
 
-        /* ============================================ */
-        /* payment mode css */
-        /* ============================================
-        /* Keep select2 + button on same row */
-        .payment-mode-group {
-            display: flex;
-        }
+.card-body {
+    padding: 18px;
+}
 
-        .payment-mode-group .select2-container {
-            flex: 1 1 auto !important;
-            width: auto !important;
-        }
+/* ===============================
+   HEADER (TOP BAR)
+================================ */
+.card-header {
+    background: linear-gradient(135deg, #ffffff, #f1f4f8);
+    border-bottom: 1px solid #e5e9f0;
+    font-size: 18px;
+    letter-spacing: .3px;
+}
 
-        .payment-mode-group .btn {
-            white-space: nowrap;
-        }
+/* ===============================
+   PRIMARY ACTION BUTTON
+================================ */
+.card-header .btn-primary {
+    border-radius: 30px;
+    padding: 7px 18px;
+    font-weight: 600;
+}
 
-        /* ============================================
-           MODAL RESPONSIVENESS
-        ============================================ */
-        .modal-dialog {
-            max-width: 700px;
-        }
+.card-header .btn-primary i {
+    margin-right: 6px;
+}
 
-        @media (max-width: 768px) {
-            .modal-dialog {
-                max-width: 95% !important;
-                margin: 10px auto;
-            }
+/* ===============================
+   TABLE UPGRADE
+================================ */
+.table {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+}
 
-            .modal-body .col-md-6,
-            .modal-body .col-md-12 {
-                padding-left: 5px !important;
-                padding-right: 5px !important;
-            }
-        }
+.table thead th {
+    background: #f6f8fb;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: #4a5568;
+}
 
-        /* Form fields inside modal */
-        .modal-body label {
-            font-weight: 600;
-            font-size: 14px;
-        }
+.table tbody tr {
+    transition: background .15s ease;
+}
 
-        .modal-body input,
-        .modal-body select {
-            font-size: 14px;
-            padding: 8px 10px;
-        }
+.table tbody tr:hover {
+    background: #f1f6ff;
+}
 
-        /* ============================================
-           TABLE RESPONSIVENESS
-        ============================================ */
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
+/* ===============================
+   ACTION ICONS
+================================ */
+.table .btn-sm {
+    padding: 4px 6px;
+}
 
-        table th {
-            white-space: nowrap;
-        }
+.table .fa {
+    opacity: .85;
+}
 
-        table td {
-            vertical-align: middle;
-        }
+.table .fa-eye { color: #0d6efd; }
+.table .fa-edit { color: #6f42c1; }
+.table .fa-trash { color: #dc3545; }
 
-        /* Smaller font on mobile */
-        @media (max-width: 768px) {
+.table .fa:hover {
+    opacity: 1;
+    transform: scale(1.25);
+}
 
-            table td,
-            table th {
-                font-size: 13px;
-                padding: 6px;
-            }
-        }
+/* ===============================
+   MODAL UPGRADE
+================================ */
+.modal-content {
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 10px 35px rgba(0,0,0,.18);
+}
 
-        /* Action buttons spacing */
-        .table .btn {
-            padding: 3px 6px;
-        }
+.modal-header {
+    border-bottom: 1px solid #e9ecef;
+    background: #f8fafc;
+}
 
-        /* ============================================
-           BUTTON & UI OPTIMIZATIONS
-        ============================================ */
-        .btn {
-            border-radius: 6px !important;
-        }
+.modal-title {
+    font-weight: 700;
+}
 
-        .btn-primary {
-            font-size: 15px;
-        }
+/* ===============================
+   FORM ELEMENTS
+================================ */
+.form-control,
+.form-select {
+    border-radius: 8px;
+}
 
-        /* Disable button animation on save */
-        #saveButton[disabled] {
-            opacity: 0.8;
-        }
+.form-control:focus,
+.form-select:focus {
+    box-shadow: 0 0 0 .2rem rgba(13,110,253,.15);
+}
 
-        /* ============================================
-           SELECT2 FIX IN MODAL
-        ============================================ */
-        .select2-container {
-            width: 100% !important;
-        }
+/* ===============================
+   SELECT2 BEAUTY
+================================ */
+.select2-container--default .select2-selection--single {
+    border-radius: 8px;
+    border-color: #ced4da;
+}
 
-        .select2-selection {
-            min-height: 38px !important;
-            padding-top: 3px !important;
-        }
+/* ===============================
+   BADGES / ALERTS
+================================ */
+.alert {
+    border-radius: 10px;
+    font-size: 14px;
+}
 
-        .select2-results__option[data-add="true"] {
-            color: #0d6efd !important;
-            font-weight: 600;
-            border-top: 1px solid #ddd;
-        }
+/* ===============================
+   MOBILE REFINEMENTS
+================================ */
+@media (max-width: 768px) {
 
+    .card-header {
+        flex-direction: column;
+        gap: 10px;
+    }
 
-        /* For mobile: dropdown inside modal */
-        @media (max-width: 768px) {
-            .select2-container--open .select2-dropdown {
-                left: 0 !important;
-                width: 100% !important;
-            }
-        }
+    .card-header span {
+        font-size: 16px;
+    }
 
-        #accountModal {
-            pointer-events: auto;
-        }
+    .table thead {
+        font-size: 12px;
+    }
+}
 
-        .modal-backdrop {
-            z-index: 1040 !important;
-        }
+        /* ============================== */
+        /* ===========================
+   PAGE TITLE & HEADER
+=========================== */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #f8f9fa, #eef2f7);
+    font-weight: 600;
+    font-size: 17px;
+}
+
+.card-header .btn {
+    font-size: 14px;
+    padding: 6px 14px;
+}
+
+/* ===========================
+   ADD RECEIPT BUTTON
+=========================== */
+.card-header .btn-primary {
+    box-shadow: 0 4px 10px rgba(13,110,253,.25);
+}
+
+/* ===========================
+   TABLE IMPROVEMENTS
+=========================== */
+.table {
+    font-size: 14px;
+}
+
+.table thead th {
+    background: #f1f3f6;
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody tr:hover {
+    background-color: #f9fbfd;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* ===========================
+   ACTION ICONS
+=========================== */
+.table .fa {
+    transition: transform .15s ease, color .15s ease;
+}
+
+.table .fa:hover {
+    transform: scale(1.2);
+    color: #0d6efd !important;
+}
+
+/* ===========================
+   MODAL UI
+=========================== */
+.modal-header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+.modal-body .form-control,
+.modal-body .form-select {
+    border-radius: 6px;
+}
+
+.modal-footer {
+    background: #f8f9fa;
+}
+
+/* ===========================
+   FORM LABELS
+=========================== */
+label {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+/* ===========================
+   SELECT2 POLISH
+=========================== */
+.select2-container--default .select2-selection--single {
+    height: 38px;
+    border-radius: 6px;
+}
+
+.select2-selection__rendered {
+    line-height: 36px !important;
+}
+
+.select2-selection__arrow {
+    height: 36px !important;
+}
+
+/* ===========================
+   MOBILE REFINEMENTS
+=========================== */
+@media (max-width: 768px) {
+
+    .card-header {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+
+    .table td,
+    .table th {
+        font-size: 13px;
+    }
+}
+
     </style>
     <script>
         $(document).ready(function() {
@@ -178,15 +310,18 @@
 
 
         <div class="card my-3">
-            <div class="card-header">
-                ADD Reciept
-                <div class=" text-center"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#myModal" title="shortcut:shift+n">
-                        Add New Reciept
-                    </button>
-                </div>
+         <div class="card-header">
+    <span>ADD RECEIPT</span>
 
-            </div>
+    <button type="button"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#myModal"
+        title="Shortcut: Shift + N">
+        <i class="fa fa-plus me-1"></i> Add Receipt
+    </button>
+</div>
+
             <div class="container mt-2">
 
 
@@ -394,12 +529,12 @@
                                 <td>
                                     {{-- {{ route('roomtypes.edit', $ledger['id']) }} --}}
                                     <a href="" class="btn  btn-sm"><i class="fa fa-edit"
-                                            style="font-size:20px;color:SlateBlue"></i></a>
+                                        ></i></a>
                                 </td>
                                 <td>
                                     {{-- {{ route('roomtypes.edit', $ledger['id']) }} --}}
                                     <a href="{{ url('reciepts_format', $ledger->voucher_no) }}" class="btn  btn-sm"><i
-                                            class="fa fa-eye" style="font-size:20px;color:SlateBlue"></i></a>
+                                            class="fa fa-eye" ></i></a>
                                 </td>
 
                                 <td>
@@ -409,7 +544,7 @@
                                         @method('DELETE')
                                         <button type="submit" class="btn  btn-sm"
                                             onclick="return confirm('Are you sure you want to delete this Reciept?')"><i
-                                                class="fa fa-trash" style="font-size:20px;color:OrangeRed"></i></button>
+                                                class="fa fa-trash"></i></button>
                                     </form>
                                 </td>
 

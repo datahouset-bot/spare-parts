@@ -16,12 +16,94 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="jquery/master.js"></script>
-    <style>
-      td{
-        margin: 1px !important;
-        padding: 1px !important;
-      }
-    </style>
+   <style>
+/* ================= PAGE BACKGROUND ================= */
+body {
+    background: #f4f6f9;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+/* ================= CARD ================= */
+.card {
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 10px 28px rgba(0,0,0,.08);
+    overflow: hidden;
+}
+
+/* ================= CARD HEADER ================= */
+.card-header {
+    background: linear-gradient(135deg, #f8fafc, #eef2f7);
+    font-size: 18px;
+    font-weight: 700;
+    color: #1f2937;
+    padding: 14px 18px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* ================= FILTER FORM ================= */
+#account_select_form {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.06);
+}
+
+#account_select_form label {
+    font-weight: 600;
+}
+
+/* ================= INPUTS ================= */
+.form-control {
+    border-radius: 8px;
+    height: 38px;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 .15rem rgba(13,110,253,.25);
+}
+
+/* ================= BUTTON ================= */
+.btn-primary {
+    border-radius: 30px;
+    padding: 7px 22px;
+    font-weight: 600;
+    box-shadow: 0 6px 16px rgba(13,110,253,.25);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+}
+
+/* ================= TABLE AREA ================= */
+.table-scrollable {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+td {
+    padding: 6px !important;
+}
+
+/* ================= ALERT ================= */
+.alert {
+    border-radius: 10px;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+    .card-header {
+        text-align: center;
+    }
+
+    #account_select_form .row > div {
+        margin-bottom: 10px;
+    }
+}
+</style>
+
     
 {{-- <script>
   $(document).ready(function () {

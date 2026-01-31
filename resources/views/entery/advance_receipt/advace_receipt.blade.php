@@ -16,6 +16,126 @@
 
         });
     </script>
+    <style>
+/* ===== PAGE BACKGROUND ===== */
+body {
+    background-color: #f4f6f9;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* ===== CARD ===== */
+.card {
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+/* ===== CARD HEADER ===== */
+.card-header {
+    background: linear-gradient(135deg, #f8fafc, #eef2f7);
+    font-size: 18px;
+    font-weight: 700;
+    color: #1f2937;
+    padding: 14px 18px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* ===== MAIN BUTTON ===== */
+.btn-primary {
+    border-radius: 30px;
+    padding: 8px 22px;
+    font-weight: 600;
+    box-shadow: 0 6px 16px rgba(13,110,253,.25);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+}
+
+/* ===== TABLE ===== */
+.table {
+    font-size: 14px;
+}
+
+.table thead th {
+    background-color: #f1f5f9;
+    font-weight: 600;
+    color: #334155;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody tr {
+    transition: background .15s ease;
+}
+
+.table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* ===== ACTION ICONS ===== */
+.table .fa {
+    font-size: 18px;
+    transition: transform .15s ease, opacity .15s ease;
+    opacity: .85;
+}
+
+.table .fa:hover {
+    transform: scale(1.25);
+    opacity: 1;
+}
+
+.fa-print { color: #0d6efd; }
+.fa-edit  { color: #0ea5e9; }
+.fa-trash { color: #ef4444; }
+
+/* ===== MODAL ===== */
+.modal-content {
+    border-radius: 14px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.2);
+}
+
+.modal-header {
+    background: #f8fafc;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-title {
+    font-weight: 700;
+}
+
+/* ===== FORM ===== */
+label {
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.form-control,
+.form-select {
+    border-radius: 8px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    box-shadow: 0 0 0 .15rem rgba(13,110,253,.25);
+}
+
+/* ===== ALERTS ===== */
+.alert {
+    border-radius: 10px;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+    .card-header {
+        text-align: center;
+    }
+}
+</style>
+
   
   <div class="container ">
     @if (session('message'))

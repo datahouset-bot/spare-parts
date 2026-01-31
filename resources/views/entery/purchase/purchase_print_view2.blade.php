@@ -3,9 +3,6 @@
 @endphp
 {{-- <link rel="stylesheet" href="{{ global_asset('/general_assets\css\form.css')}}"> --}}
 
-@extends('layouts.blank')
-@section('pagecontent')
-
 
 @php
 if (!function_exists('amountInWords')) {
@@ -198,6 +195,45 @@ body {
     text-align: center;
     font-size: 14px;
 }
+/* ================= BUTTON FIX ================= */
+.button-container{
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.btn{
+    display: inline-block;
+    padding: 10px 22px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+}
+
+/* HOME BUTTON */
+.btn-primary{
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.btn-primary:hover{
+    background-color: #0b5ed7;
+}
+
+/* PRINT BUTTON */
+.btn-success{
+    background-color: #198754;
+    color: #fff;
+}
+
+.btn-success:hover{
+    background-color: #157347;
+}
+
 
 /* ================= PRINT ================= */
 @media print {
@@ -325,9 +361,18 @@ body {
             </div> --}}
 
     {{-- ================= PRINT ================= --}}
-  <div class="button-container mt-3 text-center no-print">
-    <button class="btn btn-success btn-lg" onclick="window.print()">Print</button>
+  {{-- ================= PRINT & HOME ================= --}}
+  <div class="button-container no-print">
+    <a href="{{ url('/purchases') }}" class="btn btn-primary">
+        Home
+    </a>
+
+    <button class="btn btn-success" onclick="window.print()">
+        Print
+    </button>
 </div>
+
+
 
             </div>
 
@@ -343,4 +388,3 @@ body {
     </body>
 
     </html>
-@endsection

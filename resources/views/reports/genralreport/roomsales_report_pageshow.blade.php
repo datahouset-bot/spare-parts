@@ -16,12 +16,104 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="jquery/master.js"></script>
-    <style>
-      td{
-        margin: 1px !important;
-        padding: 1px !important;
-      }
-    </style>
+ <style>
+/* ================= GLOBAL ================= */
+body {
+    background: #f3f6fb;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+/* ================= CARD ================= */
+.card {
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 12px 30px rgba(0,0,0,.08);
+    overflow: hidden;
+}
+
+/* ================= CARD HEADER ================= */
+.card-header {
+    background: linear-gradient(135deg, #ffffff, #eef2f7);
+    padding: 14px 18px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.card-header h4 {
+    margin: 0;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* ================= FILTER FORM ================= */
+#account_select_form {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    margin: 10px;
+    box-shadow: 0 8px 22px rgba(0,0,0,.06);
+}
+
+/* ================= INPUT ================= */
+.form-control {
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+}
+
+.form-control:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 .15rem rgba(37,99,235,.25);
+}
+
+/* ================= BUTTON ================= */
+.btn-primary {
+    border-radius: 30px;
+    padding: 7px 26px;
+    font-weight: 600;
+    box-shadow: 0 6px 16px rgba(37,99,235,.35);
+    transition: all .2s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(37,99,235,.45);
+}
+
+/* ================= TABLE AREA ================= */
+.table-scrollable {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.06);
+}
+
+/* Compact table cells */
+td {
+    padding: 6px !important;
+}
+
+/* ================= ALERT ================= */
+.alert {
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+    .card-header {
+        text-align: center;
+    }
+
+    #account_select_form .row > div {
+        margin-bottom: 10px;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+}
+</style>
+
     
 {{-- <script>
   $(document).ready(function () {

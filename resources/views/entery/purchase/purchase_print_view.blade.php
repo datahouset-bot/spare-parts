@@ -1,23 +1,14 @@
 @php
     include public_path('cdn/cdn.blade.php');
 @endphp
-{{-- <link rel="stylesheet" href="{{ global_asset('/general_assets\css\form.css')}}"> --}}
-
-@extends('layouts.blank')
-@section('pagecontent')
-
 
 @php
 if (!function_exists('amountInWords')) {
-
     function amountInWords($number)
     {
         $no = floor($number);
         $decimal = round($number - $no, 2) * 100;
 
-        $digits_length = strlen($no);
-        $i = 0;
-        $str = [];
         $digits = ['', 'Hundred', 'Thousand', 'Lakh', 'Crore'];
         $words = [
             0 => '', 1 => 'One', 2 => 'Two', 3 => 'Three', 4 => 'Four',
@@ -29,307 +20,218 @@ if (!function_exists('amountInWords')) {
             60 => 'Sixty', 70 => 'Seventy', 80 => 'Eighty', 90 => 'Ninety'
         ];
 
-        while ($i < $digits_length) {
+        $str = [];
+        $i = 0;
+        while ($no > 0) {
             $divider = ($i == 2) ? 10 : 100;
-            $number = floor($no % $divider);
+            $number = $no % $divider;
             $no = floor($no / $divider);
             $i += ($divider == 10) ? 1 : 2;
 
             if ($number) {
-                $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
-                $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
                 $str[] = ($number < 21)
-                    ? $words[$number] . " " . $digits[$counter] . $plural . " " . $hundred
-                    : $words[floor($number / 10) * 10] . " " . $words[$number % 10] . " " . $digits[$counter] . $plural . " " . $hundred;
-            } else {
-                $str[] = null;
+                    ? $words[$number] . " " . $digits[count($str)]
+                    : $words[floor($number / 10) * 10] . " " . $words[$number % 10] . " " . $digits[count($str)];
             }
         }
 
-        $Rupees = implode('', array_reverse($str));
-        $paise = ($decimal)
-            ? " And " . $words[$decimal / 10] . " " . $words[$decimal % 10] . " Paise"
-            : '';
-
-        return trim("Rupees $Rupees Only");
+        return "Rupees " . implode(' ', array_reverse($str)) . " Only";
     }
 }
 @endphp
 
-    <!DOCTYPE html>
-    <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Purchase Voucher</title>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>KOT</title>
 <style>
 @page {
     size: A6;
     margin: 10mm;
 }
 
-body {
-    margin: 0;
-    font-family: "Times New Roman", serif;
+body{
+    margin:0;
+    font-family:"Times New Roman", serif;
+    font-size:15px;
 }
 
 /* ================= PAGE ================= */
-.page {
-    width: 80%;
-    margin: auto;
-    margin-top: 10px;
-    border: 1px solid #000;
-    padding: 10px;
+.page{
+    width:50%;
+    margin:10px auto;
+    border:1px solid #000;
+    padding:10px;
 }
 
 /* ================= HEADER ================= */
-.company_info {
-    display: grid;
-    grid-template-columns: 1fr 4fr 1fr;
-    border-bottom: 1px solid #000;
-    padding-bottom: 5px;
+.company_info{
+    display:grid;
+    grid-template-columns:1fr 4fr 1fr;
+    border-bottom:1px solid #000;
+    padding-bottom:5px;
 }
 
-.firm_detail {
-    text-align: center;
+.firm_detail{
+    text-align:center;
 }
 
 /* ================= INFO ================= */
-.info-container {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px;
+.info-container{
+    display:flex;
+    justify-content:space-between;
+    margin-top:10px;
 }
 
-.cust_info {
-    width: 50%;
-    font-size: 18px;
+.cust_info,
+.voucher_info{
+    width:48%;
+    font-size:16px;
 }
 
-.voucher_info {
-    width: 50%;
-    font-size: 18px;
-    text-align: right;
+.voucher_info{
+    text-align:right;
 }
 
-/* ================= HALF PAYMENT ================= */
-.half_pay {
-    border: 1px solid #000;
-    padding: 15px;
-    margin-top: 10px;
+/* ================= BOXES ================= */
+.half_pay,
+.amount-box{
+    border:1px solid #000;
+    padding:10px;
+    margin-top:10px;
 }
 
-/* ================= AMOUNT ================= */
-.amount-box {
-    width: 50%;
-    margin-left: auto;
-    border: 1px solid #000;
-    padding: 10px;
+.amount-box{
+    width:50%;
+    margin-left:auto;
 }
 
-.amount-box h3 {
-    margin: 5px 0;
+.signature-box{
+    margin-top:40px;
+    text-align:right;
 }
 
-/* ================= SIGN ================= */
-.signature-box {
-    width: 40%;
-    margin-left: auto;
-    margin-top: 50px;
-    text-align: center;
+.signature-line{
+    width:200px;
+    border-top:1px solid #000;
+    margin-left:auto;
+    margin-bottom:5px;
 }
 
-.signature-line {
-    border-top: 1px solid #000;
-    margin-top: 40px;
+/* ================= BUTTONS ================= */
+.button-container{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    margin-top:20px;
 }
-/* ==============footer======================= */
-  .voucher_footer {
-                background-color: bisque;
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                border: 1px solid black;
-                margin-bottom: 0px;
-            }
 
-            .terms {
-                grid-column: 1 / 3;
-                height: 100px;
-                text-align: center;
-            }
+.btn{
+    padding:10px 22px;
+    font-size:16px;
+    font-weight:bold;
+    border-radius:6px;
+    border:none;
+    cursor:pointer;
+    text-decoration:none;
+}
 
-            .bank_detail {
-                text-align: left;
-                height: 120px;
-                border-top: 1px solid;
-                padding: 1px;
-                font-size: 15px;
-            }
+.btn-primary{
+    background:#0d6efd;
+    color:#fff;
+}
 
-            .comp_sign {
+.btn-primary:hover{
+    background:#0b5ed7;
+}
 
-                border-left: 1px solid;
-                text-align: center;
+.btn-success{
+    background:#198754;
+    color:#fff;
+}
 
-            }
+.btn-success:hover{
+    background:#157347;
+}
 
-
-            .qr_code {
-                border-left: 1px solid;
-                border-top: 1px solid;
-                text-align: center;
-
-            }
-
-            .for_companyname {
-                border-left: 1px solid;
-                text-align: center;
-            }
 /* ================= PRINT ================= */
-@media print {
-
-    html, body {
-        width: 370mm;
-        height: auto;
-        margin: 0;
-        padding: 0;
-    }
-
-    .page {
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 10mm !important;
-        border: 1px solid #000 !important;
-        box-sizing: border-box;
-        page-break-inside: avoid;
-    }
-
-    /* Hide print button */
-   .no-print,
-    .no-print * {
-        display: none !important;
-        visibility: hidden !important;
+@media print{
+    .no-print{ display:none !important; }
+    .page{
+        width:89%;
+        margin:0;
+        padding:10mm;
+        border:1px solid #000;
     }
 }
-
 </style>
-    
-    </head>
+</head>
 
-    <body>
+<body>
 
-        <div class="page">
+<div class="page">
 
-            <div class="company_info">
-                <div class="logo1">&nbsp;<img src="{{ asset('torage\app\public\image\\' . $pic->logo) }}" alt="qr_code" width="80px">
-                </div>
-                <div class="firm_detail">
-                          <h3 style="color: green;">PURCHASE</h3>
-                    <h4>{{ $componyinfo->cominfo_firm_name }}</h4>
-                       {{ $componyinfo->cominfo_address1 }}&nbsp;{{ $componyinfo->cominfo_address2 }}&nbsp;
-                    {{ $componyinfo->cominfo_city }}&nbsp;{{ $componyinfo->cominfo_state }}
-                        &nbsp;{{ $componyinfo->cominfo_pincode }}&nbsp;{{ $compinfofooter->country }}&nbsp;
-                   Email:{{ $componyinfo->cominfo_email }} Phone &nbsp;{{ $componyinfo->cominfo_phone }}
-                        Mobile&nbsp;{{ $componyinfo->cominfo_mobile }} 
-                </div>
-                <div class="logo2"><img src="{{ asset('storage\app\public\image\\' . $pic->brand) }}" alt="qr_code" width="80px">
-                </div>
-            </div>
-
-
-            <div class="page_header">
-                <div class="info-container">
-                    <div class="cust_info">
-                        <span>Party:{{$account_detail->account_name}}</span><br>
-                        <span>Address:{{ $account_detail->address}} </span><br>
-              <span>  {{ $account_detail->address2}}&nbsp;{{ $account_detail->city}}&nbsp;{{ $account_detail->state}}</span> <br>
-                            <span style="font-style: italic;">
-    {{ amountInWords($voucher_header->total_net_amount) }}
-</span>
-<br><br>
-            <span>As per detail given below</span>
-         
-                    
-
-{{-- 
-                       <span>Name:{{ $guest_detail->guest_name }}</span><br>
-                       <span>Mobile No:{{ $guest_detail->guest_mobile }}</span><br>
-                       <span>Room No:{{ $guest_detail->room_nos }}</span><br>
-                       <span>Check In No   :{{ $guest_detail->voucher_no }}</span><br> --}}
-                    </div>
-                    <div class="voucher_info">
-
-                        <span>Invoice No : {{ $voucher_header->voucher_no }}</span><br>
-                        <span>Date : {{ $voucher_header->voucher_date }}</span><br>
-                        <span>Time : {{ $voucher_header->created_at->format('H:i') }}</span><br>
-                        <span>Voucher Type : {{ $voucher_header->voucher_type }}</span><br>
-                        
-                    </div>
-                </div>
-
-            </div>
-{{-- ================= HALF PAYMENT ================= --}}
-    <div class="half_pay">
-        <h5>Half Payment</h5>
-    </div>
-
-    {{-- ================= AMOUNT DETAIL (RIGHT SIDE) ================= --}}
-           
-    <div class="amount-box">
-        <p><strong>Discount (if any):</strong></p>
-        
-        <hr>
-        <h3>Grand Total: ₹ {{ $voucher_header->total_net_amount}}</h3>
-    </div>
-
-{{-- ================= AUTHORIZED SIGN ================= --}}
-    <div class="signature-box">
-        <div class="signature-line"></div>
-        <strong>Authorized Signatory</strong><br>
-        <span>For {{ $componyinfo->cominfo_firm_name }}</span>
-    </div>
-    {{-- ======================Voucher Footer============================ --}}
-    {{-- <div class="voucher_footer">
-                <div class="terms "style="background-color:#e6ecff">
-                    <h5>Terms & Conditions</h5>
-                    <span>{{ $compinfofooter->terms }}</span>
-                </div>
-                <div class="for_companyname"style="background-color:#e6ecff"><span>For
-                        {{ $componyinfo->cominfo_firm_name }}</span><br></div>
-                <div class="bank_detail"style="background-color:#e6ecff">
-                    <span>Bank Name:{{ $compinfofooter->bank_name }}</span><br>
-                    <span>Bank A/C No :{{ $compinfofooter->bank_ac_no }}</span><br>
-                    <span>Bank IFSC:{{ $compinfofooter->bank_ifsc }}</span><br>
-                    <span>Bank Branch:{{ $compinfofooter->bank_branch }}</span><br>
-                </div>
-                <div class="qr_code"style="background-color:#e6ecff">
-                    <span>Bank id:{{ $compinfofooter->upiid }}</span><br>
-                    &nbsp;<img src="/storage/image/{{ $pic->qrcode }}" alt="qr_code" width="80px">
-                </div>
-                <div class="comp_sign"style="background-color:#e6ecff">
-
-                    &nbsp;<img src="{{ asset('storage/image/' . $pic->seal) }}" alt="qr_code" width="80px">
-                </div>
-            </div> --}}
-
-    {{-- ================= PRINT ================= --}}
-  <div class="button-container mt-3 text-center no-print">
-    <button class="btn btn-success btn-lg" onclick="window.print()">Print</button>
-</div>
-
-            </div>
-
-
-
-        
-
+    <!-- HEADER -->
+    <div class="company_info">
+        <div>
+            <img src="{{ asset('storage/app/public/image/'.$pic->logo) }}" width="70">
         </div>
 
-      
+        <div class="firm_detail">
+            <h3 style="color:green;">PURCHASE</h3>
+            <h4>{{ $componyinfo->cominfo_firm_name }}</h4>
+            {{ $componyinfo->cominfo_address1 }},
+            {{ $componyinfo->cominfo_city }},
+            {{ $componyinfo->cominfo_state }}
+        </div>
 
+        <div>
+            <img src="{{ asset('storage/app/public/image/'.$pic->brand) }}" width="70">
+        </div>
+    </div>
 
-    </body>
+    <!-- INFO -->
+    <div class="info-container">
+        <div class="cust_info">
+            Party: {{ $account_detail->account_name }}<br>
+            Address: {{ $account_detail->address }}<br>
+            <em>{{ amountInWords($voucher_header->total_net_amount) }}</em>
+        </div>
 
-    </html>
-@endsection
+        <div class="voucher_info">
+            Invoice No: {{ $voucher_header->voucher_no }}<br>
+            Date: {{ $voucher_header->voucher_date }}<br>
+            Time: {{ $voucher_header->created_at->format('H:i') }}
+        </div>
+    </div>
+
+    <!-- HALF PAYMENT -->
+    <div class="half_pay">
+        <strong>Half Payment</strong>
+    </div>
+
+    <!-- AMOUNT -->
+    <div class="amount-box">
+        <strong>Grand Total:</strong><br>
+        ₹ {{ $voucher_header->total_net_amount }}
+    </div>
+
+    <!-- SIGN -->
+    <div class="signature-box">
+        <div class="signature-line"></div>
+        Authorized Signatory<br>
+        For {{ $componyinfo->cominfo_firm_name }}
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="button-container no-print">
+        <a href="{{ url('/purchases') }}" class="btn btn-primary">Home</a>
+        <button class="btn btn-success" onclick="window.print()">Print</button>
+    </div>
+
+</div>
+
+</body>
+</html>

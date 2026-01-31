@@ -8,12 +8,125 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="jquery/master.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
-    <style>
-        .Unprinted{
-     background-color: rgb(1, 240, 1) !important;
-  }
+  <style>
+/* ================= PAGE BACKGROUND ================= */
+body {
+    background: #f4f6fb;
+    font-family: "Segoe UI", system-ui, sans-serif;
+}
 
-    </style>
+/* ================= CARD ================= */
+.card {
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #ffffff, #eef2f7);
+    border-bottom: 1px solid #e5e7eb;
+    padding: 14px 18px;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* ================= TOP BUTTON BAR ================= */
+.card .row.my-2 {
+    margin-top: 10px;
+}
+
+.card .btn {
+    border-radius: 22px;
+    font-weight: 600;
+    padding: 6px 16px;
+    margin: 4px;
+}
+
+/* ================= TABLE WRAPPER ================= */
+.table-scrollable {
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+/* ================= TABLE ================= */
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* Header */
+thead th {
+    background: #f1f5f9;
+    font-weight: 700;
+    color: #374151;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+/* Cells */
+td {
+    padding: 8px !important;
+    vertical-align: middle;
+}
+
+/* Hover effect */
+tbody tr {
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+tbody tr:hover {
+    background: #f8fafc;
+    transform: scale(1.002);
+}
+
+/* ================= UNPRINTED / STATUS ROW ================= */
+.Unprinted {
+    background-color: #dcfce7 !important;
+    font-weight: 700;
+}
+
+/* ================= STATUS TEXT ================= */
+td:nth-child(7),
+td:nth-child(8) {
+    font-weight: 700;
+}
+
+/* ================= ACTION ICONS ================= */
+.btn-sm i {
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-sm:hover i {
+    transform: scale(1.25);
+    opacity: 0.9;
+}
+
+/* ================= DATATABLE CONTROLS ================= */
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 20px;
+    padding: 4px 10px;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    border-radius: 10px;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+    .card-header h3 {
+        text-align: center;
+    }
+
+    .card .btn {
+        width: 100%;
+    }
+}
+</style>
+
     
 <script>
   $(document).ready(function () {

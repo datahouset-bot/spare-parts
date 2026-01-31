@@ -1,93 +1,95 @@
 @extends('layouts.blank')
 
 @section('pagecontent')
-    <div class="container">
-        @if (session('message'))
-            <div class="alert alert-primary">
-                {{ session('message') }}
-            </div>
-        @endif
-        @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
+
+<div class="container-fluid py-4">
+
+    {{-- Alerts --}}
+    @if (session('message'))
+        <div class="alert alert-success alert-dismissible fade show">
+            {{ session('message') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
 
-        <div id="layoutAuthentication">
-            <div id="layoutAuthentication_content">
-                <main>
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-12">
-                                <div class="card shadow-lg border-0 rounded-lg mt-1">
-                                    <div class="card-header">
-                                        <h3 class="text-center font-weight-light my-1">Business Setting</h3>
-                                    </div>
-                                    <div class="card-body">
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
 
-                                        <form action="{{ route('businesssettings.update', 1) }}" method="POST">
-                                            @csrf
-                                            @method('PUT')
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
 
+            <div class="card border-0 shadow-sm rounded-4">
+                
+                {{-- Header --}}
+                <div class="card-header bg-primary text-white rounded-top-4">
+                    <h4 class="mb-0 text-center">
+                        <i class="fa fa-cogs me-2"></i> Business Settings
+                    </h4>
+                </div>
 
-                                            <div class="row mb-3 align-items-center">
-                                                <div class="col-md-6">
-                                                    <input type="text"  class="form-control" value="Calculation Type" readonly>
-                                                </div>
-                                                <div class="col-md-6">
+                {{-- Body --}}
+                <div class="card-body p-4">
 
-                                                    <select name="calculation_type" class="form-select">
+                    <form action="{{ route('businesssettings.update', 1) }}" method="POST">
+                        @csrf
+                        @method('PUT')
 
-                                                        <option value="24hour" selected>24hour</option>
-                                                        <option value="12hour">12hour</option>
-                                                        
-                                                    </select>
-                                                    <span class="text-danger"> 
-                                                        @error('option_type')
-                                                        {{$message}}
-                                                            
-                                                        @enderror
-                                                      </span>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <input type="text" class="form-control" value="standard_checkout_time" readonly>
-                                                    <span class="text-danger"> 
-                                                        @error('standard_checkout_time')
-                                                        {{$message}}
-                                                            
-                                                        @enderror
-                                                      </span>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <input type="time" name="standard_checkout_time"  class="form-control" required >
-                                                    <span class="text-danger"> 
-                                                        @error('std_checkout_time')
-                                                        {{$message}}
-                                                            
-                                                        @enderror
-                                                      </span>
-                                                </div>
+                        <div class="row g-3">
 
-
-
-                                                <div class="col-md-4 my-2">
-                                                    <button type="submit" class="btn btn-primary w-100">Apply</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                    
-                                </div>
+                            {{-- Calculation Type --}}
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    Calculation Type
+                                </label>
+                                <select name="calculation_type" class="form-select">
+                                    <option value="24hour" selected>24 Hour</option>
+                                    <option value="12hour">12 Hour</option>
+                                </select>
+                                @error('calculation_type')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
+
+                            {{-- Standard Checkout Time --}}
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    Standard Checkout Time
+                                </label>
+                                <input type="time"
+                                       name="standard_checkout_time"
+                                       class="form-control"
+                                       required>
+                                @error('standard_checkout_time')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
                         </div>
-                    </div>
-                </main>
+
+                        {{-- Divider --}}
+                        <hr class="my-4">
+
+                        {{-- Submit --}}
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fa fa-check me-1"></i> Apply Settings
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
             </div>
+
         </div>
     </div>
+</div>
 
+{{-- Bootstrap --}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>
 @endsection

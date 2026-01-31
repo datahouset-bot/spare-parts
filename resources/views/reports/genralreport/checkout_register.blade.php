@@ -16,12 +16,127 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="jquery/master.js"></script>
-    <style>
-      td{
-        margin: 1px !important;
-        padding: 1px !important;
-      }
-    </style>
+   <style>
+/* ===== Page Background ===== */
+body {
+    background-color: #f4f6fb;
+    font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+/* ===== Card ===== */
+.card {
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* ===== Card Header ===== */
+.card-header {
+    background: linear-gradient(135deg, #ffffff, #eef2f7);
+    border-bottom: 1px solid #e5e7eb;
+    padding: 14px 20px;
+}
+
+.card-header h4 {
+    margin: 0;
+    font-weight: 700;
+    color: #1f2937;
+    text-align: center;
+}
+
+/* ===== Filter Section ===== */
+#account_select_form {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 12px;
+    box-shadow: inset 0 0 0 1px #e5e7eb;
+}
+
+/* ===== Inputs ===== */
+.form-control {
+    border-radius: 10px;
+    font-size: 14px;
+    padding: 6px 10px;
+}
+
+/* ===== Buttons ===== */
+.btn {
+    border-radius: 22px;
+    font-weight: 600;
+    padding: 6px 22px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #1e40af, #1e3a8a);
+}
+
+/* ===== Table ===== */
+.table-scrollable {
+    overflow-x: auto;
+    border-radius: 12px;
+}
+
+table {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+/* Sticky Header */
+thead th {
+    position: sticky;
+    top: 0;
+    background: #1f2937;
+    color: #ffffff;
+    z-index: 2;
+}
+
+/* Table Row Hover */
+.table tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* Numeric Alignment */
+.table td:nth-child(n+11) {
+    text-align: right;
+}
+
+/* Action Icons */
+.table .fa {
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.table .fa:hover {
+    transform: scale(1.2);
+}
+
+/* ===== Alerts ===== */
+.alert {
+    border-radius: 10px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    #account_select_form {
+        padding: 12px;
+    }
+
+    .btn {
+        width: 100%;
+        margin-top: 8px;
+    }
+
+    .card-header h4 {
+        font-size: 16px;
+    }
+}
+</style>
+
     
 {{-- <script>
   $(document).ready(function () {

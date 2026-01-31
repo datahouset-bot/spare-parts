@@ -63,7 +63,7 @@ if (!function_exists('amountInWords')) {
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Receipt</title>
+<title>PAYMENT RECEIPTS</title>
 
 <style>
 @page {
@@ -211,7 +211,7 @@ body {
         </div>
 
         <div class="firm_detail">
-            <h3 style="color: green;">RECEIPT</h3>
+            <h3 style="color: green;">PAYMENT RECEIPT</h3>
             <h4><strong>{{ $componyinfo->cominfo_firm_name }}</strong></h4>
             {{ $componyinfo->cominfo_address1 }} {{ $componyinfo->cominfo_address2 }} <br>
             {{ $componyinfo->cominfo_city }} {{ $componyinfo->cominfo_state }} {{ $componyinfo->cominfo_pincode }} <br>

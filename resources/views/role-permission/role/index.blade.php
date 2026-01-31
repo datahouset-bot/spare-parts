@@ -35,6 +35,7 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Name</th>
+                                    <th>Role </th>
                                     <th width="40%">Action</th>
                                 </tr>
                             </thead>

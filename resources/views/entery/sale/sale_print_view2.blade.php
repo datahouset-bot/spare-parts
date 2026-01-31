@@ -1,27 +1,31 @@
 @php
     include public_path('cdn/cdn.blade.php');
 @endphp
-{{-- <link rel="stylesheet" href="{{ global_asset('/general_assets\css\form.css')}}"> --}}
 
-@extends('layouts.blank')
-@section('pagecontent')
-    <!DOCTYPE html>
-    <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sale Invoice</title>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Invoice</title>
-        <style>
-            .alt-page{
-    width:190mm;
-    margin:auto;
-    background:#fff;
-    padding:15px;
-    border:1px solid #000;
+<style>
+body{
+    background:#e9edf2;
+    font-family:Segoe UI, Arial, sans-serif;
     font-size:14px;
 }
 
+/* PAGE */
+.alt-page{
+    width:190mm;
+    margin:20px auto;
+    background:#fff;
+    padding:15px;
+    border:1px solid #000;
+}
+
+/* HEADER */
 .alt-header{
     display:grid;
     grid-template-columns:80px 1fr 120px;
@@ -40,23 +44,27 @@
     font-weight:700;
 }
 
+/* INFO */
 .alt-info{
     display:grid;
     grid-template-columns:1fr 1fr;
     margin:15px 0;
 }
 
+/* TABLE */
 .alt-table{
     width:100%;
     border-collapse:collapse;
 }
 
-.alt-table th, .alt-table td{
+.alt-table th,
+.alt-table td{
     border:1px solid #000;
     padding:6px;
     text-align:center;
 }
 
+/* TOTAL */
 .alt-total{
     width:30%;
     margin-left:auto;
@@ -76,6 +84,7 @@
     font-size:16px;
 }
 
+/* FOOTER */
 .alt-footer{
     display:grid;
     grid-template-columns:2fr 2fr 1fr;
@@ -88,27 +97,59 @@
     text-align:center;
 }
 
-@media print{
-    .no-print{ display:none; }
+/* BUTTONS */
+.button-container{
+    text-align:center;
+    margin-top:20px;
 }
 
-        </style>
+.btn{
+    padding:10px 18px;
+    font-size:16px;
+    border-radius:6px;
+    border:none;
+    cursor:pointer;
+}
 
+.btn-primary{ background:#0d6efd; color:#fff; }
+.btn-success{ background:#198754; color:#fff; }
 
+/* PRINT */
+@media print{
 
+    @page{
+        size:A4;
+        margin:10mm;
+    }
 
+    body{
+        background:#fff;
+        margin:0;
+    }
 
+    .no-print{
+        display:none !important;
+    }
 
-    </head>
+    /* PRINT BORDER */
+    .alt-page{
+        border:2px solid #000 !important;
+        margin:0 auto !important;
+        padding:15px !important;
+    }
+}
+</style>
+</head>
+
 <body>
 
 <div class="alt-page">
 
-    {{-- ================= HEADER ================= --}}
+    <!-- HEADER -->
     <div class="alt-header">
         <img src="{{ asset('storage/app/public/image/'.$pic->logo) }}" class="alt-logo">
 
-        <div class="alt-company">
+        <div>
             <h3>{{ $componyinfo->cominfo_firm_name }}</h3>
             <small>
                 {{ $componyinfo->cominfo_address1 }},
@@ -120,12 +161,10 @@
             </small>
         </div>
 
-        <div class="alt-invoice-tag">
-            SALE INVOICE
-        </div>
+        <div class="alt-invoice-tag">SALE INVOICE</div>
     </div>
 
-    {{-- ================= CUSTOMER + INVOICE ================= --}}
+    <!-- CUSTOMER + INVOICE -->
     <div class="alt-info">
         <div>
             <strong>BILL TO</strong><br>
@@ -144,21 +183,21 @@
         </div>
     </div>
 
-    {{-- ================= ITEMS ================= --}}
+    <!-- ITEMS -->
     <table class="alt-table">
         <thead>
-            <tr>
-                <th>#</th>
-                <th>Item</th>
-                <th>Qty</th>
-                <th>Rate</th>
-                <th>GST%</th>
-                <th>Amount</th>
-            </tr>
+        <tr>
+            <th>#</th>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Rate</th>
+            <th>GST%</th>
+            <th>Amount</th>
+        </tr>
         </thead>
         <tbody>
-            @php($i=1)
-            @foreach($salebill_items as $row)
+        @php($i=1)
+        @foreach($salebill_items as $row)
             <tr>
                 <td>{{ $i++ }}</td>
                 <td>{{ $row->item_name }}</td>
@@ -167,18 +206,18 @@
                 <td>{{ number_format($row->gst_item_percent,1) }}</td>
                 <td>{{ number_format($row->item_basic_amount,1) }}</td>
             </tr>
-            @endforeach
+        @endforeach
         </tbody>
     </table>
 
-    {{-- ================= TOTALS ================= --}}
+    <!-- TOTAL -->
     <div class="alt-total">
         <table>
-            <tr><td>Basic Amount:-</td><td>{{ $salebill_header->total_item_basic_amount }}</td></tr>
-            <tr><td>Discount:-</td><td>{{ $salebill_header->total_disc_item_amount }}</td></tr>
-            <tr><td>SGST:-</td><td>{{ $salebill_header->total_gst_amount/2 }}</td></tr>
-            <tr><td>CGST:-</td><td>{{ $salebill_header->total_gst_amount/2 }}</td></tr>
-            <tr><td>Round Off:-</td><td>{{ $salebill_header->total_roundoff }}</td></tr>
+            <tr><td>Basic</td><td>{{ $salebill_header->total_item_basic_amount }}</td></tr>
+            <tr><td>Discount</td><td>{{ $salebill_header->total_disc_item_amount }}</td></tr>
+            <tr><td>SGST</td><td>{{ $salebill_header->total_gst_amount/2 }}</td></tr>
+            <tr><td>CGST</td><td>{{ $salebill_header->total_gst_amount/2 }}</td></tr>
+            <tr><td>Round</td><td>{{ $salebill_header->total_roundoff }}</td></tr>
             <tr class="grand">
                 <td>GRAND TOTAL</td>
                 <td>{{ $salebill_header->total_net_amount }}</td>
@@ -186,21 +225,18 @@
         </table>
     </div>
 
-    {{-- ================= FOOTER ================= --}}
+    <!-- FOOTER -->
     <div class="alt-footer">
-    <div>
-    <strong>Terms & Conditions</strong>
-
-    <ol style="padding-left:18px; margin-top:6px;">
-        @foreach(preg_split("/\r\n|\r|\n/", (string)($compinfofooter->terms ?? '')) as $term)
-            @if(trim($term) !== '')
-                <li>{{ trim($term) }}</li>
-            @endif
-        @endforeach
-    </ol>
-</div>
-
-
+        <div>
+            <strong>Terms & Conditions</strong>
+            <ol>
+                @foreach(preg_split("/\r\n|\r|\n/", (string)($compinfofooter->terms ?? '')) as $term)
+                    @if(trim($term) !== '')
+                        <li>{{ trim($term) }}</li>
+                    @endif
+                @endforeach
+            </ol>
+        </div>
 
         <div>
             <strong>Bank Details</strong><br>
@@ -215,24 +251,13 @@
         </div>
     </div>
 
-     <div class="button-container my-2 gap-2 no-print">
-
-    <!-- HOME BUTTON -->
-    <a href="{{ url('/sales') }}" class="btn btn-primary btn-lg">
-        <i class="fa fa-home"></i> Home
-    </a>
-
-    <!-- PRINT BUTTON -->
-    <button class="btn btn-success btn-lg" onclick="window.print()">
-        <i class="fa fa-print"></i> Print
-    </button>
-
-</div>
+    <!-- BUTTONS -->
+    <div class="button-container no-print">
+        <a href="{{ url('/sales') }}" class="btn btn-primary">Home</a>
+        <button class="btn btn-success" onclick="window.print()">Print</button>
+    </div>
 
 </div>
 
 </body>
-
-
-    </html>
-@endsection
+</html>

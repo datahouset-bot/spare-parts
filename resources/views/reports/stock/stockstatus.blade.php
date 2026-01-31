@@ -8,7 +8,125 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="jquery/master.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
-    
+    <style>
+/* ================= PAGE ================= */
+body {
+    background: #f4f6fb;
+    font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+/* ================= CARD ================= */
+.card {
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #ffffff, #eef2f7);
+    border-bottom: 1px solid #e5e7eb;
+    padding: 14px 18px;
+}
+
+.card-header h4 {
+    margin: 0;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* ================= ACTION BAR ================= */
+.card .row.my-2 {
+    margin-top: 10px;
+}
+
+.card .btn {
+    border-radius: 22px;
+    padding: 6px 18px;
+    font-weight: 600;
+    margin: 4px;
+}
+
+/* ================= TABLE CONTAINER ================= */
+.table-scrollable {
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px;
+}
+
+/* ================= TABLE ================= */
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+thead th {
+    background: #0f172a !important;
+    color: #fff !important;
+    font-weight: 700;
+    border-bottom: 2px solid #334155;
+}
+
+/* Table rows */
+tbody tr {
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+tbody tr:hover {
+    background: #f8fafc;
+    transform: scale(1.002);
+}
+
+/* Cells */
+td {
+    padding: 8px !important;
+    vertical-align: middle;
+}
+
+/* ================= NUMERIC ALIGNMENT ================= */
+td:nth-child(3),
+td:nth-child(4),
+td:nth-child(5) {
+    text-align: right;
+    font-weight: 600;
+}
+
+/* ================= FOOTER ================= */
+tfoot {
+    background: #0f172a;
+    color: #fff;
+    font-weight: 700;
+}
+
+tfoot td {
+    padding: 10px !important;
+}
+
+/* ================= DATATABLE CONTROLS ================= */
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 20px;
+    padding: 4px 12px;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    border-radius: 10px;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+    .card-header h4 {
+        text-align: center;
+    }
+
+    .card .btn {
+        width: 100%;
+    }
+
+    td, th {
+        font-size: 13px;
+    }
+}
+</style>
+
     
 {{-- <script>
   $(document).ready(function () {

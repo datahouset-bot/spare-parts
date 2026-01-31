@@ -1,25 +1,8 @@
 @extends('layouts.blank')
 @section('pagecontent')
 
-<div class="container">
-    @if(session('message'))
-        <div class="alert alert-primary">
-            {{ session('message') }}
-        </div>
-    @endif
-
-    <body class="bg-primary">
-        <div id="layoutAuthentication">
-            <div id="layoutAuthentication_content">
-                <main>
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-12">
-                                <div class="card shadow-lg border-0 rounded-lg mt-1">
-                                    <div class="card-header">
-                                        <h3 class="text-center font-weight-light my-1">Software Company Details</h3>
-                                         {{-- <a class="btn btn-danger" href="{{ url('/room_transection_delete',Auth::user()->firm_id) }}">Delete All Transection</a> --}}
-                                    {{-- <a class="btn btn-danger" id="deleteAllBtn">Delete All Transactions</a> --}}
+<div class="container py-4">
+    
 
 <!-- Modal (for confirmation) -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
@@ -105,178 +88,165 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 
-                                    
-                                    
-                                        </div>
-                                    <div class="card-body">
-                                        <form action="{{ route('softwarecompanies.store') }}" method="POST">
-                                            @csrf
-                                            <div class="row">
 
-                                            
+    {{-- Flash Message --}}
+    @if(session('message'))
+        <div class="alert alert-success alert-dismissible fade show">
+            {{ session('message') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
 
-                                            <!-- Activation Date -->
-                                            <div class="form-floating col-md-3 mb-3">
-                                                <input class="form-control" id="activation_date" type="date" name="activation_date" value="{{ old('activation_date', $software_companyInfo->activation_date ?? '') }}" />
-                                                <label for="activation_date">Activation Date</label>
-                                            </div>
+    <div class="row justify-content-center">
+        <div class="col-xl-12">
 
-                                            <!-- Expiry Date -->
-                                            <div class="form-floating col-md-3 mb-3">
-                                                <input class="form-control" id="expiry_date" type="date" name="expiry_date" value="{{ old('expiry_date', $software_companyInfo->expiry_date ?? '') }}" />
-                                                <label for="expiry_date">Expiry Date</label>
-                                            </div>
+            <div class="card border-0 shadow-lg rounded-4">
 
-                                            <!-- Customer Firm Name -->
-                                            <div class="form-floating col-md-6 mb-3">
-                                                <input class="form-control" id="customer_firm_name" type="text" name="customer_firm_name" value="{{ old('customer_firm_name', $software_companyInfo->customer_firm_name ?? '') }}" />
-                                                <label for="customer_firm_name">Customer Firm Name</label>
-                                            </div>
+                {{-- Header --}}
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
+                    <h5 class="mb-0">
+                        <i class="fa fa-building me-2"></i> Software Company Details
+                    </h5>
 
+                    {{-- Delete Button --}}
+                    {{-- <button class="btn btn-sm btn-danger" id="deleteAllBtn">
+                        <i class="fa fa-trash me-1"></i> Delete All Transactions
+                    </button> --}}
+                </div>
 
-                                            <!-- Customer Mobile -->
-                                            <div class="form-floating  col-md-3 mb-3">
-                                                <input class="form-control" id="customer_mobile" type="text" name="customer_mobile" value="{{ old('customer_mobile', $software_companyInfo->customer_mobile ?? '') }}" />
-                                                <label for="customer_mobile">Customer Mobile</label>
-                                            </div>
+                <div class="card-body p-4">
 
-                                            <!-- Customer Phone -->
-                                            <div class="form-floating col-md-3 mb-3">
-                                                <input class="form-control" id="customer_phone" type="text" name="customer_phone" value="{{ old('customer_phone', $software_companyInfo->customer_phone ?? '') }}" />
-                                                <label for="customer_phone">Customer Phone</label>
-                                            </div>
+                    <form action="{{ route('softwarecompanies.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
 
-                                            <!-- Software Firm Name -->
-                                            <div class="form-floating col-md-6 mb-3">
-                                                <input class="form-control" id="software_firm_name" type="text" name="software_firm_name" value="{{ old('software_firm_name', $software_companyInfo->software_firm_name ?? '') }}" />
-                                                <label for="software_firm_name">Software Firm Name</label>
-                                            </div>
+                        {{-- ================= BASIC INFO ================= --}}
+                        <h6 class="text-primary mb-3">Basic Dates</h6>
+                        <div class="row g-3">
+                            <div class="col-md-3 form-floating">
+                                <input class="form-control" type="date" name="activation_date"
+                                       value="{{ old('activation_date', $software_companyInfo->activation_date ?? '') }}">
+                                <label>Activation Date</label>
+                            </div>
 
-                                            <!-- Address1, Address2, City, Pincode, State, Phone, Mobile, Email, Website -->
-                                            <div class="row">
-                                                @foreach (['software_address1', 'software_address2', 'software_city', 'software_pincode', 'software_state', 'software_phone', 'software_mobile', 'software_email', 'software_website'] as $field)
-                                                    <div class="col-md-4 mt-2">
-                                                        <div class="form-floating mb-3 mb-md-0">
-                                                            <input class="form-control" id="{{ $field }}" type="text" name="{{ $field }}" value="{{ old($field, $software_companyInfo->$field ?? '') }}" />
-                                                            <label for="{{ $field }}">{{ ucfirst(str_replace('_', ' ', $field)) }}</label>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-
-                                            <!-- Social Media (Facebook, YouTube, Twitter) -->
-                                            <div class="row">
-                                                @foreach (['software_facebook', 'software_youtube', 'software_twitter'] as $field)
-                                                    <div class="col-md-4 mt-2">
-                                                        <div class="form-floating mb-3 mb-md-0">
-                                                            <input class="form-control" id="{{ $field }}" type="text" name="{{ $field }}" value="{{ old($field, $software_companyInfo->$field ?? '') }}" />
-                                                            <label for="{{ $field }}">{{ ucfirst(str_replace('_', ' ', $field)) }}</label>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-
-                                            <!-- Logos -->
-                                            <div class="row">
-                                                @foreach (['software_logo1', 'software_logo2', 'software_logo3', 'software_logo4'] as $field)
-                                                    <div class="col-md-3 mt-2">
-                                                        <div class="form-floating mb-3 mb-md-0">
-                                                            <input class="form-control" id="{{ $field }}" type="file" name="{{ $field }}" value="{{ old($field, $software_companyInfo->$field ?? '') }}" />
-                                                            <label for="{{ $field }}">{{ ucfirst(str_replace('_', ' ', $field)) }}</label>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-
-                                            <!-- Additional Fields (software_af1 to software_af10) -->
-                                            <div class="row">
-                                                    <div class="col-md-4 mt-2">
-                                                        <div class="form-floating mb-3 mb-md-0">
-                                                            <input class="form-control" id="software_af1" type="text" name="software_af1" value="{{ $software_companyInfo->software_af1  }}" />
-                                                            <label for="software_af1">Business </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 mt-2">
-                                                        <div class="form-floating mb-3 mb-md-0">
-                                                            <input class="form-control" id="software_af2" type="text" name="software_af2" value="{{ $software_companyInfo->software_af2  }}" />
-                                                            <label for="software_af2">Map Longnitute </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 mt-2">
-                                                        <div class="form-floating mb-3 mb-md-0">
-                                                            <input class="form-control" id="software_af3" type="text" name="software_af3" value="{{ $software_companyInfo->software_af3  }}" />
-                                                            <label for="software_af3"> Map Latitute </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 mt-2">
-                                                        <div class="form-floating mb-3 mb-md-0">
-                                                            <input class="form-control" id="software_af4" type="text" name="software_af4" value="{{ $software_companyInfo->software_af4  }}" />
-                                                            <label for="software_af4">Whatsapp Authantication  Key  </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 mt-2">
-                                                        <div class="form-floating mb-3 mb-md-0">
-                                                            <input class="form-control" id="software_af5" type="text" name="software_af5" value="{{ $software_companyInfo->software_af5  }}" />
-                                                            <label for="software_af5">Whatsapp Api  </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 mt-2">
-                                                        <div class="form-floating mb-3 mb-md-0">
-                                                            <input class="form-control" id="software_af6" type="date" name="software_af6" value="{{ $software_companyInfo->software_af6  }}" />
-                                                            <label for="software_af6">WhatsApp Validity  </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 mt-2">
-                                                        <div class="form-floating mb-3 mb-md-0">
-                                                            <input class="form-control" id="software_af7" type="text" name="software_af7" value="{{ $software_companyInfo->software_af7  }}" />
-                                                            <label for="software_af7">af7 </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 mt-2">
-                                                        <div class="form-floating mb-3 mb-md-0">
-                                                            <input class="form-control" id="software_af8" type="text" name="software_af8" value="{{ $software_companyInfo->software_af8  }}" />
-                                                            <label for="software_af8">af8 </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 mt-2">
-                                                        <div class="form-floating mb-3 mb-md-0">
-                                                            <input class="form-control" id="software_af9" type="text" name="software_af9" value="{{ $software_companyInfo->software_af9  }}" />
-                                                            <label for="software_af9">Af9 </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 mt-2">
-                                                        <div class="form-floating mb-3 mb-md-0">
-                                                            <input class="form-control" id="software_af10" type="text" name="software_af10" value="{{ $software_companyInfo->software_af10  }}" />
-                                                            <label for="software_af1">Af10 </label>
-                                                        </div>
-                                                    </div>
-                                            </div>
-
-                                            <div class="mt-4 mb-0">
-                                                <div class="d-grid">
-                                                    <button type="submit" class="btn btn-primary btn-block">Apply</button>
-                                                </div>
-                                            </div>
-                                          </div>
-                                        </form>
-                                    </div>
-                                    <div class="card-footer text-center py-3">
-                                        <div class="small">
-                                            <a class="btn btn-dark" href="{{ url()->previous() }}">Back</a>
-                                         
-                                        </div>
-                                        
-                                    </div>
-                                </div>
+                            <div class="col-md-3 form-floating">
+                                <input class="form-control" type="date" name="expiry_date"
+                                       value="{{ old('expiry_date', $software_companyInfo->expiry_date ?? '') }}">
+                                <label>Expiry Date</label>
                             </div>
                         </div>
-                    </div>
-                </main>
-            </div>
-        </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    </body>
+                        <hr class="my-4">
+
+                        {{-- ================= CUSTOMER ================= --}}
+                        <h6 class="text-primary mb-3">Customer Information</h6>
+                        <div class="row g-3">
+                            <div class="col-md-6 form-floating">
+                                <input class="form-control" name="customer_firm_name"
+                                       value="{{ old('customer_firm_name', $software_companyInfo->customer_firm_name ?? '') }}">
+                                <label>Customer Firm Name</label>
+                            </div>
+
+                            <div class="col-md-3 form-floating">
+                                <input class="form-control" name="customer_mobile"
+                                       value="{{ old('customer_mobile', $software_companyInfo->customer_mobile ?? '') }}">
+                                <label>Customer Mobile</label>
+                            </div>
+
+                            <div class="col-md-3 form-floating">
+                                <input class="form-control" name="customer_phone"
+                                       value="{{ old('customer_phone', $software_companyInfo->customer_phone ?? '') }}">
+                                <label>Customer Phone</label>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        {{-- ================= SOFTWARE ================= --}}
+                        <h6 class="text-primary mb-3">Software Firm</h6>
+                        <div class="row g-3">
+                            <div class="col-md-6 form-floating">
+                                <input class="form-control" name="software_firm_name"
+                                       value="{{ old('software_firm_name', $software_companyInfo->software_firm_name ?? '') }}">
+                                <label>Software Firm Name</label>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        {{-- ================= ADDRESS ================= --}}
+                        <h6 class="text-primary mb-3">Address & Contact</h6>
+                        <div class="row g-3">
+                            @foreach (['software_address1','software_address2','software_city','software_pincode','software_state','software_phone','software_mobile','software_email','software_website'] as $field)
+                                <div class="col-md-4 form-floating">
+                                    <input class="form-control" name="{{ $field }}"
+                                           value="{{ old($field, $software_companyInfo->$field ?? '') }}">
+                                    <label>{{ ucwords(str_replace('_',' ', $field)) }}</label>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <hr class="my-4">
+
+                        {{-- ================= SOCIAL ================= --}}
+                        <h6 class="text-primary mb-3">Social Media</h6>
+                        <div class="row g-3">
+                            @foreach (['software_facebook','software_youtube','software_twitter'] as $field)
+                                <div class="col-md-4 form-floating">
+                                    <input class="form-control" name="{{ $field }}"
+                                           value="{{ old($field, $software_companyInfo->$field ?? '') }}">
+                                    <label>{{ ucwords(str_replace('_',' ', $field)) }}</label>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <hr class="my-4">
+
+                        {{-- ================= LOGOS ================= --}}
+                        <h6 class="text-primary mb-3">Logos</h6>
+                        <div class="row g-3">
+                            @foreach (['software_logo1','software_logo2','software_logo3','software_logo4'] as $field)
+                                <div class="col-md-3">
+                                    <label class="form-label fw-semibold">{{ ucwords(str_replace('_',' ', $field)) }}</label>
+                                    <input class="form-control" type="file" name="{{ $field }}">
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <hr class="my-4">
+
+                        {{-- ================= EXTRA ================= --}}
+                        <h6 class="text-primary mb-3">Additional Configuration</h6>
+                        <div class="row g-3">
+                            @foreach(range(1,10) as $i)
+                                <div class="col-md-4 form-floating">
+                                    <input class="form-control"
+                                           name="software_af{{ $i }}"
+                                           value="{{ $software_companyInfo->{'software_af'.$i} ?? '' }}">
+                                    <label>AF {{ $i }}</label>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        {{-- ================= ACTIONS ================= --}}
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary px-4">
+                                ← Back
+                            </a>
+
+                            <button type="submit" class="btn btn-primary px-5">
+                                <i class="fa fa-save me-1"></i> Apply
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
+
+{{-- Bootstrap --}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
 @endsection
